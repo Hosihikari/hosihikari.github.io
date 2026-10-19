@@ -1,8 +1,10 @@
-# 示例插件
+# Example plugins
 
-| 示例 | Provider | 说明 |
+[English](README.md) | [简体中文](README.zh_hans.md)
+
+| Example | Provider | What it shows |
 |---|---|---|
-| [hello-csharp](hello-csharp/) | `hosihikari-csharp` | C# 源码插件；装载时编译，写到数据目录 |
-| [hello-node](hello-node/) | `hosihikari-rpc` | Node 进程外插件；stdio JSON-RPC |
+| [hello-csharp](hello-csharp/) | `hosihikari-csharp` | A C# source plugin compiled at load; writes to its data directory. |
+| [hello-node](hello-node/) | `hosihikari-rpc` | A Node out-of-process plugin over stdio JSON-RPC. |
 
-两个示例都在[快速开始](../quick-start.md)里逐步安装。把示例目录放进服务端的 `plugins/`，目录名与清单里的 `name` 一致。
+Both are installed step by step in the [quick start](https://hosihikariframework.github.io/quick-start/). Put an example directory under the server's `plugins/`; the directory name must match `name` in the manifest.

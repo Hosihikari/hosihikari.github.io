@@ -1,10 +1,12 @@
 # hello-csharp
 
-一个最小的 C# 插件：载入与启用时写日志和数据文件，并读取分层后的 `greeting`。
+[English](README.md) | [简体中文](README.zh_hans.md)
 
-## 安装
+A minimal C# plugin: it logs and writes data files on load and enable, and reads the layered `greeting`.
 
-在文档仓根执行：
+## Install
+
+Run from the documentation repository root:
 
 ```powershell
 git clone https://github.com/HosihikariFramework/hosihikariframework.github.io
@@ -15,14 +17,14 @@ $Server = 'C:\bedrock-server'
 Copy-Item -Recurse .\examples\hello-csharp "$Server\plugins\hello-csharp"
 ```
 
-目标目录名必须是 `hello-csharp`。
+The target directory must be named `hello-csharp`.
 
-## 文件
+## Files
 
-- `manifest.json`：`provider` 是 `csharp`，依赖 `hosihikari` 与 `hosihikari-csharp`。
-- `main.cs`：入口类型 `HelloPlugin`。
-- `hello-csharp.conf`：包内默认配置。
+- `manifest.json`: `provider` is `csharp`; depends on `hosihikari` and `hosihikari-csharp`.
+- `main.cs`: the `HelloPlugin` entry type.
+- `hello-csharp.conf`: package defaults.
 
-## 预期
+## Expected
 
-日志出现 `loaded, package` 与 `enabled, greeting=你好，星光`；数据写在 `data/hosihikari/hello-csharp/`。
+The log shows `loaded, package` and `enabled, greeting=你好，星光`; data is written under `data/hosihikari/hello-csharp/`.
