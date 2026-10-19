@@ -65,9 +65,9 @@ hello-csharp/
 <服务端>/data/hosihikari/hello-csharp/
 ```
 
-## 例外：进程外桥
+## 例外一等 Provider：进程外桥
 
-RpcProvider 是 AOT/ALC/CLR 规则的唯一例外，也是一等成员：插件在子进程中运行，通过行分隔 JSON-RPC 2.0 over stdio 与宿主通信。
+RpcProvider 是例外一等 Provider：官方 Provider，插件在子进程中通过行分隔 JSON-RPC 2.0 与宿主通信，不把源码 AOT 为 IL。
 
 ```powershell
 lip install github.com/HosihikariFramework/RpcProvider

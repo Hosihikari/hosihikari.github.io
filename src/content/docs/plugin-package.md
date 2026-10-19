@@ -44,23 +44,23 @@ plugins/
 | `dependencies` | Plugin names; the dependency graph decides load order. |
 | `extraInfo.api` | Contract major version; currently `2`. |
 | `extraInfo.format_version` | Manifest schema version; currently `1`. |
-| `extraInfo.provider` | The provider that handles this package; official values are `assembly`, `csharp`, and `fsharp`. |
+| `extraInfo.provider` | The provider that handles this package. `assembly` is the core's built-in path; `csharp` and `fsharp` are first-class providers; `rpc` is the exception first-class provider. |
 | `extraInfo.command` | `rpc` only: a JSON array encoded as a string. |
 
-Dependencies are sorted by name and carry no version constraints. The framework itself is `hosihikari`. Source plugins also declare their provider: `hosihikari-csharp` or `hosihikari-fsharp`. Providers are plugin packages too, and load before the packages that depend on them. The RPC exception declares `hosihikari-rpc`.
+Dependencies are sorted by name and carry no version constraints. The framework itself is `hosihikari`. First-class providers declare `hosihikari-csharp` or `hosihikari-fsharp`; the exception first-class provider declares `hosihikari-rpc`. Provider packages load before the packages that depend on them. Precompiled assemblies use the core's built-in path and need no provider package.
 
 ## Providers and entries
 
-Official providers deliver a CLR assembly. The `rpc` row is the first-class exception: a cross-process bridge outside this set.
+Official providers come in two classes: first-class providers compile source AOT to IL; RpcProvider is the exception first-class provider, a cross-process bridge. Precompiled assemblies use the core's built-in path.
 
 | `provider` | `entry` | How it loads |
 |---|---|---|
-| `assembly` | `.dll` | The core loads it directly; the assembly declares exactly one `[assembly: EntryPoint<T>]`. |
-| `csharp` | `.cs` | Roslyn compiles it at load into a collectible ALC. |
-| `fsharp` | `.fsx` | FSharp.Compiler.Service compiles it at load. |
-| `rpc` | Entry file | The exception: a first-class cross-process bridge; `command` starts a child process speaking line-delimited JSON-RPC 2.0 over stdio. |
+| `assembly` | `.dll` | Core built-in: loads a precompiled IL assembly directly; the assembly declares exactly one `[assembly: EntryPoint<T>]`. |
+| `csharp` | `.cs` | First-class provider: AOT-compiles `.cs` to IL at load with Roslyn, into a collectible ALC. |
+| `fsharp` | `.fsx` | First-class provider: AOT-compiles `.fsx` to IL at load with FSharp.Compiler.Service. |
+| `rpc` | Entry file | Exception first-class provider: `command` starts a child process speaking line-delimited JSON-RPC 2.0 over stdio. |
 
-For the official providers, the entry type must implement `IPlugin` and have a parameterless constructor; `EntryPoint<T>` enforces both at compile time. A missing file or the wrong number of entry declarations is reported by the provider.
+For first-class and precompiled assembly plugins, the entry type must implement `IPlugin` and have a parameterless constructor; `EntryPoint<T>` enforces both at compile time. A missing file or the wrong number of entry declarations is reported by the provider.
 
 ## Checks before load
 

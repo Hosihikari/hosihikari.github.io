@@ -1,13 +1,13 @@
 ---
-title: 进程外桥（例外）
-description: 例外一等成员：跨进程桥，行分隔 JSON-RPC。
+title: 进程外桥（例外一等 Provider）
+description: 例外一等 Provider：跨进程桥，行分隔 JSON-RPC。
 ---
 
 :::caution
-RpcProvider 是唯一例外，也是一等成员：跨进程桥，不在官方 AOT/ALC/CLR Provider 集内（ADR-0037）。插件无法在 CLR 上运行时才用它。
+RpcProvider 是例外一等 Provider：官方 Provider，插件在子进程中运行，不把源码 AOT 为 IL（ADR-0037）。
 :::
 
-# 进程外桥（例外）
+# 进程外桥（例外一等 Provider）
 
 `Hosihikari.PluginProvider.Rpc` 用行分隔 JSON-RPC 2.0 over stdio 驱动子进程。插件可以用任何语言写；它只认清单里的命令与协议。卸载就是让子进程退出，子进程与它持有的状态一起消失。
 

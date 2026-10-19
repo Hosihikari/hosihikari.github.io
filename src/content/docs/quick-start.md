@@ -63,9 +63,9 @@ Start the server. The log should show `loaded, package` and `enabled, greeting=ä
 <server>/data/hosihikari/hello-csharp/
 ```
 
-## The exception: out-of-process bridge
+## Exception first-class provider: out-of-process bridge
 
-RpcProvider is the one first-class exception to the AOT/ALC/CLR rule: the plugin runs in a child process and speaks line-delimited JSON-RPC 2.0 over stdio.
+RpcProvider is the exception first-class provider: an official provider that runs the plugin in a child process over line-delimited JSON-RPC 2.0, instead of compiling source AOT to IL.
 
 ```powershell
 lip install github.com/HosihikariFramework/RpcProvider

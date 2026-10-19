@@ -36,7 +36,7 @@ description: 常见错误与排查入口。
 
 `data/hosihikari/<name>/`。`ctx.DataDirectory`（Node/Python）或 `context.DataDirectory`（.NET）指向它。
 
-## 进程外桥（例外）启动不了
+## 进程外桥（例外一等 Provider）启动不了
 
 - 可执行文件不在 `PATH`：日志里会有 spawn 失败或进程立即退出。
 - Endstone：CLI 换了子进程的 `PATH`，把 `command` 里的可执行文件写成绝对路径。

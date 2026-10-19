@@ -46,23 +46,23 @@ plugins/
 | `dependencies` | 依赖的插件名；依赖图决定装载顺序。 |
 | `extraInfo.api` | 契约主版本，当前 `2`。 |
 | `extraInfo.format_version` | 清单 schema 版本，当前 `1`。 |
-| `extraInfo.provider` | 处理这个包的 Provider；官方取值是 `assembly`、`csharp`、`fsharp`。 |
+| `extraInfo.provider` | 处理这个包的 Provider。`assembly` 是核心内置入口；`csharp`、`fsharp` 是一等 Provider；`rpc` 是例外一等 Provider。 |
 | `extraInfo.command` | 仅 `rpc`：编码成字符串的 JSON 数组。 |
 
-依赖按名字排序，没有版本约束；框架自身是 `hosihikari`。源码插件还要声明对应的 Provider：`hosihikari-csharp` 或 `hosihikari-fsharp`。Provider 也是插件包，先于依赖它的包装载。跨进程例外声明 `hosihikari-rpc`。
+依赖按名字排序，没有版本约束；框架自身是 `hosihikari`。一等 Provider 声明 `hosihikari-csharp` 或 `hosihikari-fsharp`；例外一等 Provider 声明 `hosihikari-rpc`。Provider 包先于依赖它的包装载。预编译程序集走核心内置入口，不需要 Provider 包。
 
 ## Provider 与入口
 
-官方 Provider 交出 CLR 程序集；`rpc` 行是例外一等成员：跨进程桥，不在这套官方集内。
+官方 Provider 分两类：一等 Provider 把源码 AOT 为 IL；RpcProvider 是例外一等 Provider，跨进程桥。预编译程序集走核心内置入口。
 
 | `provider` | `entry` | 装载方式 |
 |---|---|---|
-| `assembly` | `.dll` | 核心直接装载；程序集上恰好一个 `[assembly: EntryPoint<T>]`。 |
-| `csharp` | `.cs` | Roslyn 装载时编译，产物进 collectible ALC。 |
-| `fsharp` | `.fsx` | FSharp.Compiler.Service 装载时编译。 |
-| `rpc` | 入口文件 | 例外一等成员：跨进程桥；由 `command` 启动子进程，行分隔 JSON-RPC 2.0 over stdio。 |
+| `assembly` | `.dll` | 核心内置：直接装载预编译 IL 程序集；程序集上恰好一个 `[assembly: EntryPoint<T>]`。 |
+| `csharp` | `.cs` | 一等 Provider：Roslyn 装载时把 `.cs` AOT 为 IL，产物进 collectible ALC。 |
+| `fsharp` | `.fsx` | 一等 Provider：FSharp.Compiler.Service 装载时把 `.fsx` AOT 为 IL。 |
+| `rpc` | 入口文件 | 例外一等 Provider：由 `command` 启动子进程，行分隔 JSON-RPC 2.0 over stdio。 |
 
-官方 Provider 的入口类型必须实现 `IPlugin` 且有无参构造；`EntryPoint<T>` 的泛型约束在编译期保证这两条。文件缺失、程序集里的入口声明数量不对等，由 Provider 报告。
+一等 Provider 与预编译程序集插件的入口类型必须实现 `IPlugin` 且有无参构造；`EntryPoint<T>` 的泛型约束在编译期保证这两条。文件缺失、程序集里的入口声明数量不对等，由 Provider 报告。
 
 ## 载入前检查
 

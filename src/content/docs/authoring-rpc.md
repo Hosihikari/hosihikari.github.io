@@ -1,10 +1,10 @@
 ---
-title: Out-of-process bridge (the exception)
-description: "The exception: a first-class cross-process bridge over line-delimited JSON-RPC."
+title: Out-of-process bridge (exception first-class provider)
+description: "The exception first-class provider: a cross-process bridge over line-delimited JSON-RPC."
 ---
 
 :::caution
-RpcProvider is the one first-class exception, a cross-process bridge outside the official AOT/ALC/CLR provider set (ADR-0037). Use it when a plugin cannot run on the CLR.
+RpcProvider is the exception first-class provider. It is an official provider that runs plugins in a child process instead of compiling source AOT to IL (ADR-0037).
 :::
 
 `Hosihikari.PluginProvider.Rpc` drives a child process with line-delimited JSON-RPC 2.0 over stdio. The bridge reads only the command from the manifest and the protocol. Unload means the process exits, taking the child process and its state with it.

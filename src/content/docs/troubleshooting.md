@@ -34,7 +34,7 @@ The framework opens the scope gate after a successful `OnEnable`. Periodic work 
 
 `data/hosihikari/<name>/`. `ctx.DataDirectory` (Node/Python) or `context.DataDirectory` (.NET) points there.
 
-## The out-of-process bridge (the exception) does not start
+## The out-of-process bridge (exception first-class provider) does not start
 
 - The executable is not on `PATH`: the log shows a spawn failure or the process exits immediately.
 - Endstone: the CLI replaces the child `PATH`; use an absolute path in `command`.

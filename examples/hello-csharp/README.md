@@ -2,7 +2,7 @@
 
 [English](README.md) | [简体中文](README.zh_hans.md)
 
-A minimal C# plugin: it logs and writes data files on load and enable, and reads the layered `greeting`. The provider hands the core an assembly; the plugin runs as CLR code in an ALC.
+A minimal C# plugin: it logs and writes data files on load and enable, and reads the layered `greeting`. The first-class provider AOT-compiles the source to IL; the plugin runs as CLR code in an ALC.
 
 ## Install
 
