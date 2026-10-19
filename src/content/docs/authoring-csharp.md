@@ -3,7 +3,7 @@ title: C# plugins
 description: Write a C# source plugin that the provider compiles at load.
 ---
 
-C# has no virtual machine of its own, so `Hosihikari.PluginProvider.CSharp` compiles `.cs` at load with Roslyn and loads the assembly into a collectible ALC. Authors ship source; the result gets the same isolation and unload guarantees as any assembly plugin.
+C# runs on the CLR, so `Hosihikari.PluginProvider.CSharp` compiles `.cs` at load with Roslyn and loads the assembly into a collectible ALC. Authors ship source; the result gets the same isolation and unload guarantees as any assembly plugin.
 
 ## Setup
 

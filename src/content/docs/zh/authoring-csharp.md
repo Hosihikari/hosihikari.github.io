@@ -5,7 +5,7 @@ description: 写一个由 Provider 在装载时编译的 C# 源码插件。
 
 # 写一个 C# 插件
 
-C# 没有自己的虚拟机，`Hosihikari.PluginProvider.CSharp` 在装载时用 Roslyn 把 `.cs` 编成程序集，再放进插件自己的 collectible ALC。作者交的是源码，拿到的是与其他程序集插件一样的隔离与卸载承诺。
+C# 直接跑在 CLR 上，`Hosihikari.PluginProvider.CSharp` 在装载时用 Roslyn 把 `.cs` 编成程序集，再放进插件自己的 collectible ALC。作者交的是源码，拿到的是与其他程序集插件一样的隔离与卸载承诺。
 
 ## 准备
 
