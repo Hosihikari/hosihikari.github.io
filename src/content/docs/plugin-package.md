@@ -95,3 +95,5 @@ The configuration format is HOCON. Layering goes through the framework's provide
 - An exception from a hook is a fault: the host unloads the plugin and notifies the carrier.
 
 The gate covers framework-delivered events and timers. Threads, service registrations, and direct references owned by the plugin must be released in `OnUnload`.
+
+Provider packages are loaded once and cannot be unloaded at runtime; disable or upgrade them by restarting the server.

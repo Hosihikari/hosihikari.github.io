@@ -3,7 +3,7 @@ title: C# plugins
 description: Write a C# source plugin that the provider compiles at load.
 ---
 
-C# runs on the CLR, so `Hosihikari.PluginProvider.CSharp` compiles `.cs` at load with Roslyn and loads the assembly into a collectible ALC. Authors ship source; the result gets the same isolation and unload guarantees as any assembly plugin. This is a first-class provider: it compiles source AOT to IL before the plugin runs; the core loads that IL into a collectible ALC, and the plugin itself is ordinary CLR code.
+C# runs on the CLR, so `Hosihikari.PluginProvider.CSharp` compiles `.cs` at load with Roslyn and loads the assembly into a collectible ALC. Authors ship source; the result gets the same isolation and unload guarantees as any assembly plugin. This is a first-class provider: it compiles source AOT to IL before the plugin runs; the provider loads that IL into a collectible ALC, and the plugin itself is ordinary CLR code.
 
 ## Setup
 

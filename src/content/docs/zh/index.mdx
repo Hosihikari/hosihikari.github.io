@@ -29,7 +29,7 @@ import { ContainerSection } from 'lucode-starlight/components';
     每个插件一个可回收的程序集装载上下文。卸载经过验证，单个插件失败不会拖垮服务端。
   </Card>
   <Card title="一等 Provider" icon="rocket">
-    C# 与 F# 源码在装载时 AOT 为 IL，装进 collectible ALC；预编译程序集由核心内置入口装载。RpcProvider 是例外一等 Provider：官方跨进程桥。
+    C# 与 F# 源码在装载时 AOT 为 IL；Provider 把 IL 装进 collectible ALC，核心驱动生命周期。预编译程序集由核心内置入口装载。RpcProvider 是例外一等 Provider：官方跨进程桥。
   </Card>
   <Card title="两个载体" icon="server">
     同一份托管核心跑在 LeviLamina 与 Endstone 上，当前支持 Windows x64。

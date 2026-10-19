@@ -29,7 +29,7 @@ import { ContainerSection } from 'lucode-starlight/components';
     Every plugin gets its own collectible assembly load context. Unload is verified, and a failing plugin does not take the server down.
   </Card>
   <Card title="First-class providers" icon="rocket">
-    C# and F# source is compiled AOT to IL and loaded into a collectible ALC. Precompiled assemblies use the core's built-in path. RpcProvider is the exception first-class provider: an official cross-process bridge.
+    C# and F# source is compiled AOT to IL; the provider loads it into a collectible ALC, and the core drives lifecycle. Precompiled assemblies use the core's built-in path. RpcProvider is the exception first-class provider: an official cross-process bridge.
   </Card>
   <Card title="Two carriers" icon="server">
     The same managed core runs under LeviLamina and Endstone on Windows x64.
