@@ -4,9 +4,11 @@
 
 ## 安装
 
-在 Docs 仓根执行：
+在文档仓根执行：
 
 ```powershell
+git clone https://github.com/HosihikariFramework/hosihikariframework.github.io
+cd hosihikariframework.github.io
 lip install github.com/HosihikariFramework/Shim
 lip install github.com/HosihikariFramework/CSharpProvider
 $Server = 'C:\bedrock-server'
@@ -23,4 +25,4 @@ Copy-Item -Recurse .\examples\hello-csharp "$Server\plugins\hello-csharp"
 
 ## 预期
 
-日志出现 `已载入，包目录` 与 `已启用，greeting=你好，星光`；数据写在 `data/hosihikari/hello-csharp/`。
+日志出现 `loaded, package` 与 `enabled, greeting=你好，星光`；数据写在 `data/hosihikari/hello-csharp/`。

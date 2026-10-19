@@ -1,3 +1,8 @@
+---
+title: C# 插件
+description: 写一个由 Provider 在装载时编译的 C# 源码插件。
+---
+
 # 写一个 C# 插件
 
 C# 没有自己的虚拟机，`Hosihikari.PluginProvider.CSharp` 在装载时用 Roslyn 把 `.cs` 编成程序集，再放进插件自己的 collectible ALC。作者交的是源码，拿到的是与其他程序集插件一样的隔离与卸载承诺。
@@ -50,14 +55,14 @@ public sealed class HelloPlugin : IPlugin
     public void OnLoad(IPluginContext context)
     {
         _context = context;
-        context.Logger.LogInformation("已载入，包目录 {Dir}", context.PackageDirectory);
+        context.Logger.LogInformation("loaded, package {Dir}", context.PackageDirectory);
         File.WriteAllText(Path.Combine(context.DataDirectory, "loaded.txt"), "loaded");
     }
 
     public PluginHookResult OnEnable()
     {
         var greeting = _context.Configuration["greeting"];
-        _context.Logger.LogInformation("已启用，greeting={Greeting}", greeting);
+        _context.Logger.LogInformation("enabled, greeting={Greeting}", greeting);
         File.WriteAllText(Path.Combine(_context.DataDirectory, "enabled.txt"), greeting ?? "");
         return PluginHookResult.Allow();
     }
@@ -82,7 +87,7 @@ public sealed class HelloPlugin : IPlugin
 
 包内默认 `hello-csharp.conf`：
 
-```hocon
+```text
 greeting = "你好，星光"
 ```
 
@@ -110,4 +115,4 @@ greeting = "你好，星光"
 
 ## 部署与验证
 
-把目录放到 `plugins/`，启动服务端。日志里应出现 `已载入，包目录` 与 `已启用`；数据目录里出现 `loaded.txt` 与 `enabled.txt`。卸载时框架会把插件从 ALC 放下，并做回收验证。
+把目录放到 `plugins/`，启动服务端。日志里应出现 `loaded, package` 与 `enabled`；数据目录里出现 `loaded.txt` 与 `enabled.txt`。卸载时框架会把插件从 ALC 放下，并做回收验证。

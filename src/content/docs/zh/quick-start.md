@@ -1,3 +1,8 @@
+---
+title: 快速开始
+description: 装上 Shim 与 Provider，跑起一个 C# 插件与一个进程外 Node 插件。
+---
+
 # 快速开始
 
 从一台装好 LeviLamina 或 Endstone 的服务端，到看见第一个插件运行。
@@ -37,9 +42,11 @@ lip install github.com/HosihikariFramework/RpcProvider
 
 ## 放一个 C# 插件
 
-在 Docs 仓根执行：
+克隆文档仓并执行：
 
 ```powershell
+git clone https://github.com/HosihikariFramework/hosihikariframework.github.io
+cd hosihikariframework.github.io
 $Server = 'C:\bedrock-server'
 Copy-Item -Recurse .\examples\hello-csharp "$Server\plugins\hello-csharp"
 ```
@@ -53,7 +60,7 @@ hello-csharp/
   hello-csharp.conf
 ```
 
-启动服务端。日志里应出现 `已载入，包目录` 与 `已启用，greeting=你好，星光`，数据目录同时写出 `loaded.txt` 与 `enabled.txt`：
+启动服务端。日志里应出现 `loaded, package` 与 `enabled, greeting=你好，星光`，数据目录同时写出 `loaded.txt` 与 `enabled.txt`：
 
 ```
 <服务端>/data/hosihikari/hello-csharp/
@@ -66,7 +73,7 @@ Copy-Item -Recurse .\examples\hello-node "$Server\plugins\hello-node"
 Copy-Item "$Server\plugins\hosihikari-rpc\bindings\node\hosihikari.mjs" "$Server\plugins\hello-node\hosihikari.mjs"
 ```
 
-`hosihikari.mjs` 是 Provider 随包发布的 Node 绑定；把它放在入口旁边，清单里的命令就能直接运行。启动后日志里应出现 `hello-node` 的 `已载入，包目录` 与 `已启用，greeting=你好，星光`。
+`hosihikari.mjs` 是 Provider 随包发布的 Node 绑定；把它放在入口旁边，清单里的命令就能直接运行。启动后日志里应出现 `hello-node` 的 `loaded, package` 与 `enabled, greeting=你好，星光`。
 
 如果目标目录已经存在，先删掉再复制，避免把新文件叠进旧目录。
 
@@ -93,7 +100,7 @@ Endstone CLI 会把子进程的 `PATH` 换成 Python 的 `sys.path`。如果日�
 
 ## 接下来
 
-- [插件包与清单](plugin-package.md)
-- [写一个 C# 插件](authoring-csharp.md)
-- [写一个进程外插件](authoring-rpc.md)
-- [常见问题](troubleshooting.md)
+- [插件包与清单](/zh/plugin-package/)
+- [写一个 C# 插件](/zh/authoring-csharp/)
+- [写一个进程外插件](/zh/authoring-rpc/)
+- [常见问题](/zh/troubleshooting/)

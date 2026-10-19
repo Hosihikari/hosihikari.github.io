@@ -1,0 +1,101 @@
+diff --git a/components/overrides/parts/Drawer.astro b/components/overrides/parts/Drawer.astro
+index 04171d29b1983a79f62a160fd096dd350a37825c..ccfb40fe10ff5ccfae293822d6bfbd72e1f81933 100644
+--- a/components/overrides/parts/Drawer.astro
++++ b/components/overrides/parts/Drawer.astro
+@@ -3,11 +3,10 @@ import userConfig from 'virtual:lucode-starlight-config';
+ import starlightConfig from 'virtual:starlight/user-config';
+ import { getRelativeLocaleUrl } from 'astro:i18n';
+ import { createLocaleLookup, resolveNavLabel } from '../../../core/i18n';
++import SidebarSublist from './SidebarSublist.astro';
+ 
+ const { sidebar, lang, locale } = Astro.locals.starlightRoute;
+ 
+-const currentPath = Astro.url.pathname;
+-
+ const localeKeys = createLocaleLookup({
+     lang,
+     locale: Astro.currentLocale ?? locale,
+@@ -47,29 +46,7 @@ const localeKeys = createLocaleLookup({
+             </div>
+ 
+             <div class="links-docs">
+-                {
+-                    sidebar.map(
+-                        (entry) =>
+-                            entry.type !== 'link' && (
+-                                <div class="container-sidebar-entry">
+-                                    <h4 class="entry-title">{entry.label}</h4>
+-
+-                                    {entry.entries.map(
+-                                        (link) =>
+-                                            link.type === 'link' && (
+-                                                <a
+-                                                    href={link.href}
+-                                                    {...link.attrs}
+-                                                    data-active={currentPath === link.href}
+-                                                >
+-                                                    {link.label}
+-                                                </a>
+-                                            )
+-                                    )}
+-                                </div>
+-                            )
+-                    )
+-                }
++                <SidebarSublist sublist={sidebar} />
+             </div>
+         </div>
+     </div>
+@@ -181,31 +158,39 @@ const localeKeys = createLocaleLookup({
+         gap: calc(var(--spacing) * 2);
+     }
+ 
+-    .container-sidebar-entry {
++    .links-docs :global(.container-sidebar-entry) {
+         padding-top: calc(var(--spacing) * 6);
+-        display: flex;
+-        flex-direction: column;
+         gap: calc(var(--spacing) * 2);
++    }
+ 
+-        &:last-child {
+-            margin-bottom: calc(var(--spacing) * 4);
+-        }
++    .links-docs :global(.container-sidebar-entry):last-child {
++        margin-bottom: calc(var(--spacing) * 4);
+     }
+ 
+-    .entry-title {
++    .links-docs :global(.entry-title) {
+         font-weight: 500;
++        font-size: 1rem;
++        line-height: 1.5rem;
++        padding: 0;
++        color: inherit;
+     }
+ 
+-    .container-sidebar-entry a {
++    .links-docs :global(.entry-link) {
++        height: auto;
+         font-size: 1rem;
+         line-height: 1.2rem;
+         color: var(--muted-foreground);
+-        text-decoration: inherit;
++    }
+ 
+-        &[data-active='true'] {
+-            color: var(--foreground);
+-            font-weight: 500;
+-        }
++    .links-docs :global(.entry-link[aria-current='page']) {
++        color: var(--foreground);
++        font-weight: 500;
++    }
++
++    .links-docs :global(.entry-link-inner) {
++        padding: 0;
++        background-color: transparent !important;
++        color: inherit !important;
+     }
+ 
+     .badge {

@@ -1,0 +1,43 @@
+---
+title: 星光框架
+description: 把 .NET 插件带进 Minecraft 基岩版专用服务器。
+template: splash
+hero:
+  title: 把 .NET 插件带进基岩版服务器
+  tagline: 原生 HostingShim 把 CLR 托管进服务端进程；托管核心负责发现、隔离与生命周期。
+  actions:
+    - text: 快速开始
+      link: /zh/quick-start/
+      icon: right-caret
+      variant: primary
+    - text: GitHub
+      link: https://github.com/HosihikariFramework
+      icon: external
+      variant: secondary
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+<CardGrid>
+  <Card title="一份契约" icon="pencil">
+    实现 IPlugin。载入、启用、停用与卸载由框架驱动；违反契约的包在运行之前就被拒绝。
+  </Card>
+  <Card title="隔离" icon="puzzle">
+    每个插件一个可回收的程序集装载上下文。卸载经过验证，单个插件失败不会拖垮服务端。
+  </Card>
+  <Card title="任意语言" icon="rocket">
+    C#、F# 与预编译程序集在进程内运行；Node、QuickJS、Python、Java、Kotlin 通过行分隔 JSON-RPC 在进程外运行。
+  </Card>
+  <Card title="两个载体" icon="server">
+    同一份托管核心跑在 LeviLamina 与 Endstone 上，当前支持 Windows x64。
+  </Card>
+</CardGrid>
+
+## 从这里开始
+
+- [快速开始](/zh/quick-start/) —— 装 Shim 与 Provider，跑起两个示例插件。
+- [插件包与清单](/zh/plugin-package/) —— 目录结构、清单字段，以及载入前的检查。
+- [C# 插件](/zh/authoring-csharp/)与[进程外插件](/zh/authoring-rpc/)。
+- [常见问题](/zh/troubleshooting/)。
+
+本文档也有[English](/).

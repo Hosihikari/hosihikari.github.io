@@ -1,3 +1,8 @@
+---
+title: 常见问题
+description: 常见错误与排查入口。
+---
+
 # 常见问题
 
 ## 日志报 `api 不匹配` 或 `format_version 不匹配`

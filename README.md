@@ -1,30 +1,41 @@
-# 星光框架文档
+# Hosihikari Framework documentation
 
-星光框架把 .NET 插件带进 Minecraft 基岩版专用服务器（BDS）：原生 HostingShim 把 CLR 托管进服务器进程，托管核心负责插件发现、依赖排序、隔离装载与生命周期，插件类型由 Provider 扩展。
+[English](README.md) | [简体中文](README.zh_hans.md)
 
-## 第一次用
+Online documentation: <https://hosihikariframework.github.io/>
 
-1. [快速开始](quick-start.md) —— 在 LeviLamina 或 Endstone 服务端装上 Shim、Provider 与第一个插件。
-2. [插件包与清单](plugin-package.md) —— 一个目录、一份清单，以及载入前的检查。
-3. [示例插件](examples/README.md) —— C# 与 Node 各一个。
+This repository holds the Starlight site, the bilingual documentation, and the example plugins. The site is deployed to GitHub Pages from `main`.
 
-## 写插件
+## Requirements
 
-- [C# 插件](authoring-csharp.md)
-- [F# 插件](https://github.com/HosihikariFramework/FSharpProvider/blob/main/README.zh_hans.md)
-- [进程外插件（JSON-RPC）](authoring-rpc.md)
-- [程序集插件](authoring-csharp.md#程序集插件) —— 预编译 DLL，由核心直接装载。
+- [Bun](https://bun.sh/) 1.4 or newer.
 
-## 排错
+## Development
 
-- [常见问题](troubleshooting.md)
+```bash
+bun install
+bun run dev
+```
 
-## 版本
+The dev server prints the local URL. Build and preview with:
 
-- 契约 `api`：`2`
-- 清单 `format_version`：`1`
-- 当前发布：Abstractions 0.7.0、Shim v0.2.0、Provider v0.1.0
+```bash
+bun run build
+bun run preview
+```
 
-## 许可
+## Layout
 
-LGPL-3.0-or-later，见 [LICENSE.md](LICENSE.md)。
+| Path | Contents |
+|---|---|
+| `src/content/docs/` | English documentation (root locale). |
+| `src/content/docs/zh/` | Simplified Chinese documentation. |
+| `examples/` | Example plugins used by the quick start. |
+| `astro.config.mjs` | Site configuration and the bilingual sidebar. |
+| `patches/` | Dependency patches applied by Bun. |
+
+Pages are Markdown or MDX with Starlight frontmatter. Navigation labels live in `astro.config.mjs`; a sidebar item uses `slug` so the same entry resolves to the English and Chinese pages.
+
+## License
+
+LGPL-3.0-or-later. See [LICENSE.md](LICENSE.md).

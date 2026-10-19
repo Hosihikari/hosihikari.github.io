@@ -1,0 +1,43 @@
+---
+title: Hosihikari Framework
+description: A plugin container for Minecraft Bedrock Dedicated Server.
+template: splash
+hero:
+  title: .NET plugins for Bedrock Dedicated Server
+  tagline: A native hosting shim brings the CLR into the server; a managed core discovers, isolates, and drives plugins.
+  actions:
+    - text: Quick start
+      link: /quick-start/
+      icon: right-caret
+      variant: primary
+    - text: GitHub
+      link: https://github.com/HosihikariFramework
+      icon: external
+      variant: secondary
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+<CardGrid>
+  <Card title="One contract" icon="pencil">
+    Implement IPlugin. The framework drives load, enable, disable, and unload, and refuses packages that break the contract before they run.
+  </Card>
+  <Card title="Isolation" icon="puzzle">
+    Every plugin gets its own collectible assembly load context. Unload is verified, and a failing plugin does not take the server down.
+  </Card>
+  <Card title="Any language" icon="rocket">
+    C#, F#, and prebuilt assemblies run in-process. Node, QuickJS, Python, Java, and Kotlin run out-of-process over line-delimited JSON-RPC.
+  </Card>
+  <Card title="Two carriers" icon="server">
+    The same managed core runs under LeviLamina and Endstone on Windows x64.
+  </Card>
+</CardGrid>
+
+## Start here
+
+- [Quick start](/quick-start/) — install the shim and a provider, then run two example plugins.
+- [Plugin packages](/plugin-package/) — the directory layout, the manifest, and the checks applied before load.
+- [C# plugins](/authoring-csharp/) and [out-of-process plugins](/authoring-rpc/).
+- [Troubleshooting](/troubleshooting/).
+
+The documentation is also available in [简体中文](/zh/).

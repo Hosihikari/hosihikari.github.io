@@ -1,3 +1,8 @@
+---
+title: 进程外插件
+description: 用任意语言通过行分隔 JSON-RPC 写插件。
+---
+
 # 写一个进程外插件
 
 `Hosihikari.PluginProvider.Rpc` 用行分隔 JSON-RPC 2.0 over stdio 驱动子进程。插件可以用任何语言写；Provider 只认清单里的命令。卸载就是让子进程退出，语言运行时与它持有的状态随进程一起消失。
@@ -57,13 +62,13 @@ import path from 'node:path';
 export default {
   onLoad(ctx) {
     fs.writeFileSync(path.join(ctx.dataDirectory, 'loaded.txt'), 'loaded');
-    ctx.logInfo(`已载入，包目录 ${ctx.packageDirectory}`);
+    ctx.logInfo(`loaded, package ${ctx.packageDirectory}`);
   },
 
   onEnable(ctx) {
     const greeting = ctx.config('greeting');
     fs.writeFileSync(path.join(ctx.dataDirectory, 'enabled.txt'), greeting ?? '');
-    ctx.logInfo(`已启用，greeting=${greeting}`);
+    ctx.logInfo(`enabled, greeting=${greeting}`);
   },
 
   onDisable(ctx) {
