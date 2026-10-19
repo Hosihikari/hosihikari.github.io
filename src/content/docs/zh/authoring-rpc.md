@@ -4,7 +4,7 @@ description: 例外一等 Provider：跨进程桥，行分隔 JSON-RPC。
 ---
 
 :::caution
-RpcProvider 是例外一等 Provider：官方 Provider，插件在子进程中运行，不把源码 AOT 为 IL（ADR-0037）。
+RpcProvider 是例外一等 Provider：官方 Provider，插件在子进程中运行，不把源码 AOT 为 IL（ADR-0031）。
 :::
 
 # 进程外桥（例外一等 Provider）

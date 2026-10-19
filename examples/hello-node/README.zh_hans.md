@@ -2,7 +2,7 @@
 
 [English](README.md) | [简体中文](README.zh_hans.md)
 
-> 例外一等 Provider：RpcProvider 是官方 Provider，插件在子进程中运行，不把源码 AOT 为 IL（ADR-0037）。
+> 例外一等 Provider：RpcProvider 是官方 Provider，插件在子进程中运行，不把源码 AOT 为 IL（ADR-0031）。
 
 一个最小的 Node 进程外插件。载入与启用时写日志与数据文件，并读取 `greeting`。
 

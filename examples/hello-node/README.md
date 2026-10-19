@@ -2,7 +2,7 @@
 
 [English](README.md) | [简体中文](README.zh_hans.md)
 
-> Exception first-class provider: RpcProvider is an official provider; it runs the plugin in a child process instead of compiling source to IL (ADR-0037).
+> Exception first-class provider: RpcProvider is an official provider; it runs the plugin in a child process instead of compiling source to IL (ADR-0031).
 
 A minimal Node out-of-process plugin. It logs and writes data files on load and enable, and reads `greeting`.
 
