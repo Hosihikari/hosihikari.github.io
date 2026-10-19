@@ -3,7 +3,7 @@ title: C# plugins
 description: Write a C# source plugin that the provider compiles at load.
 ---
 
-C# runs on the CLR, so `Hosihikari.PluginProvider.CSharp` compiles `.cs` at load with Roslyn and loads the assembly into a collectible ALC. Authors ship source; the result gets the same isolation and unload guarantees as any assembly plugin.
+C# runs on the CLR, so `Hosihikari.PluginProvider.CSharp` compiles `.cs` at load with Roslyn and loads the assembly into a collectible ALC. Authors ship source; the result gets the same isolation and unload guarantees as any assembly plugin. The provider's service is AOT-style: it hands the core an assembly before the plugin runs; the plugin itself is ordinary CLR code in its own ALC.
 
 ## Setup
 
@@ -75,7 +75,7 @@ public sealed class HelloPlugin : IPlugin
 
 ## Compilation and cache
 
-- Compiled at load; a script plugin needs no csproj.
+- Compiled at load; a source plugin needs no csproj.
 - Output is content-addressed under `data/hosihikari/<name>/bin/<hash>/`, next to a checksum and a portable PDB.
 - A change to the source, a private DLL, the Roslyn version, or the runtime version changes the hash.
 - Private DLLs in the package root participate in compilation references and are resolved from the package at run time.

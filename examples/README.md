@@ -5,6 +5,6 @@
 | Example | Provider | What it shows |
 |---|---|---|
 | [hello-csharp](hello-csharp/) | `hosihikari-csharp` | A C# source plugin compiled at load; writes to its data directory. |
-| [hello-node](hello-node/) | `hosihikari-rpc` | A Node out-of-process plugin over stdio JSON-RPC. |
+| [hello-node](hello-node/) | `hosihikari-rpc` | The exception: a first-class cross-process bridge; a Node plugin over stdio JSON-RPC. |
 
-Both are installed step by step in the [quick start](https://hosihikariframework.github.io/quick-start/). Put an example directory under the server's `plugins/`; the directory name must match `name` in the manifest.
+The [quick start](https://hosihikariframework.github.io/quick-start/) uses hello-csharp. hello-node demonstrates the first-class exception; it is outside the official AOT/ALC/CLR set. Put an example directory under the server's `plugins/`; the directory name must match `name` in the manifest.

@@ -9,7 +9,7 @@ The plugin was built against another contract. The current contract is `api` 2 a
 
 ## The log reports `没有能处理 provider=... 的 Provider`
 
-The matching provider is not installed or not enabled, or the plugin does not depend on it. Script plugins install `CSharpProvider` / `FSharpProvider` / `RpcProvider` and list `hosihikari-csharp` / `hosihikari-fsharp` / `hosihikari-rpc` in `dependencies`.
+The matching provider is not installed or not enabled, or the plugin does not depend on it. Source plugins install `CSharpProvider` / `FSharpProvider` and list `hosihikari-csharp` / `hosihikari-fsharp` in `dependencies`; the RPC exception installs `RpcProvider` and lists `hosihikari-rpc`.
 
 ## The log reports `清单 name 必须等于目录名`
 
@@ -34,9 +34,9 @@ The framework opens the scope gate after a successful `OnEnable`. Periodic work 
 
 `data/hosihikari/<name>/`. `ctx.DataDirectory` (Node/Python) or `context.DataDirectory` (.NET) points there.
 
-## The out-of-process plugin does not start
+## The out-of-process bridge (the exception) does not start
 
-- The runtime is not on `PATH`: the log shows a spawn failure or the process exits immediately.
+- The executable is not on `PATH`: the log shows a spawn failure or the process exits immediately.
 - Endstone: the CLI replaces the child `PATH`; use an absolute path in `command`.
 - The plugin writes non-protocol output to stdout: stdout carries JSON-RPC; logs go to stderr or `logInfo`.
 

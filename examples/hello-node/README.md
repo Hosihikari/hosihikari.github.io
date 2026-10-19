@@ -2,6 +2,8 @@
 
 [English](README.md) | [简体中文](README.zh_hans.md)
 
+> First-class exception: RpcProvider is the one bridge outside the official AOT/ALC/CLR set (ADR-0037).
+
 A minimal Node out-of-process plugin. It logs and writes data files on load and enable, and reads `greeting`.
 
 ## Install

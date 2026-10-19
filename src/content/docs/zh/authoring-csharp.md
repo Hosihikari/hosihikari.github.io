@@ -5,7 +5,7 @@ description: 写一个由 Provider 在装载时编译的 C# 源码插件。
 
 # 写一个 C# 插件
 
-C# 直接跑在 CLR 上，`Hosihikari.PluginProvider.CSharp` 在装载时用 Roslyn 把 `.cs` 编成程序集，再放进插件自己的 collectible ALC。作者交的是源码，拿到的是与其他程序集插件一样的隔离与卸载承诺。
+C# 直接跑在 CLR 上，`Hosihikari.PluginProvider.CSharp` 在装载时用 Roslyn 把 `.cs` 编成程序集，再放进插件自己的 collectible ALC。作者交的是源码，拿到的是与其他程序集插件一样的隔离与卸载承诺。Provider 的服务是 AOT 式：在插件开始运行前把程序集交给核心；插件本身是那个 ALC 里的普通 CLR 代码。
 
 ## 准备
 
@@ -77,7 +77,7 @@ public sealed class HelloPlugin : IPlugin
 
 ## 编译与缓存
 
-- 装载时编译；脚本插件不需要 csproj。
+- 装载时编译；源码插件不需要 csproj。
 - 产物按内容寻址缓存到 `data/hosihikari/<name>/bin/<哈希>/`，旁边有校验和与 portable PDB。
 - 源码、包内私有 DLL、Roslyn 版本或运行时版本变化会换哈希。
 - 包根目录里的私有 DLL 参与编译引用，运行时也从包目录解析。

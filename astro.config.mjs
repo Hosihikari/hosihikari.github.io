@@ -75,14 +75,20 @@ export default defineConfig({
               slug: 'authoring-csharp',
             },
             {
-              label: 'Out-of-process plugins',
-              translations: { 'zh-CN': '进程外插件' },
-              slug: 'authoring-rpc',
-            },
-            {
               label: 'F# plugins',
               translations: { 'zh-CN': 'F# 插件' },
               link: 'https://github.com/HosihikariFramework/FSharpProvider',
+            },
+          ],
+        },
+        {
+          label: 'Exception',
+          translations: { 'zh-CN': '例外' },
+          items: [
+            {
+              label: 'Out-of-process bridge',
+              translations: { 'zh-CN': '进程外桥' },
+              slug: 'authoring-rpc',
             },
           ],
         },

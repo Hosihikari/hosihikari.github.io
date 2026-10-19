@@ -11,7 +11,7 @@ description: 常见错误与排查入口。
 
 ## 日志报 `没有能处理 provider=... 的 Provider`
 
-对应的 Provider 没装或没启用，或者插件清单没有声明依赖它。脚本插件要装 `CSharpProvider` / `FSharpProvider` / `RpcProvider`，并在 `dependencies` 里写 `hosihikari-csharp` / `hosihikari-fsharp` / `hosihikari-rpc`。
+对应的 Provider 没装或没启用，或者插件清单没有声明依赖它。源码插件要装 `CSharpProvider` / `FSharpProvider`，并在 `dependencies` 里写 `hosihikari-csharp` / `hosihikari-fsharp`；跨进程例外要装 `RpcProvider` 并写 `hosihikari-rpc`。
 
 ## 日志报 `清单 name 必须等于目录名`
 
@@ -36,9 +36,9 @@ description: 常见错误与排查入口。
 
 `data/hosihikari/<name>/`。`ctx.DataDirectory`（Node/Python）或 `context.DataDirectory`（.NET）指向它。
 
-## 进程外插件启动不了
+## 进程外桥（例外）启动不了
 
-- 运行时不在 `PATH`：日志里会有 spawn 失败或进程立即退出。
+- 可执行文件不在 `PATH`：日志里会有 spawn 失败或进程立即退出。
 - Endstone：CLI 换了子进程的 `PATH`，把 `command` 里的可执行文件写成绝对路径。
 - 插件往 stdout 写了非协议内容：stdout 只走 JSON-RPC；日志走 stderr 或 `logInfo`。
 

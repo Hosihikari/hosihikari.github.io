@@ -13,7 +13,7 @@ description: 装上 Shim 与 Provider，跑起一个 C# 插件与一个进程外
 - Minecraft 基岩版专用服务器：BDS 1.26.51+（LeviLamina 26.51+）或 BDS 1.26.52+（Endstone 0.11+）。
 - [.NET 10 运行时](https://dotnet.microsoft.com/download)（`Microsoft.NETCore.App`）。
 - [lip](https://github.com/LiteLDev/lip)。
-- 进程外示例还需要 Node.js 20+ 在 `PATH` 上。
+- 进程外例外示例还需要 Node.js 20+ 在 `PATH` 上。
 
 以下安装命令都在**服务端根目录**执行。
 
@@ -31,11 +31,10 @@ Endstone：
 lip install github.com/HosihikariFramework/Shim#endstone
 ```
 
-再装本例需要的两个 Provider：
+再装本例需要的 C# Provider：
 
 ```powershell
 lip install github.com/HosihikariFramework/CSharpProvider
-lip install github.com/HosihikariFramework/RpcProvider
 ```
 
 顺序是 Shim → Provider → 插件包。Provider 的清单不声明对 Shim 的依赖，因为 Shim 的载体变体由安装命令选择。
@@ -66,14 +65,17 @@ hello-csharp/
 <服务端>/data/hosihikari/hello-csharp/
 ```
 
-## 放一个进程外插件
+## 例外：进程外桥
+
+RpcProvider 是 AOT/ALC/CLR 规则的唯一例外，也是一等成员：插件在子进程中运行，通过行分隔 JSON-RPC 2.0 over stdio 与宿主通信。
 
 ```powershell
+lip install github.com/HosihikariFramework/RpcProvider
 Copy-Item -Recurse .\examples\hello-node "$Server\plugins\hello-node"
 Copy-Item "$Server\plugins\hosihikari-rpc\bindings\node\hosihikari.mjs" "$Server\plugins\hello-node\hosihikari.mjs"
 ```
 
-`hosihikari.mjs` 是 Provider 随包发布的 Node 绑定；把它放在入口旁边，清单里的命令就能直接运行。启动后日志里应出现 `hello-node` 的 `loaded, package` 与 `enabled, greeting=你好，星光`。
+`hosihikari.mjs` 是 RpcProvider 随包发布的 Node 绑定。把它放在入口旁边，清单里的命令就能直接运行。启动后日志里应出现 `hello-node` 的 `loaded, package` 与 `enabled, greeting=你好，星光`。
 
 如果目标目录已经存在，先删掉再复制，避免把新文件叠进旧目录。
 
@@ -88,19 +90,9 @@ Copy-Item .\examples\hello-csharp\hello-csharp.conf "$Server\config\hosihikari\h
 
 改完重启，日志里的 `greeting` 就是覆盖后的值。环境变量也会覆盖同名键。
 
-## Endstone 的运行时路径
-
-Endstone CLI 会把子进程的 `PATH` 换成 Python 的 `sys.path`。如果日志报找不到 `node`，把清单里的 `command` 改成绝对路径：
-
-```json
-"command": "[\"C:/Program Files/nodejs/node.exe\", \"./hosihikari.mjs\", \"./main.mjs\"]"
-```
-
-`command` 是编码成字符串的 JSON 数组。用正斜杠可以少一层转义。
-
 ## 接下来
 
 - [插件包与清单](/zh/plugin-package/)
 - [写一个 C# 插件](/zh/authoring-csharp/)
-- [写一个进程外插件](/zh/authoring-rpc/)
+- [进程外桥（例外）](/zh/authoring-rpc/)
 - [常见问题](/zh/troubleshooting/)

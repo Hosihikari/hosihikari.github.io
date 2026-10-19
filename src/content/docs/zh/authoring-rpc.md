@@ -1,11 +1,15 @@
 ---
-title: 进程外插件
-description: 用任意语言通过行分隔 JSON-RPC 写插件。
+title: 进程外桥（例外）
+description: 例外一等成员：跨进程桥，行分隔 JSON-RPC。
 ---
 
-# 写一个进程外插件
+:::caution
+RpcProvider 是唯一例外，也是一等成员：跨进程桥，不在官方 AOT/ALC/CLR Provider 集内（ADR-0037）。插件无法在 CLR 上运行时才用它。
+:::
 
-`Hosihikari.PluginProvider.Rpc` 用行分隔 JSON-RPC 2.0 over stdio 驱动子进程。插件可以用任何语言写；Provider 只认清单里的命令。卸载就是让子进程退出，语言运行时与它持有的状态随进程一起消失。
+# 进程外桥（例外）
+
+`Hosihikari.PluginProvider.Rpc` 用行分隔 JSON-RPC 2.0 over stdio 驱动子进程。插件可以用任何语言写；它只认清单里的命令与协议。卸载就是让子进程退出，子进程与它持有的状态一起消失。
 
 ## 准备
 
@@ -14,7 +18,7 @@ lip install github.com/HosihikariFramework/Shim
 lip install github.com/HosihikariFramework/RpcProvider
 ```
 
-插件包还要声明对 `hosihikari-rpc` 的依赖。运行时可执行文件由运维提供：放在 `PATH` 上或用绝对路径。
+插件包还要声明对 `hosihikari-rpc` 的依赖。可执行文件由运维提供：放在 `PATH` 上或用绝对路径。
 
 ## 包结构（Node）
 
@@ -101,7 +105,7 @@ export default {
 
 stdout 只走协议；stderr 是文本日志。Node 绑定把 `console.log` 改道 stderr，插件不要往 stdout 写东西。
 
-## 其他语言
+## 绑定
 
 Provider 包里带参考绑定：
 
@@ -114,7 +118,7 @@ Provider 包里带参考绑定：
 
 ## Endstone 的 PATH
 
-Endstone CLI 会把子进程的 `PATH` 换成 Python 的 `sys.path`；找不到运行时时，把 `command` 里的可执行文件改成绝对路径。
+Endstone CLI 会把子进程的 `PATH` 换成 Python 的 `sys.path`；找不到可执行文件时，把 `command` 里的可执行文件改成绝对路径。
 
 ## 协议
 

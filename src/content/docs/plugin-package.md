@@ -44,21 +44,23 @@ plugins/
 | `dependencies` | Plugin names; the dependency graph decides load order. |
 | `extraInfo.api` | Contract major version; currently `2`. |
 | `extraInfo.format_version` | Manifest schema version; currently `1`. |
-| `extraInfo.provider` | The provider that handles this package. |
+| `extraInfo.provider` | The provider that handles this package; official values are `assembly`, `csharp`, and `fsharp`. |
 | `extraInfo.command` | `rpc` only: a JSON array encoded as a string. |
 
-Dependencies are sorted by name and carry no version constraints. The framework itself is `hosihikari`. Script plugins also declare their provider: `hosihikari-csharp`, `hosihikari-fsharp`, or `hosihikari-rpc`. Providers are plugin packages too, and load before the packages that depend on them.
+Dependencies are sorted by name and carry no version constraints. The framework itself is `hosihikari`. Source plugins also declare their provider: `hosihikari-csharp` or `hosihikari-fsharp`. Providers are plugin packages too, and load before the packages that depend on them. The RPC exception declares `hosihikari-rpc`.
 
 ## Providers and entries
+
+Official providers deliver a CLR assembly. The `rpc` row is the first-class exception: a cross-process bridge outside this set.
 
 | `provider` | `entry` | How it loads |
 |---|---|---|
 | `assembly` | `.dll` | The core loads it directly; the assembly declares exactly one `[assembly: EntryPoint<T>]`. |
 | `csharp` | `.cs` | Roslyn compiles it at load into a collectible ALC. |
 | `fsharp` | `.fsx` | FSharp.Compiler.Service compiles it at load. |
-| `rpc` | Entry file | `command` starts a child process speaking line-delimited JSON-RPC 2.0 over stdio. |
+| `rpc` | Entry file | The exception: a first-class cross-process bridge; `command` starts a child process speaking line-delimited JSON-RPC 2.0 over stdio. |
 
-The entry type must implement `IPlugin` and have a parameterless constructor; `EntryPoint<T>` enforces both at compile time. A missing file or the wrong number of entry declarations is reported by the provider.
+For the official providers, the entry type must implement `IPlugin` and have a parameterless constructor; `EntryPoint<T>` enforces both at compile time. A missing file or the wrong number of entry declarations is reported by the provider.
 
 ## Checks before load
 

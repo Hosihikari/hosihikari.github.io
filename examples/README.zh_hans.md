@@ -5,6 +5,6 @@
 | 示例 | Provider | 说明 |
 |---|---|---|
 | [hello-csharp](hello-csharp/) | `hosihikari-csharp` | C# 源码插件；装载时编译，写到数据目录 |
-| [hello-node](hello-node/) | `hosihikari-rpc` | Node 进程外插件；stdio JSON-RPC |
+| [hello-node](hello-node/) | `hosihikari-rpc` | 例外一等成员：跨进程桥；Node 插件，stdio JSON-RPC |
 
-两个示例都在[快速开始](https://hosihikariframework.github.io/zh/quick-start/)里逐步安装。把示例目录放进服务端的 `plugins/`，目录名与清单里的 `name` 一致。
+[快速开始](https://hosihikariframework.github.io/zh/quick-start/)使用 hello-csharp。hello-node 演示例外一等成员，不在官方 AOT/ALC/CLR 集内。把示例目录放进服务端的 `plugins/`，目录名与清单里的 `name` 一致。

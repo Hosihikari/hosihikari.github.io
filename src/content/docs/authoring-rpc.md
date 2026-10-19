@@ -1,9 +1,13 @@
 ---
-title: Out-of-process plugins
-description: Write a plugin in any language over line-delimited JSON-RPC.
+title: Out-of-process bridge (the exception)
+description: "The exception: a first-class cross-process bridge over line-delimited JSON-RPC."
 ---
 
-`Hosihikari.PluginProvider.Rpc` drives a child process with line-delimited JSON-RPC 2.0 over stdio. The provider knows nothing about the language; it reads the command from the manifest. Unload means the process exits, taking the language runtime and its state with it.
+:::caution
+RpcProvider is the one first-class exception, a cross-process bridge outside the official AOT/ALC/CLR provider set (ADR-0037). Use it when a plugin cannot run on the CLR.
+:::
+
+`Hosihikari.PluginProvider.Rpc` drives a child process with line-delimited JSON-RPC 2.0 over stdio. The bridge reads only the command from the manifest and the protocol. Unload means the process exits, taking the child process and its state with it.
 
 ## Setup
 
@@ -12,7 +16,7 @@ lip install github.com/HosihikariFramework/Shim
 lip install github.com/HosihikariFramework/RpcProvider
 ```
 
-The plugin package also declares a dependency on `hosihikari-rpc`. The operator provides the runtime: put it on `PATH` or use an absolute path.
+The plugin package also declares a dependency on `hosihikari-rpc`. The operator provides the executable: put it on `PATH` or use an absolute path.
 
 ## Package layout (Node)
 
@@ -99,7 +103,7 @@ Events are asynchronous by default. Disabling closes the gate; subscription call
 
 stdout carries the protocol; stderr carries text logs. The Node binding redirects `console.log` to stderr; do not write to stdout.
 
-## Other languages
+## Bindings
 
 The provider package ships reference bindings:
 
@@ -112,7 +116,7 @@ The command forms and context APIs are in the [RpcProvider README](https://githu
 
 ## Endstone and PATH
 
-The Endstone CLI replaces the child process `PATH` with Python's `sys.path`; if the runtime cannot be found, use an absolute path in `command`.
+The Endstone CLI replaces the child process `PATH` with Python's `sys.path`; if the executable cannot be found, use an absolute path in `command`.
 
 ## Protocol
 

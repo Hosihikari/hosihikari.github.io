@@ -11,7 +11,7 @@ This walkthrough takes a server with LeviLamina or Endstone from a fresh install
 - Minecraft Bedrock Dedicated Server: BDS 1.26.51+ with LeviLamina 26.51+, or BDS 1.26.52+ with Endstone 0.11+.
 - [.NET 10 runtime](https://dotnet.microsoft.com/download) (`Microsoft.NETCore.App`).
 - [lip](https://github.com/LiteLDev/lip).
-- Node.js 20+ on `PATH` for the out-of-process example.
+- Node.js 20+ on `PATH` for the out-of-process exception.
 
 Run the install commands in the **server root**.
 
@@ -29,11 +29,10 @@ Endstone:
 lip install github.com/HosihikariFramework/Shim#endstone
 ```
 
-Then install the two providers used in this walkthrough:
+Then install the C# provider:
 
 ```powershell
 lip install github.com/HosihikariFramework/CSharpProvider
-lip install github.com/HosihikariFramework/RpcProvider
 ```
 
 The order is shim → provider → plugin package. Provider manifests do not declare a lip dependency on the shim: the shim has one package per carrier, and lip cannot express that choice in a dependency.
@@ -64,14 +63,17 @@ Start the server. The log should show `loaded, package` and `enabled, greeting=�
 <server>/data/hosihikari/hello-csharp/
 ```
 
-## Run an out-of-process plugin
+## The exception: out-of-process bridge
+
+RpcProvider is the one first-class exception to the AOT/ALC/CLR rule: the plugin runs in a child process and speaks line-delimited JSON-RPC 2.0 over stdio.
 
 ```powershell
+lip install github.com/HosihikariFramework/RpcProvider
 Copy-Item -Recurse .\examples\hello-node "$Server\plugins\hello-node"
 Copy-Item "$Server\plugins\hosihikari-rpc\bindings\node\hosihikari.mjs" "$Server\plugins\hello-node\hosihikari.mjs"
 ```
 
-`hosihikari.mjs` is the Node binding shipped with the RPC provider. Keep it next to the entry so the command in the manifest can find it. The log should show `hello-node` loading and enabling.
+`hosihikari.mjs` is the Node binding shipped with the RpcProvider. Keep it next to the entry so the manifest command can find it. The log should show `hello-node` loading and enabling.
 
 If the target directory already exists, remove it before copying.
 
@@ -86,19 +88,9 @@ Copy-Item .\examples\hello-csharp\hello-csharp.conf "$Server\config\hosihikari\h
 
 Restart the server; the log shows the overridden `greeting`. Environment variables override the same keys.
 
-## Endstone and the runtime path
-
-The Endstone CLI replaces the child process `PATH` with Python's `sys.path`. If the log reports that `node` cannot be found, point `command` at an absolute path:
-
-```json
-"command": "[\"C:/Program Files/nodejs/node.exe\", \"./hosihikari.mjs\", \"./main.mjs\"]"
-```
-
-`command` is a JSON array encoded as a string. Forward slashes avoid a second level of escaping.
-
 ## Next
 
 - [Plugin packages](/plugin-package/)
 - [C# plugins](/authoring-csharp/)
-- [Out-of-process plugins](/authoring-rpc/)
+- [Out-of-process bridge (the exception)](/authoring-rpc/)
 - [Troubleshooting](/troubleshooting/)

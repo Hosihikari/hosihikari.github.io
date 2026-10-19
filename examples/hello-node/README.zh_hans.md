@@ -2,6 +2,8 @@
 
 [English](README.md) | [简体中文](README.zh_hans.md)
 
+> 例外一等成员：RpcProvider 是官方 AOT/ALC/CLR 集之外的唯一跨进程桥（ADR-0037）。
+
 一个最小的 Node 进程外插件。载入与启用时写日志与数据文件，并读取 `greeting`。
 
 ## 安装
