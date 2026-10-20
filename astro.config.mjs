@@ -12,6 +12,8 @@ export default defineConfig({
         'zh-CN': '星光框架',
       },
       description: 'A plugin container for Minecraft Bedrock Dedicated Server.',
+      // 404 由 docs 集合里的 404.md 渲染；关掉内置路由，避免 /404 双路由冲突。
+      disable404Route: true,
       logo: {
         src: './public/logo.svg',
       },
