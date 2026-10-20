@@ -46,10 +46,11 @@ plugins/hello-csharp/
 入口文件接受两个 .NET file-based apps 指令。Roslyn 编译前会把它们换成空行，打包器则按它们行事：
 
 - `#:package Newtonsoft.Json@13.0.3`：打包期把包还原进插件包。服务端装载插件时不还原、不下载。
-- `#:include helpers.cs`：把包内另一个 `.cs` 文件和入口一起编译。路径相对于当前文件，且必须留在包内。
+- `#:include helpers.cs`：把包内另一个 `.cs` 文件和入口一起编译。路径相对于当前文件，且必须留在包内；
+  支持 `*`、`**`、`?` 通配符。
 
-`#:project`、`#:property`、`#:sdk`、顶层语句与通配符 include 都不支持。入口仍要定义
-`IPlugin` 类型。需要独立运行循环时，先用普通 file-based app 或项目开发，再用预编译模板打包程序集。
+`#:project`、`#:property`、`#:sdk` 与顶层语句都不支持。入口仍要定义 `IPlugin` 类型。需要独立运行
+循环时，先用普通 file-based app 或项目开发，再用预编译模板打包程序集。
 
 ## 入口
 
