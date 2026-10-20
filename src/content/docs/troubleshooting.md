@@ -5,7 +5,7 @@ description: Common errors and where to look.
 
 ## The log reports `api 不匹配` or `format_version 不匹配`
 
-The plugin was built against another contract. The current contract is `api` 2 and manifest `format_version` 1; rebuild with Abstractions 0.7.0. Editing the number in the manifest does not change the type surface.
+The plugin was built against another contract. The current contract is `api` 2 and manifest `format_version` 1; rebuild with Abstractions 0.7.1. Editing the number in the manifest does not change the type surface.
 
 ## The log reports `没有能处理 provider=... 的 Provider`
 
