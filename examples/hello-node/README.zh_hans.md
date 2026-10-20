@@ -13,7 +13,8 @@
 ```powershell
 git clone https://github.com/HosihikariFramework/hosihikariframework.github.io
 cd hosihikariframework.github.io
-lip install github.com/HosihikariFramework/Shim
+# 以 LeviLamina 为例；其他载体用 #endstone、#endstone_linux 或无后缀自持态
+lip install github.com/HosihikariFramework/Shim#levilamina
 lip install github.com/HosihikariFramework/RpcProvider
 $Server = 'C:\bedrock-server'
 Copy-Item -Recurse .\examples\hello-node "$Server\plugins\hello-node"

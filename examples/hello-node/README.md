@@ -13,7 +13,8 @@ Run from the documentation repository root:
 ```powershell
 git clone https://github.com/HosihikariFramework/hosihikariframework.github.io
 cd hosihikariframework.github.io
-lip install github.com/HosihikariFramework/Shim
+# LeviLamina; use #endstone, #endstone_linux, or no label for the other carriers
+lip install github.com/HosihikariFramework/Shim#levilamina
 lip install github.com/HosihikariFramework/RpcProvider
 $Server = 'C:\bedrock-server'
 Copy-Item -Recurse .\examples\hello-node "$Server\plugins\hello-node"
