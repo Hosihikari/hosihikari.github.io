@@ -19,6 +19,8 @@ lip install github.com/HosihikariFramework/Shim#levilamina
 lip install github.com/HosihikariFramework/RpcProvider
 ```
 
+The [RPC templates](/templates/) cover Node.js/TypeScript, Python, and Kotlin/JVM.
+
 The plugin package also declares a dependency on `hosihikari-rpc`. The operator provides the executable: put it on `PATH` or use an absolute path.
 
 ## Package layout (Node)

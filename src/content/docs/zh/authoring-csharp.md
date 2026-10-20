@@ -14,6 +14,8 @@ lip install github.com/HosihikariFramework/Shim#levilamina
 lip install github.com/HosihikariFramework/CSharpProvider
 ```
 
+[C# 模板](/zh/templates/)是一个可以直接复制改名的完整包。
+
 ## 包结构
 
 ```

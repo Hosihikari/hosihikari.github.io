@@ -47,6 +47,8 @@ lip install github.com/HosihikariFramework/CSharpProvider
 
 ## 放一个 C# 插件
 
+从维护中的插件包开始，见[模板](/zh/templates/)。
+
 克隆文档仓并执行：
 
 ```powershell

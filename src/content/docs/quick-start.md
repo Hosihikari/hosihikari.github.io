@@ -50,6 +50,8 @@ Its target is BDS 1.21.3; the launcher needs the .NET 10 runtime. The plugin pac
 
 ## Run a C# plugin
 
+To start a new plugin from a maintained package, see [Templates](/templates/).
+
 Clone the documentation repository and copy the example into the server:
 
 ```powershell

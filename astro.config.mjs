@@ -61,6 +61,11 @@ export default defineConfig({
               slug: 'plugin-package',
             },
             {
+              label: 'Templates',
+              translations: { 'zh-CN': '模板' },
+              slug: 'templates',
+            },
+            {
               label: 'Examples',
               translations: { 'zh-CN': '示例插件' },
               slug: 'examples',

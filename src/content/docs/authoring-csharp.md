@@ -15,6 +15,8 @@ lip install github.com/HosihikariFramework/Shim#levilamina
 lip install github.com/HosihikariFramework/CSharpProvider
 ```
 
+The [C# template](/templates/) is a complete package you can copy and rename.
+
 ## Package layout
 
 ```

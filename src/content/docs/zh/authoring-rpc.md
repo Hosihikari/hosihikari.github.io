@@ -18,6 +18,8 @@ lip install github.com/HosihikariFramework/Shim#levilamina
 lip install github.com/HosihikariFramework/RpcProvider
 ```
 
+[RPC 模板](/zh/templates/)覆盖 Node.js/TypeScript、Python 与 Kotlin/JVM。
+
 插件包还要声明对 `hosihikari-rpc` 的依赖。可执行文件由运维提供：放在 `PATH` 上或用绝对路径。
 
 ## 包结构（Node）
