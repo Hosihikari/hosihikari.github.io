@@ -11,8 +11,11 @@ RpcProvider is the exception first-class provider. It is an official provider th
 
 ## Setup
 
+Pick the shim variant for the server (see [Quick start](/quick-start/)); the examples below use
+LeviLamina:
+
 ```powershell
-lip install github.com/HosihikariFramework/Shim
+lip install github.com/HosihikariFramework/Shim#levilamina
 lip install github.com/HosihikariFramework/RpcProvider
 ```
 

@@ -5,12 +5,13 @@ description: 装上 Shim 与 Provider，跑起一个 C# 插件与一个进程外
 
 # 快速开始
 
-从一台装好 LeviLamina 或 Endstone 的服务端，到看见第一个插件运行。
+从一台装好 LeviLamina、Endstone 或自持态 Linux 载体的服务端，到看见第一个插件运行。
 
 ## 准备
 
-- Windows x64。
-- Minecraft 基岩版专用服务器：BDS 1.26.51+（LeviLamina 26.51+）或 BDS 1.26.52+（Endstone 0.11+）。
+- Windows x64（LeviLamina 与 Endstone Windows）；Linux x64（Endstone Linux 与自持态）。
+- Minecraft 基岩版专用服务器：BDS 1.26.51+（LeviLamina 26.51+）、BDS 1.26.52+（Endstone 0.11+），
+  或自持态的 BDS 1.21.3。
 - [.NET 10 运行时](https://dotnet.microsoft.com/download)（`Microsoft.NETCore.App`）。
 - [lip](https://github.com/LiteLDev/lip)。
 - 进程外例外示例还需要 Node.js 20+ 在 `PATH` 上。
@@ -19,16 +20,13 @@ description: 装上 Shim 与 Provider，跑起一个 C# 插件与一个进程外
 
 ## 装 Shim 与 Provider
 
-LeviLamina：
+无后缀的包是**自持态 Linux** 载体。带父级的服务端用对应的 label：
 
 ```powershell
-lip install github.com/HosihikariFramework/Shim
-```
-
-Endstone：
-
-```powershell
-lip install github.com/HosihikariFramework/Shim#endstone
+lip install github.com/HosihikariFramework/Shim                # 自持态 Linux
+lip install github.com/HosihikariFramework/Shim#levilamina     # LeviLamina
+lip install github.com/HosihikariFramework/Shim#endstone       # Endstone Windows
+lip install github.com/HosihikariFramework/Shim#endstone_linux # Endstone Linux
 ```
 
 再装本例需要的 C# Provider：
@@ -38,6 +36,16 @@ lip install github.com/HosihikariFramework/CSharpProvider
 ```
 
 顺序是 Shim → Provider → 插件包。Provider 的清单不声明对 Shim 的依赖，因为 Shim 的载体变体由安装命令选择。
+
+自持态会把 `hosihikari-server` 放在服务端根，核心放在 `plugins/hosihikari/`。通过启动器起服，
+它会预加载垫片：
+
+```bash
+./hosihikari-server
+```
+
+自持态的目标是 BDS 1.21.3，启动器需要 .NET 10 运行时。插件包照旧放在 `plugins/` 下，并且是
+预编译程序集包。
 
 ## 放一个 C# 插件
 

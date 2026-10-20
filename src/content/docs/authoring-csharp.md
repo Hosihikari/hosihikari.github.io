@@ -7,8 +7,11 @@ C# runs on the CLR, so `Hosihikari.PluginProvider.CSharp` compiles `.cs` at load
 
 ## Setup
 
+Pick the shim variant for the server (see [Quick start](/quick-start/)); the examples below use
+LeviLamina:
+
 ```powershell
-lip install github.com/HosihikariFramework/Shim
+lip install github.com/HosihikariFramework/Shim#levilamina
 lip install github.com/HosihikariFramework/CSharpProvider
 ```
 

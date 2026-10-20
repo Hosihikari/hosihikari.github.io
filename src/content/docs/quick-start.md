@@ -3,12 +3,15 @@ title: Quick start
 description: Install the shim and a provider, then run a C# plugin and an out-of-process Node plugin.
 ---
 
-This walkthrough takes a server with LeviLamina or Endstone from a fresh install to two running plugins.
+This walkthrough takes a server with LeviLamina, Endstone, or the self-hosted Linux carrier from a
+fresh install to two running plugins.
 
 ## Prerequisites
 
-- Windows x64.
-- Minecraft Bedrock Dedicated Server: BDS 1.26.51+ with LeviLamina 26.51+, or BDS 1.26.52+ with Endstone 0.11+.
+- Windows x64 for LeviLamina and Endstone on Windows; Linux x64 for Endstone on Linux and the
+  self-hosted carrier.
+- Minecraft Bedrock Dedicated Server: BDS 1.26.51+ with LeviLamina 26.51+, BDS 1.26.52+ with
+  Endstone 0.11+, or BDS 1.21.3 for the self-hosted carrier.
 - [.NET 10 runtime](https://dotnet.microsoft.com/download) (`Microsoft.NETCore.App`).
 - [lip](https://github.com/LiteLDev/lip).
 - Node.js 20+ on `PATH` for the out-of-process exception.
@@ -17,16 +20,14 @@ Run the install commands in the **server root**.
 
 ## Install the shim and providers
 
-LeviLamina:
+The suffix-less package is the **self-hosted Linux** carrier. Parent-managed servers pick a labeled
+variant:
 
 ```powershell
-lip install github.com/HosihikariFramework/Shim
-```
-
-Endstone:
-
-```powershell
-lip install github.com/HosihikariFramework/Shim#endstone
+lip install github.com/HosihikariFramework/Shim                # self-hosted Linux
+lip install github.com/HosihikariFramework/Shim#levilamina     # LeviLamina
+lip install github.com/HosihikariFramework/Shim#endstone       # Endstone, Windows
+lip install github.com/HosihikariFramework/Shim#endstone_linux # Endstone, Linux
 ```
 
 Then install the C# provider:
@@ -36,6 +37,16 @@ lip install github.com/HosihikariFramework/CSharpProvider
 ```
 
 The order is shim → provider → plugin package. Provider manifests do not declare a lip dependency on the shim: the shim has one package per carrier, and lip cannot express that choice in a dependency.
+
+The self-hosted carrier installs `hosihikari-server` at the server root and the core under
+`plugins/hosihikari/`. Start the server through the launcher, which preloads the shim:
+
+```bash
+./hosihikari-server
+```
+
+Its target is BDS 1.21.3; the launcher needs the .NET 10 runtime. The plugin packages live under
+`plugins/` exactly as they do under a parent, and they are precompiled assembly packages.
 
 ## Run a C# plugin
 

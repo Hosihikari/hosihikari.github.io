@@ -9,8 +9,10 @@ C# 直接跑在 CLR 上，`Hosihikari.PluginProvider.CSharp` 在装载时用 Ros
 
 ## 准备
 
+按服务端选 Shim 变体（见[快速开始](/zh/quick-start/)）；下面以 LeviLamina 为例：
+
 ```powershell
-lip install github.com/HosihikariFramework/Shim
+lip install github.com/HosihikariFramework/Shim#levilamina
 lip install github.com/HosihikariFramework/CSharpProvider
 ```
 
