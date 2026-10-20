@@ -4,7 +4,7 @@ description: 从每种插件类型的维护模板开始。
 ---
 
 每个模板都是一个完整的插件包。复制到服务端 `plugins/<名称>/`，改 `manifest.json` 的 `name`
-与同名 `.conf`；目录名必须与清单 `name` 一致。模板为 MIT-0；框架契约仍为 LGPL-3.0-or-later。
+与同名 `.conf`；目录名必须与清单 `name` 一致。模板为 MIT-0；Abstractions 0.7.1 及之后为 MIT。
 
 ## 预编译程序集
 

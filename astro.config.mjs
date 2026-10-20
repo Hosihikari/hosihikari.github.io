@@ -108,6 +108,11 @@ export default defineConfig({
               translations: { 'zh-CN': '常见问题' },
               slug: 'troubleshooting',
             },
+            {
+              label: 'Releases',
+              translations: { 'zh-CN': '发布记录' },
+              slug: 'releases',
+            },
           ],
         },
       ],
