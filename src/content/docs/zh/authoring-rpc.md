@@ -7,8 +7,6 @@ description: 例外一等 Provider：跨进程桥，行分隔 JSON-RPC。
 RpcProvider 是例外一等 Provider：官方 Provider，插件在子进程中运行，不把源码 AOT 为 IL（ADR-0031）。
 :::
 
-# 进程外桥（例外一等 Provider）
-
 `Hosihikari.PluginProvider.Rpc` 用行分隔 JSON-RPC 2.0 over stdio 驱动子进程。插件可以用任何语言写；它只认清单里的命令与协议。卸载就是让子进程退出，子进程与它持有的状态一起消失。
 
 ## 准备

@@ -3,8 +3,6 @@ title: C# 插件
 description: 写一个由 Provider 在装载时编译的 C# 源码插件。
 ---
 
-# 写一个 C# 插件
-
 C# 直接跑在 CLR 上，`Hosihikari.PluginProvider.CSharp` 在装载时用 Roslyn 把 `.cs` 编成程序集，再放进插件自己的 collectible ALC。作者交的是源码，拿到的是与其他程序集插件一样的隔离与卸载承诺。这是一等 Provider：在插件开始运行前把源码 AOT 为 IL；Provider 把 IL 装进 collectible ALC，插件本身是普通 CLR 代码。
 
 ## 准备

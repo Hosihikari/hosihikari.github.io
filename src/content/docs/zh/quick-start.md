@@ -3,8 +3,6 @@ title: 快速开始
 description: 装上 Shim 与 Provider，跑起一个 C# 插件与一个进程外 Node 插件。
 ---
 
-# 快速开始
-
 从一台装好 LeviLamina、Endstone 或自持态 Linux 载体的服务端，到看见第一个插件运行。
 
 ## 准备

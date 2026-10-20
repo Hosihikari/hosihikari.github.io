@@ -3,8 +3,6 @@ title: 常见问题
 description: 常见错误与排查入口。
 ---
 
-# 常见问题
-
 ## 日志报 `api 不匹配` 或 `format_version 不匹配`
 
 插件是按另一版契约构建的。当前契约是 `api` 2、清单 `format_version` 1；用 Abstractions 0.7.0 重新构建。改清单里的数字不会让旧类型面变成新契约。
