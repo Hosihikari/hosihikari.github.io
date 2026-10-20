@@ -38,7 +38,7 @@ export default defineConfig({
       plugins: [
         lucode({
           footerText:
-            'Hosihikari Framework · 星光框架 · [LGPL-3.0-or-later](https://github.com/HosihikariFramework/hosihikariframework.github.io/blob/main/LICENSE.md) · Built with [Starlight](https://starlight.astro.build/)',
+            'Hosihikari Framework · 星光框架 · [Content CC BY-SA 4.0](https://github.com/HosihikariFramework/hosihikariframework.github.io/blob/main/LICENSE.md) · [Code MIT-0](https://github.com/HosihikariFramework/hosihikariframework.github.io/blob/main/LICENSE-CODE.md) · Built with [Starlight](https://starlight.astro.build/)',
         }),
       ],
       customCss: [

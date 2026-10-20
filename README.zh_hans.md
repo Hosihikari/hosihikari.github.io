@@ -38,4 +38,6 @@ bun run preview
 
 ## 许可
 
-LGPL-3.0-or-later，见 [LICENSE.md](LICENSE.md)。
+文档正文与图片使用 [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)，见
+[LICENSE.md](LICENSE.md)。代码示例、文档中的代码片段与站点源码使用 MIT-0，见
+[LICENSE-CODE.md](LICENSE-CODE.md)。第三方依赖与字体保留各自的许可。

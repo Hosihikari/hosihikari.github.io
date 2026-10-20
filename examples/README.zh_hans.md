@@ -8,3 +8,5 @@
 | [hello-node](hello-node/) | `hosihikari-rpc` | 例外一等 Provider：跨进程桥；Node 插件，stdio JSON-RPC |
 
 [快速开始](https://hosihikariframework.github.io/zh/quick-start/)使用 hello-csharp，它是一等 Provider 示例。hello-node 演示例外一等 Provider。两者都是官方 Provider。把示例目录放进服务端的 `plugins/`，目录名与清单里的 `name` 一致。
+
+示例代码为 MIT-0，见 [LICENSE.md](LICENSE.md)。

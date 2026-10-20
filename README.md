@@ -38,4 +38,7 @@ Pages are Markdown or MDX with Starlight frontmatter. Navigation labels live in 
 
 ## License
 
-LGPL-3.0-or-later. See [LICENSE.md](LICENSE.md).
+Documentation prose and images are licensed under
+[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/), see [LICENSE.md](LICENSE.md).
+Code examples, snippets in the documentation, and the site source are MIT-0, see
+[LICENSE-CODE.md](LICENSE-CODE.md). Third-party dependencies and fonts keep their own licenses.
