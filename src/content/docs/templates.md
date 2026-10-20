@@ -5,6 +5,7 @@ description: Start a plugin from a maintained template for each plugin type.
 
 Each template is a complete plugin package. Copy it into the server as `plugins/<Name>/`, then change
 `name` in `manifest.json` and the matching `.conf`; the directory name must equal the manifest name.
+The templates are MIT-0; the framework contract remains LGPL-3.0-or-later.
 
 ## Precompiled assembly
 
