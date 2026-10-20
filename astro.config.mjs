@@ -15,9 +15,9 @@ export default defineConfig({
       // 404 由 docs 集合里的 404.md 渲染；关掉内置路由，避免 /404 双路由冲突。
       disable404Route: true,
       logo: {
-        src: './public/logo.svg',
+        src: './public/logo.png',
       },
-      favicon: '/favicon.svg',
+      favicon: '/logo.png',
       defaultLocale: 'root',
       locales: {
         root: { label: 'English', lang: 'en' },
