@@ -12,7 +12,7 @@ description: 星光框架、Provider 与模板的已发布版本。
 | [HostingShim](https://github.com/HosihikariFramework/Shim/releases/tag/v0.7.0) | v0.7.0 | lip，四个载体变体 |
 | [C# Provider](https://github.com/HosihikariFramework/CSharpProvider/releases/tag/v0.2.3) | v0.2.3 | lip |
 | [F# Provider](https://github.com/HosihikariFramework/FSharpProvider/releases/tag/v0.1.3) | v0.1.3 | lip |
-| [RPC Provider](https://github.com/HosihikariFramework/RpcProvider/releases/tag/v0.2.3) | v0.2.3 | lip |
+| [RPC Provider](https://github.com/HosihikariFramework/RpcProvider/releases/tag/v0.2.4) | v0.2.4 | lip |
 | [插件模板](https://www.nuget.org/packages/Hosihikari.Plugin.Template/0.1.2) | 0.1.2 | `dotnet new` |
 
 ## Core v0.7.0
@@ -56,8 +56,11 @@ description: 星光框架、Provider 与模板的已发布版本。
 - 含 `#` 的入口每次装载编译到新的 `-run-<nonce>` 目录，两个进程不会再原地替换同一份缓存。
 - 跨进程清理使用保留期与装载租约；同类型的第二个 Provider 包装载失败。
 
-## RPC Provider v0.2.3
+## RPC Provider v0.2.4
 
+- Node 绑定附 `hosihikari.d.ts`，Python 绑定附 `hosihikari.pyi`，QuickJS 绑定用 JSDoc 标注 `Context` 与 `Plugin`；模板携带同一份声明。
+- Node 与 QuickJS 的宿主请求 30 秒超时：移除待办项并拒绝 Promise，回复到达时清除定时器。
+- JSON 根不是对象（数组、字符串或 `null`）的行只记录警告并丢弃，不再中断读循环。
 - lip 变体平台中立，Windows 与 Linux 都可安装。
 - 通过进程 `Exited` 事件检测父进程退出，孤儿子进程会收尾。
 - 队列有界：入站 4096 条、回复 1024 条、单行 4 MiB；溢出报告故障并终止子进程。
