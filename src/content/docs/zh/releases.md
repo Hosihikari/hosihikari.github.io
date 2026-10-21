@@ -10,9 +10,9 @@ description: 星光框架、Provider 与模板的已发布版本。
 | [Abstractions](https://www.nuget.org/packages/Hosihikari.Abstractions/0.7.1) | 0.7.1 | NuGet |
 | [Core](https://github.com/HosihikariFramework/PluginManagement/releases/tag/v0.6.0) | v0.6.0 | lip |
 | [HostingShim](https://github.com/HosihikariFramework/Shim/releases/tag/v0.6.1) | v0.6.1 | lip，四个载体变体 |
-| [C# Provider](https://github.com/HosihikariFramework/CSharpProvider/releases/tag/v0.2.1) | v0.2.1 | lip |
+| [C# Provider](https://github.com/HosihikariFramework/CSharpProvider/releases/tag/v0.2.2) | v0.2.2 | lip |
 | [F# Provider](https://github.com/HosihikariFramework/FSharpProvider/releases/tag/v0.1.2) | v0.1.2 | lip |
-| [RPC Provider](https://github.com/HosihikariFramework/RpcProvider/releases/tag/v0.2.1) | v0.2.1 | lip |
+| [RPC Provider](https://github.com/HosihikariFramework/RpcProvider/releases/tag/v0.2.2) | v0.2.2 | lip |
 | [插件模板](https://www.nuget.org/packages/Hosihikari.Plugin.Template/0.1.2) | 0.1.2 | `dotnet new` |
 
 ## Core v0.6.0
@@ -21,7 +21,7 @@ description: 星光框架、Provider 与模板的已发布版本。
 - 原生侧与托管侧在启动时核对 `HostingContractVersion`；缺少入口返回 -2，版本不一致返回 -3。
 - 显式卸载 Provider 包被拒绝；读不了的清单只跳过该包。
 - 故障移除回调与核心收尾共用同一道闸门；Provider 复用日志移出核心锁。
-- 打包器从包根展开 `#:include` 通配符，带引号与 `../shared/*.cs` 的写法可用；C# Provider 装载侧的同一修复随下一版 Provider 发布。
+- 打包器从包根展开 `#:include` 通配符，带引号与 `../shared/*.cs` 的写法可用；C# Provider 0.2.2 装载源码时使用同一套路径解析。
 
 ## HostingShim v0.6.1
 
@@ -33,9 +33,10 @@ description: 星光框架、Provider 与模板的已发布版本。
 - 清单与装载路径补强：`null` 依赖、自依赖、带路径的包名、装载窗口回滚，以及锁外报告。
 - 冒烟脚本记录服务器真实退出码；Linux 载体以 `-z nodelete` 链接。
 
-## C# Provider v0.2.1
+## C# Provider v0.2.2
 
 - 源码可用 `#:package Id@Version` 与带通配符的 `#:include`。
+- `#:include` 接受带引号的路径与 `../shared/*.cs`，与打包器的路径解析一致。
 - 缓存校验同时覆盖程序集与 PDB；编译与缓存键使用同一份源码快照。
 - 缓存清理跨进程安全：旧目录要过保留期且没有租约才清；暂存与刚发布的产物不动。
 - 装载失败释放 ALC；一个包必须恰好暴露一个 `IPlugin` 类型。
@@ -49,7 +50,7 @@ description: 星光框架、Provider 与模板的已发布版本。
 - 含 `#` 的入口每次装载编译到新的 `-run-<nonce>` 目录，两个进程不会再原地替换同一份缓存。
 - 跨进程清理使用保留期与装载租约；同类型的第二个 Provider 包装载失败。
 
-## RPC Provider v0.2.1
+## RPC Provider v0.2.2
 
 - 通过进程 `Exited` 事件检测父进程退出，孤儿子进程会收尾。
 - 队列有界：入站 4096 条、回复 1024 条、单行 4 MiB；溢出报告故障并终止子进程。
