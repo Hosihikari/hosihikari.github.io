@@ -116,6 +116,8 @@ Provider 包里带参考绑定：
 - `bindings/python/hosihikari.py` 与 `hosihikari.pyi`（模块级 `on_load` 等；类型存根）
 - `bindings/java/hosihikari`（Java 与 Kotlin 共用；`command` 指向 `hosihikari.Binding`）
 
+Node 与 QuickJS 发往宿主的请求 30 秒超时；超时的请求会被拒绝。
+
 各绑定的命令写法与上下文 API 见 [RpcProvider 的 README](https://github.com/HosihikariFramework/RpcProvider/blob/main/README.zh_hans.md)。
 
 ## Endstone 的 PATH

@@ -117,6 +117,8 @@ The provider package ships reference bindings:
 - `bindings/python/hosihikari.py` and `hosihikari.pyi` (module-level `on_load` and friends; type stubs)
 - `bindings/java/hosihikari` (shared by Java and Kotlin; `command` points at `hosihikari.Binding`)
 
+Host requests from the Node and QuickJS bindings time out after 30 seconds; a timed-out request rejects.
+
 The command forms and context APIs are in the [RpcProvider README](https://github.com/HosihikariFramework/RpcProvider/blob/main/README.md).
 
 ## Endstone and PATH
