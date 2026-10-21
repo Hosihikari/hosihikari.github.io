@@ -8,24 +8,28 @@ description: 星光框架、Provider 与模板的已发布版本。
 | 组件 | 版本 | 分发方式 |
 | --- | --- | --- |
 | [Abstractions](https://www.nuget.org/packages/Hosihikari.Abstractions/0.7.1) | 0.7.1 | NuGet |
-| [Core](https://github.com/HosihikariFramework/PluginManagement/releases/tag/v0.6.0) | v0.6.0 | lip |
-| [HostingShim](https://github.com/HosihikariFramework/Shim/releases/tag/v0.6.1) | v0.6.1 | lip，四个载体变体 |
+| [Core](https://github.com/HosihikariFramework/PluginManagement/releases/tag/v0.7.0) | v0.7.0 | lip |
+| [HostingShim](https://github.com/HosihikariFramework/Shim/releases/tag/v0.7.0) | v0.7.0 | lip，四个载体变体 |
 | [C# Provider](https://github.com/HosihikariFramework/CSharpProvider/releases/tag/v0.2.2) | v0.2.2 | lip |
 | [F# Provider](https://github.com/HosihikariFramework/FSharpProvider/releases/tag/v0.1.2) | v0.1.2 | lip |
 | [RPC Provider](https://github.com/HosihikariFramework/RpcProvider/releases/tag/v0.2.2) | v0.2.2 | lip |
 | [插件模板](https://www.nuget.org/packages/Hosihikari.Plugin.Template/0.1.2) | 0.1.2 | `dotnet new` |
 
-## Core v0.6.0
+## Core v0.7.0
 
+- 依赖版本参与解析：插件自己的 `version` 是 SemVer；依赖的 `version` 是 NuGet 范围，例如 `1.2.3`、`[1.2.3]` 或 `[1.0.0,2.0.0)`。
+- 非法版本或范围在清单读取与打包期被拒；依赖图与父级逐包交付在装载前检查目标版本，不满足时只剔除依赖者，报告里带约束与实际版本。
+- `hosihikari` 依赖不参与版本检查；兼容由契约 API 与清单格式管理。
 - 托管核心成为独立 lip 包，安装到 `plugins/hosihikari/`；原生 Shim 通过 lip 依赖声明兼容的 Core 版本。
 - 原生侧与托管侧在启动时核对 `HostingContractVersion`；缺少入口返回 -2，版本不一致返回 -3。
 - 显式卸载 Provider 包被拒绝；读不了的清单只跳过该包。
 - 故障移除回调与核心收尾共用同一道闸门；Provider 复用日志移出核心锁。
 - 打包器从包根展开 `#:include` 通配符，带引号与 `../shared/*.cs` 的写法可用；C# Provider 0.2.2 装载源码时使用同一套路径解析。
 
-## HostingShim v0.6.1
+## HostingShim v0.7.0
 
 - 发布附件只含原生文件：载体、`nethost` 与自持态启动器；托管文件由 Core 包提供。
+- Core 依赖范围改为 `0.7.*`；入口契约版本仍为 1。
 - `lip install` 会自动解析并安装 Core；`verify-lip` 覆盖了 `plugins/hosihikari/` 的双包落盘。
 - Endstone 在 Windows 与 Linux 都用 `#endstone`，由 `platform` 选择附件；旧的 `#endstone_linux` 已移除。
 - 载体重载保留托管核心与已装载的 Provider，只卸载并重载子插件（ADR-0037）。
@@ -79,7 +83,7 @@ lip install github.com/HosihikariFramework/RpcProvider
 Shim 包会通过 lip 依赖安装 Core。需要显式锁定 Core 时：
 
 ```powershell
-lip install github.com/HosihikariFramework/PluginManagement@0.6.0
+lip install github.com/HosihikariFramework/PluginManagement@0.7.0
 ```
 
 Shim 的 LeviLamina 与 Endstone 变体用 `#levilamina`、`#endstone` 选择；
@@ -87,6 +91,6 @@ Shim 的 LeviLamina 与 Endstone 变体用 `#levilamina`、`#endstone` 选择；
 
 ## 兼容
 
-Core v0.6.0 与 Shim v0.6.1 使用入口契约版本 1，Shim 依赖范围为 `0.6.*`。
+Core v0.7.0 与 Shim v0.7.0 使用入口契约版本 1，Shim 依赖范围为 `0.7.*`。
 按 Abstractions 0.7.1 构建的插件使用契约 `api` 2 与清单 `format_version` 1。
-上一版功能线是 Abstractions 0.7.0、Shim v0.5.1、Provider v0.2.1 / v0.1.2 与模板 0.1.2。
+上一版功能线是 Abstractions 0.7.1、Core v0.6.0、Shim v0.6.1、Provider v0.2.2 / v0.1.2 与模板 0.1.2。
