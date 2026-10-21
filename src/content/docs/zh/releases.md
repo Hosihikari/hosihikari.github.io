@@ -10,9 +10,9 @@ description: 星光框架、Provider 与模板的已发布版本。
 | [Abstractions](https://www.nuget.org/packages/Hosihikari.Abstractions/0.7.1) | 0.7.1 | NuGet |
 | [Core](https://github.com/HosihikariFramework/PluginManagement/releases/tag/v0.7.0) | v0.7.0 | lip |
 | [HostingShim](https://github.com/HosihikariFramework/Shim/releases/tag/v0.7.0) | v0.7.0 | lip，四个载体变体 |
-| [C# Provider](https://github.com/HosihikariFramework/CSharpProvider/releases/tag/v0.2.2) | v0.2.2 | lip |
-| [F# Provider](https://github.com/HosihikariFramework/FSharpProvider/releases/tag/v0.1.2) | v0.1.2 | lip |
-| [RPC Provider](https://github.com/HosihikariFramework/RpcProvider/releases/tag/v0.2.2) | v0.2.2 | lip |
+| [C# Provider](https://github.com/HosihikariFramework/CSharpProvider/releases/tag/v0.2.3) | v0.2.3 | lip |
+| [F# Provider](https://github.com/HosihikariFramework/FSharpProvider/releases/tag/v0.1.3) | v0.1.3 | lip |
+| [RPC Provider](https://github.com/HosihikariFramework/RpcProvider/releases/tag/v0.2.3) | v0.2.3 | lip |
 | [插件模板](https://www.nuget.org/packages/Hosihikari.Plugin.Template/0.1.2) | 0.1.2 | `dotnet new` |
 
 ## Core v0.7.0
@@ -37,8 +37,9 @@ description: 星光框架、Provider 与模板的已发布版本。
 - 清单与装载路径补强：`null` 依赖、自依赖、带路径的包名、装载窗口回滚，以及锁外报告。
 - 冒烟脚本记录服务器真实退出码；Linux 载体以 `-z nodelete` 链接。
 
-## C# Provider v0.2.2
+## C# Provider v0.2.3
 
+- lip 变体平台中立，Windows 与 Linux 都可安装。
 - 源码可用 `#:package Id@Version` 与带通配符的 `#:include`。
 - `#:include` 接受带引号的路径与 `../shared/*.cs`，与打包器的路径解析一致。
 - 缓存校验同时覆盖程序集与 PDB；编译与缓存键使用同一份源码快照。
@@ -46,16 +47,18 @@ description: 星光框架、Provider 与模板的已发布版本。
 - 装载失败释放 ALC；一个包必须恰好暴露一个 `IPlugin` 类型。
 - 同类型的第二个 Provider 包会装载失败，不再留在场上空转。
 
-## F# Provider v0.1.2
+## F# Provider v0.1.3
 
+- lip 变体平台中立，Windows 与 Linux 都可安装。
 - 编译期引用顺序与运行期一致，包内依赖优先。
 - FSharp.Compiler.Service 编译限制为 30 秒。
 - PDB 校验、源码快照与唯一暂存目录保护缓存。
 - 含 `#` 的入口每次装载编译到新的 `-run-<nonce>` 目录，两个进程不会再原地替换同一份缓存。
 - 跨进程清理使用保留期与装载租约；同类型的第二个 Provider 包装载失败。
 
-## RPC Provider v0.2.2
+## RPC Provider v0.2.3
 
+- lip 变体平台中立，Windows 与 Linux 都可安装。
 - 通过进程 `Exited` 事件检测父进程退出，孤儿子进程会收尾。
 - 队列有界：入站 4096 条、回复 1024 条、单行 4 MiB；溢出报告故障并终止子进程。
 - 单行按块读取，4 MiB 上限在读取过程中执行，不再先分配整行。

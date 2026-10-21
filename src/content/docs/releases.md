@@ -10,9 +10,9 @@ The current release line was published on 21 October 2026.
 | [Abstractions](https://www.nuget.org/packages/Hosihikari.Abstractions/0.7.1) | 0.7.1 | NuGet |
 | [Core](https://github.com/HosihikariFramework/PluginManagement/releases/tag/v0.7.0) | v0.7.0 | lip |
 | [HostingShim](https://github.com/HosihikariFramework/Shim/releases/tag/v0.7.0) | v0.7.0 | lip, four carrier variants |
-| [C# Provider](https://github.com/HosihikariFramework/CSharpProvider/releases/tag/v0.2.2) | v0.2.2 | lip |
-| [F# Provider](https://github.com/HosihikariFramework/FSharpProvider/releases/tag/v0.1.2) | v0.1.2 | lip |
-| [RPC Provider](https://github.com/HosihikariFramework/RpcProvider/releases/tag/v0.2.2) | v0.2.2 | lip |
+| [C# Provider](https://github.com/HosihikariFramework/CSharpProvider/releases/tag/v0.2.3) | v0.2.3 | lip |
+| [F# Provider](https://github.com/HosihikariFramework/FSharpProvider/releases/tag/v0.1.3) | v0.1.3 | lip |
+| [RPC Provider](https://github.com/HosihikariFramework/RpcProvider/releases/tag/v0.2.3) | v0.2.3 | lip |
 | [Plugin template](https://www.nuget.org/packages/Hosihikari.Plugin.Template/0.1.2) | 0.1.2 | `dotnet new` |
 
 ## Core v0.7.0
@@ -37,8 +37,9 @@ The current release line was published on 21 October 2026.
 - Manifest and load-path hardening covers `null` and self dependencies, path-like names, loading-window rollback, and report delivery outside the load lock.
 - Smoke tests record the server's real exit code; Linux links the carrier with `-z nodelete`.
 
-## C# Provider v0.2.2
+## C# Provider v0.2.3
 
+- The lip variant is platform-neutral and installs on Windows and Linux.
 - Source files can use `#:package Id@Version` and `#:include` with globs.
 - `#:include` accepts quoted paths and `../shared/*.cs`, matching the packer's path handling.
 - Cache validation covers both the assembly and its PDB; compilation uses the same source snapshot as the cache key.
@@ -46,16 +47,18 @@ The current release line was published on 21 October 2026.
 - A failed load releases its ALC, and a package must expose exactly one `IPlugin` type.
 - A second provider package for the same plugin type now fails to load instead of remaining idle.
 
-## F# Provider v0.1.2
+## F# Provider v0.1.3
 
+- The lip variant is platform-neutral and installs on Windows and Linux.
 - Compile-time references use the same package-first order as runtime resolution.
 - FSharp.Compiler.Service compilation is limited to 30 seconds.
 - PDB checksums, the source snapshot, and a unique staging directory protect the cache.
 - Entries containing `#` compile into a new `-run-<nonce>` directory on every load, so two processes never replace the same cache in place.
 - Cross-process cleanup uses retention windows and load leases; a second provider package for the same type fails to load.
 
-## RPC Provider v0.2.2
+## RPC Provider v0.2.3
 
+- The lip variant is platform-neutral and installs on Windows and Linux.
 - Parent exit is detected through the process `Exited` event, so an orphaned plugin shuts down.
 - Queues are bounded: 4096 incoming messages, 1024 replies, and 4 MiB per line; overflow reports a fault and stops the child.
 - Lines are read in chunks with the 4 MiB limit enforced during reading, before a full line is allocated.
