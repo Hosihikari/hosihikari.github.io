@@ -3,7 +3,7 @@ import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 import lucode from 'lucode-starlight';
 
-const siteUrl = 'https://hosihikariframework.github.io';
+const siteUrl = 'https://hf.srcz.one';
 const ogImage = new URL('/og-image.png', siteUrl).href;
 
 export default defineConfig({
