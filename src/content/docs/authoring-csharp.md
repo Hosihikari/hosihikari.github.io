@@ -50,8 +50,9 @@ before Roslyn compiles, and the packer acts on them:
 - `#:package Newtonsoft.Json@13.0.3` restores the package at pack time into the plugin package.
   The server never restores or downloads packages when it loads a plugin.
 - `#:include helpers.cs` compiles another `.cs` file from the package with the entry. Paths are
-  relative to the including file and must stay inside the package. `*`, `**`, and `?` globs are
-  supported.
+  relative to the including file, may be quoted, and may use `..` to reach sibling directories
+  inside the package. `*`, `**`, and `?` globs are supported, for example
+  `#:include "../shared/*.cs"`.
 
 `#:project`, `#:property`, `#:sdk`, and top-level statements are not supported. The entry still
 defines an `IPlugin` type. For a standalone run loop, use a normal file-based app or a project, then
