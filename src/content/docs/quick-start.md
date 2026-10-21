@@ -1,6 +1,6 @@
 ---
 title: Quick start
-description: Install the shim and a provider, then run a C# plugin and an out-of-process Node plugin.
+description: Install HostingShim and a loader, then run a C# plugin and an out-of-process Node plugin.
 ---
 
 This walkthrough takes a server with LeviLamina, Endstone, or the self-hosted Linux carrier from a
@@ -14,31 +14,31 @@ fresh install to two running plugins.
   Endstone 0.11+, or BDS 1.21.3 for the self-hosted carrier.
 - [.NET 10 runtime](https://dotnet.microsoft.com/download) (`Microsoft.NETCore.App`).
 - [lip](https://github.com/LiteLDev/lip).
-- Node.js 20+ on `PATH` for the out-of-process exception.
+- Node.js 20+ on `PATH` for out-of-process plugins.
 
 Run the install commands in the **server root**.
 
-## Install the shim and providers
+## Install HostingShim and loaders
 
 The suffix-less package is the **self-hosted Linux** carrier. Parent-managed servers pick a labeled
 variant:
 
 ```powershell
-lip install github.com/HosihikariFramework/Shim                # self-hosted Linux
-lip install github.com/HosihikariFramework/Shim#levilamina     # LeviLamina
-lip install github.com/HosihikariFramework/Shim#endstone       # Endstone, Windows / Linux
+lip install github.com/HosihikariFramework/HostingShim                # self-hosted Linux
+lip install github.com/HosihikariFramework/HostingShim#levilamina     # LeviLamina
+lip install github.com/HosihikariFramework/HostingShim#endstone       # Endstone, Windows / Linux
 ```
 
-Then install the C# provider:
+Then install the C# loader:
 
 ```powershell
-lip install github.com/HosihikariFramework/CSharpProvider
+lip install github.com/HosihikariFramework/CSharpLoader
 ```
 
-The order is shim → provider → plugin package. Provider manifests do not declare a lip dependency on the shim: the shim has one package per carrier, and lip cannot express that choice in a dependency.
+The order is HostingShim → loader → plugin package. Loader manifests do not declare a lip dependency on HostingShim: HostingShim has one package per carrier, and lip cannot express that choice in a dependency.
 
-The self-hosted carrier installs `hosihikari-server` at the server root and the core under
-`plugins/hosihikari/`. Start the server through the launcher, which preloads the shim:
+The self-hosted carrier installs `hosihikari-server` at the server root and the plugin manager under
+`plugins/hosihikari/`. Start the server through the launcher, which preloads HostingShim:
 
 ```bash
 ./hosihikari-server
@@ -75,17 +75,17 @@ Start the server. The log should show `loaded, package` and `enabled, greeting=�
 <server>/data/hosihikari/hello-csharp/
 ```
 
-## Exception first-class provider: out-of-process bridge
+## Out-of-process plugins
 
-RpcProvider is the exception first-class provider: an official provider that runs the plugin in a child process over line-delimited JSON-RPC 2.0, instead of compiling source AOT to IL.
+RpcLoader is the official out-of-process loader. It runs the plugin in a child process over line-delimited JSON-RPC 2.0, instead of compiling source AOT to IL.
 
 ```powershell
-lip install github.com/HosihikariFramework/RpcProvider
+lip install github.com/HosihikariFramework/RpcLoader
 Copy-Item -Recurse .\examples\hello-node "$Server\plugins\hello-node"
 Copy-Item "$Server\plugins\hosihikari-rpc\bindings\node\hosihikari.mjs" "$Server\plugins\hello-node\hosihikari.mjs"
 ```
 
-`hosihikari.mjs` is the Node binding shipped with the RpcProvider. Keep it next to the entry so the manifest command can find it. The log should show `hello-node` loading and enabling.
+`hosihikari.mjs` is the Node binding shipped with RpcLoader. Keep it next to the entry so the manifest command can find it. The log should show `hello-node` loading and enabling.
 
 If the target directory already exists, remove it before copying.
 
@@ -104,5 +104,5 @@ Restart the server; the log shows the overridden `greeting`. Environment variabl
 
 - [Plugin packages](/plugin-package/)
 - [C# plugins](/authoring-csharp/)
-- [Out-of-process bridge (the exception)](/authoring-rpc/)
+- [Out-of-process plugins](/authoring-rpc/)
 - [Troubleshooting](/troubleshooting/)

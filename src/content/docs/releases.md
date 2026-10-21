@@ -1,19 +1,28 @@
 ---
 title: Releases
-description: Published versions of the framework, providers, and templates.
+description: Published versions of the framework, loaders, and templates.
 ---
 
 The current release line was published on 21 October 2026.
 
 | Component | Version | Distribution |
 | --- | --- | --- |
-| [Abstractions](https://www.nuget.org/packages/Hosihikari.Abstractions/0.7.1) | 0.7.1 | NuGet |
-| [Core](https://github.com/HosihikariFramework/PluginManagement/releases/tag/v0.7.2) | v0.7.2 | lip |
-| [HostingShim](https://github.com/HosihikariFramework/Shim/releases/tag/v0.7.0) | v0.7.0 | lip, four carrier variants |
-| [C# Provider](https://github.com/HosihikariFramework/CSharpProvider/releases/tag/v0.2.3) | v0.2.3 | lip |
-| [F# Provider](https://github.com/HosihikariFramework/FSharpProvider/releases/tag/v0.1.5) | v0.1.5 | lip |
-| [RPC Provider](https://github.com/HosihikariFramework/RpcProvider/releases/tag/v0.2.4) | v0.2.4 | lip |
-| [Plugin template](https://www.nuget.org/packages/Hosihikari.Plugin.Template/0.1.2) | 0.1.2 | `dotnet new` |
+| [PluginAbstractions](https://www.nuget.org/packages/Hosihikari.Plugin.Abstractions/1.0.0) | 1.0.0 | NuGet |
+| [PluginManager](https://github.com/HosihikariFramework/PluginManager/releases/tag/v1.0.0) | v1.0.0 | lip |
+| [HostingShim](https://github.com/HosihikariFramework/HostingShim/releases/tag/v1.0.0) | v1.0.0 | lip, four carrier variants |
+| [C# Loader](https://github.com/HosihikariFramework/CSharpLoader/releases/tag/v1.0.0) | v1.0.0 | lip |
+| [F# Loader](https://github.com/HosihikariFramework/FSharpLoader/releases/tag/v1.0.0) | v1.0.0 | lip |
+| [RPC Loader](https://github.com/HosihikariFramework/RpcLoader/releases/tag/v1.0.0) | v1.0.0 | lip |
+| [Plugin templates](https://www.nuget.org/packages/Hosihikari.Plugin.Templates/1.0.0) | 1.0.0 | `dotnet new` |
+
+## v1.0.0
+
+- All components are released as v1.0.0. Public names follow ADR-0040: `PluginManager`, `IPluginLoader` with `Id`, `PluginHandle`, `CarrierServices`, `RegisterLoader`, and `ScheduleOnce` / `SchedulePeriodic`.
+- Manifest fields are now `extraInfo.api_version`, `extraInfo.loader`, and `extraInfo.manifest_version`; the old `api`, `provider`, and `format_version` keys are rejected with a migration error. The top-level `type`, `entry`, and `version` fields keep their wire names.
+- The GitHub repositories are renamed to HostingShim, PluginManager, PluginAbstractions, CSharpLoader, FSharpLoader, and RpcLoader; the NuGet packages are `Hosihikari.Plugin.Abstractions` and `Hosihikari.Plugin.Templates`.
+- Unload verification runs outside the manager gate and shares an in-flight verification task across concurrent unloads.
+- The RPC bindings use `scheduleOnce` / `schedulePeriodic` (`schedule_once` / `schedule_periodic` in Python); the packer subcommand is `pack-loader`.
+- HostingShim and PluginManager are released together; HostingShim depends on the `1.0.*` PluginManager line, and the hosting contract version stays 1.
 
 ## Core v0.7.2
 
@@ -81,26 +90,26 @@ The current release line was published on 21 October 2026.
 ## Install
 
 ```powershell
-dotnet add package Hosihikari.Abstractions --version 0.7.1
-dotnet new install Hosihikari.Plugin.Template::0.1.2
+dotnet add package Hosihikari.Plugin.Abstractions --version 1.0.0
+dotnet new install Hosihikari.Plugin.Templates::1.0.0
 
-lip install github.com/HosihikariFramework/Shim
-lip install github.com/HosihikariFramework/CSharpProvider
-lip install github.com/HosihikariFramework/FSharpProvider
-lip install github.com/HosihikariFramework/RpcProvider
+lip install github.com/HosihikariFramework/HostingShim
+lip install github.com/HosihikariFramework/CSharpLoader
+lip install github.com/HosihikariFramework/FSharpLoader
+lip install github.com/HosihikariFramework/RpcLoader
 ```
 
-The Shim package installs Core as a lip dependency. To pin Core explicitly:
+The HostingShim package installs PluginManager as a lip dependency. To pin PluginManager explicitly:
 
 ```powershell
-lip install github.com/HosihikariFramework/PluginManagement@0.7.2
+lip install github.com/HosihikariFramework/PluginManager@1.0.0
 ```
 
-Shim variants for LeviLamina and Endstone are selected with `#levilamina` and `#endstone`; the
+HostingShim variants for LeviLamina and Endstone are selected with `#levilamina` and `#endstone`; the
 package without a suffix installs the Linux self-hosted carrier.
 
 ## Compatibility
 
-Core v0.7.2 and Shim v0.7.0 use hosting contract version 1, and Shim declares a `0.7.*` dependency.
-Plugins built against Abstractions 0.7.1 use contract `api` 2 and manifest `format_version` 1.
-The previous release line was Abstractions 0.7.1, Core v0.6.0, Shim v0.6.1, Provider v0.2.2 / v0.1.2, and template 0.1.2.
+PluginManager v1.0.0 and HostingShim v1.0.0 use hosting contract version 1, and HostingShim declares a `1.0.*` dependency.
+Plugins built against Hosihikari.Plugin.Abstractions 1.0.0 use API version 2 and manifest `manifest_version` 1.
+The previous release line was PluginAbstractions 0.7.1, PluginManager v0.7.2, HostingShim v0.7.0, C# Loader v0.2.3, F# Loader v0.1.5, RPC Loader v0.2.4, and template 0.1.2.

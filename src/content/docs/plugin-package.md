@@ -28,9 +28,9 @@ plugins/
     { "name": "hosihikari-csharp" }
   ],
   "extraInfo": {
-    "api": "2",
-    "format_version": "1",
-    "provider": "csharp"
+    "api_version": "2",
+    "manifest_version": "1",
+    "loader": "csharp"
   }
 }
 ```
@@ -42,9 +42,9 @@ plugins/
 | `type` | Routing key; always `hosihikari`. |
 | `version` | The plugin's own SemVer version. |
 | `dependencies` | Plugin names with optional SemVer ranges; the dependency graph decides load order and checks versions. |
-| `extraInfo.api` | Contract major version; currently `2`. |
-| `extraInfo.format_version` | Manifest schema version; currently `1`. |
-| `extraInfo.provider` | The provider that handles this package. `assembly` is the core's built-in path; `csharp` and `fsharp` are first-class providers; `rpc` is the exception first-class provider. |
+| `extraInfo.api_version` | Contract major version; currently `2`. |
+| `extraInfo.manifest_version` | Manifest schema version; currently `1`. |
+| `extraInfo.loader` | The loader that handles this package. `assembly` is the plugin manager's built-in path; `csharp` and `fsharp` are in-process loaders; `rpc` is the out-of-process loader. |
 | `extraInfo.command` | `rpc` only: a JSON array encoded as a string. |
 
 Dependencies are sorted by name. A dependency may carry a NuGet SemVer range:
@@ -54,20 +54,20 @@ Dependencies are sorted by name. A dependency may carry a NuGet SemVer range:
 - `[1.2.3]`: exactly 1.2.3.
 - `[1.0.0,2.0.0)`: 1.0.0 inclusive through 2.0.0 exclusive.
 
-The target plugin must declare a parseable `version` when a range constrains it. The framework dependency `hosihikari` is not version-checked; provider packages load before the packages that depend on them. First-class providers declare `hosihikari-csharp` or `hosihikari-fsharp`; the exception first-class provider declares `hosihikari-rpc`. Precompiled assemblies use the core's built-in path and need no provider package.
+The target plugin must declare a parseable `version` when a range constrains it. The framework dependency `hosihikari` is not version-checked; loader packages load before the packages that depend on them. In-process loaders declare `hosihikari-csharp` or `hosihikari-fsharp`; the out-of-process loader declares `hosihikari-rpc`. Precompiled assemblies use the plugin manager's built-in path and need no loader package.
 
-## Providers and entries
+## Loaders and entries
 
-Official providers come in two classes: first-class providers compile source AOT to IL; RpcProvider is the exception first-class provider, a cross-process bridge. Precompiled assemblies use the core's built-in path.
+Official loaders come in two classes: in-process loaders compile source AOT to IL; RpcLoader is the out-of-process loader, an RPC bridge. Precompiled assemblies use the plugin manager's built-in path.
 
-| `provider` | `entry` | How it loads |
+| `loader` | `entry` | How it loads |
 |---|---|---|
-| `assembly` | `.dll` | Core built-in: loads a precompiled IL assembly directly; the assembly declares exactly one `[assembly: EntryPoint<T>]`. |
-| `csharp` | `.cs` | First-class provider: AOT-compiles `.cs` to IL at load with Roslyn, into a collectible ALC. |
-| `fsharp` | `.fsx` | First-class provider: AOT-compiles `.fsx` to IL at load with FSharp.Compiler.Service. |
-| `rpc` | Entry file | Exception first-class provider: `command` starts a child process speaking line-delimited JSON-RPC 2.0 over stdio. |
+| `assembly` | `.dll` | PluginManager built-in: loads a precompiled IL assembly directly; the assembly declares exactly one `[assembly: EntryPoint<T>]`. |
+| `csharp` | `.cs` | In-process loader: AOT-compiles `.cs` to IL at load with Roslyn, into a collectible ALC. |
+| `fsharp` | `.fsx` | In-process loader: AOT-compiles `.fsx` to IL at load with FSharp.Compiler.Service. |
+| `rpc` | Entry file | Out-of-process loader: `command` starts a child process speaking line-delimited JSON-RPC 2.0 over stdio. |
 
-For first-class and precompiled assembly plugins, the entry type must implement `IPlugin` and have a parameterless constructor; `EntryPoint<T>` enforces both at compile time. A missing file or the wrong number of entry declarations is reported by the provider.
+For in-process and precompiled assembly plugins, the entry type must implement `IPlugin` and have a parameterless constructor; `EntryPoint<T>` enforces both at compile time. A missing file or the wrong number of entry declarations is reported by the loader.
 
 ## Checks before load
 
@@ -76,8 +76,8 @@ The framework rejects a package before constructing a plugin if:
 - `name` differs from the directory name;
 - `entry` is empty, absolute, or escapes the package directory;
 - `type` is not `hosihikari`;
-- `api` is not `2`;
-- `format_version` is not `1`;
+- `api_version` is not `2`;
+- `manifest_version` is not `1`;
 - the manifest is not valid JSON.
 
 These checks run before the package enters its lifecycle, and the log gives the reason.
@@ -103,4 +103,4 @@ The configuration format is HOCON. Layering goes through the framework's provide
 
 The gate covers framework-delivered events and timers. Threads, service registrations, and direct references owned by the plugin must be released in `OnUnload`.
 
-Provider packages are loaded once and cannot be unloaded at runtime; disable or upgrade them by restarting the server.
+Loader packages are loaded once and cannot be unloaded at runtime; disable or upgrade them by restarting the server.

@@ -28,9 +28,9 @@ plugins/
     { "name": "hosihikari-csharp" }
   ],
   "extraInfo": {
-    "api": "2",
-    "format_version": "1",
-    "provider": "csharp"
+    "api_version": "2",
+    "manifest_version": "1",
+    "loader": "csharp"
   }
 }
 ```
@@ -42,9 +42,9 @@ plugins/
 | `type` | 路由键，`hosihikari`。 |
 | `version` | 插件自己的 SemVer 版本。 |
 | `dependencies` | 依赖的插件名，可带 SemVer 范围；依赖图决定装载顺序并检查版本。 |
-| `extraInfo.api` | 契约主版本，当前 `2`。 |
-| `extraInfo.format_version` | 清单 schema 版本，当前 `1`。 |
-| `extraInfo.provider` | 处理这个包的 Provider。`assembly` 是核心内置入口；`csharp`、`fsharp` 是一等 Provider；`rpc` 是例外一等 Provider。 |
+| `extraInfo.api_version` | 契约主版本，当前 `2`。 |
+| `extraInfo.manifest_version` | 清单 schema 版本，当前 `1`。 |
+| `extraInfo.loader` | 处理这个包的加载器。`assembly` 是插件管理器内置入口；`csharp`、`fsharp` 是进程内加载器；`rpc` 是进程外加载器。 |
 | `extraInfo.command` | 仅 `rpc`：编码成字符串的 JSON 数组。 |
 
 依赖按名字排序；每条依赖可以带一个 NuGet SemVer 范围：
@@ -54,20 +54,20 @@ plugins/
 - `[1.2.3]`：精确 1.2.3。
 - `[1.0.0,2.0.0)`：包含 1.0.0，不包含 2.0.0。
 
-被范围约束的目标插件必须声明可解析的 `version`。框架依赖 `hosihikari` 不参与版本检查；Provider 包先于依赖它的包装载。一等 Provider 声明 `hosihikari-csharp` 或 `hosihikari-fsharp`；例外一等 Provider 声明 `hosihikari-rpc`。预编译程序集走核心内置入口，不需要 Provider 包。
+被范围约束的目标插件必须声明可解析的 `version`。框架依赖 `hosihikari` 不参与版本检查；加载器包先于依赖它的包装载。进程内加载器声明 `hosihikari-csharp` 或 `hosihikari-fsharp`；进程外加载器声明 `hosihikari-rpc`。预编译程序集走插件管理器内置入口，不需要加载器包。
 
-## Provider 与入口
+## 加载器与入口
 
-官方 Provider 分两类：一等 Provider 把源码 AOT 为 IL；RpcProvider 是例外一等 Provider，跨进程桥。预编译程序集走核心内置入口。
+官方加载器分两类：进程内加载器把源码 AOT 为 IL；RpcLoader 是进程外加载器，RPC 桥。预编译程序集走插件管理器内置入口。
 
-| `provider` | `entry` | 装载方式 |
+| `loader` | `entry` | 装载方式 |
 |---|---|---|
-| `assembly` | `.dll` | 核心内置：直接装载预编译 IL 程序集；程序集上恰好一个 `[assembly: EntryPoint<T>]`。 |
-| `csharp` | `.cs` | 一等 Provider：Roslyn 装载时把 `.cs` AOT 为 IL，产物进 collectible ALC。 |
-| `fsharp` | `.fsx` | 一等 Provider：FSharp.Compiler.Service 装载时把 `.fsx` AOT 为 IL。 |
-| `rpc` | 入口文件 | 例外一等 Provider：由 `command` 启动子进程，行分隔 JSON-RPC 2.0 over stdio。 |
+| `assembly` | `.dll` | 插件管理器内置：直接装载预编译 IL 程序集；程序集上恰好一个 `[assembly: EntryPoint<T>]`。 |
+| `csharp` | `.cs` | 进程内加载器：Roslyn 装载时把 `.cs` AOT 为 IL，产物进 collectible ALC。 |
+| `fsharp` | `.fsx` | 进程内加载器：FSharp.Compiler.Service 装载时把 `.fsx` AOT 为 IL。 |
+| `rpc` | 入口文件 | 进程外加载器：由 `command` 启动子进程，行分隔 JSON-RPC 2.0 over stdio。 |
 
-一等 Provider 与预编译程序集插件的入口类型必须实现 `IPlugin` 且有无参构造；`EntryPoint<T>` 的泛型约束在编译期保证这两条。文件缺失、程序集里的入口声明数量不对等，由 Provider 报告。
+进程内加载器与预编译程序集插件的入口类型必须实现 `IPlugin` 且有无参构造；`EntryPoint<T>` 的泛型约束在编译期保证这两条。文件缺失、程序集里的入口声明数量不对等，由加载器报告。
 
 ## 载入前检查
 
@@ -76,8 +76,8 @@ plugins/
 - `name` 与目录名不一致；
 - `entry` 为空、绝对路径或越出包目录；
 - `type` 不是 `hosihikari`；
-- `api` 不是 `2`；
-- `format_version` 不是 `1`；
+- `api_version` 不是 `2`；
+- `manifest_version` 不是 `1`；
 - 清单不是合法 JSON。
 
 这些检查发生在包进入生命周期之前，日志里会给出可读的原因。
@@ -103,4 +103,4 @@ plugins/
 
 回调闸门只管框架投递的事件与定时器。插件自有的线程、服务登记与直接引用要自己在 `OnUnload` 里收尾。
 
-Provider 包装上后不能运行期卸载；禁用或升级需重启服务端。
+加载器包装上后不能运行期卸载；禁用或升级需重启服务端。

@@ -1,18 +1,18 @@
 ---
 title: C# plugins
-description: Write a C# source plugin that the provider compiles at load.
+description: Write a C# source plugin that the loader compiles at load.
 ---
 
-C# runs on the CLR, so `Hosihikari.PluginProvider.CSharp` compiles `.cs` at load with Roslyn and loads the assembly into a collectible ALC. Authors ship source; the result gets the same isolation and unload guarantees as any assembly plugin. This is a first-class provider: it compiles source AOT to IL before the plugin runs; the provider loads that IL into a collectible ALC, and the plugin itself is ordinary CLR code.
+C# runs on the CLR, so `Hosihikari.PluginLoader.CSharp` compiles `.cs` at load with Roslyn and loads the assembly into a collectible ALC. Authors ship source; the result gets the same isolation and unload guarantees as any assembly plugin. This is an in-process loader: it compiles source AOT to IL before the plugin runs and loads that IL into a collectible ALC; the plugin itself is ordinary CLR code.
 
 ## Setup
 
-Pick the shim variant for the server (see [Quick start](/quick-start/)); the examples below use
+Pick the HostingShim variant for the server (see [Quick start](/quick-start/)); the examples below use
 LeviLamina:
 
 ```powershell
-lip install github.com/HosihikariFramework/Shim#levilamina
-lip install github.com/HosihikariFramework/CSharpProvider
+lip install github.com/HosihikariFramework/HostingShim#levilamina
+lip install github.com/HosihikariFramework/CSharpLoader
 ```
 
 The [C# template](/templates/) is a complete package you can copy and rename.
@@ -38,7 +38,7 @@ Manifest:
     { "name": "hosihikari" },
     { "name": "hosihikari-csharp" }
   ],
-  "extraInfo": { "api": "2", "format_version": "1", "provider": "csharp" }
+  "extraInfo": { "api_version": "2", "manifest_version": "1", "loader": "csharp" }
 }
 ```
 
@@ -60,7 +60,7 @@ package the compiled assembly with the precompiled template.
 
 ## Entry
 
-Define a type that implements `IPlugin` and has a parameterless constructor. The provider finds it and creates an instance.
+Define a type that implements `IPlugin` and has a parameterless constructor. The loader finds it and creates an instance.
 
 ```csharp
 using System.IO;
@@ -118,7 +118,7 @@ The server override is `config/hosihikari/hello-csharp.conf`; environment variab
 
 ## Assembly plugins
 
-If you already have a compiled DLL, put it in the package, set `provider` to `assembly`, and point `entry` at the DLL. Declare the entry on the assembly:
+If you already have a compiled DLL, put it in the package, set `loader` to `assembly`, and point `entry` at the DLL. Declare the entry on the assembly:
 
 ```csharp
 [assembly: EntryPoint<HelloPlugin>]
@@ -127,11 +127,11 @@ If you already have a compiled DLL, put it in the package, set `provider` to `as
 Reference the contract and exclude its runtime assets so the package does not carry a second copy:
 
 ```xml
-<PackageReference Include="Hosihikari.Abstractions" Version="[0.7.1]" ExcludeAssets="runtime" />
+<PackageReference Include="Hosihikari.Plugin.Abstractions" Version="[1.0.0]" ExcludeAssets="runtime" />
 ```
 
 The assembly declares exactly one `EntryPoint<T>`; the entry type implements `IPlugin` and has a parameterless constructor.
 
 ## Deploy and verify
 
-Put the directory under `plugins/` and start the server. The log should show `loaded, package` and `enabled`; `loaded.txt` and `enabled.txt` appear in the data directory. On unload the framework drops the plugin from its ALC and verifies reclamation.
+Put the directory under `plugins/` and start the server. The log should show `loaded, package` and `enabled`; `loaded.txt` and `enabled.txt` appear in the data directory. On unload the plugin manager uses the plugin's `PluginHandle`: `Unload()` / `WaitForUnloadAsync()` release it, and `IsUnloaded` verifies reclamation after the ALC is dropped.

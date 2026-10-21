@@ -1,22 +1,22 @@
 ---
-title: Out-of-process bridge (exception first-class provider)
-description: "The exception first-class provider: a cross-process bridge over line-delimited JSON-RPC."
+title: Out-of-process plugins
+description: "The out-of-process loader: an official RPC bridge using line-delimited JSON-RPC."
 ---
 
 :::caution
-RpcProvider is the exception first-class provider. It is an official provider that runs plugins in a child process instead of compiling source AOT to IL (ADR-0031).
+RpcLoader is the official out-of-process loader. It runs plugins in a child process instead of compiling source AOT to IL (ADR-0031).
 :::
 
-`Hosihikari.PluginProvider.Rpc` drives a child process with line-delimited JSON-RPC 2.0 over stdio. The bridge reads only the command from the manifest and the protocol. Unload means the process exits, taking the child process and its state with it.
+`Hosihikari.PluginLoader.Rpc` drives a child process with line-delimited JSON-RPC 2.0 over stdio. The RPC bridge reads only the command from the manifest and the protocol. Unload means the process exits, taking the child process and its state with it.
 
 ## Setup
 
-Pick the shim variant for the server (see [Quick start](/quick-start/)); the examples below use
+Pick the HostingShim variant for the server (see [Quick start](/quick-start/)); the examples below use
 LeviLamina:
 
 ```powershell
-lip install github.com/HosihikariFramework/Shim#levilamina
-lip install github.com/HosihikariFramework/RpcProvider
+lip install github.com/HosihikariFramework/HostingShim#levilamina
+lip install github.com/HosihikariFramework/RpcLoader
 ```
 
 The [RPC templates](/templates/) cover Node.js/TypeScript, Python, and Kotlin/JVM.
@@ -29,7 +29,7 @@ The plugin package also declares a dependency on `hosihikari-rpc`. The operator 
 plugins/hello-node/
   manifest.json
   main.mjs
-  hosihikari.mjs   ← copied from the provider package's bindings/node
+  hosihikari.mjs   ← copied from the loader package's bindings/node
   hello-node.conf
 ```
 
@@ -44,9 +44,9 @@ plugins/hello-node/
     { "name": "hosihikari-rpc" }
   ],
   "extraInfo": {
-    "api": "2",
-    "format_version": "1",
-    "provider": "rpc",
+    "api_version": "2",
+    "manifest_version": "1",
+    "loader": "rpc",
     "command": "[\"node\", \"./hosihikari.mjs\", \"./main.mjs\"]"
   }
 }
@@ -54,7 +54,7 @@ plugins/hello-node/
 
 `command` is a JSON array encoded as a string; the working directory is the package directory, and no shell is involved.
 
-Copy the binding from the installed provider package:
+Copy the binding from the installed loader package:
 
 ```powershell
 Copy-Item <server>/plugins/hosihikari-rpc/bindings/node/hosihikari.mjs .
@@ -100,7 +100,7 @@ Hooks may be async. Return values: `undefined` or `true` allows; `false` or `{ a
 | `writeData(file, text)` | Write a file under the data directory. |
 | `publish(topic, json)` | Publish an event. |
 | `subscribe(topic, fn, { sync })` | Subscribe; with `sync: true` the publisher waits for an ack. |
-| `runLater(seconds, fn)` / `runEvery(seconds, fn)` | Timers. |
+| `scheduleOnce(seconds, fn)` / `schedulePeriodic(seconds, fn)` | Timers. |
 
 Events are asynchronous by default. Disabling closes the gate; subscription callbacks and timers stop, and a refused disable reopens it. Unload ends the child process.
 
@@ -110,7 +110,7 @@ stdout carries the protocol; stderr carries text logs. The Node binding redirect
 
 ## Bindings
 
-The provider package ships reference bindings:
+The loader package ships reference bindings:
 
 - `bindings/node/hosihikari.mjs` and `hosihikari.d.ts` (TypeScript declarations)
 - `bindings/quickjs/hosihikari.js` (requires `qjs`; JSDoc types)
@@ -119,7 +119,7 @@ The provider package ships reference bindings:
 
 Host requests from the Node and QuickJS bindings time out after 30 seconds; a timed-out request rejects.
 
-The command forms and context APIs are in the [RpcProvider README](https://github.com/HosihikariFramework/RpcProvider/blob/main/README.md).
+The command forms and context APIs are in the [RpcLoader README](https://github.com/HosihikariFramework/RpcLoader/blob/main/README.md).
 
 ## Endstone and PATH
 

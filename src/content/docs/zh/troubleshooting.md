@@ -3,13 +3,13 @@ title: 常见问题
 description: 常见错误与排查入口。
 ---
 
-## 日志报 `api 不匹配` 或 `format_version 不匹配`
+## 日志报 `api_version 不匹配` 或 `manifest_version 不匹配`
 
-插件是按另一版契约构建的。当前契约是 `api` 2、清单 `format_version` 1；用 Abstractions 0.7.1 重新构建。改清单里的数字不会让旧类型面变成新契约。
+插件是按另一版契约构建的。当前契约是 `api_version` 2、清单 `manifest_version` 1；用 Hosihikari.Plugin.Abstractions 1.0.0 重新构建。改清单里的数字不会让旧类型面变成新契约。
 
-## 日志报 `没有能处理 provider=... 的 Provider`
+## 日志报 `没有能处理 loader=... 的加载器`
 
-对应的 Provider 没装或没启用，或者插件清单没有声明依赖它。源码插件要装 `CSharpProvider` / `FSharpProvider`，并在 `dependencies` 里写 `hosihikari-csharp` / `hosihikari-fsharp`；跨进程例外要装 `RpcProvider` 并写 `hosihikari-rpc`。
+对应的加载器没装或没启用，或者插件清单没有声明依赖它。源码插件要装 `CSharpLoader` / `FSharpLoader`，并在 `dependencies` 里写 `hosihikari-csharp` / `hosihikari-fsharp`；进程外插件要装 `RpcLoader` 并写 `hosihikari-rpc`。
 
 ## 日志报 `清单 name 必须等于目录名`
 
@@ -34,7 +34,7 @@ description: 常见错误与排查入口。
 
 `data/hosihikari/<name>/`。`ctx.DataDirectory`（Node/Python）或 `context.DataDirectory`（.NET）指向它。
 
-## 进程外桥（例外一等 Provider）启动不了
+## 进程外插件启动不了
 
 - 可执行文件不在 `PATH`：日志里会有 spawn 失败或进程立即退出。
 - Endstone：CLI 换了子进程的 `PATH`，把 `command` 里的可执行文件写成绝对路径。

@@ -1,18 +1,18 @@
 ---
 title: Templates
-description: Start a plugin from a maintained template for each plugin type.
+description: Start a plugin from a maintained template for each plugin kind.
 ---
 
 Each template is a complete plugin package. Copy it into the server as `plugins/<Name>/`, then change
 `name` in `manifest.json` and the matching `.conf`; the directory name must equal the manifest name.
-The templates are MIT-0; Abstractions 0.7.1 and later are MIT.
+The templates are MIT-0; Hosihikari.Plugin.Abstractions 1.0.0 and later are MIT.
 
 ## Precompiled assembly
 
-The core's built-in assembly provider loads a .NET class library. No provider package is needed.
+The plugin manager's built-in assembly loader loads a .NET class library. No loader package is needed.
 
 ```powershell
-dotnet new install Hosihikari.Plugin.Template
+dotnet new install Hosihikari.Plugin.Templates
 dotnet new hosihikari-plugin -n MyPlugin
 ```
 
@@ -25,16 +25,16 @@ pwsh ./pack.ps1
 ```
 
 `dist/MyPlugin/` is the plugin package. See the
-[template README](https://github.com/HosihikariFramework/Abstractions/tree/main/templates/Hosihikari.Plugin.Template).
+[template README](https://github.com/HosihikariFramework/PluginAbstractions/tree/main/templates/Hosihikari.Plugin.Template).
 
 ## Source C# and F#
 
-The C# and F# providers compile the source at load; the package carries source and no build output.
+The C# and F# loaders compile the source at load; the package carries source and no build output.
 
-| Template | Provider | Install |
+| Template | Loader | Install |
 |---|---|---|
-| [CSharpPluginTemplate](https://github.com/HosihikariFramework/CSharpPluginTemplate) | `hosihikari-csharp` | `lip install github.com/HosihikariFramework/CSharpProvider` |
-| [FSharpPluginTemplate](https://github.com/HosihikariFramework/FSharpPluginTemplate) | `hosihikari-fsharp` | `lip install github.com/HosihikariFramework/FSharpProvider` |
+| [CSharpPluginTemplate](https://github.com/HosihikariFramework/CSharpPluginTemplate) | `hosihikari-csharp` | `lip install github.com/HosihikariFramework/CSharpLoader` |
+| [FSharpPluginTemplate](https://github.com/HosihikariFramework/FSharpPluginTemplate) | `hosihikari-fsharp` | `lip install github.com/HosihikariFramework/FSharpLoader` |
 
 `CSharpPluginTemplate` demonstrates `#:package` and `#:include`; run its `pack.ps1` or `pack.sh`,
 then copy `dist/MyCSharpPlugin/` into `plugins/`. `FSharpPluginTemplate` demonstrates `#load`; copy
@@ -43,9 +43,9 @@ the repository into `plugins/MyFSharpPlugin/` directly. Rename the plugin and re
 
 ## Out-of-process runtimes
 
-RpcProvider starts the command from `extraInfo.command` and speaks JSON-RPC over stdio. Each
-directory below is a complete package; the binding is copied from the provider and refreshed when
-the provider is upgraded.
+RpcLoader starts the command from `extraInfo.command` and speaks JSON-RPC over stdio. Each
+directory below is a complete package; the binding is copied from the loader and refreshed when
+the loader is upgraded.
 
 | Template | Runtime | Build |
 |---|---|---|
@@ -53,12 +53,12 @@ the provider is upgraded.
 | [Python](https://github.com/HosihikariFramework/RpcPluginTemplate/tree/main/python) | Python 3.8+ | none |
 | [Kotlin/JVM](https://github.com/HosihikariFramework/RpcPluginTemplate/tree/main/kotlin) | JDK 21+ | `./build.sh` (`build.ps1` on Windows) |
 
-Install `RpcProvider` and put the runtime executable on `PATH`, copy the directory into `plugins/`,
-and restart. The Python manifest uses `python3`; change it to `python` on Windows. See the
-[out-of-process bridge](/authoring-rpc/) for the protocol and context.
+Install `RpcLoader` and put the runtime executable on `PATH`, copy the directory into `plugins/`,
+and restart. The Python manifest uses `python3`; change it to `python` on Windows. See
+[out-of-process plugins](/authoring-rpc/) for the protocol and context.
 
 ## Choosing a template
 
 - **Precompiled assembly**: multi-file projects, NuGet dependencies, and code that ships as a DLL.
-- **C# or F# source**: small plugins that the provider compiles at load, including multi-file C# with `#:include` and pack-time `#:package` dependencies.
+- **C# or F# source**: small plugins that the loader compiles at load, including multi-file C# with `#:include` and pack-time `#:package` dependencies.
 - **RPC**: Node.js, Python, and Kotlin plugins, or work that should run outside the server process.

@@ -4,7 +4,7 @@ description: A plugin container for Minecraft Bedrock Dedicated Server.
 template: splash
 hero:
   title: .NET plugins for Bedrock Dedicated Server
-  tagline: A native hosting shim brings the CLR into the server; a managed core discovers, isolates, and drives plugins.
+  tagline: The hosting shim brings the CLR into the server; a plugin manager discovers, isolates, and drives plugins.
   actions:
     - text: Quick start
       link: /quick-start/
@@ -28,23 +28,23 @@ import { ContainerSection } from 'lucode-starlight/components';
   <Card title="Isolation" icon="puzzle">
     Every plugin gets its own collectible assembly load context. Unload is verified, and a failing plugin does not take the server down.
   </Card>
-  <Card title="First-class providers" icon="rocket">
-    C# and F# source is compiled AOT to IL; the provider loads it into a collectible ALC, and the core drives lifecycle. Precompiled assemblies use the core's built-in path. RpcProvider is the exception first-class provider: an official cross-process bridge.
+  <Card title="In-process loaders" icon="rocket">
+    C# and F# source is compiled AOT to IL; the loader loads it into a collectible ALC, and the plugin manager drives lifecycle. Precompiled assemblies use the plugin manager's built-in path. RpcLoader is the out-of-process loader: an official RPC bridge.
   </Card>
   <Card title="Carriers" icon="server">
-    The same managed core runs under LeviLamina, Endstone on Windows and Linux, and the self-hosted Linux carrier (BDS 1.21.3).
+    The same plugin manager runs under LeviLamina, Endstone on Windows and Linux, and the self-hosted Linux carrier (BDS 1.21.3).
   </Card>
 </CardGrid>
 
 ## Start here
 
-- [Quick start](/quick-start/) — install the shim and a provider, then run two example plugins.
+- [Quick start](/quick-start/) — install the hosting shim and a loader, then run two example plugins.
 - [Plugin packages](/plugin-package/) — the directory layout, the manifest, and the checks applied before load.
 - [C# plugins](/authoring-csharp/) and [out-of-process plugins](/authoring-rpc/).
 - [Troubleshooting](/troubleshooting/).
 
 The documentation is also available in [简体中文](/zh/).
 
-RpcProvider is the exception first-class provider: an official cross-process bridge for plugins that cannot be compiled to IL.
+RpcLoader is the out-of-process loader: an official RPC bridge for plugins that cannot be compiled to IL.
 
 </ContainerSection>

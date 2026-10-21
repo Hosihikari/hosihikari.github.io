@@ -1,19 +1,28 @@
 ---
 title: 发布记录
-description: 星光框架、Provider 与模板的已发布版本。
+description: 星光框架、加载器与模板的已发布版本。
 ---
 
 当前功能线发布于 2026 年 10 月 21 日。
 
 | 组件 | 版本 | 分发方式 |
 | --- | --- | --- |
-| [Abstractions](https://www.nuget.org/packages/Hosihikari.Abstractions/0.7.1) | 0.7.1 | NuGet |
-| [Core](https://github.com/HosihikariFramework/PluginManagement/releases/tag/v0.7.2) | v0.7.2 | lip |
-| [HostingShim](https://github.com/HosihikariFramework/Shim/releases/tag/v0.7.0) | v0.7.0 | lip，四个载体变体 |
-| [C# Provider](https://github.com/HosihikariFramework/CSharpProvider/releases/tag/v0.2.3) | v0.2.3 | lip |
-| [F# Provider](https://github.com/HosihikariFramework/FSharpProvider/releases/tag/v0.1.5) | v0.1.5 | lip |
-| [RPC Provider](https://github.com/HosihikariFramework/RpcProvider/releases/tag/v0.2.4) | v0.2.4 | lip |
-| [插件模板](https://www.nuget.org/packages/Hosihikari.Plugin.Template/0.1.2) | 0.1.2 | `dotnet new` |
+| [PluginAbstractions](https://www.nuget.org/packages/Hosihikari.Plugin.Abstractions/1.0.0) | 1.0.0 | NuGet |
+| [PluginManager](https://github.com/HosihikariFramework/PluginManager/releases/tag/v1.0.0) | v1.0.0 | lip |
+| [HostingShim](https://github.com/HosihikariFramework/HostingShim/releases/tag/v1.0.0) | v1.0.0 | lip，四个载体变体 |
+| [C# Loader](https://github.com/HosihikariFramework/CSharpLoader/releases/tag/v1.0.0) | v1.0.0 | lip |
+| [F# Loader](https://github.com/HosihikariFramework/FSharpLoader/releases/tag/v1.0.0) | v1.0.0 | lip |
+| [RPC Loader](https://github.com/HosihikariFramework/RpcLoader/releases/tag/v1.0.0) | v1.0.0 | lip |
+| [插件模板](https://www.nuget.org/packages/Hosihikari.Plugin.Templates/1.0.0) | 1.0.0 | `dotnet new` |
+
+## v1.0.0
+
+- 所有组件统一发布为 v1.0.0。公开命名按 ADR-0040：`PluginManager`、`IPluginLoader`（`Id`）、`PluginHandle`、`CarrierServices`、`RegisterLoader`、`ScheduleOnce` / `SchedulePeriodic`。
+- 清单字段改为 `extraInfo.api_version`、`extraInfo.loader`、`extraInfo.manifest_version`；旧 `api`、`provider`、`format_version` 会给出迁移错误。顶层 `type`、`entry`、`version` 的线上名不变。
+- GitHub 仓改名为 HostingShim、PluginManager、PluginAbstractions、CSharpLoader、FSharpLoader、RpcLoader；NuGet 包为 `Hosihikari.Plugin.Abstractions` 与 `Hosihikari.Plugin.Templates`。
+- 卸载验证移出管理者锁，并让并发卸载共享同一个进行中的验证任务。
+- RPC 绑定改用 `scheduleOnce` / `schedulePeriodic`（Python 为 `schedule_once` / `schedule_periodic`）；打包器子命令为 `pack-loader`。
+- HostingShim 与 PluginManager 同步发布；HostingShim 依赖 `1.0.*` 的 PluginManager 线，入口契约版本仍为 1。
 
 ## Core v0.7.2
 
@@ -81,26 +90,26 @@ description: 星光框架、Provider 与模板的已发布版本。
 ## 安装
 
 ```powershell
-dotnet add package Hosihikari.Abstractions --version 0.7.1
-dotnet new install Hosihikari.Plugin.Template::0.1.2
+dotnet add package Hosihikari.Plugin.Abstractions --version 1.0.0
+dotnet new install Hosihikari.Plugin.Templates::1.0.0
 
-lip install github.com/HosihikariFramework/Shim
-lip install github.com/HosihikariFramework/CSharpProvider
-lip install github.com/HosihikariFramework/FSharpProvider
-lip install github.com/HosihikariFramework/RpcProvider
+lip install github.com/HosihikariFramework/HostingShim
+lip install github.com/HosihikariFramework/CSharpLoader
+lip install github.com/HosihikariFramework/FSharpLoader
+lip install github.com/HosihikariFramework/RpcLoader
 ```
 
-Shim 包会通过 lip 依赖安装 Core。需要显式锁定 Core 时：
+HostingShim 包会通过 lip 依赖安装 PluginManager。需要显式锁定 PluginManager 时：
 
 ```powershell
-lip install github.com/HosihikariFramework/PluginManagement@0.7.2
+lip install github.com/HosihikariFramework/PluginManager@1.0.0
 ```
 
-Shim 的 LeviLamina 与 Endstone 变体用 `#levilamina`、`#endstone` 选择；
+HostingShim 的 LeviLamina 与 Endstone 变体用 `#levilamina`、`#endstone` 选择；
 无后缀包安装 Linux 自持态载体。
 
 ## 兼容
 
-Core v0.7.2 与 Shim v0.7.0 使用入口契约版本 1，Shim 依赖范围为 `0.7.*`。
-按 Abstractions 0.7.1 构建的插件使用契约 `api` 2 与清单 `format_version` 1。
-上一版功能线是 Abstractions 0.7.1、Core v0.6.0、Shim v0.6.1、Provider v0.2.2 / v0.1.2 与模板 0.1.2。
+PluginManager v1.0.0 与 HostingShim v1.0.0 使用入口契约版本 1，HostingShim 依赖范围为 `1.0.*`。
+按 Hosihikari.Plugin.Abstractions 1.0.0 构建的插件使用 API 版本 2 与清单 `manifest_version` 1。
+上一版功能线是 PluginAbstractions 0.7.1、PluginManager v0.7.2、HostingShim v0.7.0、C# Loader v0.2.3、F# Loader v0.1.5、RPC Loader v0.2.4 与模板 0.1.2。

@@ -101,24 +101,24 @@ export default defineConfig({
             {
               label: 'F# plugins',
               translations: { 'zh-CN': 'F# 插件' },
-              link: 'https://github.com/HosihikariFramework/FSharpProvider',
+              link: 'https://github.com/HosihikariFramework/FSharpLoader',
             },
           ],
         },
         {
-          label: 'Exception',
-          translations: { 'zh-CN': '例外' },
+          label: 'Out-of-process',
+          translations: { 'zh-CN': '进程外' },
           items: [
             {
-              label: 'Out-of-process bridge',
-              translations: { 'zh-CN': '进程外桥' },
+              label: 'Out-of-process plugins',
+              translations: { 'zh-CN': '进程外插件' },
               slug: 'authoring-rpc',
             },
           ],
         },
         {
           label: 'Help',
-          translations: { 'zh-CN': '排错' },
+          translations: { 'zh-CN': '帮助' },
           items: [
             {
               label: 'Troubleshooting',

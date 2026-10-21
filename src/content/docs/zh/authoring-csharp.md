@@ -1,17 +1,17 @@
 ---
 title: C# 插件
-description: 写一个由 Provider 在装载时编译的 C# 源码插件。
+description: 写一个由加载器在装载时编译的 C# 源码插件。
 ---
 
-C# 直接跑在 CLR 上，`Hosihikari.PluginProvider.CSharp` 在装载时用 Roslyn 把 `.cs` 编成程序集，再放进插件自己的 collectible ALC。作者交的是源码，拿到的是与其他程序集插件一样的隔离与卸载承诺。这是一等 Provider：在插件开始运行前把源码 AOT 为 IL；Provider 把 IL 装进 collectible ALC，插件本身是普通 CLR 代码。
+C# 直接跑在 CLR 上，`Hosihikari.PluginLoader.CSharp` 在装载时用 Roslyn 把 `.cs` 编成程序集，再放进插件自己的 collectible ALC。作者交的是源码，拿到的是与其他程序集插件一样的隔离与卸载承诺。这是进程内加载器：它在插件开始运行前把源码 AOT 为 IL，再把 IL 装进 collectible ALC；插件本身是普通 CLR 代码。
 
 ## 准备
 
-按服务端选 Shim 变体（见[快速开始](/zh/quick-start/)）；下面以 LeviLamina 为例：
+按服务端选 HostingShim 变体（见[快速开始](/zh/quick-start/)）；下面以 LeviLamina 为例：
 
 ```powershell
-lip install github.com/HosihikariFramework/Shim#levilamina
-lip install github.com/HosihikariFramework/CSharpProvider
+lip install github.com/HosihikariFramework/HostingShim#levilamina
+lip install github.com/HosihikariFramework/CSharpLoader
 ```
 
 [C# 模板](/zh/templates/)是一个可以直接复制改名的完整包。
@@ -37,7 +37,7 @@ plugins/hello-csharp/
     { "name": "hosihikari" },
     { "name": "hosihikari-csharp" }
   ],
-  "extraInfo": { "api": "2", "format_version": "1", "provider": "csharp" }
+  "extraInfo": { "api_version": "2", "manifest_version": "1", "loader": "csharp" }
 }
 ```
 
@@ -55,7 +55,7 @@ plugins/hello-csharp/
 
 ## 入口
 
-文件里定义一个实现 `IPlugin`、有无参构造的类型；Provider 找到它并实例化。
+文件里定义一个实现 `IPlugin`、有无参构造的类型；加载器找到它并实例化。
 
 ```csharp
 using System.IO;
@@ -113,7 +113,7 @@ greeting = "你好，星光"
 
 ## 程序集插件
 
-已经有编好的 DLL 时，把 DLL 放进包，清单的 `provider` 写 `assembly`，`entry` 指向 DLL。程序集上声明入口：
+已经有编好的 DLL 时，把 DLL 放进包，清单的 `loader` 写 `assembly`，`entry` 指向 DLL。程序集上声明入口：
 
 ```csharp
 [assembly: EntryPoint<HelloPlugin>]
@@ -122,11 +122,11 @@ greeting = "你好，星光"
 工程引用契约并排除运行期资产，避免把第二份契约带进插件包：
 
 ```xml
-<PackageReference Include="Hosihikari.Abstractions" Version="[0.7.1]" ExcludeAssets="runtime" />
+<PackageReference Include="Hosihikari.Plugin.Abstractions" Version="[1.0.0]" ExcludeAssets="runtime" />
 ```
 
 程序集里应当恰好有一个 `EntryPoint<T>`；入口类型实现 `IPlugin` 且有无参构造。
 
 ## 部署与验证
 
-把目录放到 `plugins/`，启动服务端。日志里应出现 `loaded, package` 与 `enabled`；数据目录里出现 `loaded.txt` 与 `enabled.txt`。卸载时框架会把插件从 ALC 放下，并做回收验证。
+把目录放到 `plugins/`，启动服务端。日志里应出现 `loaded, package` 与 `enabled`；数据目录里出现 `loaded.txt` 与 `enabled.txt`。卸载时插件管理器通过插件的 `PluginHandle` 调用 `Unload()` / `WaitForUnloadAsync()`，并在把插件从 ALC 放下后检查 `IsUnloaded`。

@@ -8,9 +8,9 @@
     { "name": "hosihikari-rpc" }
   ],
   "extraInfo": {
-    "api": "2",
-    "format_version": "1",
-    "provider": "rpc",
+    "api_version": "2",
+    "manifest_version": "1",
+    "loader": "rpc",
     "command": "[\"node\", \"./hosihikari.mjs\", \"./main.mjs\"]"
   }
 }

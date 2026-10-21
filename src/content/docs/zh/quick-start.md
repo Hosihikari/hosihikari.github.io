@@ -1,6 +1,6 @@
 ---
 title: 快速开始
-description: 装上 Shim 与 Provider，跑起一个 C# 插件与一个进程外 Node 插件。
+description: 装上 HostingShim 与加载器，跑起一个 C# 插件与一个进程外 Node 插件。
 ---
 
 从一台装好 LeviLamina、Endstone 或自持态 Linux 载体的服务端，到看见第一个插件运行。
@@ -12,30 +12,30 @@ description: 装上 Shim 与 Provider，跑起一个 C# 插件与一个进程外
   或自持态的 BDS 1.21.3。
 - [.NET 10 运行时](https://dotnet.microsoft.com/download)（`Microsoft.NETCore.App`）。
 - [lip](https://github.com/LiteLDev/lip)。
-- 进程外例外示例还需要 Node.js 20+ 在 `PATH` 上。
+- 进程外插件还需要 Node.js 20+ 在 `PATH` 上。
 
 以下安装命令都在**服务端根目录**执行。
 
-## 装 Shim 与 Provider
+## 装 HostingShim 与加载器
 
 无后缀的包是**自持态 Linux** 载体。带父级的服务端用对应的 label：
 
 ```powershell
-lip install github.com/HosihikariFramework/Shim                # 自持态 Linux
-lip install github.com/HosihikariFramework/Shim#levilamina     # LeviLamina
-lip install github.com/HosihikariFramework/Shim#endstone       # Endstone Windows / Linux
+lip install github.com/HosihikariFramework/HostingShim                # 自持态 Linux
+lip install github.com/HosihikariFramework/HostingShim#levilamina     # LeviLamina
+lip install github.com/HosihikariFramework/HostingShim#endstone       # Endstone Windows / Linux
 ```
 
-再装本例需要的 C# Provider：
+再装本例需要的 C# 加载器：
 
 ```powershell
-lip install github.com/HosihikariFramework/CSharpProvider
+lip install github.com/HosihikariFramework/CSharpLoader
 ```
 
-顺序是 Shim → Provider → 插件包。Provider 的清单不声明对 Shim 的依赖，因为 Shim 的载体变体由安装命令选择。
+顺序是 HostingShim → 加载器 → 插件包。加载器的清单不声明对 HostingShim 的依赖，因为 HostingShim 的载体变体由安装命令选择。
 
-自持态会把 `hosihikari-server` 放在服务端根，核心放在 `plugins/hosihikari/`。通过启动器起服，
-它会预加载垫片：
+自持态会把 `hosihikari-server` 放在服务端根，插件管理器放在 `plugins/hosihikari/`。通过启动器起服，
+它会预加载 HostingShim：
 
 ```bash
 ./hosihikari-server
@@ -72,17 +72,17 @@ hello-csharp/
 <服务端>/data/hosihikari/hello-csharp/
 ```
 
-## 例外一等 Provider：进程外桥
+## 进程外插件
 
-RpcProvider 是例外一等 Provider：官方 Provider，插件在子进程中通过行分隔 JSON-RPC 2.0 与宿主通信，不把源码 AOT 为 IL。
+RpcLoader 是官方的进程外加载器：插件在子进程中通过行分隔 JSON-RPC 2.0 与宿主通信，不把源码 AOT 为 IL。
 
 ```powershell
-lip install github.com/HosihikariFramework/RpcProvider
+lip install github.com/HosihikariFramework/RpcLoader
 Copy-Item -Recurse .\examples\hello-node "$Server\plugins\hello-node"
 Copy-Item "$Server\plugins\hosihikari-rpc\bindings\node\hosihikari.mjs" "$Server\plugins\hello-node\hosihikari.mjs"
 ```
 
-`hosihikari.mjs` 是 RpcProvider 随包发布的 Node 绑定。把它放在入口旁边，清单里的命令就能直接运行。启动后日志里应出现 `hello-node` 的 `loaded, package` 与 `enabled, greeting=你好，星光`。
+`hosihikari.mjs` 是 RpcLoader 随包发布的 Node 绑定。把它放在入口旁边，清单里的命令就能直接运行。启动后日志里应出现 `hello-node` 的 `loaded, package` 与 `enabled, greeting=你好，星光`。
 
 如果目标目录已经存在，先删掉再复制，避免把新文件叠进旧目录。
 
@@ -101,5 +101,5 @@ Copy-Item .\examples\hello-csharp\hello-csharp.conf "$Server\config\hosihikari\h
 
 - [插件包与清单](/zh/plugin-package/)
 - [写一个 C# 插件](/zh/authoring-csharp/)
-- [进程外桥（例外）](/zh/authoring-rpc/)
+- [进程外插件](/zh/authoring-rpc/)
 - [常见问题](/zh/troubleshooting/)
