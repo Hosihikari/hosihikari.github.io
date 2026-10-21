@@ -3,32 +3,33 @@ title: Releases
 description: Published versions of the framework, providers, and templates.
 ---
 
-The current release line was published on 20 October 2026.
+The current release line was published on 21 October 2026.
 
 | Component | Version | Distribution |
 | --- | --- | --- |
 | [Abstractions](https://www.nuget.org/packages/Hosihikari.Abstractions/0.7.1) | 0.7.1 | NuGet |
-| [HostingShim](https://github.com/HosihikariFramework/Shim/releases/tag/v0.5.1) | v0.5.1 | lip, four carrier variants |
+| [Core](https://github.com/HosihikariFramework/PluginManagement/releases/tag/v0.6.0) | v0.6.0 | lip |
+| [HostingShim](https://github.com/HosihikariFramework/Shim/releases/tag/v0.6.0) | v0.6.0 | lip, four carrier variants |
 | [C# Provider](https://github.com/HosihikariFramework/CSharpProvider/releases/tag/v0.2.1) | v0.2.1 | lip |
 | [F# Provider](https://github.com/HosihikariFramework/FSharpProvider/releases/tag/v0.1.2) | v0.1.2 | lip |
 | [RPC Provider](https://github.com/HosihikariFramework/RpcProvider/releases/tag/v0.2.1) | v0.2.1 | lip |
 | [Plugin template](https://www.nuget.org/packages/Hosihikari.Plugin.Template/0.1.2) | 0.1.2 | `dotnet new` |
 
-## Abstractions 0.7.1
+## Core v0.6.0
 
-- `IPluginContext.TryRegisterProvider` reports a duplicate provider registration instead of hiding it.
-- `dependencies` and `extraInfo` become empty collections when the manifest contains `null`.
-- The contract documents failed unloads, exact event-type matching, and hooks during self-initiated shutdown.
-- This version is MIT on NuGet; 0.7.0 remains LGPL-3.0-or-later.
+- The managed core is now its own lip package. It installs under `plugins/hosihikari/`; the native Shim declares a compatible Core version as a lip dependency.
+- The native and managed sides check `HostingContractVersion` at startup. A missing entry fails with -2, a mismatch with -3.
+- Explicitly unloading a provider package is refused; a manifest that cannot be read is isolated to its package.
+- The failure-removal callback and core shutdown now use the same gate, and the provider-reuse log is written outside the core lock.
+- The packer expands `#:include` globs from the package root, so quoted paths and `../shared/*.cs` work. The matching loader change ships with the next C# Provider release.
 
-## HostingShim v0.5.1
+## HostingShim v0.6.0
 
+- Release assets contain only native files: the carrier, `nethost`, and the self-hosted launcher. Core files come from the Core package.
+- `lip install` resolves and installs Core automatically; `verify-lip` covers the shared `plugins/hosihikari/` layout.
 - Carrier reload keeps the managed core and loaded providers; only child plugins unload and reload (ADR-0037).
-- Endstone reload recycles the managed core before the native module unloads, and the log bridge waits for in-flight lines before the old logger is destroyed.
-- hostfxr is loaded once per process; repeated reloads no longer accumulate library references.
-- The packer understands `#:package` and recursive `#:include` with `*`, `**`, and `?`.
+- Endstone reload waits for in-flight log lines before the old logger is destroyed; hostfxr is loaded once per process.
 - Manifest and load-path hardening covers `null` and self dependencies, path-like names, loading-window rollback, and report delivery outside the load lock.
-- A manifest that cannot be read is isolated to its package. Explicitly unloading a provider package is refused; changing providers requires restarting the server.
 - Smoke tests record the server's real exit code; Linux links the carrier with `-z nodelete`.
 
 ## C# Provider v0.2.1
@@ -73,10 +74,17 @@ lip install github.com/HosihikariFramework/FSharpProvider
 lip install github.com/HosihikariFramework/RpcProvider
 ```
 
+The Shim package installs Core as a lip dependency. To pin Core explicitly:
+
+```powershell
+lip install github.com/HosihikariFramework/PluginManagement@0.6.0
+```
+
 Shim variants for LeviLamina and Endstone are selected with `#levilamina`, `#endstone`, and
 `#endstone_linux`; the package without a suffix installs the Linux self-hosted carrier.
 
 ## Compatibility
 
+Core v0.6.0 and Shim v0.6.0 use hosting contract version 1 and declare a `0.6.*` dependency.
 Plugins built against Abstractions 0.7.1 use contract `api` 2 and manifest `format_version` 1.
-The previous release line was Abstractions 0.7.0, Shim v0.5.0, Provider v0.2.0 / v0.1.1, and template 0.1.2.
+The previous release line was Abstractions 0.7.0, Shim v0.5.1, Provider v0.2.1 / v0.1.2, and template 0.1.2.
