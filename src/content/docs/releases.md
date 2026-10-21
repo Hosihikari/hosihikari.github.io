@@ -9,7 +9,7 @@ The current release line was published on 21 October 2026.
 | --- | --- | --- |
 | [Abstractions](https://www.nuget.org/packages/Hosihikari.Abstractions/0.7.1) | 0.7.1 | NuGet |
 | [Core](https://github.com/HosihikariFramework/PluginManagement/releases/tag/v0.6.0) | v0.6.0 | lip |
-| [HostingShim](https://github.com/HosihikariFramework/Shim/releases/tag/v0.6.0) | v0.6.0 | lip, four carrier variants |
+| [HostingShim](https://github.com/HosihikariFramework/Shim/releases/tag/v0.6.1) | v0.6.1 | lip, four carrier variants |
 | [C# Provider](https://github.com/HosihikariFramework/CSharpProvider/releases/tag/v0.2.1) | v0.2.1 | lip |
 | [F# Provider](https://github.com/HosihikariFramework/FSharpProvider/releases/tag/v0.1.2) | v0.1.2 | lip |
 | [RPC Provider](https://github.com/HosihikariFramework/RpcProvider/releases/tag/v0.2.1) | v0.2.1 | lip |
@@ -23,10 +23,11 @@ The current release line was published on 21 October 2026.
 - The failure-removal callback and core shutdown now use the same gate, and the provider-reuse log is written outside the core lock.
 - The packer expands `#:include` globs from the package root, so quoted paths and `../shared/*.cs` work. The matching loader change ships with the next C# Provider release.
 
-## HostingShim v0.6.0
+## HostingShim v0.6.1
 
 - Release assets contain only native files: the carrier, `nethost`, and the self-hosted launcher. Core files come from the Core package.
 - `lip install` resolves and installs Core automatically; `verify-lip` covers the shared `plugins/hosihikari/` layout.
+- Endstone uses `#endstone` on both Windows and Linux; `platform` selects the archive. The old `#endstone_linux` label is removed.
 - Carrier reload keeps the managed core and loaded providers; only child plugins unload and reload (ADR-0037).
 - Endstone reload waits for in-flight log lines before the old logger is destroyed; hostfxr is loaded once per process.
 - Manifest and load-path hardening covers `null` and self dependencies, path-like names, loading-window rollback, and report delivery outside the load lock.
@@ -80,11 +81,11 @@ The Shim package installs Core as a lip dependency. To pin Core explicitly:
 lip install github.com/HosihikariFramework/PluginManagement@0.6.0
 ```
 
-Shim variants for LeviLamina and Endstone are selected with `#levilamina`, `#endstone`, and
-`#endstone_linux`; the package without a suffix installs the Linux self-hosted carrier.
+Shim variants for LeviLamina and Endstone are selected with `#levilamina` and `#endstone`; the
+package without a suffix installs the Linux self-hosted carrier.
 
 ## Compatibility
 
-Core v0.6.0 and Shim v0.6.0 use hosting contract version 1 and declare a `0.6.*` dependency.
+Core v0.6.0 and Shim v0.6.1 use hosting contract version 1 and declare a `0.6.*` dependency.
 Plugins built against Abstractions 0.7.1 use contract `api` 2 and manifest `format_version` 1.
 The previous release line was Abstractions 0.7.0, Shim v0.5.1, Provider v0.2.1 / v0.1.2, and template 0.1.2.

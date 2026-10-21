@@ -9,7 +9,7 @@ description: 星光框架、Provider 与模板的已发布版本。
 | --- | --- | --- |
 | [Abstractions](https://www.nuget.org/packages/Hosihikari.Abstractions/0.7.1) | 0.7.1 | NuGet |
 | [Core](https://github.com/HosihikariFramework/PluginManagement/releases/tag/v0.6.0) | v0.6.0 | lip |
-| [HostingShim](https://github.com/HosihikariFramework/Shim/releases/tag/v0.6.0) | v0.6.0 | lip，四个载体变体 |
+| [HostingShim](https://github.com/HosihikariFramework/Shim/releases/tag/v0.6.1) | v0.6.1 | lip，四个载体变体 |
 | [C# Provider](https://github.com/HosihikariFramework/CSharpProvider/releases/tag/v0.2.1) | v0.2.1 | lip |
 | [F# Provider](https://github.com/HosihikariFramework/FSharpProvider/releases/tag/v0.1.2) | v0.1.2 | lip |
 | [RPC Provider](https://github.com/HosihikariFramework/RpcProvider/releases/tag/v0.2.1) | v0.2.1 | lip |
@@ -23,10 +23,11 @@ description: 星光框架、Provider 与模板的已发布版本。
 - 故障移除回调与核心收尾共用同一道闸门；Provider 复用日志移出核心锁。
 - 打包器从包根展开 `#:include` 通配符，带引号与 `../shared/*.cs` 的写法可用；C# Provider 装载侧的同一修复随下一版 Provider 发布。
 
-## HostingShim v0.6.0
+## HostingShim v0.6.1
 
 - 发布附件只含原生文件：载体、`nethost` 与自持态启动器；托管文件由 Core 包提供。
 - `lip install` 会自动解析并安装 Core；`verify-lip` 覆盖了 `plugins/hosihikari/` 的双包落盘。
+- Endstone 在 Windows 与 Linux 都用 `#endstone`，由 `platform` 选择附件；旧的 `#endstone_linux` 已移除。
 - 载体重载保留托管核心与已装载的 Provider，只卸载并重载子插件（ADR-0037）。
 - Endstone 重载会等已进桥的日志写完，再让旧日志器销毁；hostfxr 每个进程只加载一次。
 - 清单与装载路径补强：`null` 依赖、自依赖、带路径的包名、装载窗口回滚，以及锁外报告。
@@ -80,11 +81,11 @@ Shim 包会通过 lip 依赖安装 Core。需要显式锁定 Core 时：
 lip install github.com/HosihikariFramework/PluginManagement@0.6.0
 ```
 
-Shim 的 LeviLamina 与 Endstone 变体用 `#levilamina`、`#endstone`、`#endstone_linux` 选择；
+Shim 的 LeviLamina 与 Endstone 变体用 `#levilamina`、`#endstone` 选择；
 无后缀包安装 Linux 自持态载体。
 
 ## 兼容
 
-Core v0.6.0 与 Shim v0.6.0 使用入口契约版本 1，Shim 依赖范围为 `0.6.*`。
+Core v0.6.0 与 Shim v0.6.1 使用入口契约版本 1，Shim 依赖范围为 `0.6.*`。
 按 Abstractions 0.7.1 构建的插件使用契约 `api` 2 与清单 `format_version` 1。
 上一版功能线是 Abstractions 0.7.0、Shim v0.5.1、Provider v0.2.1 / v0.1.2 与模板 0.1.2。

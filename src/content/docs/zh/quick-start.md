@@ -23,8 +23,7 @@ description: 装上 Shim 与 Provider，跑起一个 C# 插件与一个进程外
 ```powershell
 lip install github.com/HosihikariFramework/Shim                # 自持态 Linux
 lip install github.com/HosihikariFramework/Shim#levilamina     # LeviLamina
-lip install github.com/HosihikariFramework/Shim#endstone       # Endstone Windows
-lip install github.com/HosihikariFramework/Shim#endstone_linux # Endstone Linux
+lip install github.com/HosihikariFramework/Shim#endstone       # Endstone Windows / Linux
 ```
 
 再装本例需要的 C# Provider：

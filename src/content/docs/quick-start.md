@@ -26,8 +26,7 @@ variant:
 ```powershell
 lip install github.com/HosihikariFramework/Shim                # self-hosted Linux
 lip install github.com/HosihikariFramework/Shim#levilamina     # LeviLamina
-lip install github.com/HosihikariFramework/Shim#endstone       # Endstone, Windows
-lip install github.com/HosihikariFramework/Shim#endstone_linux # Endstone, Linux
+lip install github.com/HosihikariFramework/Shim#endstone       # Endstone, Windows / Linux
 ```
 
 Then install the C# provider:
