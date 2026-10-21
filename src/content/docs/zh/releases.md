@@ -11,7 +11,7 @@ description: 星光框架、Provider 与模板的已发布版本。
 | [Core](https://github.com/HosihikariFramework/PluginManagement/releases/tag/v0.7.2) | v0.7.2 | lip |
 | [HostingShim](https://github.com/HosihikariFramework/Shim/releases/tag/v0.7.0) | v0.7.0 | lip，四个载体变体 |
 | [C# Provider](https://github.com/HosihikariFramework/CSharpProvider/releases/tag/v0.2.3) | v0.2.3 | lip |
-| [F# Provider](https://github.com/HosihikariFramework/FSharpProvider/releases/tag/v0.1.4) | v0.1.4 | lip |
+| [F# Provider](https://github.com/HosihikariFramework/FSharpProvider/releases/tag/v0.1.5) | v0.1.5 | lip |
 | [RPC Provider](https://github.com/HosihikariFramework/RpcProvider/releases/tag/v0.2.4) | v0.2.4 | lip |
 | [插件模板](https://www.nuget.org/packages/Hosihikari.Plugin.Template/0.1.2) | 0.1.2 | `dotnet new` |
 
@@ -50,13 +50,14 @@ description: 星光框架、Provider 与模板的已发布版本。
 - 装载失败释放 ALC；一个包必须恰好暴露一个 `IPlugin` 类型。
 - 同类型的第二个 Provider 包会装载失败，不再留在场上空转。
 
-## F# Provider v0.1.4
+## F# Provider v0.1.5
 
 - lip 变体平台中立，Windows 与 Linux 都可安装。
 - 编译期引用顺序与运行期一致，包内依赖优先。
 - FSharp.Compiler.Service 编译限制为 30 秒。
 - PDB 校验、源码快照与唯一暂存目录保护缓存。
 - `#load` 与本地 `#r` 引入的文件参与内容寻址；依赖一改就换目录，未改动的指令入口复用缓存。`#I`、`nuget:`、通配符或解析不了的路径仍每次编译到独立的 `-run-<nonce>` 目录。
+- 指令扫描按 F# 词法处理：行注释与嵌套块注释、注释里的字符串、引号标识符、字符字面量与 `(*)` 运算符都不会被误认为指令；扫到文件尾仍停在注释或字符串里的入口按不可缓存处理。
 - 跨进程清理使用保留期与装载租约；同类型的第二个 Provider 包装载失败。
 
 ## RPC Provider v0.2.4

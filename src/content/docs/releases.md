@@ -11,7 +11,7 @@ The current release line was published on 21 October 2026.
 | [Core](https://github.com/HosihikariFramework/PluginManagement/releases/tag/v0.7.2) | v0.7.2 | lip |
 | [HostingShim](https://github.com/HosihikariFramework/Shim/releases/tag/v0.7.0) | v0.7.0 | lip, four carrier variants |
 | [C# Provider](https://github.com/HosihikariFramework/CSharpProvider/releases/tag/v0.2.3) | v0.2.3 | lip |
-| [F# Provider](https://github.com/HosihikariFramework/FSharpProvider/releases/tag/v0.1.4) | v0.1.4 | lip |
+| [F# Provider](https://github.com/HosihikariFramework/FSharpProvider/releases/tag/v0.1.5) | v0.1.5 | lip |
 | [RPC Provider](https://github.com/HosihikariFramework/RpcProvider/releases/tag/v0.2.4) | v0.2.4 | lip |
 | [Plugin template](https://www.nuget.org/packages/Hosihikari.Plugin.Template/0.1.2) | 0.1.2 | `dotnet new` |
 
@@ -50,13 +50,14 @@ The current release line was published on 21 October 2026.
 - A failed load releases its ALC, and a package must expose exactly one `IPlugin` type.
 - A second provider package for the same plugin type now fails to load instead of remaining idle.
 
-## F# Provider v0.1.4
+## F# Provider v0.1.5
 
 - The lip variant is platform-neutral and installs on Windows and Linux.
 - Compile-time references use the same package-first order as runtime resolution.
 - FSharp.Compiler.Service compilation is limited to 30 seconds.
 - PDB checksums, the source snapshot, and a unique staging directory protect the cache.
 - `#load` and local `#r` files participate in the content-addressed key; an edit changes the directory, while an unchanged directive entry reuses the cached artifact. `#I`, `nuget:`, globs or unresolved paths still compile into a unique `-run-<nonce>` directory on every load.
+- Directive scanning follows F# lexing: line and nested block comments, strings inside comments, quoted identifiers, character literals and the `(*)` operator are not mistaken for directives. An entry that ends inside a comment or string is treated as uncacheable.
 - Cross-process cleanup uses retention windows and load leases; a second provider package for the same type fails to load.
 
 ## RPC Provider v0.2.4
