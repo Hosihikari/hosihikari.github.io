@@ -40,14 +40,21 @@ plugins/
 | `name` | 插件名，必须等于目录名。 |
 | `entry` | 包内相对路径；绝对路径与 `..` 出界。 |
 | `type` | 路由键，`hosihikari`。 |
-| `version` | 插件自己的版本字符串。 |
-| `dependencies` | 依赖的插件名；依赖图决定装载顺序。 |
+| `version` | 插件自己的 SemVer 版本。 |
+| `dependencies` | 依赖的插件名，可带 SemVer 范围；依赖图决定装载顺序并检查版本。 |
 | `extraInfo.api` | 契约主版本，当前 `2`。 |
 | `extraInfo.format_version` | 清单 schema 版本，当前 `1`。 |
 | `extraInfo.provider` | 处理这个包的 Provider。`assembly` 是核心内置入口；`csharp`、`fsharp` 是一等 Provider；`rpc` 是例外一等 Provider。 |
 | `extraInfo.command` | 仅 `rpc`：编码成字符串的 JSON 数组。 |
 
-依赖按名字排序，没有版本约束；框架自身是 `hosihikari`。一等 Provider 声明 `hosihikari-csharp` 或 `hosihikari-fsharp`；例外一等 Provider 声明 `hosihikari-rpc`。Provider 包先于依赖它的包装载。预编译程序集走核心内置入口，不需要 Provider 包。
+依赖按名字排序；每条依赖可以带一个 NuGet SemVer 范围：
+
+- 省略、空字符串或 `*`：任意版本。
+- `1.2.3`：1.2.3 或更高。
+- `[1.2.3]`：精确 1.2.3。
+- `[1.0.0,2.0.0)`：包含 1.0.0，不包含 2.0.0。
+
+被范围约束的目标插件必须声明可解析的 `version`。框架依赖 `hosihikari` 不参与版本检查；Provider 包先于依赖它的包装载。一等 Provider 声明 `hosihikari-csharp` 或 `hosihikari-fsharp`；例外一等 Provider 声明 `hosihikari-rpc`。预编译程序集走核心内置入口，不需要 Provider 包。
 
 ## Provider 与入口
 

@@ -40,14 +40,21 @@ plugins/
 | `name` | Plugin name; must equal the directory name. |
 | `entry` | Path inside the package; absolute paths and `..` are rejected. |
 | `type` | Routing key; always `hosihikari`. |
-| `version` | The plugin's own version string. |
-| `dependencies` | Plugin names; the dependency graph decides load order. |
+| `version` | The plugin's own SemVer version. |
+| `dependencies` | Plugin names with optional SemVer ranges; the dependency graph decides load order and checks versions. |
 | `extraInfo.api` | Contract major version; currently `2`. |
 | `extraInfo.format_version` | Manifest schema version; currently `1`. |
 | `extraInfo.provider` | The provider that handles this package. `assembly` is the core's built-in path; `csharp` and `fsharp` are first-class providers; `rpc` is the exception first-class provider. |
 | `extraInfo.command` | `rpc` only: a JSON array encoded as a string. |
 
-Dependencies are sorted by name and carry no version constraints. The framework itself is `hosihikari`. First-class providers declare `hosihikari-csharp` or `hosihikari-fsharp`; the exception first-class provider declares `hosihikari-rpc`. Provider packages load before the packages that depend on them. Precompiled assemblies use the core's built-in path and need no provider package.
+Dependencies are sorted by name. A dependency may carry a NuGet SemVer range:
+
+- omitted, empty, or `*`: any version.
+- `1.2.3`: 1.2.3 or newer.
+- `[1.2.3]`: exactly 1.2.3.
+- `[1.0.0,2.0.0)`: 1.0.0 inclusive through 2.0.0 exclusive.
+
+The target plugin must declare a parseable `version` when a range constrains it. The framework dependency `hosihikari` is not version-checked; provider packages load before the packages that depend on them. First-class providers declare `hosihikari-csharp` or `hosihikari-fsharp`; the exception first-class provider declares `hosihikari-rpc`. Precompiled assemblies use the core's built-in path and need no provider package.
 
 ## Providers and entries
 
