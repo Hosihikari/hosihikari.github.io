@@ -11,7 +11,7 @@ Run from the documentation repository root:
 ```powershell
 git clone https://github.com/HosihikariFramework/hosihikariframework.github.io
 cd hosihikariframework.github.io
-# LeviLamina; use #endstone, #endstone_linux, or no label for the other carriers
+# LeviLamina; use #endstone or no label for the other carriers
 lip install github.com/HosihikariFramework/Shim#levilamina
 lip install github.com/HosihikariFramework/CSharpProvider
 $Server = 'C:\bedrock-server'
