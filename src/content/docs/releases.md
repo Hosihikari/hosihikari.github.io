@@ -8,14 +8,14 @@ The current release line was published on 21 October 2026.
 | Component | Version | Distribution |
 | --- | --- | --- |
 | [Abstractions](https://www.nuget.org/packages/Hosihikari.Abstractions/0.7.1) | 0.7.1 | NuGet |
-| [Core](https://github.com/HosihikariFramework/PluginManagement/releases/tag/v0.7.1) | v0.7.1 | lip |
+| [Core](https://github.com/HosihikariFramework/PluginManagement/releases/tag/v0.7.2) | v0.7.2 | lip |
 | [HostingShim](https://github.com/HosihikariFramework/Shim/releases/tag/v0.7.0) | v0.7.0 | lip, four carrier variants |
 | [C# Provider](https://github.com/HosihikariFramework/CSharpProvider/releases/tag/v0.2.3) | v0.2.3 | lip |
 | [F# Provider](https://github.com/HosihikariFramework/FSharpProvider/releases/tag/v0.1.4) | v0.1.4 | lip |
 | [RPC Provider](https://github.com/HosihikariFramework/RpcProvider/releases/tag/v0.2.4) | v0.2.4 | lip |
 | [Plugin template](https://www.nuget.org/packages/Hosihikari.Plugin.Template/0.1.2) | 0.1.2 | `dotnet new` |
 
-## Core v0.7.1
+## Core v0.7.2
 
 - Dependency versions are enforced. The plugin's own `version` is SemVer; a dependency `version` is a NuGet range such as `1.2.3`, `[1.2.3]`, or `[1.0.0,2.0.0)`.
 - Invalid versions or ranges are rejected when the manifest is read and when a package is packed. The dependency graph and parent-delivered loads check the target version before loading; an unsatisfied dependent is skipped with the constraint and actual version in the report.
@@ -26,6 +26,8 @@ The current release line was published on 21 October 2026.
 - The failure-removal callback and core shutdown now use the same gate, and the provider-reuse log is written outside the core lock.
 - The packer expands `#:include` globs from the package root, so quoted paths and `../shared/*.cs` work. C# Provider 0.2.2 uses the same path handling when it loads the sources.
 - The packer tolerates read-only files when it cleans its staging directory; a cleanup failure no longer fails an already finished pack or provider pack.
+- Floating constraints such as `1.*` and `1.2.*` enforce their upper bound: `1.*` rejects `2.0.0`, and `1.2.*` rejects `1.3.0`. The dependency graph and parent-delivered loads share this check.
+- A null entry or empty name in `dependencies` is reported as a pack problem instead of throwing a `NullReferenceException`.
 
 ## HostingShim v0.7.0
 
@@ -90,7 +92,7 @@ lip install github.com/HosihikariFramework/RpcProvider
 The Shim package installs Core as a lip dependency. To pin Core explicitly:
 
 ```powershell
-lip install github.com/HosihikariFramework/PluginManagement@0.7.1
+lip install github.com/HosihikariFramework/PluginManagement@0.7.2
 ```
 
 Shim variants for LeviLamina and Endstone are selected with `#levilamina` and `#endstone`; the
@@ -98,6 +100,6 @@ package without a suffix installs the Linux self-hosted carrier.
 
 ## Compatibility
 
-Core v0.7.1 and Shim v0.7.0 use hosting contract version 1, and Shim declares a `0.7.*` dependency.
+Core v0.7.2 and Shim v0.7.0 use hosting contract version 1, and Shim declares a `0.7.*` dependency.
 Plugins built against Abstractions 0.7.1 use contract `api` 2 and manifest `format_version` 1.
 The previous release line was Abstractions 0.7.1, Core v0.6.0, Shim v0.6.1, Provider v0.2.2 / v0.1.2, and template 0.1.2.
