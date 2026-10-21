@@ -112,9 +112,9 @@ stdout carries the protocol; stderr carries text logs. The Node binding redirect
 
 The provider package ships reference bindings:
 
-- `bindings/node/hosihikari.mjs`
-- `bindings/quickjs/hosihikari.js` (requires `qjs`)
-- `bindings/python/hosihikari.py` (module-level `on_load` and friends)
+- `bindings/node/hosihikari.mjs` and `hosihikari.d.ts` (TypeScript declarations)
+- `bindings/quickjs/hosihikari.js` (requires `qjs`; JSDoc types)
+- `bindings/python/hosihikari.py` and `hosihikari.pyi` (module-level `on_load` and friends; type stubs)
 - `bindings/java/hosihikari` (shared by Java and Kotlin; `command` points at `hosihikari.Binding`)
 
 The command forms and context APIs are in the [RpcProvider README](https://github.com/HosihikariFramework/RpcProvider/blob/main/README.md).

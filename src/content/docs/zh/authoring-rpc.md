@@ -111,9 +111,9 @@ stdout 只走协议；stderr 是文本日志。Node 绑定把 `console.log` 改�
 
 Provider 包里带参考绑定：
 
-- `bindings/node/hosihikari.mjs`
-- `bindings/quickjs/hosihikari.js`（需要 `qjs`）
-- `bindings/python/hosihikari.py`（模块级 `on_load` 等）
+- `bindings/node/hosihikari.mjs` 与 `hosihikari.d.ts`（TypeScript 声明）
+- `bindings/quickjs/hosihikari.js`（需要 `qjs`；JSDoc 类型）
+- `bindings/python/hosihikari.py` 与 `hosihikari.pyi`（模块级 `on_load` 等；类型存根）
 - `bindings/java/hosihikari`（Java 与 Kotlin 共用；`command` 指向 `hosihikari.Binding`）
 
 各绑定的命令写法与上下文 API 见 [RpcProvider 的 README](https://github.com/HosihikariFramework/RpcProvider/blob/main/README.zh_hans.md)。
