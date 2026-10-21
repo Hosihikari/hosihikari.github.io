@@ -36,8 +36,10 @@ The C# and F# providers compile the source at load; the package carries source a
 | [CSharpPluginTemplate](https://github.com/HosihikariFramework/CSharpPluginTemplate) | `hosihikari-csharp` | `lip install github.com/HosihikariFramework/CSharpProvider` |
 | [FSharpPluginTemplate](https://github.com/HosihikariFramework/FSharpPluginTemplate) | `hosihikari-fsharp` | `lip install github.com/HosihikariFramework/FSharpProvider` |
 
-Copy the repository into `plugins/MyCSharpPlugin/` or `plugins/MyFSharpPlugin/`, rename the plugin,
-and restart. See [C# plugins](/authoring-csharp/) for the contract.
+`CSharpPluginTemplate` demonstrates `#:package` and `#:include`; run its `pack.ps1` or `pack.sh`,
+then copy `dist/MyCSharpPlugin/` into `plugins/`. `FSharpPluginTemplate` demonstrates `#load`; copy
+the repository into `plugins/MyFSharpPlugin/` directly. Rename the plugin and restart. See
+[C# plugins](/authoring-csharp/) for the contract.
 
 ## Out-of-process runtimes
 
@@ -58,5 +60,5 @@ and restart. The Python manifest uses `python3`; change it to `python` on Window
 ## Choosing a template
 
 - **Precompiled assembly**: multi-file projects, NuGet dependencies, and code that ships as a DLL.
-- **C# or F# source**: one-file plugins that the provider compiles at load.
+- **C# or F# source**: small plugins that the provider compiles at load, including multi-file C# with `#:include` and pack-time `#:package` dependencies.
 - **RPC**: Node.js, Python, and Kotlin plugins, or work that should run outside the server process.

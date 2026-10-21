@@ -35,8 +35,9 @@ C# 与 F# Provider 在装载时编译源码；包里放源码，没有构建产�
 | [CSharpPluginTemplate](https://github.com/HosihikariFramework/CSharpPluginTemplate) | `hosihikari-csharp` | `lip install github.com/HosihikariFramework/CSharpProvider` |
 | [FSharpPluginTemplate](https://github.com/HosihikariFramework/FSharpPluginTemplate) | `hosihikari-fsharp` | `lip install github.com/HosihikariFramework/FSharpProvider` |
 
-复制仓库到 `plugins/MyCSharpPlugin/` 或 `plugins/MyFSharpPlugin/`，改名后重启。契约见
-[C# 插件](/zh/authoring-csharp/)。
+`CSharpPluginTemplate` 演示 `#:package` 与 `#:include`；先跑它的 `pack.ps1` 或 `pack.sh`，
+再把 `dist/MyCSharpPlugin/` 复制到 `plugins/`。`FSharpPluginTemplate` 演示 `#load`，直接复制仓库
+到 `plugins/MyFSharpPlugin/`。改名后重启。契约见 [C# 插件](/zh/authoring-csharp/)。
 
 ## 进程外运行时
 
@@ -55,5 +56,5 @@ RpcProvider 启动清单 `extraInfo.command` 里的命令，通过 stdio 走 JSO
 ## 怎么选
 
 - **预编译程序集**：多文件项目、NuGet 依赖，以及以 DLL 形式交付的代码。
-- **C# 或 F# 源码**：由 Provider 在装载时编译的单文件插件。
+- **C# 或 F# 源码**：由 Provider 在装载时编译的小型插件，包括用 `#:include` 组织多文件、用 `#:package` 在打包期还原依赖的 C# 插件。
 - **RPC**：Node.js、Python、Kotlin 插件，以及适合在服务器进程外运行的工作。
