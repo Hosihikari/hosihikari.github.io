@@ -24,12 +24,12 @@ var manager = new PluginManager(
     carrierServices, onRemoved, options);
 ```
 
-`UnloadVerificationTimeout` is the time budget for the collection check after a plugin has been
+`UnloadVerificationTimeout` is the time budget for unload verification after a plugin has been
 detached. It defaults to 30 seconds. A finite value must be positive and no more than about 49.7
 days; use `Timeout.InfiniteTimeSpan` to wait without a timer.
 
 A timeout is a failed unload. The report names the timeout, the plugin stays `Detached` in the
-manager table, and `Unload` returns a failure. Call `Unload` again to retry the collection check.
+manager table, and `Unload` returns a failure. Call `Unload` again to retry unload verification.
 The six-argument constructor uses the defaults.
 
 ## Status snapshot

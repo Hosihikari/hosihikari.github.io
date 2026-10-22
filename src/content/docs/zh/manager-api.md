@@ -23,11 +23,11 @@ var manager = new PluginManager(
     carrierServices, onRemoved, options);
 ```
 
-`UnloadVerificationTimeout` 是插件被放下之后，等待回收检查的时间预算，默认 30 秒。有限值必须为
+`UnloadVerificationTimeout` 是插件被放下之后，等待回收验证的时间预算，默认 30 秒。有限值必须为
 正且不超过约 49.7 天；用 `Timeout.InfiniteTimeSpan` 表示不限时等待。
 
 超时按卸载失败记录：报告写明超时，插件在管理者表里保持 `Detached`，`Unload` 返回失败。再次调用
-`Unload` 会重试回收检查。六参数构造函数使用默认配置。
+`Unload` 会重试回收验证。六参数构造函数使用默认配置。
 
 ## 状态快照
 
