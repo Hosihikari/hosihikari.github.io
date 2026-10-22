@@ -26,7 +26,15 @@ cd MyPlugin
 pwsh ./pack.ps1
 ```
 
-`dist/MyPlugin/` is the plugin package. See the
+From the 1.1.0 line, reference the build package instead; the checkout is no longer needed:
+
+```powershell
+dotnet add package Hosihikari.Plugin.Build --version 1.0.0
+dotnet build -t:PackPlugin
+```
+
+The target writes `dist/MyPlugin/`. Multi-target projects pass `-f <tfm>`. See
+[Testing plugins](/testing/) for the test package and the
 [template README](https://github.com/HosihikariFramework/PluginAbstractions/tree/main/templates/Hosihikari.Plugin.Templates).
 
 ## Source C# and F#
