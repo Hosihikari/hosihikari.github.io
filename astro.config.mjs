@@ -103,6 +103,11 @@ export default defineConfig({
               translations: { 'zh-CN': 'F# 插件' },
               link: 'https://github.com/HosihikariFramework/FSharpLoader',
             },
+            {
+              label: 'Testing plugins',
+              translations: { 'zh-CN': '测试插件' },
+              slug: 'testing',
+            },
           ],
         },
         {

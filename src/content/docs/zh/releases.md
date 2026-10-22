@@ -21,6 +21,18 @@ description: 星光框架、加载器与模板的已发布版本。
 - 内容目录为 `Hosihikari.Plugin.Templates` 与 `Hosihikari.Plugin.Templates.FSharp`。
 - 生成的 F# 插件包会带 `FSharp.Core.dll`；两个模板都不会把共享契约 DLL 放进插件包。
 
+## 1.1.0（已准备）
+
+以下包为下一条功能线准备好，尚未发布；发布前安装命令仍停留在 1.0.0 线。
+
+- `Hosihikari.Plugin.Abstractions` 1.1.0 —— 可选的加载器诊断。
+- `Hosihikari.PluginManager` 1.1.0 —— 卸载验证超时、插件状态快照。
+- `Hosihikari.Plugin.Build` 1.0.0 —— 显式 `PackPlugin` MSBuild 目标。
+- `Hosihikari.Testing` 1.0.0 —— 内存生命周期宿主与真实管理者辅助。
+
+核心 NuGet 由 `v*` 标签通过 OIDC 发布；lip 1.1.0 仍需把 `tooth.json` 版本与 HostingShim 依赖
+移到 1.1 线。
+
 ## v1.0.0
 
 - 所有组件统一发布为 v1.0.0。公开命名按 ADR-0040：`PluginManager`、`IPluginLoader`（`Id`）、`PluginHandle`、`CarrierServices`、`RegisterLoader`、`ScheduleOnce` / `SchedulePeriodic`。

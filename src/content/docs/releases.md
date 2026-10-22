@@ -24,6 +24,19 @@ The current release line was published on 21 October 2026; the template package 
 - A generated F# plugin package carries `FSharp.Core.dll`; both templates keep the shared contract
   DLL out of the package.
 
+## 1.1.0 (prepared)
+
+The following packages are prepared for the next release line. They are not published yet; install
+commands stay on the 1.0.0 line until publication.
+
+- `Hosihikari.Plugin.Abstractions` 1.1.0 — optional loader diagnostics.
+- `Hosihikari.PluginManager` 1.1.0 — unload verification timeout, plugin status snapshot.
+- `Hosihikari.Plugin.Build` 1.0.0 — explicit `PackPlugin` MSBuild target.
+- `Hosihikari.Testing` 1.0.0 — in-memory lifecycle host and real manager harness.
+
+The core NuGet job publishes from a `v*` tag through OIDC. The lip 1.1.0 release still needs the
+`tooth.json` version and HostingShim dependency to move to the 1.1 line.
+
 ## v1.0.0
 
 - All components are released as v1.0.0. Public names follow ADR-0040: `PluginManager`, `IPluginLoader` with `Id`, `PluginHandle`, `CarrierServices`, `RegisterLoader`, and `ScheduleOnce` / `SchedulePeriodic`.

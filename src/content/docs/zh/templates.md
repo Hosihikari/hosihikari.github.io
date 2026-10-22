@@ -25,7 +25,15 @@ cd MyPlugin
 pwsh ./pack.ps1
 ```
 
-`dist/MyPlugin/` 就是插件包。见
+1.1.0 功能线起改用构建包，不再需要检出：
+
+```powershell
+dotnet add package Hosihikari.Plugin.Build --version 1.0.0
+dotnet build -t:PackPlugin
+```
+
+目标会把包写到 `dist/MyPlugin/`；多目标项目要带 `-f <tfm>`。测试包见
+[测试插件](/zh/testing/)，模板说明见
 [模板说明](https://github.com/HosihikariFramework/PluginAbstractions/tree/main/templates/Hosihikari.Plugin.Templates)。
 
 ## C# 与 F# 源码
