@@ -108,6 +108,11 @@ export default defineConfig({
               translations: { 'zh-CN': '测试插件' },
               slug: 'testing',
             },
+            {
+              label: 'Manager API',
+              translations: { 'zh-CN': '管理者 API' },
+              slug: 'manager-api',
+            },
           ],
         },
         {
