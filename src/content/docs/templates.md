@@ -25,7 +25,7 @@ pwsh ./pack.ps1
 ```
 
 `dist/MyPlugin/` is the plugin package. See the
-[template README](https://github.com/HosihikariFramework/PluginAbstractions/tree/main/templates/Hosihikari.Plugin.Template).
+[template README](https://github.com/HosihikariFramework/PluginAbstractions/tree/main/templates/Hosihikari.Plugin.Templates).
 
 ## Source C# and F#
 

@@ -24,7 +24,7 @@ pwsh ./pack.ps1
 ```
 
 `dist/MyPlugin/` 就是插件包。见
-[模板说明](https://github.com/HosihikariFramework/PluginAbstractions/tree/main/templates/Hosihikari.Plugin.Template)。
+[模板说明](https://github.com/HosihikariFramework/PluginAbstractions/tree/main/templates/Hosihikari.Plugin.Templates)。
 
 ## C# 与 F# 源码
 
