@@ -1,0 +1,110 @@
+---
+title: Quick start
+description: Install HostingShim, generate a precompiled C# or F# plugin from the templates, and run it with an out-of-process Node plugin.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+This walkthrough takes a server with LeviLamina, Endstone, or the self-hosted Linux carrier from a
+fresh install to a running precompiled plugin and an out-of-process Node plugin.
+
+## Prerequisites
+
+- Windows x64 for LeviLamina and Endstone on Windows; Linux x64 for Endstone on Linux and the
+  self-hosted carrier.
+- Minecraft Bedrock Dedicated Server: BDS 1.26.51+ with LeviLamina 26.51+, BDS 1.26.52+ with
+  Endstone 0.11+, or BDS 1.21.3 for the self-hosted carrier.
+- [.NET 10 SDK](https://dotnet.microsoft.com/download) to build and pack the template.
+- [lip](https://github.com/LiteLDev/lip).
+- A [PluginManager](https://github.com/HosihikariFramework/PluginManager) checkout for the template
+  packer.
+- Node.js 20+ on `PATH` for out-of-process plugins.
+
+Run the install commands in the **server root**.
+
+## Install HostingShim
+
+The suffix-less package is the **self-hosted Linux** carrier. Parent-managed servers pick a labeled
+variant:
+
+```powershell
+lip install github.com/HosihikariFramework/HostingShim                # self-hosted Linux
+lip install github.com/HosihikariFramework/HostingShim#levilamina     # LeviLamina
+lip install github.com/HosihikariFramework/HostingShim#endstone       # Endstone, Windows / Linux
+```
+
+Precompiled assembly plugins use the plugin manager's built-in assembly loader, so this walkthrough
+needs no extra loader package. The out-of-process example installs RpcLoader separately.
+
+The self-hosted carrier installs `hosihikari-server` at the server root and the plugin manager under
+`plugins/hosihikari/`. Start the server through the launcher, which preloads HostingShim:
+
+```bash
+./hosihikari-server
+```
+
+Its target is BDS 1.21.3; the launcher needs the .NET 10 runtime. The plugin packages live under
+`plugins/` exactly as they do under a parent, and they are precompiled assembly packages.
+
+## Create a plugin from a template
+
+The [templates](/templates/) package generates a complete precompiled plugin. Both tabs produce
+`HelloPlugin`; choose the language.
+
+The pack scripts call the core packer from a `PluginManager` checkout. Put that checkout beside
+`HelloPlugin`, or point `HOSIHIKARI_PLUGINMANAGER` at it. Set `$Server` once:
+
+```powershell
+$Server = 'C:\bedrock-server'
+$env:HOSIHIKARI_PLUGINMANAGER = 'C:\src\PluginManager'  # only when the checkout is not beside HelloPlugin
+```
+
+<Tabs syncKey="template-language">
+  <TabItem label="C#">
+    ```powershell
+    dotnet new install Hosihikari.Plugin.Templates
+    dotnet new hosihikari-plugin -n HelloPlugin -o HelloPlugin
+    pwsh ./HelloPlugin/pack.ps1
+    Copy-Item -Recurse ./HelloPlugin/dist/HelloPlugin "$Server/plugins/HelloPlugin"
+    ```
+  </TabItem>
+  <TabItem label="F#">
+    ```powershell
+    dotnet new install Hosihikari.Plugin.Templates
+    dotnet new hosihikari-plugin-fsharp -n HelloPlugin -o HelloPlugin
+    pwsh ./HelloPlugin/pack.ps1
+    Copy-Item -Recurse ./HelloPlugin/dist/HelloPlugin "$Server/plugins/HelloPlugin"
+    ```
+  </TabItem>
+</Tabs>
+
+`dist/HelloPlugin/` contains the plugin DLL, its private dependencies, and `manifest.json`. The F#
+package also carries `FSharp.Core.dll`.
+
+Start the server. The log shows `HelloPlugin loaded from <server>/plugins/HelloPlugin`.
+
+## Out-of-process plugins
+
+RpcLoader is the official out-of-process loader. It runs the plugin in a child process over
+line-delimited JSON-RPC 2.0.
+
+```powershell
+lip install github.com/HosihikariFramework/RpcLoader
+git clone https://github.com/HosihikariFramework/hosihikariframework.github.io
+Copy-Item -Recurse .\hosihikariframework.github.io\examples\hello-node "$Server\plugins\hello-node"
+Copy-Item "$Server\plugins\hosihikari-rpc\bindings\node\hosihikari.mjs" "$Server\plugins\hello-node\hosihikari.mjs"
+```
+
+Skip the clone if the documentation repository is already present. `hosihikari.mjs` is the Node
+binding shipped with RpcLoader. Keep it next to the entry so the manifest command can find it. The
+log should show `hello-node` loading and enabling.
+
+If the target directory already exists, remove it before copying.
+
+## Next
+
+- [Plugin packages](/plugin-package/)
+- [Templates](/templates/)
+- [C# plugins](/authoring-csharp/)
+- [Out-of-process plugins](/authoring-rpc/)
+- [Troubleshooting](/troubleshooting/)

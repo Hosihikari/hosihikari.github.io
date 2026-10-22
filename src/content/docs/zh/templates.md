@@ -12,10 +12,12 @@ description: 从每种插件种类的维护模板开始。
 
 ```powershell
 dotnet new install Hosihikari.Plugin.Templates
-dotnet new hosihikari-plugin -n MyPlugin
+dotnet new hosihikari-plugin -n MyPlugin          # C#
+# 或
+dotnet new hosihikari-plugin-fsharp -n MyPlugin   # F#
 ```
 
-用框架打包器构建打包。打包器需要同级的 `Hosihikari.PluginManager` 检出，或由
+用框架打包器构建打包。打包器需要同级的 `PluginManager` 检出，或由
 `HOSIHIKARI_PLUGINMANAGER` 指向一个：
 
 ```powershell

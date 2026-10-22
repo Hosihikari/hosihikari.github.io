@@ -13,11 +13,13 @@ The plugin manager's built-in assembly loader loads a .NET class library. No loa
 
 ```powershell
 dotnet new install Hosihikari.Plugin.Templates
-dotnet new hosihikari-plugin -n MyPlugin
+dotnet new hosihikari-plugin -n MyPlugin          # C#
+# or
+dotnet new hosihikari-plugin-fsharp -n MyPlugin   # F#
 ```
 
-Build and pack with the framework's packer. It needs a sibling `Hosihikari.PluginManager` checkout,
-or `HOSIHIKARI_PLUGINMANAGER` pointing at one:
+Build and pack with the framework's packer. It needs a sibling `PluginManager` checkout, or
+`HOSIHIKARI_PLUGINMANAGER` pointing at one:
 
 ```powershell
 cd MyPlugin

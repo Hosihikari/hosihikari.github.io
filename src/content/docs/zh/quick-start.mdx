@@ -1,0 +1,103 @@
+---
+title: 快速开始
+description: 装上 HostingShim，用模板生成预编译的 C# 或 F# 插件，再跑起一个进程外 Node 插件。
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+从一台装好 LeviLamina、Endstone 或自持态 Linux 载体的服务端，到看见第一个预编译插件与一个
+进程外 Node 插件运行。
+
+## 准备
+
+- Windows x64（LeviLamina 与 Endstone Windows）；Linux x64（Endstone Linux 与自持态）。
+- Minecraft 基岩版专用服务器：BDS 1.26.51+（LeviLamina 26.51+）、BDS 1.26.52+（Endstone 0.11+），
+  或自持态的 BDS 1.21.3。
+- [.NET 10 SDK](https://dotnet.microsoft.com/download)，用来构建并打包模板。
+- [lip](https://github.com/LiteLDev/lip)。
+- 一份 [PluginManager](https://github.com/HosihikariFramework/PluginManager) 检出，供模板打包器使用。
+- 进程外插件还需要 Node.js 20+ 在 `PATH` 上。
+
+以下安装命令都在**服务端根目录**执行。
+
+## 装 HostingShim
+
+无后缀的包是**自持态 Linux** 载体。带父级的服务端用对应的 label：
+
+```powershell
+lip install github.com/HosihikariFramework/HostingShim                # 自持态 Linux
+lip install github.com/HosihikariFramework/HostingShim#levilamina     # LeviLamina
+lip install github.com/HosihikariFramework/HostingShim#endstone       # Endstone Windows / Linux
+```
+
+预编译程序集插件由插件管理者内置的程序集加载器装载，这一段不需要额外的加载器包。进程外示例会
+另行安装 RpcLoader。
+
+自持态会把 `hosihikari-server` 放在服务端根，插件管理器放在 `plugins/hosihikari/`。通过启动器起服，
+它会预加载 HostingShim：
+
+```bash
+./hosihikari-server
+```
+
+自持态的目标是 BDS 1.21.3，启动器需要 .NET 10 运行时。插件包照旧放在 `plugins/` 下，并且是
+预编译程序集包。
+
+## 用模板创建插件
+
+[模板](/zh/templates/)包会生成完整的预编译插件。两个 tab 都生成 `HelloPlugin`，按语言选择即可。
+
+打包脚本调用 `PluginManager` 检出里的核心打包器。把该检出放在 `HelloPlugin` 旁边，或用
+`HOSIHIKARI_PLUGINMANAGER` 指向它。先设置一次 `$Server`：
+
+```powershell
+$Server = 'C:\bedrock-server'
+$env:HOSIHIKARI_PLUGINMANAGER = 'C:\src\PluginManager'  # 检出不在 HelloPlugin 旁边时设置
+```
+
+<Tabs syncKey="template-language">
+  <TabItem label="C#">
+    ```powershell
+    dotnet new install Hosihikari.Plugin.Templates
+    dotnet new hosihikari-plugin -n HelloPlugin -o HelloPlugin
+    pwsh ./HelloPlugin/pack.ps1
+    Copy-Item -Recurse ./HelloPlugin/dist/HelloPlugin "$Server/plugins/HelloPlugin"
+    ```
+  </TabItem>
+  <TabItem label="F#">
+    ```powershell
+    dotnet new install Hosihikari.Plugin.Templates
+    dotnet new hosihikari-plugin-fsharp -n HelloPlugin -o HelloPlugin
+    pwsh ./HelloPlugin/pack.ps1
+    Copy-Item -Recurse ./HelloPlugin/dist/HelloPlugin "$Server/plugins/HelloPlugin"
+    ```
+  </TabItem>
+</Tabs>
+
+`dist/HelloPlugin/` 里是插件 DLL、它的私有依赖与 `manifest.json`；F# 包还会带 `FSharp.Core.dll`。
+
+启动服务端。日志里应出现 `HelloPlugin loaded from <服务端>/plugins/HelloPlugin`。
+
+## 进程外插件
+
+RpcLoader 是官方的进程外加载器：插件在子进程中通过行分隔 JSON-RPC 2.0 与宿主通信。
+
+```powershell
+lip install github.com/HosihikariFramework/RpcLoader
+git clone https://github.com/HosihikariFramework/hosihikariframework.github.io
+Copy-Item -Recurse .\hosihikariframework.github.io\examples\hello-node "$Server\plugins\hello-node"
+Copy-Item "$Server\plugins\hosihikari-rpc\bindings\node\hosihikari.mjs" "$Server\plugins\hello-node\hosihikari.mjs"
+```
+
+如果文档仓已经存在，跳过克隆。`hosihikari.mjs` 是 RpcLoader 随包发布的 Node 绑定。把它放在入口
+旁边，清单里的命令就能直接运行。启动后日志里应出现 `hello-node` 的加载与启用。
+
+如果目标目录已经存在，先删掉再复制，避免把新文件叠进旧目录。
+
+## 接下来
+
+- [插件包与清单](/zh/plugin-package/)
+- [模板](/zh/templates/)
+- [写一个 C# 插件](/zh/authoring-csharp/)
+- [进程外插件](/zh/authoring-rpc/)
+- [常见问题](/zh/troubleshooting/)
