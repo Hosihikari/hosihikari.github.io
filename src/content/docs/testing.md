@@ -4,8 +4,8 @@ description: Drive plugin lifecycle and host services without starting a Bedrock
 ---
 
 `Hosihikari.Testing` is the author-facing test package. It targets the 1.1.0 line: it references
-`Hosihikari.Plugin.Abstractions` 1.1.0 and `Hosihikari.PluginManager` 1.1.0. The packages are
-prepared; install them once the 1.1.0 line is published.
+`Hosihikari.Plugin.Abstractions` 1.1.0 and `Hosihikari.PluginManager` 1.1.0. The test package is
+versioned 1.0.0.
 
 ```powershell
 dotnet add package Hosihikari.Testing --version 1.0.0

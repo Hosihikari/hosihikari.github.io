@@ -4,8 +4,8 @@ description: 不启动基岩版专用服务器，直接驱动插件生命周期�
 ---
 
 `Hosihikari.Testing` 是面向插件作者的测试包，面向 1.1.0 功能线：引用
-`Hosihikari.Plugin.Abstractions` 1.1.0 与 `Hosihikari.PluginManager` 1.1.0。包已准备好，
-1.1.0 功能线发布后即可安装。
+`Hosihikari.Plugin.Abstractions` 1.1.0 与 `Hosihikari.PluginManager` 1.1.0。测试包自身的版本为
+1.0.0。
 
 ```powershell
 dotnet add package Hosihikari.Testing --version 1.0.0

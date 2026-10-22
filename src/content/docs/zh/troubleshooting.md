@@ -5,7 +5,7 @@ description: 常见错误与排查入口。
 
 ## 日志报 `api_version 不匹配` 或 `manifest_version 不匹配`
 
-插件是按另一版契约构建的。当前契约是 `api_version` 2、清单 `manifest_version` 1；用 Hosihikari.Plugin.Abstractions 1.0.0 重新构建。改清单里的数字不会让旧类型面变成新契约。
+插件是按另一版契约构建的。当前契约是 `api_version` 2、清单 `manifest_version` 1；用 Hosihikari.Plugin.Abstractions 1.1.0 重新构建。改清单里的数字不会让旧类型面变成新契约。
 
 ## 日志报 `没有能处理 loader=... 的加载器`
 

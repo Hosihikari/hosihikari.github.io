@@ -5,7 +5,7 @@ description: Common errors and where to look.
 
 ## The log reports `api_version 不匹配` or `manifest_version 不匹配`
 
-The plugin was built against another contract. The current contract is `api_version` 2 and manifest `manifest_version` 1; rebuild with Hosihikari.Plugin.Abstractions 1.0.0. Editing the number in the manifest does not change the type surface.
+The plugin was built against another contract. The current contract is `api_version` 2 and manifest `manifest_version` 1; rebuild with Hosihikari.Plugin.Abstractions 1.1.0. Editing the number in the manifest does not change the type surface.
 
 ## The log reports `没有能处理 loader=... 的加载器`
 
