@@ -1,0 +1,33 @@
+name: Documentation request
+description: Propose a new page, section, example, or navigation change.
+title: "[Docs]: "
+body:
+  - type: input
+    id: location
+    attributes:
+      label: Page or section
+      description: Where should this live? Link an existing page if possible.
+      placeholder: https://hf.srcz.one/...
+    validations:
+      required: false
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What is missing or hard to understand for a reader?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed change
+      description: Outline the page, example, or wording you would like.
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checklist
+      options:
+        - label: I checked the current English and Chinese pages.
+          required: true
