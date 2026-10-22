@@ -27,11 +27,12 @@ description: 星光框架、加载器与模板的已发布版本。
 
 - `Hosihikari.Plugin.Abstractions` 1.1.0 —— 可选的加载器诊断。
 - `Hosihikari.PluginManager` 1.1.0 —— 卸载验证超时、插件状态快照。
+- `HostingShim` v1.1.0 —— 依赖 `1.1.*` 的 PluginManager 线。
 - `Hosihikari.Plugin.Build` 1.0.0 —— 显式 `PackPlugin` MSBuild 目标。
 - `Hosihikari.Testing` 1.0.0 —— 内存生命周期宿主与真实管理者辅助。
 
-核心 NuGet 由 `v*` 标签通过 OIDC 发布；lip 1.1.0 仍需把 `tooth.json` 版本与 HostingShim 依赖
-移到 1.1 线。
+准备已完成：核心 `tooth.json` 与 HostingShim 依赖都在 1.1 线上。剩下的刻意动作是打发布标签，
+并为三个包配置 NuGet Trusted Publishing。
 
 ## v1.0.0
 

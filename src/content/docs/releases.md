@@ -31,11 +31,13 @@ commands stay on the 1.0.0 line until publication.
 
 - `Hosihikari.Plugin.Abstractions` 1.1.0 — optional loader diagnostics.
 - `Hosihikari.PluginManager` 1.1.0 — unload verification timeout, plugin status snapshot.
+- `HostingShim` v1.1.0 — depends on the `1.1.*` PluginManager line.
 - `Hosihikari.Plugin.Build` 1.0.0 — explicit `PackPlugin` MSBuild target.
 - `Hosihikari.Testing` 1.0.0 — in-memory lifecycle host and real manager harness.
 
-The core NuGet job publishes from a `v*` tag through OIDC. The lip 1.1.0 release still needs the
-`tooth.json` version and HostingShim dependency to move to the 1.1 line.
+Preparation is complete: the core `tooth.json` and HostingShim dependency are on the 1.1 line.
+Publishing is the remaining deliberate action: push the release tags and configure NuGet Trusted
+Publishing for the three package IDs.
 
 ## v1.0.0
 
