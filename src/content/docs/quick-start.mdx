@@ -16,8 +16,6 @@ fresh install to a running precompiled plugin and an out-of-process Node plugin.
   Endstone 0.11+, or BDS 1.21.3 for the self-hosted carrier.
 - [.NET 10 SDK](https://dotnet.microsoft.com/download) to build and pack the template.
 - [lip](https://github.com/LiteLDev/lip).
-- A [PluginManager](https://github.com/HosihikariFramework/PluginManager) checkout for the template
-  packer.
 - Node.js 20+ on `PATH` for out-of-process plugins.
 
 Run the install commands in the **server root**.
@@ -51,12 +49,11 @@ Its target is BDS 1.21.3; the launcher needs the .NET 10 runtime. The plugin pac
 The [templates](/templates/) package generates a complete precompiled plugin. Both tabs produce
 `HelloPlugin`; choose the language.
 
-The pack scripts call the core packer from a `PluginManager` checkout. Put that checkout beside
-`HelloPlugin`, or point `HOSIHIKARI_PLUGINMANAGER` at it. Set `$Server` once:
+The generated project packs with `Hosihikari.Plugin.Build`, so no framework checkout is needed.
+Set `$Server` once:
 
 ```powershell
 $Server = 'C:\bedrock-server'
-$env:HOSIHIKARI_PLUGINMANAGER = 'C:\src\PluginManager'  # only when the checkout is not beside HelloPlugin
 ```
 
 <Tabs syncKey="template-language">
@@ -64,7 +61,8 @@ $env:HOSIHIKARI_PLUGINMANAGER = 'C:\src\PluginManager'  # only when the checkout
     ```powershell
     dotnet new install Hosihikari.Plugin.Templates
     dotnet new hosihikari-plugin -n HelloPlugin -o HelloPlugin
-    pwsh ./HelloPlugin/pack.ps1
+    dotnet add ./HelloPlugin/HelloPlugin.csproj package Hosihikari.Plugin.Build --version 1.0.0
+    dotnet build ./HelloPlugin/HelloPlugin.csproj -t:PackPlugin
     Copy-Item -Recurse ./HelloPlugin/dist/HelloPlugin "$Server/plugins/HelloPlugin"
     ```
   </TabItem>
@@ -72,7 +70,8 @@ $env:HOSIHIKARI_PLUGINMANAGER = 'C:\src\PluginManager'  # only when the checkout
     ```powershell
     dotnet new install Hosihikari.Plugin.Templates
     dotnet new hosihikari-plugin-fsharp -n HelloPlugin -o HelloPlugin
-    pwsh ./HelloPlugin/pack.ps1
+    dotnet add ./HelloPlugin/HelloPlugin.fsproj package Hosihikari.Plugin.Build --version 1.0.0
+    dotnet build ./HelloPlugin/HelloPlugin.fsproj -t:PackPlugin
     Copy-Item -Recurse ./HelloPlugin/dist/HelloPlugin "$Server/plugins/HelloPlugin"
     ```
   </TabItem>

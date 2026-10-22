@@ -15,7 +15,6 @@ import { Tabs, TabItem } from '@astrojs/starlight/components';
   或自持态的 BDS 1.21.3。
 - [.NET 10 SDK](https://dotnet.microsoft.com/download)，用来构建并打包模板。
 - [lip](https://github.com/LiteLDev/lip)。
-- 一份 [PluginManager](https://github.com/HosihikariFramework/PluginManager) 检出，供模板打包器使用。
 - 进程外插件还需要 Node.js 20+ 在 `PATH` 上。
 
 以下安装命令都在**服务端根目录**执行。
@@ -47,12 +46,10 @@ lip install github.com/HosihikariFramework/HostingShim#endstone       # Endstone
 
 [模板](/zh/templates/)包会生成完整的预编译插件。两个 tab 都生成 `HelloPlugin`，按语言选择即可。
 
-打包脚本调用 `PluginManager` 检出里的核心打包器。把该检出放在 `HelloPlugin` 旁边，或用
-`HOSIHIKARI_PLUGINMANAGER` 指向它。先设置一次 `$Server`：
+生成的项目用 `Hosihikari.Plugin.Build` 打包，不需要框架检出。先设置一次 `$Server`：
 
 ```powershell
 $Server = 'C:\bedrock-server'
-$env:HOSIHIKARI_PLUGINMANAGER = 'C:\src\PluginManager'  # 检出不在 HelloPlugin 旁边时设置
 ```
 
 <Tabs syncKey="template-language">
@@ -60,7 +57,8 @@ $env:HOSIHIKARI_PLUGINMANAGER = 'C:\src\PluginManager'  # 检出不在 HelloPlug
     ```powershell
     dotnet new install Hosihikari.Plugin.Templates
     dotnet new hosihikari-plugin -n HelloPlugin -o HelloPlugin
-    pwsh ./HelloPlugin/pack.ps1
+    dotnet add ./HelloPlugin/HelloPlugin.csproj package Hosihikari.Plugin.Build --version 1.0.0
+    dotnet build ./HelloPlugin/HelloPlugin.csproj -t:PackPlugin
     Copy-Item -Recurse ./HelloPlugin/dist/HelloPlugin "$Server/plugins/HelloPlugin"
     ```
   </TabItem>
@@ -68,7 +66,8 @@ $env:HOSIHIKARI_PLUGINMANAGER = 'C:\src\PluginManager'  # 检出不在 HelloPlug
     ```powershell
     dotnet new install Hosihikari.Plugin.Templates
     dotnet new hosihikari-plugin-fsharp -n HelloPlugin -o HelloPlugin
-    pwsh ./HelloPlugin/pack.ps1
+    dotnet add ./HelloPlugin/HelloPlugin.fsproj package Hosihikari.Plugin.Build --version 1.0.0
+    dotnet build ./HelloPlugin/HelloPlugin.fsproj -t:PackPlugin
     Copy-Item -Recurse ./HelloPlugin/dist/HelloPlugin "$Server/plugins/HelloPlugin"
     ```
   </TabItem>
