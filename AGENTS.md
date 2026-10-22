@@ -32,4 +32,5 @@ Use `bun run dev` for a local preview. The deploy workflow runs the same install
 ## Context
 
 - [Published site](https://hf.srcz.one/).
-- [Design record](https://github.com/HosihikariFramework/Design) — GLOSSARY and ADRs.
+- Design decisions and terminology are kept by maintainers outside the public repositories; ask for
+  the relevant decision when changing lifecycle or public API.
