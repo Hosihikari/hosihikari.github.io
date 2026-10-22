@@ -127,7 +127,7 @@ If you already have a compiled DLL, put it in the package, set `loader` to `asse
 Reference the contract and exclude its runtime assets so the package does not carry a second copy:
 
 ```xml
-<PackageReference Include="Hosihikari.Plugin.Abstractions" Version="[1.0.0]" ExcludeAssets="runtime" />
+<PackageReference Include="Hosihikari.Plugin.Abstractions" Version="[1.1.0]" ExcludeAssets="runtime" />
 ```
 
 The assembly declares exactly one `EntryPoint<T>`; the entry type implements `IPlugin` and has a parameterless constructor.

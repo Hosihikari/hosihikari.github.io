@@ -122,7 +122,7 @@ greeting = "你好，星光"
 工程引用契约并排除运行期资产，避免把第二份契约带进插件包：
 
 ```xml
-<PackageReference Include="Hosihikari.Plugin.Abstractions" Version="[1.0.0]" ExcludeAssets="runtime" />
+<PackageReference Include="Hosihikari.Plugin.Abstractions" Version="[1.1.0]" ExcludeAssets="runtime" />
 ```
 
 程序集里应当恰好有一个 `EntryPoint<T>`；入口类型实现 `IPlugin` 且有无参构造。

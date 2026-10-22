@@ -3,17 +3,19 @@ title: Releases
 description: Published versions of the framework, loaders, and templates.
 ---
 
-The current release line was published on 21 October 2026; the template package was updated on
-22 October 2026.
+The current release line was published on 22 October 2026; the template package was updated on
+the same day.
 
 | Component | Version | Distribution |
 | --- | --- | --- |
-| [PluginAbstractions](https://www.nuget.org/packages/Hosihikari.Plugin.Abstractions/1.0.0) | 1.0.0 | NuGet |
-| [PluginManager](https://github.com/HosihikariFramework/PluginManager/releases/tag/v1.0.0) | v1.0.0 | lip |
-| [HostingShim](https://github.com/HosihikariFramework/HostingShim/releases/tag/v1.0.0) | v1.0.0 | lip, four carrier variants |
+| [PluginAbstractions](https://www.nuget.org/packages/Hosihikari.Plugin.Abstractions/1.1.0) | 1.1.0 | NuGet |
+| [PluginManager](https://github.com/HosihikariFramework/PluginManager/releases/tag/v1.1.0) | v1.1.0 | lip, NuGet |
+| [HostingShim](https://github.com/HosihikariFramework/HostingShim/releases/tag/v1.1.0) | v1.1.0 | lip, four carrier variants |
 | [C# Loader](https://github.com/HosihikariFramework/CSharpLoader/releases/tag/v1.0.0) | v1.0.0 | lip |
 | [F# Loader](https://github.com/HosihikariFramework/FSharpLoader/releases/tag/v1.0.0) | v1.0.0 | lip |
 | [RPC Loader](https://github.com/HosihikariFramework/RpcLoader/releases/tag/v1.0.0) | v1.0.0 | lip |
+| [Plugin.Build](https://www.nuget.org/packages/Hosihikari.Plugin.Build/1.0.0) | 1.0.0 | NuGet |
+| [Testing](https://www.nuget.org/packages/Hosihikari.Testing/1.0.0) | 1.0.0 | NuGet |
 | [Plugin templates](https://www.nuget.org/packages/Hosihikari.Plugin.Templates/1.0.1) | 1.0.1 | `dotnet new` |
 
 ## Plugin template 1.0.1
@@ -24,18 +26,22 @@ The current release line was published on 21 October 2026; the template package 
 - A generated F# plugin package carries `FSharp.Core.dll`; both templates keep the shared contract
   DLL out of the package.
 
-## 1.1.0 (prepared)
+## 1.1.0
 
-The following packages are prepared for the next release line. They are not published yet; install
-commands stay on the 1.0.0 line until publication.
+The 1.1.0 line adds to the 1.0 API; existing plugins keep working without changes.
 
-- `Hosihikari.Plugin.Abstractions` 1.1.0 — optional loader diagnostics.
-- `Hosihikari.PluginManager` 1.1.0 — unload verification timeout, plugin status snapshot.
-- `Hosihikari.Plugin.Build` 1.0.0 — explicit `PackPlugin` MSBuild target.
-- `Hosihikari.Testing` 1.0.0 — in-memory lifecycle host and real manager harness.
-
-The core NuGet job publishes from a `v*` tag through OIDC. The lip 1.1.0 release still needs the
-`tooth.json` version and HostingShim dependency to move to the 1.1 line.
+- `Hosihikari.Plugin.Abstractions` 1.1.0 adds the optional `IPluginLoaderDiagnostics` companion
+  interface. A loader that implements it validates a package before `Load`; the reported problems
+  skip that plugin and appear in the load report.
+- `Hosihikari.PluginManager` 1.1.0 adds `PluginManagerOptions.UnloadVerificationTimeout` (30
+  seconds by default) and the `Plugins` / `TryGetPlugin` status snapshot. A verification timeout is
+  recorded as a failed unload; the slot stays `Detached`, so the plugin is not reported as gone.
+- `HostingShim` v1.1.0 depends on the `1.1.*` PluginManager line. Loaders remain on v1.0.0 and work
+  with the new core.
+- `Hosihikari.Plugin.Build` 1.0.0 provides the `PackPlugin` MSBuild target, so packing a plugin no
+  longer needs a PluginManager checkout. Multi-target projects pass `-f <tfm>`.
+- `Hosihikari.Testing` 1.0.0 provides `PluginTestHost` for lifecycle tests, `PluginManagerHarness`
+  for the real manager, and in-memory services, events, and scheduling.
 
 ## v1.0.0
 
@@ -112,7 +118,9 @@ The core NuGet job publishes from a `v*` tag through OIDC. The lip 1.1.0 release
 ## Install
 
 ```powershell
-dotnet add package Hosihikari.Plugin.Abstractions --version 1.0.0
+dotnet add package Hosihikari.Plugin.Abstractions --version 1.1.0
+dotnet add package Hosihikari.Plugin.Build --version 1.0.0
+dotnet add package Hosihikari.Testing --version 1.0.0
 dotnet new install Hosihikari.Plugin.Templates::1.0.1
 
 lip install github.com/HosihikariFramework/HostingShim
@@ -124,14 +132,15 @@ lip install github.com/HosihikariFramework/RpcLoader
 The HostingShim package installs PluginManager as a lip dependency. To pin PluginManager explicitly:
 
 ```powershell
-lip install github.com/HosihikariFramework/PluginManager@1.0.0
+lip install github.com/HosihikariFramework/PluginManager@1.1.0
 ```
 
 HostingShim variants for LeviLamina and Endstone are selected with `#levilamina` and `#endstone`; the
-package without a suffix installs the Linux self-hosted carrier.
+package without a suffix installs the Linux self-hosted carrier. The loaders stay on v1.0.0 and
+install alongside the 1.1.0 core.
 
 ## Compatibility
 
-PluginManager v1.0.0 and HostingShim v1.0.0 use hosting contract version 1, and HostingShim declares a `1.0.*` dependency.
-Plugins built against Hosihikari.Plugin.Abstractions 1.0.0 use API version 2 and manifest `manifest_version` 1.
+PluginManager v1.1.0 and HostingShim v1.1.0 use hosting contract version 1, and HostingShim declares a `1.1.*` dependency.
+Plugins built against Hosihikari.Plugin.Abstractions 1.1.0 use API version 2 and manifest `manifest_version` 1, the same as 1.0.0.
 The previous release line was PluginAbstractions 0.7.1, PluginManager v0.7.2, HostingShim v0.7.0, C# Loader v0.2.3, F# Loader v0.1.5, RPC Loader v0.2.4, and template 0.1.2.
