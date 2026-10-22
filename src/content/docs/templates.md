@@ -18,17 +18,10 @@ dotnet new hosihikari-plugin -n MyPlugin          # C#
 dotnet new hosihikari-plugin-fsharp -n MyPlugin   # F#
 ```
 
-Build and pack with the framework's packer. It needs a sibling `PluginManager` checkout, or
-`HOSIHIKARI_PLUGINMANAGER` pointing at one:
+Build and pack with `Hosihikari.Plugin.Build`; no framework checkout is needed:
 
 ```powershell
 cd MyPlugin
-pwsh ./pack.ps1
-```
-
-From the 1.1.0 line, reference the build package instead; the checkout is no longer needed:
-
-```powershell
 dotnet add package Hosihikari.Plugin.Build --version 1.0.0
 dotnet build -t:PackPlugin
 ```
