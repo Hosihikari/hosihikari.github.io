@@ -17,17 +17,10 @@ dotnet new hosihikari-plugin -n MyPlugin          # C#
 dotnet new hosihikari-plugin-fsharp -n MyPlugin   # F#
 ```
 
-用框架打包器构建打包。打包器需要同级的 `PluginManager` 检出，或由
-`HOSIHIKARI_PLUGINMANAGER` 指向一个：
+用 `Hosihikari.Plugin.Build` 构建打包，不需要框架检出：
 
 ```powershell
 cd MyPlugin
-pwsh ./pack.ps1
-```
-
-1.1.0 功能线起改用构建包，不再需要检出：
-
-```powershell
 dotnet add package Hosihikari.Plugin.Build --version 1.0.0
 dotnet build -t:PackPlugin
 ```
