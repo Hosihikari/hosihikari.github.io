@@ -3,7 +3,7 @@ title: 发布记录
 description: 星光框架、加载器与模板的已发布版本。
 ---
 
-当前功能线发布于 2026 年 10 月 21 日。
+当前功能线发布于 2026 年 10 月 21 日；模板包于 10 月 22 日更新至 1.0.1。
 
 | 组件 | 版本 | 分发方式 |
 | --- | --- | --- |
@@ -13,7 +13,13 @@ description: 星光框架、加载器与模板的已发布版本。
 | [C# Loader](https://github.com/HosihikariFramework/CSharpLoader/releases/tag/v1.0.0) | v1.0.0 | lip |
 | [F# Loader](https://github.com/HosihikariFramework/FSharpLoader/releases/tag/v1.0.0) | v1.0.0 | lip |
 | [RPC Loader](https://github.com/HosihikariFramework/RpcLoader/releases/tag/v1.0.0) | v1.0.0 | lip |
-| [插件模板](https://www.nuget.org/packages/Hosihikari.Plugin.Templates/1.0.0) | 1.0.0 | `dotnet new` |
+| [插件模板](https://www.nuget.org/packages/Hosihikari.Plugin.Templates/1.0.1) | 1.0.1 | `dotnet new` |
+
+## 插件模板 1.0.1
+
+- 包内新增预编译 F# 模板 `hosihikari-plugin-fsharp`；C# 模板仍为 `hosihikari-plugin`。
+- 内容目录为 `Hosihikari.Plugin.Templates` 与 `Hosihikari.Plugin.Templates.FSharp`。
+- 生成的 F# 插件包会带 `FSharp.Core.dll`；两个模板都不会把共享契约 DLL 放进插件包。
 
 ## v1.0.0
 
@@ -91,7 +97,7 @@ description: 星光框架、加载器与模板的已发布版本。
 
 ```powershell
 dotnet add package Hosihikari.Plugin.Abstractions --version 1.0.0
-dotnet new install Hosihikari.Plugin.Templates::1.0.0
+dotnet new install Hosihikari.Plugin.Templates::1.0.1
 
 lip install github.com/HosihikariFramework/HostingShim
 lip install github.com/HosihikariFramework/CSharpLoader

@@ -3,7 +3,8 @@ title: Releases
 description: Published versions of the framework, loaders, and templates.
 ---
 
-The current release line was published on 21 October 2026.
+The current release line was published on 21 October 2026; the template package was updated on
+22 October 2026.
 
 | Component | Version | Distribution |
 | --- | --- | --- |
@@ -13,7 +14,15 @@ The current release line was published on 21 October 2026.
 | [C# Loader](https://github.com/HosihikariFramework/CSharpLoader/releases/tag/v1.0.0) | v1.0.0 | lip |
 | [F# Loader](https://github.com/HosihikariFramework/FSharpLoader/releases/tag/v1.0.0) | v1.0.0 | lip |
 | [RPC Loader](https://github.com/HosihikariFramework/RpcLoader/releases/tag/v1.0.0) | v1.0.0 | lip |
-| [Plugin templates](https://www.nuget.org/packages/Hosihikari.Plugin.Templates/1.0.0) | 1.0.0 | `dotnet new` |
+| [Plugin templates](https://www.nuget.org/packages/Hosihikari.Plugin.Templates/1.0.1) | 1.0.1 | `dotnet new` |
+
+## Plugin template 1.0.1
+
+- The package adds a precompiled F# template, `hosihikari-plugin-fsharp`; the C# template keeps
+  `hosihikari-plugin`.
+- Its content directories are `Hosihikari.Plugin.Templates` and `Hosihikari.Plugin.Templates.FSharp`.
+- A generated F# plugin package carries `FSharp.Core.dll`; both templates keep the shared contract
+  DLL out of the package.
 
 ## v1.0.0
 
@@ -91,7 +100,7 @@ The current release line was published on 21 October 2026.
 
 ```powershell
 dotnet add package Hosihikari.Plugin.Abstractions --version 1.0.0
-dotnet new install Hosihikari.Plugin.Templates::1.0.0
+dotnet new install Hosihikari.Plugin.Templates::1.0.1
 
 lip install github.com/HosihikariFramework/HostingShim
 lip install github.com/HosihikariFramework/CSharpLoader
