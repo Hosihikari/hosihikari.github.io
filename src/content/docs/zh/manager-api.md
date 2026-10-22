@@ -35,13 +35,19 @@ var manager = new PluginManager(
 `Detached` 的条目也能取到。
 
 ```csharp
+using Microsoft.Extensions.Logging;
+
+var log = loggerFactory.CreateLogger("PluginManager");
+
 foreach (var info in manager.Plugins)
 {
-    Console.WriteLine(
-        $"{info.Name} {info.Version} loader={info.Loader} " +
-        $"state={info.State} enabled={info.Enabled}");
+    log.LogInformation(
+        "{Name} {Version} loader={Loader} state={State} enabled={Enabled}",
+        info.Name, info.Version, info.Loader, info.State, info.Enabled);
 }
 ```
+
+`loggerFactory` 由宿主提供；`PluginManager` 已经依赖 `Microsoft.Extensions.Logging`。
 
 `PluginInfo` 带清单里的名字与版本、加载器 id、`PluginState`、逻辑上的 `Enabled`、这个包是否是已登记
 的加载器，以及清单声明的依赖。每条依赖暴露 `Name` 与 `VersionRange`。`PluginState.Loaded` 表示实例

@@ -38,13 +38,20 @@ The six-argument constructor uses the defaults.
 are waiting for collection. `TryGetPlugin` returns one by name; it also finds `Detached` entries.
 
 ```csharp
+using Microsoft.Extensions.Logging;
+
+var log = loggerFactory.CreateLogger("PluginManager");
+
 foreach (var info in manager.Plugins)
 {
-    Console.WriteLine(
-        $"{info.Name} {info.Version} loader={info.Loader} " +
-        $"state={info.State} enabled={info.Enabled}");
+    log.LogInformation(
+        "{Name} {Version} loader={Loader} state={State} enabled={Enabled}",
+        info.Name, info.Version, info.Loader, info.State, info.Enabled);
 }
 ```
+
+`loggerFactory` comes from the host; `PluginManager` already depends on
+`Microsoft.Extensions.Logging`.
 
 `PluginInfo` carries the manifest name and version, the loader id, `PluginState`, the logical
 `Enabled` flag, whether the package is a registered loader, and the declared dependencies. Each
