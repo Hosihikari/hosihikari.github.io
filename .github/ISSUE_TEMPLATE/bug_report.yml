@@ -1,0 +1,43 @@
+name: Documentation or site bug
+description: Report a broken page, incorrect content, or site behavior.
+title: "[Bug]: "
+body:
+  - type: input
+    id: page
+    attributes:
+      label: Page
+      description: URL of the English or Chinese page.
+      placeholder: https://hf.srcz.one/...
+    validations:
+      required: true
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: Describe the actual behavior and what you expected instead.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction
+      description: Steps, commands, or a screenshot that shows the problem.
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: Browser and OS for site issues; leave blank for content-only issues.
+      placeholder: Firefox 143 on Windows 11
+    validations:
+      required: false
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checklist
+      options:
+        - label: I checked the current English and Chinese pages.
+          required: true
+        - label: This report contains no secrets or personal data.
+          required: true
