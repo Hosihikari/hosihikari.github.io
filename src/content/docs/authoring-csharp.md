@@ -107,7 +107,7 @@ public sealed class HelloPlugin : IPlugin
 The package default `hello-csharp.conf`:
 
 ```text
-greeting = "你好，星光"
+greeting = "Hello, starlight"
 ```
 
 The server override is `config/hosihikari/hello-csharp.conf`; environment variables also override the same keys.
