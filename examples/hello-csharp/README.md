@@ -28,4 +28,4 @@ The target directory must be named `hello-csharp`.
 
 ## Expected
 
-The log shows `loaded, package` and `enabled, greeting=你好，星光`; data is written under `data/hosihikari/hello-csharp/`.
+The log shows `loaded, package` and `enabled, greeting=Hello, Hosihikari`; data is written under `data/hosihikari/hello-csharp/`.

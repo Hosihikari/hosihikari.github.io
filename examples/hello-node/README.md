@@ -32,4 +32,4 @@ Copy-Item "$Server\plugins\hosihikari-rpc\bindings\node\hosihikari.mjs" "$Server
 
 ## Expected
 
-The log shows `loaded, package` and `enabled, greeting=你好，星光`; data is written under `data/hosihikari/hello-node/`.
+The log shows `loaded, package` and `enabled, greeting=Hello, Hosihikari`; data is written under `data/hosihikari/hello-node/`.
