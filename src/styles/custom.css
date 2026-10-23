@@ -1,5 +1,6 @@
 :root {
-  --sl-font: 'Noto Sans SC Variable', 'Noto Sans', sans-serif;
+  --sl-font-sans: 'Noto Sans SC Variable', 'Noto Sans', sans-serif;
+  --sl-font: var(--sl-font-sans);
   --sl-font-serif: 'Noto Serif SC Variable', 'Noto Serif SC', 'Source Han Serif SC', 'Songti SC', SimSun, Georgia, serif;
   --sl-font-mono: 'Cascadia Code Variable', 'Cascadia Code', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   --radius: 0px;
