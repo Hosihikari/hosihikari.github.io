@@ -60,6 +60,8 @@ export default defineConfig({
       ],
       customCss: [
         '@fontsource-variable/noto-sans-sc/wght.css',
+        '@fontsource-variable/noto-serif-sc/wght.css',
+        '@fontsource-variable/cascadia-code/wght.css',
         './src/styles/custom.css',
       ],
       sidebar: [

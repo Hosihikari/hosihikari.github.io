@@ -1,5 +1,7 @@
 :root {
   --sl-font: 'Noto Sans SC Variable', 'Noto Sans', sans-serif;
+  --sl-font-serif: 'Noto Serif SC Variable', 'Noto Serif SC', 'Source Han Serif SC', 'Songti SC', SimSun, Georgia, serif;
+  --sl-font-mono: 'Cascadia Code Variable', 'Cascadia Code', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   --radius: 0px;
   --hf-ink: oklch(26.702% 0.066 339.5);
   --hf-ink-soft: oklch(43.399% 0.07 341.444);
@@ -327,7 +329,7 @@ div[data-slot='layout'] > header {
   background: color-mix(in oklab, var(--hf-paper) 84%, transparent);
   box-shadow: 0 18px 30px -18px oklch(29.972% 0.091 340.98 / 0.35);
   backdrop-filter: blur(10px);
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-family: var(--sl-font-mono);
   font-size: 0.7rem;
   line-height: 1.5;
 }
@@ -351,6 +353,7 @@ div[data-slot='layout'] > header {
   z-index: 3;
   margin-top: -0.75rem;
   color: var(--hf-ink-soft);
+  font-family: var(--sl-font-serif);
   font-size: 0.62rem;
   letter-spacing: 0.08em;
   text-align: center;
@@ -400,6 +403,11 @@ div[data-slot='layout'] > header {
 
 [data-has-hero] .card .icon {
   color: var(--sl-color-accent);
+}
+
+[data-slot='doc-title'] h1,
+.sl-markdown-content :is(h1, h2, h3) {
+  font-family: var(--sl-font-serif);
 }
 
 [data-has-hero] .sl-markdown-content h2 {
