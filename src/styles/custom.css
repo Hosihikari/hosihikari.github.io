@@ -1,7 +1,7 @@
 :root {
-  --sl-font-sans: 'Noto Sans SC Variable', 'Noto Sans', sans-serif;
+  --sl-font-sans: 'Noto Sans SC Variable', 'Noto Sans SC', 'Source Han Sans SC', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans CJK SC', 'Noto Sans', sans-serif;
   --sl-font: var(--sl-font-sans);
-  --sl-font-serif: 'Noto Serif SC Variable', 'Noto Serif SC', 'Source Han Serif SC', 'Songti SC', SimSun, Georgia, serif;
+  --sl-font-serif: 'Noto Serif SC Variable', 'Noto Serif SC', 'Source Han Serif SC', 'Noto Serif CJK SC', 'Songti SC', SimSun, Georgia, serif;
   --sl-font-mono: 'Cascadia Code Variable', 'Cascadia Code', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   --radius: 0px;
   --hf-ink: oklch(26.702% 0.066 339.5);
