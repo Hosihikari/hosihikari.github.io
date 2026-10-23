@@ -239,7 +239,7 @@ div[data-slot='layout'] > header {
 }
 
 [data-has-hero] .hero .actions a[data-variant='secondary'] {
-  border-color: color-mix(in oklab, var(--hf-magenta) 22%, transparent);
+  border-color: var(--foreground);
   background: color-mix(in oklab, var(--hf-paper) 72%, transparent);
   color: var(--hf-ink);
 }
@@ -446,7 +446,7 @@ div[data-slot='layout'] > header {
 }
 
 [data-theme='dark'][data-has-hero] .hero .actions a[data-variant='secondary'] {
-  border-color: oklch(80.399% 0.119 318.829 / 0.28);
+  border-color: var(--foreground);
   background: oklch(18.985% 0.031 305.032 / 0.72);
   color: var(--hf-paper);
 }
