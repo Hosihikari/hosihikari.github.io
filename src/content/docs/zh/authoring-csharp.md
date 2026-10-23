@@ -102,7 +102,7 @@ public sealed class HelloPlugin : IPlugin
 包内默认 `hello-csharp.conf`：
 
 ```text
-greeting = "你好，星光"
+greeting = "Hello, Hosihikari"
 ```
 
 服务端覆盖放 `config/hosihikari/hello-csharp.conf`；环境变量同名键也参与覆盖。

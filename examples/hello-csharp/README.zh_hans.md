@@ -28,4 +28,4 @@ Copy-Item -Recurse .\examples\hello-csharp "$Server\plugins\hello-csharp"
 
 ## 预期
 
-日志出现 `loaded, package` 与 `enabled, greeting=你好，星光`；数据写在 `data/hosihikari/hello-csharp/`。
+日志出现 `loaded, package` 与 `enabled, greeting=Hello, Hosihikari`；数据写在 `data/hosihikari/hello-csharp/`。把 `greeting` 改成 `你好，星光` 可本地化。

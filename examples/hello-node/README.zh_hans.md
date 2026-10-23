@@ -32,4 +32,4 @@ Copy-Item "$Server\plugins\hosihikari-rpc\bindings\node\hosihikari.mjs" "$Server
 
 ## 预期
 
-日志出现 `loaded, package` 与 `enabled, greeting=你好，星光`；数据写在 `data/hosihikari/hello-node/`。
+日志出现 `loaded, package` 与 `enabled, greeting=Hello, Hosihikari`；数据写在 `data/hosihikari/hello-node/`。把 `greeting` 改成 `你好，星光` 可本地化。
