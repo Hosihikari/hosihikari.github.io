@@ -14,7 +14,7 @@ export default defineConfig({
         en: 'Hosihikari Framework',
         'zh-CN': '星光框架',
       },
-      description: 'A plugin container for Minecraft Bedrock Dedicated Server.',
+      description: 'Loads and manages .NET plugins inside Bedrock Dedicated Server.',
       // 404 由 docs 集合里的 404.md 渲染；关掉内置路由，避免 /404 双路由冲突。
       disable404Route: true,
       logo: {
@@ -145,7 +145,7 @@ export default defineConfig({
             },
             {
               label: 'Manager API',
-              translations: { 'zh-CN': '管理者 API' },
+              translations: { 'zh-CN': '管理器 API' },
               slug: 'manager-api',
             },
           ],

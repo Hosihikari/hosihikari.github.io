@@ -35,7 +35,7 @@ description: 星光框架、加载器与模板的已发布版本。
 - `HostingShim` v1.1.0 依赖 `1.1.*` 的 PluginManager 线。加载器仍为 v1.0.0，可与新核心搭配。
 - `Hosihikari.Plugin.Build` 1.0.0 提供 `PackPlugin` MSBuild 目标，打包插件不再需要检出
   PluginManager。多目标项目要带 `-f <tfm>`。
-- `Hosihikari.Testing` 1.0.0 提供生命周期测试用的 `PluginTestHost`、驱动真实管理者的
+- `Hosihikari.Testing` 1.0.0 提供生命周期测试用的 `PluginTestHost`、驱动真实管理器的
   `PluginManagerHarness`，以及内存服务、事件与调度。
 
 ## v1.0.0
@@ -43,7 +43,7 @@ description: 星光框架、加载器与模板的已发布版本。
 - 所有组件统一发布为 v1.0.0。公开命名按 ADR-0040：`PluginManager`、`IPluginLoader`（`Id`）、`PluginHandle`、`CarrierServices`、`RegisterLoader`、`ScheduleOnce` / `SchedulePeriodic`。
 - 清单字段改为 `extraInfo.api_version`、`extraInfo.loader`、`extraInfo.manifest_version`；旧 `api`、`provider`、`format_version` 会给出迁移错误。顶层 `type`、`entry`、`version` 的线上名不变。
 - GitHub 仓改名为 HostingShim、PluginManager、PluginAbstractions、CSharpLoader、FSharpLoader、RpcLoader；NuGet 包为 `Hosihikari.Plugin.Abstractions` 与 `Hosihikari.Plugin.Templates`。
-- 卸载验证移出管理者锁，并让并发卸载共享同一个进行中的验证任务。
+- 卸载验证移出管理器锁，并让并发卸载共享同一个进行中的验证任务。
 - RPC 绑定改用 `scheduleOnce` / `schedulePeriodic`（Python 为 `schedule_once` / `schedule_periodic`）；打包器子命令为 `pack-loader`。
 - HostingShim 与 PluginManager 同步发布；HostingShim 依赖 `1.0.*` 的 PluginManager 线，入口契约版本仍为 1。
 

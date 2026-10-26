@@ -1,12 +1,12 @@
 ---
-title: 插件管理者 API
-description: 配置插件管理者、读取插件状态，并为加载器添加装载前诊断。
+title: 插件管理器 API
+description: 配置插件管理器、读取插件状态，并为加载器添加装载前诊断。
 ---
 
 这些 API 面向内嵌 `Hosihikari.PluginManager` 的宿主和自定义加载器的作者。插件作者通常使用
 [插件契约](/zh/authoring-csharp/)与[测试插件](/zh/testing/)。
 
-## 管理者配置
+## 管理器配置
 
 七参数构造函数接受 `PluginManagerOptions`：
 
@@ -26,7 +26,7 @@ var manager = new PluginManager(
 `UnloadVerificationTimeout` 是插件被放下之后，等待回收验证的时间预算，默认 30 秒。有限值必须为
 正且不超过约 49.7 天；用 `Timeout.InfiniteTimeSpan` 表示不限时等待。
 
-超时按卸载失败记录：报告写明超时，插件在管理者表里保持 `Detached`，`Unload` 返回失败。再次调用
+超时按卸载失败记录：报告写明超时，插件在管理器表里保持 `Detached`，`Unload` 返回失败。再次调用
 `Unload` 会重试回收验证。六参数构造函数使用默认配置。
 
 ## 状态快照
@@ -57,7 +57,7 @@ foreach (var info in manager.Plugins)
 
 ## 加载器诊断
 
-加载器还可以实现 `IPluginLoaderDiagnostics`。管理者在 `CanLoad` 选中加载器之后、`Load` 开始之前
+加载器还可以实现 `IPluginLoaderDiagnostics`。管理器在 `CanLoad` 选中加载器之后、`Load` 开始之前
 调用 `Validate(manifest, packageDirectory)`；返回非空列表时，问题并入装载报告并跳过该包，空列表则
 继续装载。诊断不改变路由：选哪个加载器仍由 `CanLoad` 决定。
 
