@@ -197,17 +197,6 @@ div[data-slot='layout'] > header {
   white-space: nowrap;
 }
 
-.hero-kicker {
-  display: block;
-  margin-bottom: 1rem;
-  color: var(--sl-color-accent);
-  font-size: 0.72rem;
-  line-height: 1.4;
-  font-weight: 700;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-}
-
 [data-has-hero] .hero .tagline {
   max-width: 46ch;
   color: var(--hf-ink-soft);
@@ -428,10 +417,6 @@ div[data-slot='layout'] > header {
   font-size: clamp(1.6rem, 2.6vw, 2.1rem);
   font-weight: 750;
   letter-spacing: -0.03em;
-}
-
-[data-theme='dark'] .hero-kicker {
-  color: oklch(80.399% 0.119 318.829);
 }
 
 [data-theme='dark'][data-has-hero] .hero {
