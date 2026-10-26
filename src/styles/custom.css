@@ -249,6 +249,19 @@ div[data-slot='layout'] > header {
   color: var(--hf-ink);
 }
 
+[data-has-hero] .hero .hero-title-container a[data-slot='button'] {
+  margin-bottom: 0.35rem;
+  border: 1px solid var(--hf-code-border);
+  background: color-mix(in oklab, var(--hf-paper) 72%, transparent);
+  color: var(--hf-magenta-deep);
+  letter-spacing: 0.01em;
+}
+
+[data-has-hero] .hero .hero-title-container a[data-slot='button']:hover {
+  border-color: var(--hf-magenta);
+  background: var(--hf-paper);
+}
+
 [data-has-hero] .hero .actions a[data-variant='secondary']:hover {
   border-color: var(--hf-magenta);
   background: var(--hf-paper);
@@ -462,6 +475,16 @@ div[data-slot='layout'] > header {
 }
 
 [data-theme='dark'][data-has-hero] .hero .actions a[data-variant='secondary']:hover {
+  border-color: oklch(80.399% 0.119 318.829);
+  background: oklch(22.42% 0.041 308.684);
+}
+
+[data-theme='dark'][data-has-hero] .hero .hero-title-container a[data-slot='button'] {
+  background: oklch(18.985% 0.031 305.032 / 0.72);
+  color: oklch(80.399% 0.119 318.829);
+}
+
+[data-theme='dark'][data-has-hero] .hero .hero-title-container a[data-slot='button']:hover {
   border-color: oklch(80.399% 0.119 318.829);
   background: oklch(22.42% 0.041 308.684);
 }
