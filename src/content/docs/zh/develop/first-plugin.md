@@ -1,6 +1,61 @@
 ---
 title: 第一个插件
-description: 生成、构建并运行一个插件。
+description: 生成、打包并运行一个插件。
 ---
 
-*本节待写。*
+这一页把一台已经能跑的服务端带到有一个插件在跑。它假定框架已经装好；没装的话先看[服务器](/zh/server/)。
+
+构建插件需要你机器上装有 [.NET 10 SDK](https://dotnet.microsoft.com/download)。服务端需要 .NET 10
+运行时——框架能起来就已经有了。
+
+## 生成
+
+在服务端之外的目录里：
+
+```powershell
+dotnet new install Hosihikari.Plugin.Templates
+dotnet new hosihikari-plugin -n HelloPlugin -o HelloPlugin
+```
+
+得到的是一个完整的预编译插件项目。用 `dotnet new hosihikari-plugin-fsharp` 生成 F# 版本。
+
+## 打包
+
+```powershell
+dotnet add ./HelloPlugin/HelloPlugin.csproj package Hosihikari.Plugin.Build --version 1.0.0
+dotnet build ./HelloPlugin/HelloPlugin.csproj -t:PackPlugin
+```
+
+`PackPlugin` 产出 `HelloPlugin/dist/HelloPlugin/`——插件包目录，清单已经填好。多目标项目要带 `-f <tfm>`。
+
+## 装到服务端
+
+把目录拷进去：
+
+```powershell
+Copy-Item -Recurse ./HelloPlugin/dist/HelloPlugin "$Server/plugins/HelloPlugin"
+```
+
+目录名必须与清单里的 `name` 相等。重启服务端。
+
+## 验证
+
+日志里应当能看到插件装载并启用。然后看它写了什么：
+
+```powershell
+Get-ChildItem "$Server/data/hosihikari/HelloPlugin"
+```
+
+数据目录里出现插件的文件，就说明它跑过了。
+
+## 接下来读什么
+
+- [插件包与清单](/zh/develop/plugin-package/) —— 清单、装载前的检查、生命周期。
+- [模板](/zh/develop/templates/) —— 两个模板，以及它们生成什么。
+- [C# 插件](/zh/develop/authoring-csharp/)或 [F# 插件](/zh/develop/authoring-fsharp/) —— 写插件本体。
+- 日志里看不到插件时，看[常见问题](/zh/develop/troubleshooting/)。
+
+## 改走源码
+
+模板产出的是预编译程序集。要交付在装载时编译的 `.cs` 或 `.fsx` 源码，装上对应的加载器包，把清单指向
+源文件即可。包的结构见 [C# 插件](/zh/develop/authoring-csharp/)。
