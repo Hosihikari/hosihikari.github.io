@@ -53,6 +53,9 @@ export default defineConfig({
           'https://github.com/HosihikariFramework/hosihikariframework.github.io/edit/main/',
       },
       lastUpdated: true,
+      components: {
+        Footer: './src/components/Footer.astro',
+      },
       customCss: [
         '@fontsource-variable/noto-sans-sc/wght.css',
         '@fontsource-variable/noto-serif-sc/wght.css',
@@ -104,7 +107,6 @@ export default defineConfig({
           items: [{ label: 'Releases', translations: { 'zh-CN': '发布记录' }, slug: 'releases' }],
         },
       ],
-      credits: true,
     }),
   ],
 });
