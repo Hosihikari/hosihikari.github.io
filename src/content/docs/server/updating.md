@@ -39,7 +39,7 @@ Everything the framework loads runs inside the server process:
 
 - **The carrier and the plugin manager.** Restart.
 - **Loader packages.** They cannot be unloaded at runtime; disabling or upgrading one means a restart.
-- **Plugin packages.** Under a parent, the parent can disable, enable, and unload plugins at runtime. Self-hosted has no runtime enable or disable: move the package out of `plugins/` and restart.
+- **Plugin packages.** Under a parent, the parent can disable, enable, and unload plugins at runtime. Self-hosted has no runtime enable or disable yet: move the package out of `plugins/` and restart. Plugin management commands are planned; until then this is the only path.
 
 ## Check compatibility before you update
 
