@@ -16,7 +16,7 @@ The Endstone carrier installs as an Endstone plugin. The framework is the plugin
 
 Run this in the server root:
 
-```powershell
+```bash
 lip install github.com/HosihikariFramework/HostingShim#endstone
 ```
 
@@ -50,7 +50,7 @@ The server log should show the CLR starting, the carrier registering as an Endst
 
 ## Uninstall
 
-```powershell
+```bash
 lip uninstall github.com/HosihikariFramework/HostingShim#endstone
 ```
 

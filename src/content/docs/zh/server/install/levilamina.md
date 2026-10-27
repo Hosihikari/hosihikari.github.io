@@ -16,7 +16,7 @@ LeviLamina 载体以一个 mod 的形式装进去。框架是插件管理器，L
 
 在服务端根目录执行：
 
-```powershell
+```bash
 lip install github.com/HosihikariFramework/HostingShim#levilamina
 ```
 
@@ -47,7 +47,7 @@ lip install github.com/HosihikariFramework/HostingShim#levilamina
 
 ## 卸载
 
-```powershell
+```bash
 lip uninstall github.com/HosihikariFramework/HostingShim#levilamina
 ```
 

@@ -16,7 +16,7 @@ The LeviLamina carrier installs as a mod. The framework is the plugin manager; L
 
 Run this in the server root:
 
-```powershell
+```bash
 lip install github.com/HosihikariFramework/HostingShim#levilamina
 ```
 
@@ -47,7 +47,7 @@ If none of that appears, the log line right after startup tells you why. See [Re
 
 ## Uninstall
 
-```powershell
+```bash
 lip uninstall github.com/HosihikariFramework/HostingShim#levilamina
 ```
 

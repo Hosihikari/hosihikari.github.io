@@ -11,7 +11,7 @@ The package layout, the manifest fields, the lifecycle, configuration, and the d
 
 Pick the HostingShim variant for the server (see [Choosing a carrier](/server/carriers/)), then install the F# loader:
 
-```powershell
+```bash
 lip install github.com/HosihikariFramework/HostingShim#levilamina
 lip install github.com/HosihikariFramework/FSharpLoader
 ```

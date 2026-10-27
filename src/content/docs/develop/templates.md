@@ -11,7 +11,7 @@ The templates are MIT-0; Hosihikari.Plugin.Abstractions 1.0.0 and later are MIT.
 
 The plugin manager's built-in assembly loader loads a .NET class library. No loader package is needed.
 
-```powershell
+```bash
 dotnet new install Hosihikari.Plugin.Templates
 dotnet new hosihikari-plugin -n MyPlugin          # C#
 # or
@@ -20,7 +20,7 @@ dotnet new hosihikari-plugin-fsharp -n MyPlugin   # F#
 
 Build and pack with `Hosihikari.Plugin.Build`; no framework checkout is needed:
 
-```powershell
+```bash
 cd MyPlugin
 dotnet add package Hosihikari.Plugin.Build --version 1.0.0
 dotnet build -t:PackPlugin

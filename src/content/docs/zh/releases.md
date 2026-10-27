@@ -112,7 +112,7 @@ description: 星光框架、加载器与模板的已发布版本。
 
 ## 安装
 
-```powershell
+```bash
 dotnet add package Hosihikari.Plugin.Abstractions --version 1.1.0
 dotnet add package Hosihikari.Plugin.Build --version 1.0.0
 dotnet add package Hosihikari.Testing --version 1.0.0
@@ -126,7 +126,7 @@ lip install github.com/HosihikariFramework/RpcLoader
 
 HostingShim 包会通过 lip 依赖安装 PluginManager。需要显式锁定 PluginManager 时：
 
-```powershell
+```bash
 lip install github.com/HosihikariFramework/PluginManager@1.1.0
 ```
 

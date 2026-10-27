@@ -11,7 +11,7 @@ F# 直接跑在 CLR 上，`Hosihikari.PluginLoader.FSharp` 在装载时把 `.fsx
 
 按服务端选 HostingShim 变体（见[选择载体](/zh/server/carriers/)），再装 F# 加载器：
 
-```powershell
+```bash
 lip install github.com/HosihikariFramework/HostingShim#levilamina
 lip install github.com/HosihikariFramework/FSharpLoader
 ```

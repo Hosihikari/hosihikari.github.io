@@ -7,7 +7,7 @@ Pieces update independently: the carrier, the plugin manager, the loaders, and t
 
 ## Check what you have
 
-```powershell
+```bash
 lip list
 ```
 
@@ -15,7 +15,7 @@ The installed packages appear with their versions, and packages installed by lab
 
 ## Update
 
-```powershell
+```bash
 lip update github.com/HosihikariFramework/HostingShim#levilamina
 ```
 
@@ -27,7 +27,7 @@ There is no `lip upgrade`; that command does not exist.
 
 `lip install` with an explicit version both upgrades and downgrades:
 
-```powershell
+```bash
 lip install github.com/HosihikariFramework/HostingShim#levilamina@1.1.0
 ```
 

@@ -9,7 +9,7 @@ C# 直接跑在 CLR 上，`Hosihikari.PluginLoader.CSharp` 在装载时用 Rosly
 
 按服务端选 HostingShim 变体（见[选择载体](/zh/server/carriers/)）；下面以 LeviLamina 为例：
 
-```powershell
+```bash
 lip install github.com/HosihikariFramework/HostingShim#levilamina
 lip install github.com/HosihikariFramework/CSharpLoader
 ```

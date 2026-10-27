@@ -13,7 +13,7 @@ RpcLoader 是官方进程外加载器：插件在子进程中运行，不把源�
 
 按服务端选 HostingShim 变体（见[选择载体](/zh/server/carriers/)）；下面以 LeviLamina 为例：
 
-```powershell
+```bash
 lip install github.com/HosihikariFramework/HostingShim#levilamina
 lip install github.com/HosihikariFramework/RpcLoader
 ```
@@ -28,7 +28,7 @@ lip install github.com/HosihikariFramework/RpcLoader
 plugins/hello-node/
   manifest.json
   main.mjs
-  hosihikari.mjs   ← 从加载器包的 bindings/node 拷来
+  hosihikari.mjs   ← 从加载器包的 protocol/node 拷来
   hello-node.conf
 ```
 
@@ -55,8 +55,8 @@ plugins/hello-node/
 
 绑定从安装好的加载器包里取：
 
-```powershell
-Copy-Item <服务端>/plugins/hosihikari-rpc/bindings/node/hosihikari.mjs .
+```bash
+cp <服务端>/plugins/hosihikari-rpc/protocol/node/hosihikari.mjs .
 ```
 
 ## 插件
@@ -111,10 +111,10 @@ stdout 只走协议；stderr 是文本日志。Node 绑定把 `console.log` 改�
 
 加载器包里带参考绑定：
 
-- `bindings/node/hosihikari.mjs` 与 `hosihikari.d.ts`（TypeScript 声明）
-- `bindings/quickjs/hosihikari.js`（需要 `qjs`；JSDoc 类型）
-- `bindings/python/hosihikari.py` 与 `hosihikari.pyi`（模块级 `on_load` 等；类型存根）
-- `bindings/java/hosihikari`（Java 与 Kotlin 共用；`command` 指向 `hosihikari.Binding`）
+- `protocol/node/hosihikari.mjs` 与 `hosihikari.d.ts`（TypeScript 声明）
+- `protocol/quickjs/hosihikari.js`（需要 `qjs`；JSDoc 类型）
+- `protocol/python/hosihikari.py` 与 `hosihikari.pyi`（模块级 `on_load` 等；类型存根）
+- `protocol/java/hosihikari`（Java 与 Kotlin 共用；`command` 指向 `hosihikari.Binding`）
 
 Node 与 QuickJS 发往宿主的请求 30 秒超时；超时的请求会被拒绝。
 

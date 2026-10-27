@@ -7,7 +7,7 @@ description: 不启动基岩版专用服务器，直接驱动插件生命周期�
 `Hosihikari.Plugin.Abstractions` 1.1.0 与 `Hosihikari.PluginManager` 1.1.0。测试包自身的版本为
 1.0.0。
 
-```powershell
+```bash
 dotnet add package Hosihikari.Testing --version 1.0.0
 ```
 
