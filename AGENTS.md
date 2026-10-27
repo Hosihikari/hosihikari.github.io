@@ -7,8 +7,7 @@ Starlight.
 
 - `src/content/docs/` — English pages; `src/content/docs/zh/` mirrors them in Chinese. Every page
   sits under `server/`, `develop/`, or `embed/`, one of the three reader sections.
-- `astro.config.mjs` — site configuration, locales, header links (`navLinks`), sidebar, and
-  integrations.
+- `astro.config.mjs` — site configuration, locales, sidebar, and integrations.
 - `examples/` — example plugin packages referenced by the guides.
 - `public/` — static assets.
 - `.github/workflows/deploy.yml` — builds and deploys the site.

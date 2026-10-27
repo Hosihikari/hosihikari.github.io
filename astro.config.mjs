@@ -1,7 +1,6 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
-import lucode from 'lucode-starlight';
 
 const siteUrl = 'https://hf.srcz.one';
 const ogImage = new URL('/og-image.png', siteUrl).href;
@@ -29,39 +28,6 @@ export default defineConfig({
         { tag: 'link', attrs: { rel: 'apple-touch-icon', sizes: '180x180', href: '/apple-touch-icon.png' } },
         { tag: 'link', attrs: { rel: 'manifest', href: '/site.webmanifest' } },
         { tag: 'meta', attrs: { name: 'theme-color', content: '#a62a8a' } },
-        {
-          tag: 'script',
-          attrs: { 'is:inline': true },
-          content: `
-            (() => {
-              const fix = () => {
-                const zh = document.documentElement.lang.startsWith('zh');
-                const closeLabel = zh ? '关闭菜单' : 'Close menu';
-                document.querySelectorAll('#drawer button.sheet-overlay, #drawer button.drag-icon').forEach((button) => {
-                  button.setAttribute('aria-label', closeLabel);
-                });
-                document.querySelectorAll('#drawer h4.entry-title').forEach((heading) => {
-                  const h2 = document.createElement('h2');
-                  for (const attr of heading.attributes) h2.setAttribute(attr.name, attr.value);
-                  h2.innerHTML = heading.innerHTML;
-                  heading.replaceWith(h2);
-                });
-                const search = document.querySelector('button[data-open-modal]');
-                if (search) {
-                  const visible = (search.innerText || '').replace(/\\s+/g, ' ').trim();
-                  if (visible) search.setAttribute('aria-label', visible);
-                }
-                const prefix = zh ? '前往 ' : 'Go to ';
-                document.querySelectorAll('[data-slot="doc-title-actions"] a[data-slot="button"]').forEach((link) => {
-                  const href = link.getAttribute('href');
-                  if (href) link.setAttribute('aria-label', prefix + href);
-                });
-              };
-              if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fix, { once: true });
-              else fix();
-            })();
-          `,
-        },
         { tag: 'meta', attrs: { property: 'og:image', content: ogImage } },
         { tag: 'meta', attrs: { property: 'og:image:width', content: '1200' } },
         { tag: 'meta', attrs: { property: 'og:image:height', content: '630' } },
@@ -87,18 +53,6 @@ export default defineConfig({
           'https://github.com/HosihikariFramework/hosihikariframework.github.io/edit/main/',
       },
       lastUpdated: true,
-      plugins: [
-        lucode({
-          docs: { includeAiUtilities: true },
-          navLinks: [
-            { label: 'Server', translations: { 'zh-CN': '服务器' }, link: '/server/' },
-            { label: 'Develop', translations: { 'zh-CN': '写插件' }, link: '/develop/' },
-            { label: 'Embed', translations: { 'zh-CN': '内嵌' }, link: '/embed/' },
-          ],
-          footerText:
-            'Hosihikari Framework · 星光框架 · [Content CC BY-SA 4.0](https://github.com/HosihikariFramework/hosihikariframework.github.io/blob/main/LICENSE.md) · [Code MIT-0](https://github.com/HosihikariFramework/hosihikariframework.github.io/blob/main/LICENSE-CODE.md) · Built with [Starlight](https://starlight.astro.build/)',
-        }),
-      ],
       customCss: [
         '@fontsource-variable/noto-sans-sc/wght.css',
         '@fontsource-variable/noto-serif-sc/wght.css',
