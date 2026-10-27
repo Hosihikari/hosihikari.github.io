@@ -26,17 +26,30 @@ half-written world.
 
 ## Take one while the server is running
 
-BDS can flush the world on demand. In the server console:
+BDS can prepare a consistent copy of the world on demand. In the server console:
 
 ```
 save hold
 save query
+```
+
+`save hold` only *asks* the server to prepare; it returns immediately and the preparation runs in the
+background. Call `save query` repeatedly until it answers with a file list. Until then it reports that
+preparation is still in progress, and the files are not yet safe to copy.
+
+The successful `save query` answer lists every file to copy and the length of each one. Copy exactly
+those files — not the whole `worlds/` directory — and **truncate each copied file to the length the
+server gave**. The server keeps running during the copy, so a file can grow while you read it; the
+truncation is what makes the copy match the snapshot.
+
+When the copy is finished, release the hold:
+
+```
 save resume
 ```
 
-`save hold` pauses world writes and lets you copy; `save query` reports which files are safe and their
-lengths; `save resume` releases the hold. Copy `worlds/` between `hold` and `resume`, then copy the
-framework paths normally — they are plain directories and are not covered by the world flush.
+Then copy the framework paths normally. They are plain directories and are not covered by the world
+flush.
 
 ## Restore
 
