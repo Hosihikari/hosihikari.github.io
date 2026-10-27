@@ -8,6 +8,8 @@ const ogImage = new URL('/og-image.png', siteUrl).href;
 
 export default defineConfig({
   site: siteUrl,
+  // 弯引号落到 CJK 字体上是全角宽度，英文正文里会裂开。
+  markdown: { smartypants: false },
   integrations: [
     starlight({
       title: {

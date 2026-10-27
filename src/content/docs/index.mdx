@@ -6,7 +6,7 @@ hero:
   layout: split-left
   announcement:
     text: Version 1.1.0 is out
-    link: /releases/
+    link: /server/
   title: .NET plugins for Bedrock Dedicated Server
   tagline: Your own libraries and toolchain, loaded in-process — isolated per plugin, with verified unload.
   image:
@@ -40,9 +40,6 @@ hero:
 ---
 
 import { Card, CardGrid } from '@astrojs/starlight/components';
-import { ContainerSection } from 'lucode-starlight/components';
-
-<ContainerSection>
 
 <CardGrid>
   <Card title="One contract" icon="pencil">
@@ -68,5 +65,3 @@ import { ContainerSection } from 'lucode-starlight/components';
 The documentation is also available in [简体中文](/zh/).
 
 RpcLoader is the out-of-process loader: an official RPC bridge for plugins that cannot be compiled to IL.
-
-</ContainerSection>
