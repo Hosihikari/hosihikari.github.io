@@ -5,8 +5,7 @@ description: 生成、打包并运行一个插件。
 
 这一页把一台已经能跑的服务端带到有一个插件在跑。它假定框架已经装好；没装的话先看[服务器](/zh/server/)。
 
-构建插件需要你机器上装有 [.NET 10 SDK](https://dotnet.microsoft.com/download)。服务端需要 .NET 10
-运行时——框架能起来就已经有了。
+构建插件需要你机器上装有 [.NET 10 SDK](https://dotnet.microsoft.com/download)。服务端需要 .NET 10 运行时——框架能起来就已经有了。
 
 ## 生成
 
@@ -57,5 +56,4 @@ Get-ChildItem "$Server/data/hosihikari/HelloPlugin"
 
 ## 改走源码
 
-模板产出的是预编译程序集。要交付在装载时编译的 `.cs` 或 `.fsx` 源码，装上对应的加载器包，把清单指向
-源文件即可。包的结构见 [C# 插件](/zh/develop/authoring-csharp/)。
+模板产出的是预编译程序集。要交付在装载时编译的 `.cs` 或 `.fsx` 源码，装上对应的加载器包，把清单指向 源文件即可。包的结构见 [C# 插件](/zh/develop/authoring-csharp/)。
