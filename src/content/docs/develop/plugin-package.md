@@ -54,7 +54,7 @@ Dependencies are sorted by name. A dependency may carry a NuGet SemVer range:
 - `[1.2.3]`: exactly 1.2.3.
 - `[1.0.0,2.0.0)`: 1.0.0 inclusive through 2.0.0 exclusive.
 
-The target plugin must declare a parseable `version` when a range constrains it. The framework dependency `hosihikari` is not version-checked; loader packages load before the packages that depend on them. In-process loaders declare `hosihikari-csharp` or `hosihikari-fsharp`; the out-of-process loader declares `hosihikari-rpc`. Precompiled assemblies use the plugin manager's built-in path and need no loader package.
+The target plugin must declare a parseable `version` when a range constrains it. The framework dependency `hosihikari` is not version-checked; loader packages load before the packages that depend on them. Plugins that use an in-process loader declare `hosihikari-csharp` or `hosihikari-fsharp`; out-of-process plugins declare `hosihikari-rpc`. Precompiled assemblies use the plugin manager's built-in path and need no loader package.
 
 ## Loaders and entries
 

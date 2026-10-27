@@ -42,7 +42,7 @@ The launcher changes into the server directory and preloads the carrier, which s
 
 Every plugin under `plugins/` loads and enables before the server starts. There is no runtime enable or disable yet: to stop using a plugin today, move its package out of `plugins/` and restart. Plugin management commands — enable, disable, load, unload — are planned on top of the projection's command MCAPI and the plugin manager API; this page will be updated when they ship.
 
-Only precompiled assembly packages run here. A source plugin needs a loader package ([C#](/develop/authoring-csharp/) or [F#](/develop/authoring-fsharp/)), and those exist for the parented carriers.
+Precompiled assembly packages run here out of the box. Source plugins work too: install the matching loader package ([C#](/develop/authoring-csharp/) or [F#](/develop/authoring-fsharp/)) alongside the carrier, exactly as on the parented carriers.
 
 ## Verify
 
