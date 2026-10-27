@@ -4,8 +4,8 @@ description: Configure the plugin manager, read plugin status, and add pre-load 
 ---
 
 These APIs are for hosts that embed `Hosihikari.PluginManager` and for authors of custom loaders.
-Plugin authors normally use the [plugin contract](/authoring-csharp/) and
-[Testing plugins](/testing/).
+Plugin authors normally use the [plugin contract](/develop/authoring-csharp/) and
+[Testing plugins](/develop/testing/).
 
 ## Manager options
 
@@ -82,4 +82,4 @@ public IReadOnlyList<string> Validate(PluginManifest manifest, string packageDir
 
 `Hosihikari.Plugin.Build` adds the `PackPlugin` target; multi-target projects pass `-f <tfm>`.
 `Hosihikari.Testing` provides `PluginTestHost` and `PluginManagerHarness`. See
-[Templates](/templates/) and [Testing plugins](/testing/).
+[Templates](/develop/templates/) and [Testing plugins](/develop/testing/).

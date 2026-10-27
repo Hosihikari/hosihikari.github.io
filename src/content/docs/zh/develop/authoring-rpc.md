@@ -11,14 +11,14 @@ RpcLoader 是官方进程外加载器：插件在子进程中运行，不把源�
 
 ## 准备
 
-按服务端选 HostingShim 变体（见[快速开始](/zh/quick-start/)）；下面以 LeviLamina 为例：
+按服务端选 HostingShim 变体（见[选择载体](/zh/server/carriers/)）；下面以 LeviLamina 为例：
 
 ```powershell
 lip install github.com/HosihikariFramework/HostingShim#levilamina
 lip install github.com/HosihikariFramework/RpcLoader
 ```
 
-[RPC 模板](/zh/templates/)覆盖 Node.js/TypeScript、Python 与 Kotlin/JVM。
+[RPC 模板](/zh/develop/templates/)覆盖 Node.js/TypeScript、Python 与 Kotlin/JVM。
 
 插件包还要声明对 `hosihikari-rpc` 的依赖。可执行文件由运维提供：放在 `PATH` 上或用绝对路径。
 

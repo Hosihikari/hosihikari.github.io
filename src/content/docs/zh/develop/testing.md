@@ -67,4 +67,4 @@ harness.Manager.Unload("MyPlugin");
 ## 边界
 
 测试包不模拟载体、BDS 世界 API 或本机库生命周期；这些都在框架契约之外。真实服务端请走各载体的
-冒烟路径，并参考[常见问题](/zh/troubleshooting/)。
+冒烟路径，并参考[常见问题](/zh/develop/troubleshooting/)。
