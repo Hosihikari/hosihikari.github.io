@@ -16,10 +16,6 @@
     "@fontsource-variable/noto-sans-sc": "^5.3.1",
     "@fontsource-variable/noto-serif-sc": "^5.3.1",
     "astro": "^7.4.2",
-    "lucode-starlight": "1.0.0",
     "sharp": "^0.35.5"
-  },
-  "patchedDependencies": {
-    "lucode-starlight@1.0.0": "patches/lucode-starlight@1.0.0.patch"
   }
 }
