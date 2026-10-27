@@ -10,7 +10,7 @@ description: 从每种插件种类的维护模板开始。
 
 插件管理器内置的程序集入口加载 .NET 类库，不需要安装加载器包。
 
-```powershell
+```bash
 dotnet new install Hosihikari.Plugin.Templates
 dotnet new hosihikari-plugin -n MyPlugin          # C#
 # 或
@@ -19,7 +19,7 @@ dotnet new hosihikari-plugin-fsharp -n MyPlugin   # F#
 
 用 `Hosihikari.Plugin.Build` 构建打包，不需要框架检出：
 
-```powershell
+```bash
 cd MyPlugin
 dotnet add package Hosihikari.Plugin.Build --version 1.0.0
 dotnet build -t:PackPlugin

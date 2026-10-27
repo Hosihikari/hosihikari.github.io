@@ -16,7 +16,7 @@ Endstone 载体以一个 Endstone 插件的形式装进去。框架是插件管�
 
 在服务端根目录执行：
 
-```powershell
+```bash
 lip install github.com/HosihikariFramework/HostingShim#endstone
 ```
 
@@ -50,7 +50,7 @@ endstone -s <服务端根目录>
 
 ## 卸载
 
-```powershell
+```bash
 lip uninstall github.com/HosihikariFramework/HostingShim#endstone
 ```
 

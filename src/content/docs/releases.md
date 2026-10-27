@@ -117,7 +117,7 @@ The 1.1.0 line adds to the 1.0 API; existing plugins keep working without change
 
 ## Install
 
-```powershell
+```bash
 dotnet add package Hosihikari.Plugin.Abstractions --version 1.1.0
 dotnet add package Hosihikari.Plugin.Build --version 1.0.0
 dotnet add package Hosihikari.Testing --version 1.0.0
@@ -131,7 +131,7 @@ lip install github.com/HosihikariFramework/RpcLoader
 
 The HostingShim package installs PluginManager as a lip dependency. To pin PluginManager explicitly:
 
-```powershell
+```bash
 lip install github.com/HosihikariFramework/PluginManager@1.1.0
 ```
 

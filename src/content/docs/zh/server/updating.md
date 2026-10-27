@@ -7,7 +7,7 @@ description: 升到新版本，出问题时回得去。
 
 ## 先看现在装了什么
 
-```powershell
+```bash
 lip list
 ```
 
@@ -15,7 +15,7 @@ lip list
 
 ## 升级
 
-```powershell
+```bash
 lip update github.com/HosihikariFramework/HostingShim#levilamina
 ```
 
@@ -27,7 +27,7 @@ lip update github.com/HosihikariFramework/HostingShim#levilamina
 
 `lip install` 带显式版本号既能升级也能降级：
 
-```powershell
+```bash
 lip install github.com/HosihikariFramework/HostingShim#levilamina@1.1.0
 ```
 

@@ -14,7 +14,7 @@ RpcLoader is the official out-of-process loader. It runs plugins in a child proc
 Pick the HostingShim variant for the server (see [Choosing a carrier](/server/carriers/)); the examples below use
 LeviLamina:
 
-```powershell
+```bash
 lip install github.com/HosihikariFramework/HostingShim#levilamina
 lip install github.com/HosihikariFramework/RpcLoader
 ```
@@ -29,7 +29,7 @@ The plugin package also declares a dependency on `hosihikari-rpc`. The operator 
 plugins/hello-node/
   manifest.json
   main.mjs
-  hosihikari.mjs   ← copied from the loader package's bindings/node
+  hosihikari.mjs   ← copied from the loader package's protocol/node
   hello-node.conf
 ```
 
@@ -56,8 +56,8 @@ plugins/hello-node/
 
 Copy the binding from the installed loader package:
 
-```powershell
-Copy-Item <server>/plugins/hosihikari-rpc/bindings/node/hosihikari.mjs .
+```bash
+cp <server>/plugins/hosihikari-rpc/protocol/node/hosihikari.mjs .
 ```
 
 ## Plugin
@@ -112,10 +112,10 @@ stdout carries the protocol; stderr carries text logs. The Node binding redirect
 
 The loader package ships reference bindings:
 
-- `bindings/node/hosihikari.mjs` and `hosihikari.d.ts` (TypeScript declarations)
-- `bindings/quickjs/hosihikari.js` (requires `qjs`; JSDoc types)
-- `bindings/python/hosihikari.py` and `hosihikari.pyi` (module-level `on_load` and friends; type stubs)
-- `bindings/java/hosihikari` (shared by Java and Kotlin; `command` points at `hosihikari.Binding`)
+- `protocol/node/hosihikari.mjs` and `hosihikari.d.ts` (TypeScript declarations)
+- `protocol/quickjs/hosihikari.js` (requires `qjs`; JSDoc types)
+- `protocol/python/hosihikari.py` and `hosihikari.pyi` (module-level `on_load` and friends; type stubs)
+- `protocol/java/hosihikari` (shared by Java and Kotlin; `command` points at `hosihikari.Binding`)
 
 Host requests from the Node and QuickJS bindings time out after 30 seconds; a timed-out request rejects.
 

@@ -7,7 +7,7 @@ description: Drive plugin lifecycle and host services without starting a Bedrock
 `Hosihikari.Plugin.Abstractions` 1.1.0 and `Hosihikari.PluginManager` 1.1.0. The test package is
 versioned 1.0.0.
 
-```powershell
+```bash
 dotnet add package Hosihikari.Testing --version 1.0.0
 ```
 

@@ -10,7 +10,7 @@ C# runs on the CLR, so `Hosihikari.PluginLoader.CSharp` compiles `.cs` at load w
 Pick the HostingShim variant for the server (see [Choosing a carrier](/server/carriers/)); the examples below use
 LeviLamina:
 
-```powershell
+```bash
 lip install github.com/HosihikariFramework/HostingShim#levilamina
 lip install github.com/HosihikariFramework/CSharpLoader
 ```

@@ -3,6 +3,8 @@ title: Your first plugin
 description: Generate, pack, and run a plugin.
 ---
 
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
 This walks a working server to a running plugin. It assumes the framework is already installed on the server; if it is not, do [Server](/server/) first.
 
 You need the [.NET 10 SDK](https://dotnet.microsoft.com/download) on your machine to build the plugin. The server needs the .NET 10 runtime, which it already has if the framework starts.
@@ -11,7 +13,7 @@ You need the [.NET 10 SDK](https://dotnet.microsoft.com/download) on your machin
 
 From a directory outside the server:
 
-```powershell
+```bash
 dotnet new install Hosihikari.Plugin.Templates
 dotnet new hosihikari-plugin -n HelloPlugin -o HelloPlugin
 ```
@@ -20,7 +22,7 @@ The result is a complete precompiled plugin project. Choose the F# template with
 
 ## Pack
 
-```powershell
+```bash
 dotnet add ./HelloPlugin/HelloPlugin.csproj package Hosihikari.Plugin.Build --version 1.0.0
 dotnet build ./HelloPlugin/HelloPlugin.csproj -t:PackPlugin
 ```
@@ -29,10 +31,25 @@ dotnet build ./HelloPlugin/HelloPlugin.csproj -t:PackPlugin
 
 ## Install on the server
 
+Set `Server` to the server root once:
+
+<Tabs syncKey="shell">
+  <TabItem label="bash">
+    ```bash
+    Server=/path/to/bedrock-server
+    ```
+  </TabItem>
+  <TabItem label="PowerShell 7">
+    ```pwsh
+    $Server = 'C:\bedrock-server'
+    ```
+  </TabItem>
+</Tabs>
+
 Copy the directory into the server:
 
-```powershell
-Copy-Item -Recurse ./HelloPlugin/dist/HelloPlugin "$Server/plugins/HelloPlugin"
+```bash
+cp -r ./HelloPlugin/dist/HelloPlugin "$Server/plugins/HelloPlugin"
 ```
 
 The directory name must equal `name` in the manifest. Restart the server.
@@ -41,8 +58,8 @@ The directory name must equal `name` in the manifest. Restart the server.
 
 The log should show the plugin loading and enabling. Then check what it wrote:
 
-```powershell
-Get-ChildItem "$Server/data/hosihikari/HelloPlugin"
+```bash
+ls "$Server/data/hosihikari/HelloPlugin"
 ```
 
 A data directory with the plugin's files means it ran.

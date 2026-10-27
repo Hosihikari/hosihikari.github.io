@@ -3,6 +3,8 @@ title: 第一个插件
 description: 生成、打包并运行一个插件。
 ---
 
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
 这一页把一台已经能跑的服务端带到有一个插件在跑。它假定框架已经装好；没装的话先看[服务器](/zh/server/)。
 
 构建插件需要你机器上装有 [.NET 10 SDK](https://dotnet.microsoft.com/download)。服务端需要 .NET 10 运行时——框架能起来就已经有了。
@@ -11,7 +13,7 @@ description: 生成、打包并运行一个插件。
 
 在服务端之外的目录里：
 
-```powershell
+```bash
 dotnet new install Hosihikari.Plugin.Templates
 dotnet new hosihikari-plugin -n HelloPlugin -o HelloPlugin
 ```
@@ -20,7 +22,7 @@ dotnet new hosihikari-plugin -n HelloPlugin -o HelloPlugin
 
 ## 打包
 
-```powershell
+```bash
 dotnet add ./HelloPlugin/HelloPlugin.csproj package Hosihikari.Plugin.Build --version 1.0.0
 dotnet build ./HelloPlugin/HelloPlugin.csproj -t:PackPlugin
 ```
@@ -29,10 +31,25 @@ dotnet build ./HelloPlugin/HelloPlugin.csproj -t:PackPlugin
 
 ## 装到服务端
 
+先把 `Server` 设成服务端根目录：
+
+<Tabs syncKey="shell">
+  <TabItem label="bash">
+    ```bash
+    Server=/path/to/bedrock-server
+    ```
+  </TabItem>
+  <TabItem label="PowerShell 7">
+    ```pwsh
+    $Server = 'C:\bedrock-server'
+    ```
+  </TabItem>
+</Tabs>
+
 把目录拷进去：
 
-```powershell
-Copy-Item -Recurse ./HelloPlugin/dist/HelloPlugin "$Server/plugins/HelloPlugin"
+```bash
+cp -r ./HelloPlugin/dist/HelloPlugin "$Server/plugins/HelloPlugin"
 ```
 
 目录名必须与清单里的 `name` 相等。重启服务端。
@@ -41,8 +58,8 @@ Copy-Item -Recurse ./HelloPlugin/dist/HelloPlugin "$Server/plugins/HelloPlugin"
 
 日志里应当能看到插件装载并启用。然后看它写了什么：
 
-```powershell
-Get-ChildItem "$Server/data/hosihikari/HelloPlugin"
+```bash
+ls "$Server/data/hosihikari/HelloPlugin"
 ```
 
 数据目录里出现插件的文件，就说明它跑过了。
