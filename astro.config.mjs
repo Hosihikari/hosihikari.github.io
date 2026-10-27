@@ -54,6 +54,7 @@ export default defineConfig({
       },
       lastUpdated: true,
       components: {
+        Header: './src/components/Header.astro',
         Footer: './src/components/Footer.astro',
       },
       customCss: [

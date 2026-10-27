@@ -27,7 +27,8 @@ Use `bun run dev` for a local preview. The deploy workflow runs the same install
 - English lives at the site root; Chinese lives under `/zh/`. Add both versions of every page.
 - Every page belongs to one reader section: `server/` (owners and operators), `develop/` (plugin
   authors), or `embed/` (hosts embedding the manager). Do not create pages outside them.
-- Add sidebar entries, header links, and their `zh-CN` translations in `astro.config.mjs`.
+- Add sidebar entries and their `zh-CN` translations in `astro.config.mjs`. Keep the section header
+  links in `src/components/Header.astro` in sync across locales.
 - Keep examples and commands aligned with the current release line and package names.
 - Do not edit `dist/`, `.astro/`, or `node_modules/`.
 - Public default branches are protected. Work on a branch, open a pull request, and squash merge.
