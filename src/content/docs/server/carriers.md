@@ -26,7 +26,7 @@ The **self-hosted** carrier has no parent: the framework is the outermost plugin
 - **You already run LeviLamina or Endstone.** Use that carrier; nothing else is supported for it.
 - **Windows without a loader.** LeviLamina and Endstone are both options; both are Windows x64.
 - **Linux without a loader, BDS 1.21.3.** Self-hosted.
-- **Linux without a loader, newer BDS.** No carrier. Endstone on Linux is the way to stay current.
+- **Linux without a loader, newer BDS.** Use the Endstone carrier.
 
 ## What a carrier does not change
 
