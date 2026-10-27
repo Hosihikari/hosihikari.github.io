@@ -20,8 +20,7 @@ LeviLamina 载体以一个 mod 的形式装进去。框架是插件管理器，L
 lip install github.com/HosihikariFramework/HostingShim#levilamina
 ```
 
-`#levilamina` 标签选择变体。不带后缀的包是 Linux 自持态载体，在这里装不上。这个包依赖插件管理器，
-lip 会一并装上，落在 `plugins/hosihikari/`。
+`#levilamina` 标签选择变体。不带后缀的包是 Linux 自持态载体，在这里装不上。这个包依赖插件管理器， lip 会一并装上，落在 `plugins/hosihikari/`。
 
 然后照常启动服务端。
 
@@ -52,5 +51,4 @@ lip 会一并装上，落在 `plugins/hosihikari/`。
 lip uninstall github.com/HosihikariFramework/HostingShim#levilamina
 ```
 
-标签是包标识的一部分。漏掉标签，lip 会回答「未显式安装」。卸载会连插件管理器依赖一起移除，
-还有别的包要用框架时别执行。
+标签是包标识的一部分。漏掉标签，lip 会回答「未显式安装」。卸载会连插件管理器依赖一起移除， 还有别的包要用框架时别执行。
