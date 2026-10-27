@@ -25,10 +25,14 @@ hero:
         <span class="mascot-credit">Hosi Hikari · art by 墨鱼纸鸢</span>
       </div>
   actions:
-    - text: Quick start
-      link: /quick-start/
+    - text: Run a server
+      link: /server/
       icon: right-caret
       variant: primary
+    - text: Write plugins
+      link: /develop/
+      icon: right-caret
+      variant: secondary
     - text: GitHub
       link: https://github.com/HosihikariFramework
       icon: external
@@ -57,10 +61,9 @@ import { ContainerSection } from 'lucode-starlight/components';
 
 ## Start here
 
-- [Quick start](/quick-start/) — install the hosting shim, generate a C# or F# plugin from the templates, and run it.
-- [Plugin packages](/plugin-package/) — the directory layout, the manifest, and the checks applied before load.
-- [C# plugins](/authoring-csharp/) and [out-of-process plugins](/authoring-rpc/).
-- [Troubleshooting](/troubleshooting/).
+- [Running a server](/server/) — pick a carrier, install it, and keep it alive.
+- [Writing plugins](/develop/) — the contract, the package format, and the loaders.
+- [Embedding the manager](/embed/) — host the manager in your own process.
 
 The documentation is also available in [简体中文](/zh/).
 

@@ -4,7 +4,7 @@ description: 配置插件管理器、读取插件状态，并为加载器添加�
 ---
 
 这些 API 面向内嵌 `Hosihikari.PluginManager` 的宿主和自定义加载器的作者。插件作者通常使用
-[插件契约](/zh/authoring-csharp/)与[测试插件](/zh/testing/)。
+[插件契约](/zh/develop/authoring-csharp/)与[测试插件](/zh/develop/testing/)。
 
 ## 管理器配置
 
@@ -75,4 +75,4 @@ public IReadOnlyList<string> Validate(PluginManifest manifest, string packageDir
 
 `Hosihikari.Plugin.Build` 提供 `PackPlugin` 目标；多目标项目要带 `-f <tfm>`。
 `Hosihikari.Testing` 提供 `PluginTestHost` 与 `PluginManagerHarness`。见
-[模板](/zh/templates/)与[测试插件](/zh/testing/)。
+[模板](/zh/develop/templates/)与[测试插件](/zh/develop/testing/)。

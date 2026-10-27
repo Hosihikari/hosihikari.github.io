@@ -11,7 +11,7 @@ RpcLoader is the official out-of-process loader. It runs plugins in a child proc
 
 ## Setup
 
-Pick the HostingShim variant for the server (see [Quick start](/quick-start/)); the examples below use
+Pick the HostingShim variant for the server (see [Choosing a carrier](/server/carriers/)); the examples below use
 LeviLamina:
 
 ```powershell
@@ -19,7 +19,7 @@ lip install github.com/HosihikariFramework/HostingShim#levilamina
 lip install github.com/HosihikariFramework/RpcLoader
 ```
 
-The [RPC templates](/templates/) cover Node.js/TypeScript, Python, and Kotlin/JVM.
+The [RPC templates](/develop/templates/) cover Node.js/TypeScript, Python, and Kotlin/JVM.
 
 The plugin package also declares a dependency on `hosihikari-rpc`. The operator provides the executable: put it on `PATH` or use an absolute path.
 

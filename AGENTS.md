@@ -5,8 +5,10 @@ Starlight.
 
 ## Repository map
 
-- `src/content/docs/` — English pages; `src/content/docs/zh/` mirrors them in Chinese.
-- `astro.config.mjs` — site configuration, locales, sidebar, and integrations.
+- `src/content/docs/` — English pages; `src/content/docs/zh/` mirrors them in Chinese. Every page
+  sits under `server/`, `develop/`, or `embed/`, one of the three reader sections.
+- `astro.config.mjs` — site configuration, locales, header links (`navLinks`), sidebar, and
+  integrations.
 - `examples/` — example plugin packages referenced by the guides.
 - `public/` — static assets.
 - `.github/workflows/deploy.yml` — builds and deploys the site.
@@ -24,7 +26,9 @@ Use `bun run dev` for a local preview. The deploy workflow runs the same install
 ## Invariants
 
 - English lives at the site root; Chinese lives under `/zh/`. Add both versions of every page.
-- Add sidebar entries and their `zh-CN` translations in `astro.config.mjs`.
+- Every page belongs to one reader section: `server/` (owners and operators), `develop/` (plugin
+  authors), or `embed/` (hosts embedding the manager). Do not create pages outside them.
+- Add sidebar entries, header links, and their `zh-CN` translations in `astro.config.mjs`.
 - Keep examples and commands aligned with the current release line and package names.
 - Do not edit `dist/`, `.astro/`, or `node_modules/`.
 - Public default branches are protected. Work on a branch, open a pull request, and squash merge.

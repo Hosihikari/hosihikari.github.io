@@ -26,7 +26,7 @@ dotnet build -t:PackPlugin
 ```
 
 目标会把包写到 `dist/MyPlugin/`；多目标项目要带 `-f <tfm>`。测试包见
-[测试插件](/zh/testing/)，模板说明见
+[测试插件](/zh/develop/testing/)，模板说明见
 [模板说明](https://github.com/HosihikariFramework/PluginAbstractions/tree/main/templates/Hosihikari.Plugin.Templates)。
 
 ## C# 与 F# 源码
@@ -40,7 +40,7 @@ C# 与 F# 加载器在装载时编译源码；包里放源码，没有构建产�
 
 `CSharpPluginTemplate` 演示 `#:package` 与 `#:include`；先跑它的 `pack.ps1` 或 `pack.sh`，
 再把 `dist/MyCSharpPlugin/` 复制到 `plugins/`。`FSharpPluginTemplate` 演示 `#load`，直接复制仓库
-到 `plugins/MyFSharpPlugin/`。改名后重启。契约见 [C# 插件](/zh/authoring-csharp/)。
+到 `plugins/MyFSharpPlugin/`。改名后重启。契约见 [C# 插件](/zh/develop/authoring-csharp/)。
 
 ## 进程外运行时
 
@@ -54,7 +54,7 @@ RpcLoader 启动清单 `extraInfo.command` 里的命令，通过 stdio 走 JSON-
 | [Kotlin/JVM](https://github.com/HosihikariFramework/RpcPluginTemplate/tree/main/kotlin) | JDK 21+ | `./build.sh`（Windows 用 `build.ps1`） |
 
 在 `PATH` 上准备运行时与 `RpcLoader`，把目录复制到 `plugins/` 后重启。Python 清单使用
-`python3`，Windows 上改成 `python`。协议与上下文见[进程外插件](/zh/authoring-rpc/)。
+`python3`，Windows 上改成 `python`。协议与上下文见[进程外插件](/zh/develop/authoring-rpc/)。
 
 ## 怎么选
 

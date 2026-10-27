@@ -7,14 +7,14 @@ C# 直接跑在 CLR 上，`Hosihikari.PluginLoader.CSharp` 在装载时用 Rosly
 
 ## 准备
 
-按服务端选 HostingShim 变体（见[快速开始](/zh/quick-start/)）；下面以 LeviLamina 为例：
+按服务端选 HostingShim 变体（见[选择载体](/zh/server/carriers/)）；下面以 LeviLamina 为例：
 
 ```powershell
 lip install github.com/HosihikariFramework/HostingShim#levilamina
 lip install github.com/HosihikariFramework/CSharpLoader
 ```
 
-[C# 模板](/zh/templates/)是一个可以直接复制改名的完整包。
+[C# 模板](/zh/develop/templates/)是一个可以直接复制改名的完整包。
 
 ## 包结构
 

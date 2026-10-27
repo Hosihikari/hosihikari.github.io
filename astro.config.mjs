@@ -87,6 +87,12 @@ export default defineConfig({
       lastUpdated: true,
       plugins: [
         lucode({
+          docs: { includeAiUtilities: true },
+          navLinks: [
+            { label: 'Server', translations: { 'zh-CN': '服务器' }, link: '/server/' },
+            { label: 'Develop', translations: { 'zh-CN': '写插件' }, link: '/develop/' },
+            { label: 'Embed', translations: { 'zh-CN': '内嵌' }, link: '/embed/' },
+          ],
           footerText:
             'Hosihikari Framework · 星光框架 · [Content CC BY-SA 4.0](https://github.com/HosihikariFramework/hosihikariframework.github.io/blob/main/LICENSE.md) · [Code MIT-0](https://github.com/HosihikariFramework/hosihikariframework.github.io/blob/main/LICENSE-CODE.md) · Built with [Starlight](https://starlight.astro.build/)',
         }),
@@ -99,83 +105,48 @@ export default defineConfig({
       ],
       sidebar: [
         {
-          label: 'Getting started',
-          translations: { 'zh-CN': '开始使用' },
+          label: 'Server',
+          translations: { 'zh-CN': '服务器' },
           items: [
-            {
-              label: 'Quick start',
-              translations: { 'zh-CN': '快速开始' },
-              slug: 'quick-start',
-            },
-            {
-              label: 'Plugin packages',
-              translations: { 'zh-CN': '插件包与清单' },
-              slug: 'plugin-package',
-            },
-            {
-              label: 'Templates',
-              translations: { 'zh-CN': '模板' },
-              slug: 'templates',
-            },
-            {
-              label: 'Examples',
-              translations: { 'zh-CN': '示例插件' },
-              slug: 'examples',
-            },
+            { label: 'Carriers', translations: { 'zh-CN': '选择载体' }, slug: 'server/carriers' },
+            { label: 'LeviLamina', translations: { 'zh-CN': 'LeviLamina' }, slug: 'server/install/levilamina' },
+            { label: 'Endstone', translations: { 'zh-CN': 'Endstone' }, slug: 'server/install/endstone' },
+            { label: 'Self-hosted', translations: { 'zh-CN': '自持态' }, slug: 'server/install/selfhosted' },
+            { label: 'Updating', translations: { 'zh-CN': '升级与回滚' }, slug: 'server/updating' },
+            { label: 'Recovery', translations: { 'zh-CN': '故障恢复' }, slug: 'server/recovery' },
+            { label: 'Backup', translations: { 'zh-CN': '备份与还原' }, slug: 'server/backup' },
           ],
         },
         {
-          label: 'Authoring',
+          label: 'Develop',
           translations: { 'zh-CN': '写插件' },
           items: [
-            {
-              label: 'C# plugins',
-              translations: { 'zh-CN': 'C# 插件' },
-              slug: 'authoring-csharp',
-            },
-            {
-              label: 'F# plugins',
-              translations: { 'zh-CN': 'F# 插件' },
-              link: 'https://github.com/HosihikariFramework/FSharpLoader',
-            },
-            {
-              label: 'Testing plugins',
-              translations: { 'zh-CN': '测试插件' },
-              slug: 'testing',
-            },
-            {
-              label: 'Manager API',
-              translations: { 'zh-CN': '管理器 API' },
-              slug: 'manager-api',
-            },
+            { label: 'Your first plugin', translations: { 'zh-CN': '第一个插件' }, slug: 'develop/first-plugin' },
+            { label: 'Plugin packages', translations: { 'zh-CN': '插件包与清单' }, slug: 'develop/plugin-package' },
+            { label: 'Templates', translations: { 'zh-CN': '模板' }, slug: 'develop/templates' },
+            { label: 'Examples', translations: { 'zh-CN': '示例插件' }, slug: 'develop/examples' },
+            { label: 'C# plugins', translations: { 'zh-CN': 'C# 插件' }, slug: 'develop/authoring-csharp' },
+            { label: 'F# plugins', translations: { 'zh-CN': 'F# 插件' }, slug: 'develop/authoring-fsharp' },
+            { label: 'Out-of-process plugins', translations: { 'zh-CN': '进程外插件' }, slug: 'develop/authoring-rpc' },
+            { label: 'Testing plugins', translations: { 'zh-CN': '测试插件' }, slug: 'develop/testing' },
+            { label: 'Troubleshooting', translations: { 'zh-CN': '常见问题' }, slug: 'develop/troubleshooting' },
           ],
         },
         {
-          label: 'Out-of-process',
-          translations: { 'zh-CN': '进程外' },
+          label: 'Embed',
+          translations: { 'zh-CN': '内嵌' },
           items: [
-            {
-              label: 'Out-of-process plugins',
-              translations: { 'zh-CN': '进程外插件' },
-              slug: 'authoring-rpc',
-            },
+            { label: 'Getting started', translations: { 'zh-CN': '开始内嵌' }, slug: 'embed/getting-started' },
+            { label: 'Carrier services', translations: { 'zh-CN': '载体服务' }, slug: 'embed/carrier-services' },
+            { label: 'Lifecycle', translations: { 'zh-CN': '生命周期' }, slug: 'embed/lifecycle' },
+            { label: 'Events and callbacks', translations: { 'zh-CN': '事件与回调' }, slug: 'embed/events-and-callbacks' },
+            { label: 'Manager API', translations: { 'zh-CN': '管理器 API' }, slug: 'embed/manager-api' },
           ],
         },
         {
-          label: 'Help',
-          translations: { 'zh-CN': '帮助' },
-          items: [
-            {
-              label: 'Troubleshooting',
-              translations: { 'zh-CN': '常见问题' },
-              slug: 'troubleshooting',
-            },
-            {
-              label: 'Releases',
-              translations: { 'zh-CN': '发布记录' },
-              slug: 'releases',
-            },
-          ],
+          label: 'Releases',
+          translations: { 'zh-CN': '发布记录' },
+          items: [{ label: 'Releases', translations: { 'zh-CN': '发布记录' }, slug: 'releases' }],
         },
       ],
       credits: true,

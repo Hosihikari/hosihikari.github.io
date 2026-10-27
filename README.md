@@ -2,7 +2,7 @@
 
 [English](README.md) | [简体中文](README.zh_hans.md)
 
-Online documentation: <https://hosihikariframework.github.io/>
+Online documentation: <https://hf.srcz.one/>
 
 This repository holds the Starlight site, the bilingual documentation, and the example plugins. The site is deployed to GitHub Pages from `main`.
 
@@ -29,12 +29,18 @@ bun run preview
 | Path | Contents |
 |---|---|
 | `src/content/docs/` | English documentation (root locale). |
-| `src/content/docs/zh/` | Simplified Chinese documentation. |
-| `examples/` | Example plugins used by the quick start. |
-| `astro.config.mjs` | Site configuration and the bilingual sidebar. |
+| `src/content/docs/server/` | Pages for server owners and operators. |
+| `src/content/docs/develop/` | Pages for plugin authors. |
+| `src/content/docs/embed/` | Pages for hosts embedding PluginManager. |
+| `src/content/docs/zh/` | Simplified Chinese documentation, mirroring the same sections. |
+| `examples/` | Example plugins referenced by the guides. |
+| `astro.config.mjs` | Site configuration, header links, and the bilingual sidebar. |
 | `patches/` | Dependency patches applied by Bun. |
 
-Pages are Markdown or MDX with Starlight frontmatter. Navigation labels live in `astro.config.mjs`; a sidebar item uses `slug` so the same entry resolves to the English and Chinese pages.
+Pages are Markdown or MDX with Starlight frontmatter. Every page belongs to one of the three reader
+sections and lives under its directory. Header links (`navLinks`) and sidebar labels live in
+`astro.config.mjs`; a sidebar item uses `slug` so the same entry resolves to the English and Chinese
+pages.
 
 ## License
 

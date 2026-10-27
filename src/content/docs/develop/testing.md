@@ -73,4 +73,4 @@ the temporary root are rejected. Reports and removed-plugin callbacks are availa
 The testing package does not simulate a carrier, BDS world APIs, or native library lifetime. Those
 remain outside the framework contract. For a real server, use the carrier smoke paths in
 [Testing the framework](https://github.com/HosihikariFramework/PluginManager) and the
-[troubleshooting guide](/troubleshooting/).
+[troubleshooting guide](/develop/troubleshooting/).

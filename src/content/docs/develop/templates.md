@@ -27,7 +27,7 @@ dotnet build -t:PackPlugin
 ```
 
 The target writes `dist/MyPlugin/`. Multi-target projects pass `-f <tfm>`. See
-[Testing plugins](/testing/) for the test package and the
+[Testing plugins](/develop/testing/) for the test package and the
 [template README](https://github.com/HosihikariFramework/PluginAbstractions/tree/main/templates/Hosihikari.Plugin.Templates).
 
 ## Source C# and F#
@@ -42,7 +42,7 @@ The C# and F# loaders compile the source at load; the package carries source and
 `CSharpPluginTemplate` demonstrates `#:package` and `#:include`; run its `pack.ps1` or `pack.sh`,
 then copy `dist/MyCSharpPlugin/` into `plugins/`. `FSharpPluginTemplate` demonstrates `#load`; copy
 the repository into `plugins/MyFSharpPlugin/` directly. Rename the plugin and restart. See
-[C# plugins](/authoring-csharp/) for the contract.
+[C# plugins](/develop/authoring-csharp/) for the contract.
 
 ## Out-of-process runtimes
 
@@ -58,7 +58,7 @@ the loader is upgraded.
 
 Install `RpcLoader` and put the runtime executable on `PATH`, copy the directory into `plugins/`,
 and restart. The Python manifest uses `python3`; change it to `python` on Windows. See
-[out-of-process plugins](/authoring-rpc/) for the protocol and context.
+[out-of-process plugins](/develop/authoring-rpc/) for the protocol and context.
 
 ## Choosing a template
 

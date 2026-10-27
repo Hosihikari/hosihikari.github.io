@@ -205,6 +205,7 @@ div[data-slot='layout'] > header {
 }
 
 [data-has-hero] .hero .actions {
+  flex-wrap: wrap;
   gap: 0.8rem 1rem;
 }
 
@@ -507,4 +508,9 @@ div[data-slot='layout'] > header {
   .mascot-code {
     display: none;
   }
+}
+
+/* 主题把页脚元信息压到 0.75 透明度，14px 下对比度只剩 4.23 */
+main footer div[data-slot='doc-footer-meta'] {
+  opacity: 1;
 }
