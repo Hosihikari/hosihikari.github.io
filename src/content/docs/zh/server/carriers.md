@@ -26,7 +26,7 @@ description: 框架支持的三种载体环境，以及各自要付什么代价�
 - **已经在跑 LeviLamina 或 Endstone。** 用对应载体，别的组合不受支持。
 - **Windows、没有加载器。** LeviLamina 与 Endstone 都可以，都是 Windows x64。
 - **Linux、没有加载器、BDS 1.21.3。** 自持态。
-- **Linux、没有加载器、更新的 BDS。** 没有载体。要在 Linux 上跟新版本，走 Endstone。
+- **Linux、没有加载器、更新的 BDS。** 走 Endstone 载体。
 
 ## 载体不改变的东西
 
