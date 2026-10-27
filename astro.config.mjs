@@ -68,6 +68,7 @@ export default defineConfig({
           label: 'Server',
           translations: { 'zh-CN': '服务器' },
           items: [
+            { label: 'Overview', translations: { 'zh-CN': '概述' }, slug: 'server' },
             { label: 'Carriers', translations: { 'zh-CN': '选择载体' }, slug: 'server/carriers' },
             { label: 'LeviLamina', translations: { 'zh-CN': 'LeviLamina' }, slug: 'server/install/levilamina' },
             { label: 'Endstone', translations: { 'zh-CN': 'Endstone' }, slug: 'server/install/endstone' },
@@ -81,6 +82,7 @@ export default defineConfig({
           label: 'Develop',
           translations: { 'zh-CN': '写插件' },
           items: [
+            { label: 'Overview', translations: { 'zh-CN': '概述' }, slug: 'develop' },
             { label: 'Your first plugin', translations: { 'zh-CN': '第一个插件' }, slug: 'develop/first-plugin' },
             { label: 'Plugin packages', translations: { 'zh-CN': '插件包与清单' }, slug: 'develop/plugin-package' },
             { label: 'Templates', translations: { 'zh-CN': '模板' }, slug: 'develop/templates' },
@@ -96,6 +98,7 @@ export default defineConfig({
           label: 'Embed',
           translations: { 'zh-CN': '内嵌' },
           items: [
+            { label: 'Overview', translations: { 'zh-CN': '概述' }, slug: 'embed' },
             { label: 'Getting started', translations: { 'zh-CN': '开始内嵌' }, slug: 'embed/getting-started' },
             { label: 'Carrier services', translations: { 'zh-CN': '载体服务' }, slug: 'embed/carrier-services' },
             { label: 'Lifecycle', translations: { 'zh-CN': '生命周期' }, slug: 'embed/lifecycle' },
