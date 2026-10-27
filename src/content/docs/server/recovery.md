@@ -47,15 +47,20 @@ The plugin manager reports each package it refused and why. The common causes:
 When the server will not start and you do not know which plugin is responsible, take them all out:
 
 1. Stop the server.
-2. Move every directory under `plugins/` somewhere else, **except `plugins/hosihikari/`** — that is the
-   framework itself.
+2. Move the plugin directories under `plugins/` somewhere else, but keep the infrastructure:
+   - always keep `plugins/hosihikari/` — that is the framework itself;
+   - under LeviLamina also keep `plugins/LeviLamina/` — that is the parent loader, installed into
+     the same folder;
+   - under Endstone the parent is not under `plugins/`, so nothing else needs keeping.
 3. Start the server. If it comes up, the framework is fine and one of the packages is the problem.
 4. Move packages back in halves, restarting between rounds, until the server fails. The last batch
    contains the culprit.
 5. Leave the culprit out and report it.
 
-This works on every carrier. Self-hosted has no runtime enable or disable, so a restart per round is
-required there too — the same procedure applies.
+Removing the parent loader along with the plugins cannot tell you anything: without a parent there is
+nothing to activate the framework, and the server fails for a reason that has nothing to do with the
+plugins. This works on every carrier. Self-hosted has no runtime enable or disable, so a restart per
+round is required there too — the same procedure applies.
 
 ## A plugin will not unload
 
