@@ -74,4 +74,4 @@ onRemoved: name => registry.Remove(name)
 
 ## 合起来用
 
-拥有事件源的宿主通常这么做：构造管理器时把 `reportFault` 与 `onRemoved` 接到自己的日志与注册表，载体事件经管理器的总线发布，插件在 `OnEnable` 里订阅、在 `OnUnload` 里退订。框架在停用时关闭闸门，所以停用的插件不再收到事件，不需要自己退订。
+拥有事件源的宿主通常这么做：构造管理器时把 `reportFault` 与 `onRemoved` 接到自己的日志与注册表，载体事件经管理器的总线发布，插件在 `OnLoad` 里订阅一次、在 `OnUnload` 里释放。停用只关闭闸门，订阅还留着——在 `OnEnable` 里再订阅一次，每轮启停都会多出一个 handler。在 `OnLoad` 订阅，暂停交给闸门。插件卸载时没退掉的订阅，框架也会收走。

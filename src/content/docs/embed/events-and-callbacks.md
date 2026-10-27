@@ -74,4 +74,4 @@ Keep it short and non-throwing. It runs inside the manager's unload path.
 
 ## Putting them together
 
-A host that owns an event source typically does this: build the manager with `reportFault` and `onRemoved` wired to its own log and registry, publish carrier events through the manager's bus, and let plugins subscribe in `OnEnable` and drop their subscriptions in `OnUnload`. The framework closes the gate on disable, so a disabled plugin stops receiving events without needing to unsubscribe.
+A host that owns an event source typically does this: build the manager with `reportFault` and `onRemoved` wired to its own log and registry, publish carrier events through the manager's bus, and let plugins subscribe once in `OnLoad` and dispose in `OnUnload`. Disabling closes the gate but keeps the subscriptions, so subscribing again in `OnEnable` would add a second handler each enable cycle; subscribe in `OnLoad` and let the gate handle the pause. The framework also unsubscribes anything a plugin leaves behind on unload.
