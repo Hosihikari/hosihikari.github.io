@@ -20,8 +20,7 @@ Endstone 载体以一个 Endstone 插件的形式装进去。框架是插件管�
 lip install github.com/HosihikariFramework/HostingShim#endstone
 ```
 
-`#endstone` 标签选择变体，lip 按服务端平台取 Windows 或 Linux 的包。不带后缀的包是 Linux 自持态载体，
-在这里装不上。这个包依赖插件管理器，lip 会一并装上，落在 `plugins/hosihikari/`。
+`#endstone` 标签选择变体，lip 按服务端平台取 Windows 或 Linux 的包。不带后缀的包是 Linux 自持态载体， 在这里装不上。这个包依赖插件管理器，lip 会一并装上，落在 `plugins/hosihikari/`。
 
 通过 Endstone 的 CLI 启动服务端——Endstone 就是这样把运行时注入原版服务端二进制的：
 
@@ -31,15 +30,12 @@ endstone -s <服务端根目录>
 
 ## 验证
 
-日志里应当能看到 CLR 启动、载体作为 Endstone 插件登记、Endstone 启用它，以及插件管理器报告在
-`plugins/` 下发现了什么。都没有就看[故障恢复](/zh/server/recovery/)。
+日志里应当能看到 CLR 启动、载体作为 Endstone 插件登记、Endstone 启用它，以及插件管理器报告在 `plugins/` 下发现了什么。都没有就看[故障恢复](/zh/server/recovery/)。
 
 ## 两处 Endstone 特有的细节
 
-- **插件名会被规范化。** Endstone 只接受 `^[a-z0-9_]+$`，且不允许以 `endstone` 开头。名为 `Bar` 的插件
-  在 Endstone 眼里是 `bar`；框架仍按清单名记录它。按名字操作插件的命令要用 Endstone 的写法。
-- **nethost 库必须能被解析。** Windows 上 `nethost.dll` 放在 `bedrock_server.exe` 旁边；Linux 上
-  `libnethost.so` 放在插件旁边，靠 `$ORIGIN` 找到。包会处理好，只有手工部署时才需要在意。
+- **插件名会被规范化。** Endstone 只接受 `^[a-z0-9_]+$`，且不允许以 `endstone` 开头。名为 `Bar` 的插件 在 Endstone 眼里是 `bar`；框架仍按清单名记录它。按名字操作插件的命令要用 Endstone 的写法。
+- **nethost 库必须能被解析。** Windows 上 `nethost.dll` 放在 `bedrock_server.exe` 旁边；Linux 上 `libnethost.so` 放在插件旁边，靠 `$ORIGIN` 找到。包会处理好，只有手工部署时才需要在意。
 
 ## 文件位置
 

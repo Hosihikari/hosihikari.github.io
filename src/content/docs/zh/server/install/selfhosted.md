@@ -3,8 +3,7 @@ title: 安装自持态载体
 description: 安装自持态 Linux 载体。
 ---
 
-自持态载体没有父级加载器：它把框架预加载进原版基岩版专用服务器。它是唯一不需要 LeviLamina 或
-Endstone 就能跑的载体。
+自持态载体没有父级加载器：它把框架预加载进原版基岩版专用服务器。它是唯一不需要 LeviLamina 或 Endstone 就能跑的载体。
 
 ## 环境要求
 
@@ -41,17 +40,13 @@ chmod +x hosihikari-server
 
 ## 这里的插件包
 
-`plugins/` 下的每个插件都在服务端启动前加载并启用。没有运行期启停：停用一个插件就是把它的包移出
-`plugins/` 再重启。这是载体的性质，不是插件的。
+`plugins/` 下的每个插件都在服务端启动前加载并启用。没有运行期启停：停用一个插件就是把它的包移出 `plugins/` 再重启。这是载体的性质，不是插件的。
 
-这里只跑预编译程序集插件。源码插件需要加载器包（[C#](/zh/develop/authoring-csharp/) 或
-[F#](/zh/develop/authoring-fsharp/)），那是给父级态准备的。
+这里只跑预编译程序集插件。源码插件需要加载器包（[C#](/zh/develop/authoring-csharp/) 或 [F#](/zh/develop/authoring-fsharp/)），那是给父级态准备的。
 
 ## 验证
 
-启动器输出与服务端日志里应当能看到 CLR 启动、载体接管、插件管理器报告在 `plugins/` 下发现了什么。
-启动器立刻退出的话，第一行就写着原因——通常是缺运行时或缺 `bedrock_server`。见
-[故障恢复](/zh/server/recovery/)。
+启动器输出与服务端日志里应当能看到 CLR 启动、载体接管、插件管理器报告在 `plugins/` 下发现了什么。 启动器立刻退出的话，第一行就写着原因——通常是缺运行时或缺 `bedrock_server`。见 [故障恢复](/zh/server/recovery/)。
 
 ## 文件位置
 
