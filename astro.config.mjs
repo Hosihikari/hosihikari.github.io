@@ -142,7 +142,6 @@ export default defineConfig({
             { label: 'Carrier services', translations: { 'zh-CN': '载体服务' }, slug: 'embed/carrier-services' },
             { label: 'Lifecycle', translations: { 'zh-CN': '生命周期' }, slug: 'embed/lifecycle' },
             { label: 'Events and callbacks', translations: { 'zh-CN': '事件与回调' }, slug: 'embed/events-and-callbacks' },
-            { label: 'Manager API', translations: { 'zh-CN': '管理器 API' }, slug: 'embed/manager-api' },
           ],
         },
         {
