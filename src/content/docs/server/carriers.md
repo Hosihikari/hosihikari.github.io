@@ -19,7 +19,7 @@ The **self-hosted** carrier has no parent: the framework is the outermost plugin
 
 - The launcher runs one BDS version, 1.21.3.
 - The server needs the **.NET 10 runtime** installed. So do the parented carriers — the runtime lookup lives in shared native code — but under a parent it is easy to overlook.
-- There is no runtime enable or disable. A plugin package under `plugins/` loads and enables before the server's `main`; "disabling" it means moving the package out and restarting. Under a parent, the parent's own registry drives enable and disable, and those calls work normally.
+- There is no runtime enable or disable yet. A plugin package under `plugins/` loads and enables before the server's `main`; today "disabling" it means moving the package out and restarting. Plugin management commands are planned on top of the projection's command MCAPI and the plugin manager API; until they land, that is the only way. Under a parent, the parent's own registry drives enable and disable, and those calls work normally.
 
 ## What decides it
 
