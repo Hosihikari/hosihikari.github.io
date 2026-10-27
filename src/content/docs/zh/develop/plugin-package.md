@@ -54,7 +54,7 @@ plugins/
 - `[1.2.3]`：精确 1.2.3。
 - `[1.0.0,2.0.0)`：包含 1.0.0，不包含 2.0.0。
 
-被范围约束的目标插件必须声明可解析的 `version`。框架依赖 `hosihikari` 不参与版本检查；加载器包先于依赖它的包装载。进程内加载器声明 `hosihikari-csharp` 或 `hosihikari-fsharp`；进程外加载器声明 `hosihikari-rpc`。预编译程序集走插件管理器内置入口，不需要加载器包。
+被范围约束的目标插件必须声明可解析的 `version`。框架依赖 `hosihikari` 不参与版本检查；加载器包先于依赖它的包装载。用进程内加载器的插件声明 `hosihikari-csharp` 或 `hosihikari-fsharp`；进程外插件声明 `hosihikari-rpc`。预编译程序集走插件管理器内置入口，不需要加载器包。
 
 ## 加载器与入口
 

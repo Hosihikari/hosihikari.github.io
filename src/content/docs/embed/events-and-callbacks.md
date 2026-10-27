@@ -37,7 +37,7 @@ Releasing the returned handle cancels. Work that throws is caught and reported, 
 
 The thread pool is the only guarantee. "Runs on the game's main thread" is a carrier capability, not a framework one — a host that needs it must supply it through `carrierServices` or accept that callbacks are not on the main thread.
 
-Both the bus and the scheduler are per-plugin-scope: on unload the framework closes the gate first, so no further callbacks arrive, then releases the subscriptions and timers.
+Subscriptions and timers are tracked per plugin scope: on unload the framework closes the gate first, so no further callbacks arrive, then releases them.
 
 ## reportFault
 

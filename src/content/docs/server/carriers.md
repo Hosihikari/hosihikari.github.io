@@ -1,9 +1,9 @@
 ---
 title: Choosing a carrier
-description: The three ways the framework enters a server, and what each one costs.
+description: The three carrier environments the framework supports, and what each one costs.
 ---
 
-A **carrier** is the path the framework takes into the server process. It is fixed by two things you already chose: the platform, and whether a parent plugin loader is present. Pick the carrier before you install anything; the install steps differ per carrier and are not interchangeable.
+A **carrier** is a concrete runtime environment, fixed by three components: the platform, the parent plugin loader (none in the self-hosted case), and the native API provider — LLAPI for LeviLamina, the Endstone API for Endstone, and MCAPI for the self-hosted BDS 1.21.3. The framework depends only on the platform and the parent loader; the native API side comes from the projection. Pick the carrier before you install anything; the install steps differ per carrier and are not interchangeable.
 
 | Carrier | Platform | Parent | BDS |
 | --- | --- | --- | --- |

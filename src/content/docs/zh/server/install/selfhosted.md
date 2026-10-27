@@ -42,7 +42,7 @@ chmod +x hosihikari-server
 
 `plugins/` 下的每个插件都在服务端启动前加载并启用。目前没有运行期启停：现在停用一个插件就是把它的包移出 `plugins/` 再重启。插件管理命令——启用、停用、装载、卸载——计划基于投影的命令 MCAPI 与插件管理器 API 实现；落地后这一页会更新。
 
-这里只跑预编译程序集插件。源码插件需要加载器包（[C#](/zh/develop/authoring-csharp/) 或 [F#](/zh/develop/authoring-fsharp/)），那是给父级态准备的。
+预编译程序集插件开箱即用。源码插件也能跑：把对应的加载器包（[C#](/zh/develop/authoring-csharp/) 或 [F#](/zh/develop/authoring-fsharp/)）和载体一起装上，父级态怎么装，这里就怎么装。
 
 ## 验证
 

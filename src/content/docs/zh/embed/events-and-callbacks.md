@@ -37,7 +37,7 @@ IDisposable periodic = context.Scheduler.SchedulePeriodic(TimeSpan.FromMinutes(1
 
 线程池是唯一的保证。"在游戏主线程上跑"是载体的能力，不是框架的——需要它的宿主得通过 `carrierServices` 提供，否则就要接受回调不在主线程上。
 
-总线与调度器都属于插件作用域：卸载时框架先关闸门，之后不再有回调进来，再收回订阅与定时器。
+订阅与定时器都按插件作用域登记：卸载时框架先关闸门，之后不再有回调进来，再收回它们。
 
 ## reportFault
 
