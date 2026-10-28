@@ -28,6 +28,30 @@ export default defineConfig({
         { tag: 'link', attrs: { rel: 'apple-touch-icon', sizes: '180x180', href: '/apple-touch-icon.png' } },
         { tag: 'link', attrs: { rel: 'manifest', href: '/site.webmanifest' } },
         { tag: 'meta', attrs: { name: 'theme-color', content: '#a62a8a' } },
+        // 搜索按钮的 aria-label 只写 "Search"，可见文字还带快捷键；补成一致的可访问名称。
+        {
+          tag: 'script',
+          attrs: { 'is:inline': true },
+          content: `
+            (() => {
+              const fix = () => {
+                const search = document.querySelector('button[data-open-modal]');
+                if (!search) return;
+                const label = search.querySelector(':scope > span');
+                const kbd = search.querySelector(':scope > kbd');
+                if (label && kbd && label.nextElementSibling === kbd) label.after(document.createTextNode(' '));
+                if (kbd) {
+                  const keys = [...kbd.children];
+                  for (let i = 1; i < keys.length; i++) kbd.insertBefore(document.createTextNode(' '), keys[i]);
+                }
+                const name = [search.getAttribute('aria-label') || '', ...[...search.querySelectorAll('kbd kbd')].map(k => k.textContent.trim())].filter(Boolean).join(' ');
+                if (name) search.setAttribute('aria-label', name);
+              };
+              if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fix, { once: true });
+              else fix();
+            })();
+          `,
+        },
         { tag: 'meta', attrs: { property: 'og:image', content: ogImage } },
         { tag: 'meta', attrs: { property: 'og:image:width', content: '1200' } },
         { tag: 'meta', attrs: { property: 'og:image:height', content: '630' } },
