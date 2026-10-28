@@ -1,0 +1,60 @@
+---
+import Default from '@astrojs/starlight/components/Head.astro';
+
+const { entry, lastUpdated, lang } = Astro.locals.starlightRoute;
+const site = Astro.site ?? new URL('https://hf.srcz.one');
+const siteUrl = site.href;
+const pageUrl = new URL(Astro.url.pathname, site).href;
+const isSplash = Boolean(entry.data.hero);
+const is404 = entry.id === '404' || entry.id.endsWith('/404');
+const markdownPath = Astro.url.pathname === '/' ? '/index.md' : `${Astro.url.pathname.replace(/\/$/, '')}.md`;
+const markdownUrl = new URL(markdownPath, site).href;
+
+const websiteId = new URL('/#website', site).href;
+
+const graph: Record<string, unknown>[] = [
+  {
+    '@type': 'WebSite',
+    '@id': websiteId,
+    url: siteUrl,
+    name: 'Hosihikari Framework',
+    alternateName: '星光框架',
+    inLanguage: ['en', 'zh-CN'],
+  },
+  {
+    '@type': 'SoftwareSourceCode',
+    '@id': new URL('/#software', site).href,
+    name: 'Hosihikari Framework',
+    alternateName: '星光框架',
+    description: 'Loads and manages .NET plugins inside Bedrock Dedicated Server.',
+    url: siteUrl,
+    codeRepository: 'https://github.com/HosihikariFramework/PluginManager',
+    programmingLanguage: ['C#', 'F#'],
+    runtimePlatform: '.NET 10',
+    sameAs: [
+      'https://github.com/HosihikariFramework',
+      'https://www.nuget.org/packages/Hosihikari.Plugin.Abstractions',
+    ],
+  },
+];
+
+if (!is404) {
+  graph.push({
+    '@type': isSplash ? 'WebPage' : 'TechArticle',
+    '@id': `${pageUrl}#article`,
+    headline: entry.data.title,
+    name: entry.data.title,
+    description: entry.data.description,
+    url: pageUrl,
+    inLanguage: lang,
+    isPartOf: { '@id': websiteId },
+    ...(lastUpdated ? { dateModified: lastUpdated.toISOString() } : {}),
+  });
+}
+
+const jsonLd = JSON.stringify({ '@context': 'https://schema.org', '@graph': graph }).replace(/</g, '\\u003c');
+---
+
+<Default />
+{!is404 && <script type="application/ld+json" set:html={jsonLd} />}
+{!isSplash && !is404 && <link rel="alternate" type="text/markdown" href={markdownUrl} />}
