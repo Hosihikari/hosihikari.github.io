@@ -3,7 +3,7 @@ title: Carrier services
 description: What the host must supply, and how loaders register themselves.
 ---
 
-The manager owns plugin discovery, isolation, and lifecycle. Everything else comes from the host — the process the manager runs in. This page is the contract between the two.
+The host supplies an `IServiceProvider` with an `ILoggerFactory`, and registers the loaders it supports. Discovery, isolation, and lifecycle stay with the manager; everything else comes from the host. This page is the contract between the two.
 
 ## The service provider
 

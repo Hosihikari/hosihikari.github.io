@@ -3,6 +3,8 @@ title: Examples
 description: Two small plugins you can copy into a server.
 ---
 
+Two ready-made packages: one C# source plugin and one Node out-of-process plugin.
+
 | Example | Loader | What it shows |
 |---|---|---|
 | [hello-csharp](https://github.com/HosihikariFramework/hosihikariframework.github.io/tree/main/examples/hello-csharp) | `hosihikari-csharp` | A C# source plugin compiled at load; it writes to its data directory. |

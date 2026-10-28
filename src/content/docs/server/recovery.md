@@ -3,6 +3,8 @@ title: Recovery
 description: Read the logs, rule plugins out, and report what broke.
 ---
 
+Start with the carrier's log, then remove plugins until the server comes up.
+
 ## Where the logs are
 
 | Carrier | Log | Crash data |

@@ -3,6 +3,8 @@ title: 示例插件
 description: 两个可以直接复制进服务端的插件。
 ---
 
+两个现成的包：一个 C# 源码插件，一个 Node 进程外插件。
+
 | 示例 | 加载器 | 说明 |
 |---|---|---|
 | [hello-csharp](https://github.com/HosihikariFramework/hosihikariframework.github.io/tree/main/examples/hello-csharp) | `hosihikari-csharp` | C# 源码插件；装载时编译，写到数据目录。 |
