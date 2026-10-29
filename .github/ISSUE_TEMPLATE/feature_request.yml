@@ -7,7 +7,7 @@ body:
     attributes:
       label: Page or section
       description: Where should this live? Link an existing page if possible.
-      placeholder: https://hf.srcz.one/...
+      placeholder: https://hoshi.srcz.one/...
     validations:
       required: false
   - type: textarea

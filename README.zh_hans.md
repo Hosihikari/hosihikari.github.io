@@ -1,10 +1,10 @@
-# 星光框架文档
+# 星光文档
 
 [English](README.md) | [简体中文](README.zh_hans.md)
 
-在线文档：<https://hf.srcz.one/zh/>
+在线文档：<https://hoshi.srcz.one/zh/>
 
-本仓包含 Starlight 站点、双语文档与示例插件。站点从 `main` 发布到 GitHub Pages。
+本仓包含 Starlight 站点、星光集合的双语文档与示例插件。站点从 `main` 发布到 GitHub Pages。
 
 ## 环境
 
@@ -29,15 +29,15 @@ bun run preview
 | 路径 | 内容 |
 |---|---|
 | `src/content/docs/` | 英文文档（根区域）。 |
-| `src/content/docs/server/` | 面向服主与运维的页面。 |
-| `src/content/docs/develop/` | 面向插件作者的页面。 |
-| `src/content/docs/embed/` | 面向内嵌 PluginManager 的宿主的页面。 |
+| `src/content/docs/framework/` | 框架页面：服务器、插件作者与内嵌。 |
+| `src/content/docs/projection/` | 星光投影总览。 |
+| `src/content/docs/seiko/` | Seiko 总览。 |
 | `src/content/docs/zh/` | 简体中文文档，按同样分区镜像。 |
 | `examples/` | 文档引用的示例插件。 |
-| `astro.config.mjs` | 站点配置、顶栏链接与双语侧边栏。 |
+| `astro.config.mjs` | 站点配置、跳转与双语侧边栏。 |
 | `patches/` | Bun 应用的依赖补丁。 |
 
-页面是带 Starlight frontmatter 的 Markdown 或 MDX。每页属于三个读者分区之一，放在对应目录下。顶栏链接（`navLinks`）与侧边栏标签在 `astro.config.mjs` 里；侧边栏条目用 `slug`，同一条目会解析到英文与中文页面。
+页面是带 Starlight frontmatter 的 Markdown 或 MDX。每页属于一个项目分区，放在对应目录下。顶栏链接在 `src/components/Header.astro`；侧边栏标签在 `astro.config.mjs` 里，条目用 `slug`，同一条目会解析到英文与中文页面。
 
 ## 许可
 

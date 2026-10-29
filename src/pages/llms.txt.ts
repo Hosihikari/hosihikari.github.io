@@ -2,13 +2,15 @@ import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
 
 const sections = [
-  { prefix: 'server', label: 'Server' },
-  { prefix: 'develop', label: 'Develop' },
-  { prefix: 'embed', label: 'Embed' },
+  { prefix: 'framework/server', label: 'Framework · Server' },
+  { prefix: 'framework/develop', label: 'Framework · Develop' },
+  { prefix: 'framework/embed', label: 'Framework · Embed' },
+  { prefix: 'projection', label: 'Projection' },
+  { prefix: 'seiko', label: 'Seiko' },
 ];
 
 export const GET: APIRoute = async ({ site }) => {
-  const base = site ?? new URL('https://hf.srcz.one');
+  const base = site ?? new URL('https://hoshi.srcz.one');
   const entries = await getCollection('docs', ({ id, data }) => {
     return !id.startsWith('zh/') && id !== 'index' && id !== '404' && !data.draft;
   });
@@ -22,9 +24,9 @@ export const GET: APIRoute = async ({ site }) => {
     `- [${title}](${new URL(`/${id}/`, base).href})${description ? `: ${description}` : ''}`;
 
   const body = [
-    '# Hosihikari Framework',
+    '# Hosihikari',
     '',
-    '> Loads and manages .NET plugins inside Bedrock Dedicated Server. The documentation covers running a server, writing plugins, and embedding the plugin manager in another process.',
+    '> The Hosihikari collection: the plugin framework, the API projection, and the Seiko package manager.',
     '',
     ...sections.flatMap(({ prefix, label }) => [
       `## ${label}`,
@@ -34,7 +36,7 @@ export const GET: APIRoute = async ({ site }) => {
     ]),
     '## Releases',
     '',
-    ...entries.filter(({ id }) => id === 'releases').map(({ id, data }) => line(id, data.title, data.description)),
+    ...entries.filter(({ id }) => id === 'framework/releases').map(({ id, data }) => line(id, data.title, data.description)),
     '',
     '## Full content',
     '',

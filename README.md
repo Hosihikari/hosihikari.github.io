@@ -1,10 +1,10 @@
-# Hosihikari Framework documentation
+# Hosihikari documentation
 
 [English](README.md) | [简体中文](README.zh_hans.md)
 
-Online documentation: <https://hf.srcz.one/>
+Online documentation: <https://hoshi.srcz.one/>
 
-This repository holds the Starlight site, the bilingual documentation, and the example plugins. The site is deployed to GitHub Pages from `main`.
+This repository holds the Starlight site, the bilingual documentation for the Hosihikari collection, and the example plugins. The site is deployed to GitHub Pages from `main`.
 
 ## Requirements
 
@@ -29,18 +29,15 @@ bun run preview
 | Path | Contents |
 |---|---|
 | `src/content/docs/` | English documentation (root locale). |
-| `src/content/docs/server/` | Pages for server owners and operators. |
-| `src/content/docs/develop/` | Pages for plugin authors. |
-| `src/content/docs/embed/` | Pages for hosts embedding PluginManager. |
+| `src/content/docs/framework/` | Framework pages: server, plugin authoring, and embedding. |
+| `src/content/docs/projection/` | Projection overview. |
+| `src/content/docs/seiko/` | Seiko overview. |
 | `src/content/docs/zh/` | Simplified Chinese documentation, mirroring the same sections. |
 | `examples/` | Example plugins referenced by the guides. |
-| `astro.config.mjs` | Site configuration, header links, and the bilingual sidebar. |
+| `astro.config.mjs` | Site configuration, redirects, and the bilingual sidebar. |
 | `patches/` | Dependency patches applied by Bun. |
 
-Pages are Markdown or MDX with Starlight frontmatter. Every page belongs to one of the three reader
-sections and lives under its directory. Header links (`navLinks`) and sidebar labels live in
-`astro.config.mjs`; a sidebar item uses `slug` so the same entry resolves to the English and Chinese
-pages.
+Pages are Markdown or MDX with Starlight frontmatter. Every page belongs to one project section and lives under its directory. Header links live in `src/components/Header.astro`; sidebar labels live in `astro.config.mjs`, and a sidebar item uses `slug` so the same entry resolves to the English and Chinese pages.
 
 ## License
 

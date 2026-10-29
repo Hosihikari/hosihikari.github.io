@@ -10,14 +10,14 @@ import ThemeSelect from 'virtual:starlight/components/ThemeSelect';
 const isZh = Astro.locals.starlightRoute.lang.startsWith('zh');
 const sectionLinks = isZh
   ? [
-      { label: '服务器', href: '/zh/server/' },
-      { label: '写插件', href: '/zh/develop/' },
-      { label: '内嵌', href: '/zh/embed/' },
+      { label: '框架', href: '/zh/framework/' },
+      { label: '投影', href: '/zh/projection/' },
+      { label: 'Seiko', href: '/zh/seiko/' },
     ]
   : [
-      { label: 'Server', href: '/server/' },
-      { label: 'Develop', href: '/develop/' },
-      { label: 'Embed', href: '/embed/' },
+      { label: 'Framework', href: '/framework/' },
+      { label: 'Projection', href: '/projection/' },
+      { label: 'Seiko', href: '/seiko/' },
     ];
 
 /**

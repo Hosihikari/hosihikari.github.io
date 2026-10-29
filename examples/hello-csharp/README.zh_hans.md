@@ -9,8 +9,8 @@
 在文档仓根执行：
 
 ```powershell
-git clone https://github.com/HosihikariFramework/hosihikariframework.github.io
-cd hosihikariframework.github.io
+git clone https://github.com/Hosihikari/hosihikari.github.io
+cd hosihikari.github.io
 # 以 LeviLamina 为例；其他载体用 #endstone 或无后缀自持态
 lip install github.com/HosihikariFramework/HostingShim#levilamina
 lip install github.com/HosihikariFramework/CSharpLoader

@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://hf.srcz.one/sitemap-index.xml
+Sitemap: https://hoshi.srcz.one/sitemap-index.xml

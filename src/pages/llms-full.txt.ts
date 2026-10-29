@@ -1,7 +1,7 @@
 import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
 
-const sections = ['server', 'develop', 'embed'];
+const sections = ['framework/server', 'framework/develop', 'framework/embed'];
 
 const clean = (body: string) => {
   const out: string[] = [];
@@ -38,7 +38,7 @@ const clean = (body: string) => {
 };
 
 export const GET: APIRoute = async ({ site }) => {
-  const base = site ?? new URL('https://hf.srcz.one');
+  const base = site ?? new URL('https://hoshi.srcz.one');
   const entries = await getCollection('docs', ({ id, data }) => {
     return !id.startsWith('zh/') && id !== 'index' && id !== '404' && !data.draft;
   });
@@ -48,13 +48,17 @@ export const GET: APIRoute = async ({ site }) => {
       .filter(({ id }) => id === prefix || id.startsWith(`${prefix}/`))
       .sort((a, b) => (a.id === prefix ? -1 : b.id === prefix ? 1 : a.id.localeCompare(b.id)));
 
-  const ordered = [...sections.flatMap(bySection), ...entries.filter(({ id }) => id === 'releases')];
+  const ordered = [
+    ...sections.flatMap(bySection),
+    ...entries.filter(({ id }) => id === 'framework/releases'),
+    ...entries.filter(({ id }) => id === 'projection' || id === 'seiko'),
+  ];
   const source = (id: string) => new URL(`/${id}/`, base).href;
   const page = (id: string, title: string, body?: string) =>
     [`# ${title}`, '', `Source: ${source(id)}`, '', clean(body ?? '')].join('\n');
 
   const body = [
-    '# Hosihikari Framework — full documentation',
+    '# Hosihikari — full documentation',
     '',
     '> Generated from the English documentation pages. Each section starts with its source URL.',
     '',
