@@ -1,0 +1,63 @@
+---
+title: Hosihikari Framework
+description: Loads and manages .NET plugins inside Bedrock Dedicated Server.
+template: splash
+hero:
+  title: .NET plugins for Bedrock Dedicated Server
+  tagline: Your own libraries and toolchain, loaded in-process — isolated per plugin, with verified unload.
+  image:
+    html: |
+      <div class="mascot-stage">
+        <span class="mascot-glow" aria-hidden="true"></span>
+        <span class="mascot-star mascot-star--one" aria-hidden="true"></span>
+        <span class="mascot-star mascot-star--two" aria-hidden="true"></span>
+        <span class="mascot-star mascot-star--three" aria-hidden="true"></span>
+        <img class="mascot-art" src="/mascot.webp" alt="Hosi Hikari" width="720" height="960" loading="eager" decoding="async" fetchpriority="high">
+        <div class="mascot-code" aria-hidden="true">
+          <span class="mascot-code__file">manifest.json</span>
+          <code>"loader": "assembly"</code>
+          <code>"api_version": "2"</code>
+        </div>
+        <span class="mascot-credit">Hosi Hikari · art by 墨鱼纸鸢</span>
+      </div>
+  actions:
+    - text: Run a server
+      link: /framework/server/
+      icon: right-caret
+      variant: primary
+    - text: Write plugins
+      link: /framework/develop/
+      icon: right-caret
+      variant: secondary
+    - text: GitHub
+      link: https://github.com/HosihikariFramework
+      icon: external
+      variant: secondary
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+<CardGrid>
+  <Card title="One contract" icon="pencil">
+    Implement IPlugin. The framework drives load, enable, disable, and unload, and refuses packages that break the contract before they run.
+  </Card>
+  <Card title="Isolation" icon="puzzle">
+    Every plugin gets its own collectible assembly load context. Unload is verified, and a failing plugin does not take the server down.
+  </Card>
+  <Card title="In-process loaders" icon="rocket">
+    C# and F# source is compiled AOT to IL; the loader loads it into a collectible ALC, and the plugin manager drives lifecycle. Precompiled assemblies use the plugin manager's built-in path. RpcLoader is the out-of-process loader: an official RPC bridge.
+  </Card>
+  <Card title="Carriers" icon="server">
+    The same plugin manager runs under LeviLamina, Endstone on Windows and Linux, and the self-hosted Linux carrier (BDS 1.21.3).
+  </Card>
+</CardGrid>
+
+## Start here
+
+- [Running a server](/framework/server/) — pick a carrier, install it, and keep it alive.
+- [Writing plugins](/framework/develop/) — the contract, the package format, and the loaders.
+- [Embedding the manager](/framework/embed/) — host the manager in your own process.
+
+The documentation is also available in [简体中文](/zh/framework/).
+
+RpcLoader is the out-of-process loader: an official RPC bridge for plugins that cannot be compiled to IL.

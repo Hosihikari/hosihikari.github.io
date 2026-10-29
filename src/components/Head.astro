@@ -2,11 +2,12 @@
 import Default from '@astrojs/starlight/components/Head.astro';
 
 const { entry, lastUpdated, lang } = Astro.locals.starlightRoute;
-const site = Astro.site ?? new URL('https://hf.srcz.one');
+const site = Astro.site ?? new URL('https://hoshi.srcz.one');
 const siteUrl = site.href;
 const pageUrl = new URL(Astro.url.pathname, site).href;
 const isSplash = Boolean(entry.data.hero);
 const is404 = entry.id === '404' || entry.id.endsWith('/404');
+const isFramework = /^\/(zh\/)?framework(\/|$)/.test(Astro.url.pathname);
 const markdownPath = Astro.url.pathname === '/' ? '/index.md' : `${Astro.url.pathname.replace(/\/$/, '')}.md`;
 const markdownUrl = new URL(markdownPath, site).href;
 
@@ -17,11 +18,14 @@ const graph: Record<string, unknown>[] = [
     '@type': 'WebSite',
     '@id': websiteId,
     url: siteUrl,
-    name: 'Hosihikari Framework',
-    alternateName: '星光框架',
+    name: 'Hosihikari',
+    alternateName: '星光',
     inLanguage: ['en', 'zh-CN'],
   },
-  {
+];
+
+if (isFramework) {
+  graph.push({
     '@type': 'SoftwareSourceCode',
     '@id': new URL('/#software', site).href,
     name: 'Hosihikari Framework',
@@ -32,11 +36,11 @@ const graph: Record<string, unknown>[] = [
     programmingLanguage: ['C#', 'F#'],
     runtimePlatform: '.NET 10',
     sameAs: [
-      'https://github.com/HosihikariFramework',
+      'https://github.com/Hosihikari',
       'https://www.nuget.org/packages/Hosihikari.Plugin.Abstractions',
     ],
-  },
-];
+  });
+}
 
 if (!is404) {
   graph.push({

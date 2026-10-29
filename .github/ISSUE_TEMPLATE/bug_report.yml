@@ -7,7 +7,7 @@ body:
     attributes:
       label: Page
       description: URL of the English or Chinese page.
-      placeholder: https://hf.srcz.one/...
+      placeholder: https://hoshi.srcz.one/...
     validations:
       required: true
   - type: textarea

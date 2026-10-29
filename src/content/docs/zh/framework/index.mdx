@@ -1,0 +1,63 @@
+---
+title: 星光框架
+description: 在基岩版专用服务器里加载并管理 .NET 插件。
+template: splash
+hero:
+  title: '把 .NET 插件<span class="no-break">带进</span>基岩版专用服务器'
+  tagline: 你自己的库与工具链，进程内加载——逐个隔离，卸载有验证。
+  image:
+    html: |
+      <div class="mascot-stage">
+        <span class="mascot-glow" aria-hidden="true"></span>
+        <span class="mascot-star mascot-star--one" aria-hidden="true"></span>
+        <span class="mascot-star mascot-star--two" aria-hidden="true"></span>
+        <span class="mascot-star mascot-star--three" aria-hidden="true"></span>
+        <img class="mascot-art" src="/mascot.webp" alt="星光" width="720" height="960" loading="eager" decoding="async" fetchpriority="high">
+        <div class="mascot-code" aria-hidden="true">
+          <span class="mascot-code__file">manifest.json</span>
+          <code>"loader": "assembly"</code>
+          <code>"api_version": "2"</code>
+        </div>
+        <span class="mascot-credit">星光 · 立绘：墨鱼纸鸢</span>
+      </div>
+  actions:
+    - text: 运行服务器
+      link: /zh/framework/server/
+      icon: right-caret
+      variant: primary
+    - text: 写插件
+      link: /zh/framework/develop/
+      icon: right-caret
+      variant: secondary
+    - text: GitHub
+      link: https://github.com/HosihikariFramework
+      icon: external
+      variant: secondary
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+<CardGrid>
+  <Card title="一份契约" icon="pencil">
+    实现 IPlugin。载入、启用、停用与卸载由框架驱动；违反契约的包在运行之前就被拒绝。
+  </Card>
+  <Card title="隔离" icon="puzzle">
+    每个插件一个可回收的程序集装载上下文。卸载经过验证，单个插件失败不会拖垮服务端。
+  </Card>
+  <Card title="进程内加载器" icon="rocket">
+    C# 与 F# 源码在装载时 AOT 为 IL；加载器把 IL 装进 collectible ALC，插件管理器驱动生命周期。预编译程序集由插件管理器内置入口装载。RpcLoader 是进程外加载器：官方 RPC 桥。
+  </Card>
+  <Card title="三个载体" icon="server">
+    同一份插件管理器跑在 LeviLamina、Endstone（Windows 与 Linux）与自持态 Linux（BDS 1.21.3）上。
+  </Card>
+</CardGrid>
+
+## 从这里开始
+
+- [运行服务器](/zh/framework/server/) —— 选载体、装上去、维护下去。
+- [写插件](/zh/framework/develop/) —— 契约、包格式与加载器。
+- [内嵌管理器](/zh/framework/embed/) —— 在你自己的进程里承载管理器。
+
+本文档也有[English](/framework/).
+
+RpcLoader 是进程外加载器：官方 RPC 桥，给无法编译为 IL 的插件用。

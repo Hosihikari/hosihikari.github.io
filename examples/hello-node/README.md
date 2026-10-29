@@ -11,8 +11,8 @@ A minimal Node out-of-process plugin. It logs and writes data files on load and 
 Run from the documentation repository root:
 
 ```powershell
-git clone https://github.com/HosihikariFramework/hosihikariframework.github.io
-cd hosihikariframework.github.io
+git clone https://github.com/Hosihikari/hosihikari.github.io
+cd hosihikari.github.io
 # LeviLamina; use #endstone or no label for the other carriers
 lip install github.com/HosihikariFramework/HostingShim#levilamina
 lip install github.com/HosihikariFramework/RpcLoader

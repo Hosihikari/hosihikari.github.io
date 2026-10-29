@@ -1,0 +1,132 @@
+---
+title: C# 插件
+description: 写一个由加载器在装载时编译的 C# 源码插件。
+---
+
+C# 直接跑在 CLR 上，`Hosihikari.PluginLoader.CSharp` 在装载时用 Roslyn 把 `.cs` 编成程序集，再放进插件自己的 collectible ALC。作者交的是源码，拿到的是与其他程序集插件一样的隔离与卸载承诺。这是进程内加载器：它在插件开始运行前把源码 AOT 为 IL，再把 IL 装进 collectible ALC；插件本身是普通 CLR 代码。
+
+## 准备
+
+按服务端选 HostingShim 变体（见[选择载体](/zh/framework/server/carriers/)）；下面以 LeviLamina 为例：
+
+```bash
+lip install github.com/HosihikariFramework/HostingShim#levilamina
+lip install github.com/HosihikariFramework/CSharpLoader
+```
+
+[C# 模板](/zh/framework/develop/templates/)是一个可以直接复制改名的完整包。
+
+## 包结构
+
+```
+plugins/hello-csharp/
+  manifest.json
+  main.cs
+  hello-csharp.conf
+```
+
+清单：
+
+```json
+{
+  "name": "hello-csharp",
+  "entry": "main.cs",
+  "type": "hosihikari",
+  "version": "1.0.0",
+  "dependencies": [
+    { "name": "hosihikari" },
+    { "name": "hosihikari-csharp" }
+  ],
+  "extraInfo": { "api_version": "2", "manifest_version": "1", "loader": "csharp" }
+}
+```
+
+## file-based 指令
+
+入口文件接受两个 .NET file-based apps 指令。Roslyn 编译前会把它们换成空行，打包器则按它们行事：
+
+- `#:package Newtonsoft.Json@13.0.3`：打包期把包还原进插件包。服务端装载插件时不还原、不下载。
+- `#:include helpers.cs`：把包内另一个 `.cs` 文件和入口一起编译。路径相对于当前文件，可以加引号，
+  也可以用 `..` 指向包内的兄弟目录；支持 `*`、`**`、`?` 通配符，例如
+  `#:include "../shared/*.cs"`。
+
+`#:project`、`#:property`、`#:sdk` 与顶层语句都不支持。入口仍要定义 `IPlugin` 类型。需要独立运行
+循环时，先用普通 file-based app 或项目开发，再用预编译模板打包程序集。
+
+## 入口
+
+文件里定义一个实现 `IPlugin`、有无参构造的类型；加载器找到它并实例化。
+
+```csharp
+using System.IO;
+using Hosihikari;
+using Microsoft.Extensions.Logging;
+
+public sealed class HelloPlugin : IPlugin
+{
+    private IPluginContext _context = null!;
+
+    public void OnLoad(IPluginContext context)
+    {
+        _context = context;
+        context.Logger.LogInformation("loaded, package {Dir}", context.PackageDirectory);
+        File.WriteAllText(Path.Combine(context.DataDirectory, "loaded.txt"), "loaded");
+    }
+
+    public PluginHookResult OnEnable()
+    {
+        var greeting = _context.Configuration["greeting"];
+        _context.Logger.LogInformation("enabled, greeting={Greeting}", greeting);
+        File.WriteAllText(Path.Combine(_context.DataDirectory, "enabled.txt"), greeting ?? "");
+        return PluginHookResult.Allow();
+    }
+
+    public PluginHookResult OnDisable() => PluginHookResult.Allow();
+
+    public void OnUnload() { }
+}
+```
+
+`using Microsoft.Extensions.Logging;` 不能省：`LogInformation` 是扩展方法。
+
+## 编译与缓存
+
+- 装载时编译；源码插件不需要 csproj。
+- 产物按内容寻址缓存到 `data/hosihikari/<name>/bin/<哈希>/`，旁边有校验和与 portable PDB。
+- 源码、包内私有 DLL、Roslyn 版本或运行时版本变化会换哈希。
+- 包根目录里的私有 DLL 参与编译引用，运行时也从包目录解析。
+- 本机库放在包根或 `runtimes/<当前可移植 RID>/native/`，RID 目录优先。
+
+## 配置
+
+包内默认 `hello-csharp.conf`：
+
+```text
+greeting = "Hello, Hosihikari"
+```
+
+服务端覆盖放 `config/hosihikari/hello-csharp.conf`；环境变量同名键也参与覆盖。
+
+## 事件与定时器
+
+`context.Events` 与 `context.Scheduler` 由框架提供。停用会先关闭闸门，事件与定时器回调停止投递；周期任务在 `OnEnable` 里启动。
+
+## 程序集插件
+
+已经有编好的 DLL 时，把 DLL 放进包，清单的 `loader` 写 `assembly`，`entry` 指向 DLL。程序集上声明入口：
+
+```csharp
+[assembly: EntryPoint<HelloPlugin>]
+```
+
+工程引用契约并排除运行期资产，避免把第二份契约带进插件包：
+
+```xml
+<PackageReference Include="Hosihikari.Plugin.Abstractions" Version="[1.1.0]" ExcludeAssets="runtime" />
+```
+
+程序集里应当恰好有一个 `EntryPoint<T>`；入口类型实现 `IPlugin` 且有无参构造。
+
+## 部署与验证
+
+把目录放到 `plugins/`，启动服务端。日志里应出现 `loaded, package` 与 `enabled`；数据目录里出现 `loaded.txt` 与 `enabled.txt`。卸载时插件管理器通过插件的 `PluginHandle` 调用 `Unload()` / `WaitForUnloadAsync()`，并在把插件从 ALC 放下后检查 `IsUnloaded`。
