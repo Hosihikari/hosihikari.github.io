@@ -13,5 +13,5 @@ description: 把载体与基岩版专用服务器的原生 API 投影成托管 .
 
 ## 去哪里看
 
-- [Hosihikari 组织](https://github.com/Hosihikari)
-- [设计记录](https://github.com/HosihikariFramework/Design)
+- [Hosihikari Projection 组织](https://github.com/HosihikariProjection)
+- [BindingIr](https://github.com/HosihikariProjection/BindingIr)

@@ -13,5 +13,5 @@ Hosihikari Projection turns native carrier and Bedrock Dedicated Server APIs int
 
 ## Where to look
 
-- [Hosihikari organization](https://github.com/Hosihikari)
-- [Design records](https://github.com/HosihikariFramework/Design)
+- [Hosihikari Projection organization](https://github.com/HosihikariProjection)
+- [BindingIr](https://github.com/HosihikariProjection/BindingIr)

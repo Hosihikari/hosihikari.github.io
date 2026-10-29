@@ -8,7 +8,7 @@ Seiko is the general package manager under Hosihikari. Any project can use it to
 ## What it provides
 
 - Package source resolution and version selection.
-- Installation and upgrades.
+- Synchronization of an install root, with rollback.
 - Dependency management.
 
 ## Where to look
