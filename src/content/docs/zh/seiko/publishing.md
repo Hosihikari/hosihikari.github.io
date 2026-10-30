@@ -28,7 +28,7 @@ zip 根只能有一个 `sei.json`。其余都是载荷；路径相对安装根�
     { "name": "hosihikari", "version": "[1.1.0,1.2.0)" }
   ],
   "layout": "root",
-  "modes": { "start.sh": "0755" }
+  "modes": { "plugins/hello-csharp/start.sh": "0755" }
 }
 ```
 

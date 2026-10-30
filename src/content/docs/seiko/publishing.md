@@ -28,7 +28,7 @@ The zip root must contain exactly one `sei.json`. Everything else is payload; pa
     { "name": "hosihikari", "version": "[1.1.0,1.2.0)" }
   ],
   "layout": "root",
-  "modes": { "start.sh": "0755" }
+  "modes": { "plugins/hello-csharp/start.sh": "0755" }
 }
 ```
 
