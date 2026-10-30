@@ -37,7 +37,7 @@ Payload files are placed with the cheapest available mechanism, in this order:
 2. **Hardlink** when source and target are on the same volume.
 3. **Copy** otherwise.
 
-Reflinked and hardlinked files share storage with the store. Do not edit deployed payload files in place: a hardlinked edit also changes the store, and the next `sk sync` or `sk cache verify` will reject the artifact. Change the source package and publish a new version instead.
+Reflinked and hardlinked files share storage with the store. Reflink writes are copy-on-write: editing a deployed file leaves the store unchanged. A hardlinked edit does change the store, and the next `sk sync` or `sk cache verify` rejects the artifact. Do not edit deployed payload files in place; change the source package and publish a new version instead.
 
 Unix modes from `sei.json` are applied after deployment; Windows ignores them. Seiko refuses to write through symlinks or reparse points, and reserves the control paths `seiko.conf`, `seiko.lock.json`, and `.seiko/` for itself.
 

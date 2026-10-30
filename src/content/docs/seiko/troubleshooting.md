@@ -50,7 +50,12 @@ The resolver produced a different lock than the committed one. Run `sk sync` to 
 
 ### Deployed files changed
 
-Do not edit deployed payload files in place. On a reflink or hardlink deployment, an edit also changes the shared store, and the next sync or `sk cache verify` rejects it. Change the source package, publish a new version, and sync again. If a file was changed accidentally, remove the artifact from the store and replay the lock.
+Do not edit deployed payload files in place.
+
+- **Reflink:** writes are copy-on-write, so the edit stays in the deployed file and the store is unchanged. Run `sk sync` or `sk sync --frozen` to restore the file from the store.
+- **Hardlink:** the deployed file and the store share an inode, so an in-place edit also changes the store. The next `sk sync` or `sk cache verify` rejects the artifact as corrupt; remove that artifact's directory from the store and replay the lock to download it again.
+
+Change the source package and publish a new version when the content actually needs to change.
 
 ### Unsafe path or symlink errors
 
