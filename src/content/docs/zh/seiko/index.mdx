@@ -1,0 +1,50 @@
+---
+title: Seiko
+description: 星光旗下的通用包管理器。
+template: splash
+hero:
+  title: 任何项目都能分发 sei
+  tagline: 声明 sei，从静态索引解析，部署经过校验的文件树，变化时随时回滚。
+  actions:
+    - text: 快速开始
+      link: /zh/seiko/getting-started/
+      icon: right-caret
+      variant: primary
+    - text: 安装
+      link: /zh/seiko/install/
+      icon: download
+      variant: secondary
+    - text: GitHub
+      link: https://github.com/Hosihikari/Seiko
+      icon: external
+      variant: secondary
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+<CardGrid>
+  <Card title="一份声明" icon="pencil">
+    `seiko.conf` 只列直接 sei，`seiko.lock.json` 记录精确的文件树；CI 里一条命令即可重放。
+  </Card>
+  <Card title="静态索引" icon="server">
+    官方、私有或本地索引使用同一套布局；第一个包含某个名字的源提供它的全部版本。
+  </Card>
+  <Card title="校验过的存储" icon="setting">
+    构件按 SHA-256 内容寻址，用 reflink 或硬链接部署；保留部署代供回滚。
+  </Card>
+  <Card title="CLI 与 MCP" icon="rocket">
+    终端用 `sk`，agent 用 `seiko-mcp`；两者共用安装根锁，变更工具需要显式开启。
+  </Card>
+</CardGrid>
+
+## 从这里开始
+
+- [安装 Seiko](/zh/seiko/install/) — 安装 `sk` 与 `seiko-mcp`，并校验下载。
+- [快速开始](/zh/seiko/getting-started/) — 创建安装根、添加 sei、重放锁。
+- [命令参考](/zh/seiko/commands/) — `sk` 的完整参考。
+- [发布 sei](/zh/seiko/publishing/) — 打包构件并提交到官方索引。
+- [MCP server](/zh/seiko/mcp/) — 让 agent 连接安装根。
+
+Seiko 只安装文件，不构建、运行或加载你的项目；文件在运行期意味着什么，是项目自己的事。例如 [星光框架](/zh/framework/) 会在 Seiko 放好文件之后从 `plugins/` 加载插件。
+
+本文档也有[English](/seiko/)。
