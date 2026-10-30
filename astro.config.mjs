@@ -185,7 +185,30 @@ export default defineConfig({
         {
           label: 'Seiko',
           translations: { 'zh-CN': 'Seiko' },
-          items: [{ label: 'Overview', translations: { 'zh-CN': '概述' }, slug: 'seiko' }],
+          items: [
+            { label: 'Overview', translations: { 'zh-CN': '概述' }, slug: 'seiko' },
+            {
+              label: 'Start',
+              translations: { 'zh-CN': '开始' },
+              items: [
+                { label: 'Install', translations: { 'zh-CN': '安装' }, slug: 'seiko/install' },
+                { label: 'Getting started', translations: { 'zh-CN': '快速开始' }, slug: 'seiko/getting-started' },
+                { label: 'Commands', translations: { 'zh-CN': '命令参考' }, slug: 'seiko/commands' },
+              ],
+            },
+            {
+              label: 'Concepts',
+              translations: { 'zh-CN': '概念' },
+              items: [
+                { label: 'Declaration and lock', translations: { 'zh-CN': '声明与锁' }, slug: 'seiko/declaration' },
+                { label: 'Sources and indexes', translations: { 'zh-CN': '源与索引' }, slug: 'seiko/sources' },
+                { label: 'Store and deployment', translations: { 'zh-CN': '存储与部署' }, slug: 'seiko/store' },
+              ],
+            },
+            { label: 'MCP server', translations: { 'zh-CN': 'MCP server' }, slug: 'seiko/mcp' },
+            { label: 'Publishing a sei', translations: { 'zh-CN': '发布 sei' }, slug: 'seiko/publishing' },
+            { label: 'Troubleshooting', translations: { 'zh-CN': '常见问题' }, slug: 'seiko/troubleshooting' },
+          ],
         },
       ],
     }),

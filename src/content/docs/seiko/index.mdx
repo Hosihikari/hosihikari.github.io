@@ -1,0 +1,50 @@
+---
+title: Seiko
+description: The general package manager under Hosihikari.
+template: splash
+hero:
+  title: Packages for any project, one install root at a time
+  tagline: Declare sei, resolve from static indexes, deploy a verified tree, and roll back when it changes.
+  actions:
+    - text: Get started
+      link: /seiko/getting-started/
+      icon: right-caret
+      variant: primary
+    - text: Install
+      link: /seiko/install/
+      icon: download
+      variant: secondary
+    - text: GitHub
+      link: https://github.com/Hosihikari/Seiko
+      icon: external
+      variant: secondary
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+<CardGrid>
+  <Card title="One declaration" icon="pencil">
+    `seiko.conf` lists direct sei; `seiko.lock.json` records the exact tree. Replay the lock in CI with one command.
+  </Card>
+  <Card title="Static indexes" icon="server">
+    Official, private, or local indexes with the same layout. The first source with a name provides its versions.
+  </Card>
+  <Card title="Verified store" icon="setting">
+    Artifacts are content-addressed by SHA-256 and deployed by reflink or hardlink. Generations are kept for rollback.
+  </Card>
+  <Card title="CLI and MCP" icon="rocket">
+    `sk` for terminals, `seiko-mcp` for agents. Both share the same root lock; mutation tools are opt-in.
+  </Card>
+</CardGrid>
+
+## Start here
+
+- [Install Seiko](/seiko/install/) — install `sk` and `seiko-mcp`, then verify the download.
+- [Getting started](/seiko/getting-started/) — create an install root, add a sei, and replay the lock.
+- [Commands](/seiko/commands/) — the full `sk` reference.
+- [Publishing a sei](/seiko/publishing/) — package an artifact and submit it to the official index.
+- [MCP server](/seiko/mcp/) — connect an agent to an install root.
+
+Seiko installs files; it does not build, run, or load your project. What the files mean at runtime is the project's business. The [Hosihikari Framework](/framework/), for example, loads plugins from `plugins/` after Seiko has placed them there.
+
+The documentation is also available in [简体中文](/zh/seiko/).
