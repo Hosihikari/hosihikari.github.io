@@ -1,6 +1,6 @@
 ---
 title: Choosing a carrier
-description: The three carrier environments the framework supports, and what each one costs.
+description: The four carrier targets the framework supports, and what each one costs.
 ---
 
 A **carrier** is a concrete runtime environment, fixed by three components: the platform, the parent plugin loader (none in the self-hosted case), and the native API provider — LLAPI for LeviLamina, the Endstone API for Endstone, and MCAPI for the self-hosted BDS 1.21.3. The framework depends only on the platform and the parent loader; the native API side comes from the projection. Pick the carrier before you install anything; the install steps differ per carrier and are not interchangeable.
@@ -9,11 +9,12 @@ A **carrier** is a concrete runtime environment, fixed by three components: the 
 | --- | --- | --- | --- |
 | [LeviLamina](/framework/server/install/levilamina/) | Windows x64 | LeviLamina | 1.26.51+ with LeviLamina 26.51+ |
 | [Endstone](/framework/server/install/endstone/) | Windows x64, Linux x64 | Endstone | 1.26.52+ with Endstone 0.11+ |
-| [Self-hosted](/framework/server/install/selfhosted/) | Linux x64 | none | 1.21.3 |
+| [Self-hosted (Linux)](/framework/server/install/selfhosted/) | Linux x64 | none | 1.21.3 |
+| [Self-hosted (Windows)](/framework/server/install/selfhosted-windows/) | Windows x64 | none | 1.21.3.01 |
 
 ## Parented or self-hosted
 
-Under **LeviLamina** or **Endstone**, the framework is a plugin manager inside someone else's plugin system. The parent discovers, enables, disables, and unloads us; we pass those calls to the plugins we manage. This is the choice when you already run that loader, and it is the only choice on Windows.
+Under **LeviLamina** or **Endstone**, the framework is a plugin manager inside someone else's plugin system. The parent discovers, enables, disables, and unloads us; we pass those calls to the plugins we manage. This is the choice when you already run that loader.
 
 The **self-hosted** carrier has no parent: the framework is the outermost plugin system. It is the only carrier that runs on stock BDS without a third-party loader, and it is also the most constrained one:
 
@@ -24,7 +25,7 @@ The **self-hosted** carrier has no parent: the framework is the outermost plugin
 ## What decides it
 
 - **You already run LeviLamina or Endstone.** Use that carrier; nothing else is supported for it.
-- **Windows without a loader.** LeviLamina and Endstone are both options; both are Windows x64.
+- **Windows without a loader.** Self-hosted Windows (BDS 1.21.3.01); with a loader installed, LeviLamina or Endstone.
 - **Linux without a loader, BDS 1.21.3.** Self-hosted.
 - **Linux without a loader, newer BDS.** Use the Endstone carrier.
 
@@ -32,4 +33,4 @@ The **self-hosted** carrier has no parent: the framework is the outermost plugin
 
 Plugin packages are identical on every carrier: a directory under `plugins/` with a `manifest.json`. The plugin contract, the lifecycle, and the isolation model are the same. Moving a plugin package between carriers does not need a rebuild.
 
-The plugin manager itself is installed as a lip dependency of the carrier package; you do not install it separately.
+The plugin manager is a separate release archive; extract it alongside the carrier archive.

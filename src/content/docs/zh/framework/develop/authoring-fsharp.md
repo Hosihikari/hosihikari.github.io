@@ -11,10 +11,7 @@ F# 直接跑在 CLR 上，`Hosihikari.PluginLoader.FSharp` 在装载时把 `.fsx
 
 按服务端选 HostingShim 变体（见[选择载体](/zh/framework/server/carriers/)），再装 F# 加载器：
 
-```bash
-lip install github.com/HosihikariFramework/HostingShim#levilamina
-lip install github.com/HosihikariFramework/FSharpLoader
-```
+把 LeviLamina 载体归档、`hosihikari-core-<版本>.zip` 与 `hosihikari-fsharp-<版本>.zip` 解压到服务端根目录。
 
 [F# 模板](https://github.com/HosihikariFramework/FSharpPluginTemplate)是一个可以拷进 `plugins/`、改名、 重启的完整包。`dotnet new` 模板包另带一个 F# 预编译模板 `hosihikari-plugin-fsharp`。
 

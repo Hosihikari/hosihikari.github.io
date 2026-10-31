@@ -1,5 +1,5 @@
 ---
-title: 安装自持态载体
+title: 安装自持态载体（Linux）
 description: 安装自持态 Linux 载体。
 ---
 
@@ -10,19 +10,15 @@ description: 安装自持态 Linux 载体。
 - Linux x64。
 - 基岩版专用服务器 **1.21.3**。启动器只针对这个版本。
 - 机器上装有 **.NET 10 运行时**。
-- [lip](https://github.com/LiteLDev/lip)。
 
 ## 安装
 
-在服务端根目录执行：
+从 GitHub Release 下载两个归档，并都解压到服务端根目录：
 
-```bash
-lip install github.com/HosihikariFramework/HostingShim
-```
+- 来自 [HostingShim 的 Release](https://github.com/HosihikariFramework/HostingShim/releases) 的 `hosihikari-selfhosted-linux-x64.zip`。
+- 来自 [Core 的 Release](https://github.com/HosihikariFramework/PluginManager/releases) 的 `hosihikari-core-<版本>.zip`。
 
-不带后缀的包就是自持态载体。它依赖插件管理器，lip 会一并装上，落在 `plugins/hosihikari/`。
-
-安装脚本会给启动器加可执行位。如果 lip 带了 `--ignore-scripts`，自己加：
+载体归档写 `hosihikari-server` 与 `plugins/hosihikari/` 下的原生垫片；核心归档把插件管理器加进同一个目录。解压后给启动器加可执行位：
 
 ```bash
 chmod +x hosihikari-server
@@ -42,7 +38,7 @@ chmod +x hosihikari-server
 
 `plugins/` 下的每个插件都在服务端启动前加载并启用。目前没有运行期启停：现在停用一个插件就是把它的包移出 `plugins/` 再重启。插件管理命令——启用、停用、装载、卸载——计划基于投影的命令 MCAPI 与插件管理器 API 实现；落地后这一页会更新。
 
-预编译程序集插件开箱即用。源码插件也能跑：把对应的加载器包（[C#](/zh/framework/develop/authoring-csharp/) 或 [F#](/zh/framework/develop/authoring-fsharp/)）和载体一起装上，父级态怎么装，这里就怎么装。
+预编译程序集插件开箱即用。源码插件也能跑：把对应的加载器 Release 归档（[C#](/zh/framework/develop/authoring-csharp/) 或 [F#](/zh/framework/develop/authoring-fsharp/)）和载体一起装上，父级态怎么装，这里就怎么装。
 
 ## 验证
 
@@ -60,6 +56,6 @@ chmod +x hosihikari-server
 
 ## 卸载
 
-```bash
-lip uninstall github.com/HosihikariFramework/HostingShim
-```
+停服后删除 `hosihikari-server` 与 `plugins/hosihikari/`。`plugins/<name>/` 下的插件包单独移除。`config/hosihikari/` 与 `data/hosihikari/` 里的配置和数据可以保留，也可以一并删除。
+
+Windows 上用[自持态 Windows 载体](/zh/framework/server/install/selfhosted-windows/)。

@@ -11,9 +11,8 @@ Run from the documentation repository root:
 ```powershell
 git clone https://github.com/Hosihikari/hosihikari.github.io
 cd hosihikari.github.io
-# LeviLamina; use #endstone or no label for the other carriers
-lip install github.com/HosihikariFramework/HostingShim#levilamina
-lip install github.com/HosihikariFramework/CSharpLoader
+# Download the LeviLamina carrier, the core, and the C# loader archives from their
+# GitHub releases and extract them into the server root.
 $Server = 'C:\bedrock-server'
 Copy-Item -Recurse .\examples\hello-csharp "$Server\plugins\hello-csharp"
 ```

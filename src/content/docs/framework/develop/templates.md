@@ -34,10 +34,10 @@ The target writes `dist/MyPlugin/`. Multi-target projects pass `-f <tfm>`. See
 
 The C# and F# loaders compile the source at load; the package carries source and no build output.
 
-| Template | Loader | Install |
+| Template | Loader | Loader archive |
 |---|---|---|
-| [CSharpPluginTemplate](https://github.com/HosihikariFramework/CSharpPluginTemplate) | `hosihikari-csharp` | `lip install github.com/HosihikariFramework/CSharpLoader` |
-| [FSharpPluginTemplate](https://github.com/HosihikariFramework/FSharpPluginTemplate) | `hosihikari-fsharp` | `lip install github.com/HosihikariFramework/FSharpLoader` |
+| [CSharpPluginTemplate](https://github.com/HosihikariFramework/CSharpPluginTemplate) | `hosihikari-csharp` | [`hosihikari-csharp-<version>.zip`](https://github.com/HosihikariFramework/CSharpLoader/releases) |
+| [FSharpPluginTemplate](https://github.com/HosihikariFramework/FSharpPluginTemplate) | `hosihikari-fsharp` | [`hosihikari-fsharp-<version>.zip`](https://github.com/HosihikariFramework/FSharpLoader/releases) |
 
 `CSharpPluginTemplate` demonstrates `#:package` and `#:include`; run its `pack.ps1` or `pack.sh`,
 then copy `dist/MyCSharpPlugin/` into `plugins/`. `FSharpPluginTemplate` demonstrates `#load`; copy

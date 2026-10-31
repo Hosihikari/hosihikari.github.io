@@ -9,18 +9,16 @@ The LeviLamina carrier installs as a mod. The framework is the plugin manager; L
 
 - Windows x64.
 - Bedrock Dedicated Server 1.26.51 or newer, with LeviLamina 26.51 or newer installed and working.
-- [lip](https://github.com/LiteLDev/lip).
 - The .NET 10 runtime. The framework hosts the CLR inside the server process; without the runtime the startup sequence stops and says so in the log.
 
 ## Install
 
-Run this in the server root:
+Download two archives from GitHub releases and extract both into the server root:
 
-```bash
-lip install github.com/HosihikariFramework/HostingShim#levilamina
-```
+- `hosihikari-levilamina-windows-x64.zip` from the [HostingShim releases](https://github.com/HosihikariFramework/HostingShim/releases).
+- `hosihikari-core-<version>.zip` from the [Core releases](https://github.com/HosihikariFramework/PluginManager/releases).
 
-The `#levilamina` label selects the variant. The suffix-less package is the Linux self-hosted carrier and will not work here. The package depends on the plugin manager, so lip installs that too, under `plugins/hosihikari/`.
+They write different files under `plugins/hosihikari/` and are meant to be merged. The HostingShim release notes name the compatible core line; the native shim checks the hosting-contract version at startup.
 
 Then start the server as usual.
 
@@ -47,8 +45,4 @@ If none of that appears, the log line right after startup tells you why. See [Re
 
 ## Uninstall
 
-```bash
-lip uninstall github.com/HosihikariFramework/HostingShim#levilamina
-```
-
-The label is part of the package identity. Without it lip answers that the package is not explicitly installed. Uninstalling also removes the plugin manager dependency, so do not run it while you still need the framework for other packages.
+Stop the server, then delete `plugins/hosihikari/`. Plugin packages live in `plugins/<name>/` and are removed separately. Configuration and data under `config/hosihikari/` and `data/hosihikari/` can be kept or deleted.

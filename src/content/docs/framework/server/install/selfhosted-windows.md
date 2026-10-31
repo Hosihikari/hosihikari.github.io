@@ -1,0 +1,56 @@
+---
+title: Installing the self-hosted carrier (Windows)
+description: Install the self-hosted Windows carrier.
+---
+
+The self-hosted Windows carrier has no parent loader. A launcher starts a stock `bedrock_server.exe` suspended, injects the native shim, calls its exported entry, and resumes the server, so the CLR and the plugin manager come up before the server's `main`.
+
+## Requirements
+
+- Windows x64.
+- Bedrock Dedicated Server **1.21.3.01**. The carrier targets that version, the same ceiling as self-hosted Linux.
+- The **.NET 10 runtime** on the machine.
+
+## Install
+
+Download two archives from GitHub releases and extract both into the server root:
+
+- `hosihikari-selfhosted-windows-x64.zip` from the [HostingShim releases](https://github.com/HosihikariFramework/HostingShim/releases).
+- `hosihikari-core-<version>.zip` from the [Core releases](https://github.com/HosihikariFramework/PluginManager/releases).
+
+The carrier archive writes `hosihikari-server.exe` and the native shim into `plugins/hosihikari/`; the core archive adds the plugin manager to the same directory. The shim links nethost statically, so no `nethost.dll` is needed.
+
+## Run
+
+Start the server through the launcher, not through `bedrock_server.exe` directly:
+
+```powershell
+.\hosihikari-server.exe
+```
+
+The launcher starts `bedrock_server.exe` from the same folder, so run it from the server root. Arguments after `--` are passed through to the server.
+
+## Plugin packages here
+
+Every plugin under `plugins/` loads and enables before the server starts. There is no runtime enable or disable yet: to stop using a plugin today, move its package out of `plugins/` and restart. Plugin management commands are planned on top of the projection's command MCAPI and the plugin manager API.
+
+Source plugins work too: install the matching loader release archive ([C#](/framework/develop/authoring-csharp/) or [F#](/framework/develop/authoring-fsharp/)) alongside the carrier.
+
+## Verify
+
+The launcher's console and the server log should show the CLR starting, the carrier taking over, and the plugin manager reporting what it found under `plugins/`. If the launcher exits immediately, its first line says why — usually a missing runtime or a missing `bedrock_server.exe`. See [Recovery](/framework/server/recovery/).
+
+## Where things live
+
+| Path | What |
+| --- | --- |
+| `hosihikari-server.exe` | The launcher; run this instead of `bedrock_server.exe`. |
+| `plugins/hosihikari/hosihikari.dll` | The injected shim. |
+| `plugins/hosihikari/` | The carrier and the plugin manager. |
+| `plugins/<name>/` | Plugin packages. |
+| `config/hosihikari/<name>.conf` | Server-side configuration overrides. |
+| `data/hosihikari/<name>/` | Data the framework hands to each plugin. |
+
+## Uninstall
+
+Stop the server, then delete `hosihikari-server.exe` and `plugins/hosihikari/`. Plugin packages in `plugins/<name>/` are removed separately. Configuration and data under `config/hosihikari/` and `data/hosihikari/` can be kept or deleted.

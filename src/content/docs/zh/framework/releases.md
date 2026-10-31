@@ -3,19 +3,26 @@ title: 发布记录
 description: 星光框架、加载器与模板的已发布版本。
 ---
 
-当前功能线发布于 2026 年 10 月 22 日；模板包在同一天更新至 1.0.1。
+当前功能线发布于 2026 年 10 月 31 日；模板包最近一次更新在 10 月 22 日（1.0.1）。
 
 | 组件 | 版本 | 分发方式 |
 | --- | --- | --- |
 | [PluginAbstractions](https://www.nuget.org/packages/Hosihikari.Plugin.Abstractions/1.1.0) | 1.1.0 | NuGet |
-| [PluginManager](https://github.com/HosihikariFramework/PluginManager/releases/tag/v1.1.0) | v1.1.0 | lip、NuGet |
-| [HostingShim](https://github.com/HosihikariFramework/HostingShim/releases/tag/v1.1.0) | v1.1.0 | lip，四个载体变体 |
-| [C# Loader](https://github.com/HosihikariFramework/CSharpLoader/releases/tag/v1.0.0) | v1.0.0 | lip |
-| [F# Loader](https://github.com/HosihikariFramework/FSharpLoader/releases/tag/v1.0.0) | v1.0.0 | lip |
-| [RPC Loader](https://github.com/HosihikariFramework/RpcLoader/releases/tag/v1.0.0) | v1.0.0 | lip |
+| [PluginManager](https://github.com/HosihikariFramework/PluginManager/releases/tag/v1.2.0) | v1.2.0 | Release 归档、NuGet、sei |
+| [HostingShim](https://github.com/HosihikariFramework/HostingShim/releases/tag/v1.2.0) | v1.2.0 | Release 归档，五个载体目标 |
+| [C# Loader](https://github.com/HosihikariFramework/CSharpLoader/releases/tag/v1.1.0) | v1.1.0 | Release 归档、sei |
+| [F# Loader](https://github.com/HosihikariFramework/FSharpLoader/releases/tag/v1.1.0) | v1.1.0 | Release 归档、sei |
+| [RPC Loader](https://github.com/HosihikariFramework/RpcLoader/releases/tag/v1.1.0) | v1.1.0 | Release 归档、sei |
 | [Plugin.Build](https://www.nuget.org/packages/Hosihikari.Plugin.Build/1.0.0) | 1.0.0 | NuGet |
 | [Testing](https://www.nuget.org/packages/Hosihikari.Testing/1.0.0) | 1.0.0 | NuGet |
 | [插件模板](https://www.nuget.org/packages/Hosihikari.Plugin.Templates/1.0.1) | 1.0.1 | `dotnet new` |
+
+## 1.2.0
+
+- 组件改为 GitHub Release 归档分发，在服务端根目录解压；不再使用 lip。托管核心是 `hosihikari-core-<版本>.zip`，三个加载器是 `hosihikari-csharp-<版本>.zip`、`hosihikari-fsharp-<版本>.zip` 与 `hosihikari-rpc-<版本>.zip`。
+- `HostingShim` v1.2.0 增加自持态 Windows 载体：`hosihikari-server.exe` 挂起启动 `bedrock_server.exe`，注入垫片，在服务端 `main` 之前调用它的导出入口。目标为 BDS 1.21.3.01，与自持态 Linux 同一个上限。
+- `PluginManager` v1.2.0 与三个加载器发布根级 `sei.json`，进入 [Seiko](/zh/seiko/) 的包索引；核心是 `hosihikari`，加载器是 `hosihikari-csharp`、`hosihikari-fsharp` 与 `hosihikari-rpc`。
+- 入口契约保持 1，插件 API 保持版本 2；已有插件继续可用。
 
 ## 插件模板 1.0.1
 
@@ -112,29 +119,21 @@ description: 星光框架、加载器与模板的已发布版本。
 
 ## 安装
 
+.NET 包：
+
 ```bash
 dotnet add package Hosihikari.Plugin.Abstractions --version 1.1.0
 dotnet add package Hosihikari.Plugin.Build --version 1.0.0
 dotnet add package Hosihikari.Testing --version 1.0.0
 dotnet new install Hosihikari.Plugin.Templates::1.0.1
-
-lip install github.com/HosihikariFramework/HostingShim
-lip install github.com/HosihikariFramework/CSharpLoader
-lip install github.com/HosihikariFramework/FSharpLoader
-lip install github.com/HosihikariFramework/RpcLoader
 ```
 
-HostingShim 包会通过 lip 依赖安装 PluginManager。需要显式锁定 PluginManager 时：
+服务端组件是 GitHub Release 归档：下载对应平台的载体、核心归档与所需加载器归档，解压到服务端根目录。见[在 LeviLamina 上安装](/zh/framework/server/install/levilamina/)、[在 Endstone 上安装](/zh/framework/server/install/endstone/)、[自持态 Linux](/zh/framework/server/install/selfhosted/)与[自持态 Windows](/zh/framework/server/install/selfhosted-windows/)。
 
-```bash
-lip install github.com/HosihikariFramework/PluginManager@1.1.0
-```
-
-HostingShim 的 LeviLamina 与 Endstone 变体用 `#levilamina`、`#endstone` 选择；
-无后缀包安装 Linux 自持态载体。加载器仍为 v1.0.0，与 1.1.0 核心一同安装。
+[Seiko](/zh/seiko/) 的索引也收录了核心与加载器；用 Seiko 装加载器时会一并装核心。
 
 ## 兼容
 
-PluginManager v1.1.0 与 HostingShim v1.1.0 使用入口契约版本 1，HostingShim 依赖范围为 `1.1.*`。
+PluginManager v1.2.0 与 HostingShim v1.2.0 使用入口契约版本 1。
 按 Hosihikari.Plugin.Abstractions 1.1.0 构建的插件使用 API 版本 2 与清单 `manifest_version` 1，与 1.0.0 相同。
 上一版功能线是 PluginAbstractions 0.7.1、PluginManager v0.7.2、HostingShim v0.7.0、C# Loader v0.2.3、F# Loader v0.1.5、RPC Loader v0.2.4 与模板 0.1.2。

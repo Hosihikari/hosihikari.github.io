@@ -1,5 +1,5 @@
 ---
-title: Installing the self-hosted carrier
+title: Installing the self-hosted carrier (Linux)
 description: Install the self-hosted Linux carrier.
 ---
 
@@ -10,19 +10,15 @@ The self-hosted carrier has no parent loader: it preloads the framework into a s
 - Linux x64.
 - Bedrock Dedicated Server **1.21.3**. The launcher targets that version.
 - The **.NET 10 runtime** on the machine.
-- [lip](https://github.com/LiteLDev/lip).
 
 ## Install
 
-Run this in the server root:
+Download two archives from GitHub releases and extract both into the server root:
 
-```bash
-lip install github.com/HosihikariFramework/HostingShim
-```
+- `hosihikari-selfhosted-linux-x64.zip` from the [HostingShim releases](https://github.com/HosihikariFramework/HostingShim/releases).
+- `hosihikari-core-<version>.zip` from the [Core releases](https://github.com/HosihikariFramework/PluginManager/releases).
 
-The suffix-less package is the self-hosted carrier. The package depends on the plugin manager, so lip installs that too, under `plugins/hosihikari/`.
-
-The install script marks the launcher executable. If lip was run with `--ignore-scripts`, set it yourself:
+The carrier archive writes `hosihikari-server` and the native shim into `plugins/hosihikari/`; the core archive adds the plugin manager to the same directory. Mark the launcher executable after extracting:
 
 ```bash
 chmod +x hosihikari-server
@@ -42,7 +38,7 @@ The launcher changes into the server directory and preloads the carrier, which s
 
 Every plugin under `plugins/` loads and enables before the server starts. There is no runtime enable or disable yet: to stop using a plugin today, move its package out of `plugins/` and restart. Plugin management commands — enable, disable, load, unload — are planned on top of the projection's command MCAPI and the plugin manager API; this page will be updated when they ship.
 
-Precompiled assembly packages run here out of the box. Source plugins work too: install the matching loader package ([C#](/framework/develop/authoring-csharp/) or [F#](/framework/develop/authoring-fsharp/)) alongside the carrier, exactly as on the parented carriers.
+Precompiled assembly packages run here out of the box. Source plugins work too: install the matching loader release archive ([C#](/framework/develop/authoring-csharp/) or [F#](/framework/develop/authoring-fsharp/)) alongside the carrier, exactly as on the parented carriers.
 
 ## Verify
 
@@ -60,6 +56,6 @@ The launcher's output and the server log should show the CLR starting, the carri
 
 ## Uninstall
 
-```bash
-lip uninstall github.com/HosihikariFramework/HostingShim
-```
+Stop the server, then delete `hosihikari-server` and `plugins/hosihikari/`. Plugin packages in `plugins/<name>/` are removed separately. Configuration and data under `config/hosihikari/` and `data/hosihikari/` can be kept or deleted.
+
+On Windows, use the [self-hosted Windows carrier](/framework/server/install/selfhosted-windows/) instead.

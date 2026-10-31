@@ -3,35 +3,30 @@ title: Updating and rolling back
 description: Move to a new release, and get back if it goes wrong.
 ---
 
-Pieces update independently: the carrier, the plugin manager, the loaders, and the plugin packages. The commands are the same on every carrier; only the package label changes.
+Pieces update independently: the carrier, the plugin manager, the loaders, and the plugin packages. Each is a release archive extracted into the server root. Keep the release tags you installed; the framework does not write a lock file.
 
 ## Check what you have
 
-```bash
-lip list
-```
+The version of each piece is the release tag you downloaded. Record them before an update:
 
-The installed packages appear with their versions, and packages installed by label show the label (`HostingShim#levilamina@1.1.0`). Keep this output before an update.
+- the HostingShim release tag for the carrier,
+- the PluginManager release tag for the core,
+- the loader release tags,
+- the plugin packages under `plugins/<name>/`.
 
 ## Update
 
-```bash
-lip update github.com/HosihikariFramework/HostingShim#levilamina
-```
+Stop the server, then download the new archives and extract them over the server root, replacing the old files:
 
-`lip update` takes the same package syntax as `lip install`, including the `#variant` label. Use `-n` to see what would change without doing it.
+- `hosihikari-<carrier>-<platform>-x64.zip` from the [HostingShim releases](https://github.com/HosihikariFramework/HostingShim/releases),
+- `hosihikari-core-<version>.zip` from the [Core releases](https://github.com/HosihikariFramework/PluginManager/releases),
+- the loader archives from their own releases.
 
-There is no `lip upgrade`; that command does not exist.
+Restart and confirm the log shows the framework taking over.
 
 ## Pin a version, or go back
 
-`lip install` with an explicit version both upgrades and downgrades:
-
-```bash
-lip install github.com/HosihikariFramework/HostingShim#levilamina@1.1.0
-```
-
-This is the rollback path. Install the version that worked, restart, and confirm the log shows the framework taking over again.
+Download the release archive of the version that worked and extract it over the same paths. This is the rollback path. Restart and confirm the log shows the framework taking over again.
 
 ## What needs a restart
 
@@ -48,8 +43,8 @@ The release page lists which versions were published together. Two numbers do th
 - **Hosting contract version.** The native carrier and the plugin manager check each other before starting. A mismatch stops the startup sequence; see [Recovery](/framework/server/recovery/).
 - **`api_version`.** The plugin manifest declares the contract it was built against. A plugin built for an incompatible line is refused before it runs.
 
-Read the [release notes](/framework/releases/) for the line you are moving to.
+The HostingShim release notes name the core line that release was built against. Read the [release notes](/framework/releases/) for the line you are moving to.
 
 ## Update order
 
-When several packages move at once, update the carrier first — it pulls the plugin manager it needs as a lip dependency — then the loader packages, then the plugin packages. Restart once at the end.
+When several pieces move at once, update the carrier and the core first, then the loader archives, then the plugin packages. Restart once at the end.

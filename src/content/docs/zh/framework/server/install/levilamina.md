@@ -9,18 +9,16 @@ LeviLamina 载体以一个 mod 的形式装进去。框架是插件管理器，L
 
 - Windows x64。
 - 基岩版专用服务器 1.26.51 或更新，且已装好可用的 LeviLamina 26.51 或更新。
-- [lip](https://github.com/LiteLDev/lip)。
 - .NET 10 运行时。框架把 CLR 托进服务端进程；没有运行时，启动序列会停下来并在日志里说明原因。
 
 ## 安装
 
-在服务端根目录执行：
+从 GitHub Release 下载两个归档，并都解压到服务端根目录：
 
-```bash
-lip install github.com/HosihikariFramework/HostingShim#levilamina
-```
+- 来自 [HostingShim 的 Release](https://github.com/HosihikariFramework/HostingShim/releases) 的 `hosihikari-levilamina-windows-x64.zip`。
+- 来自 [Core 的 Release](https://github.com/HosihikariFramework/PluginManager/releases) 的 `hosihikari-core-<版本>.zip`。
 
-`#levilamina` 标签选择变体。不带后缀的包是 Linux 自持态载体，在这里装不上。这个包依赖插件管理器， lip 会一并装上，落在 `plugins/hosihikari/`。
+两者写 `plugins/hosihikari/` 下的不同文件，按文件合并。HostingShim 的发布说明会写明兼容的核心版本线；原生垫片启动时会核对入口契约版本。
 
 然后照常启动服务端。
 
@@ -47,8 +45,4 @@ lip install github.com/HosihikariFramework/HostingShim#levilamina
 
 ## 卸载
 
-```bash
-lip uninstall github.com/HosihikariFramework/HostingShim#levilamina
-```
-
-标签是包标识的一部分。漏掉标签，lip 会回答「未显式安装」。卸载会连插件管理器依赖一起移除， 还有别的包要用框架时别执行。
+停服后删除 `plugins/hosihikari/`。插件包在 `plugins/<name>/` 下，单独移除。`config/hosihikari/` 与 `data/hosihikari/` 里的配置和数据可以保留，也可以一并删除。
