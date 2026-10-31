@@ -25,6 +25,7 @@ description: sk 的命令、选项与机器可读输出。
 | `--jobs <n>` | `sync`、`add`、`remove`、`update` | 最大并发 HTTP 请求数，默认 4。 |
 | `--pre` | 解析类命令 | 允许预发布版本。 |
 | `--latest-installable` | `sync`、`add`、`update` | 跳过没有匹配当前依赖图构件的版本；默认仍选最高版本。 |
+| `--allow-critical` | `sync`、`add`、`remove`、`update` | 允许解析带 critical 公告的版本；否则这些版本会被跳过并给出警告。 |
 
 ## 生命周期
 
@@ -42,12 +43,15 @@ description: sk 的命令、选项与机器可读输出。
 | `--locked` | 正常解析，但结果与现有锁不同就失败。 |
 | `--pre` | 允许预发布版本。 |
 | `--latest-installable` | 跳过没有匹配构件的版本；不能与 `--frozen` 同用。 |
+| `--allow-critical` | 允许解析带 critical 公告的版本。 |
 
 `--frozen` 与 `--locked` 互斥。`--frozen` 不改写锁。
 
+`sync`、`add` 与 `update` 在选中弃用版本，或重放锁定的 yanked / critical 版本时会打印警告；范围内匹配到但被跳过的 critical 版本也会警告，被跳过的 yanked 版本保持静默。`--json` 在 `data.warnings` 中给出同样的消息。
+
 ### `sk add <name[@range]>`
 
-把直接声明加入 `sei` 并同步。裸写 `1.2.0` 表示 1.2.0 或更高；精确锁定用 `[1.2.0]`。`--latest-installable` 作用于这次同步。
+把直接声明加入 `sei` 并同步。裸写 `1.2.0` 表示 1.2.0 或更高；精确锁定用 `[1.2.0]`。`--latest-installable` 作用于这次同步；`--allow-critical` 允许带 critical 公告的版本。
 
 ### `sk remove <name>`
 
@@ -55,7 +59,7 @@ description: sk 的命令、选项与机器可读输出。
 
 ### `sk update [name] [--latest]`
 
-重新解析直接声明，在范围内优先选新版本。传 `name` 只更新该声明；不传则更新全部。`--latest` 把选中的直接范围改写成最新版本（`[x.y.z]`）；`--latest-installable` 跳过没有匹配构件的版本。
+重新解析直接声明，在范围内优先选新版本。传 `name` 只更新该声明；不传则更新全部。`--latest` 把选中的直接范围改写成最新版本（`[x.y.z]`）；`--latest-installable` 跳过没有匹配构件的版本；`--allow-critical` 允许带 critical 公告的版本。
 
 ### `sk rollback [--to <generation>] [--proxy <url>]`
 

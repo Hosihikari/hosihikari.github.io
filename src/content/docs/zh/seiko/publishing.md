@@ -99,10 +99,29 @@ zip 根只能有一个 `sei.json`。其余都是载荷；路径相对安装根�
 sk index verify . --check-artifacts --strict
 ```
 
+## 退役字段
+
+版本条目可以带：
+
+```json
+{
+  "version": "1.2.3",
+  "yanked": true,
+  "deprecated": "use 2.x instead",
+  "advisory": { "severity": "critical", "url": "https://example.com/advisories/1" }
+}
+```
+
+- `yanked` 让新解析看不到该版本；锁重放仍然可用。
+- `deprecated` 在选中或查询该版本时显示。
+- `advisory.severity` 为 `low`、`moderate`、`high` 或 `critical`。`critical` 版本默认被新解析跳过，除非用户传 `--allow-critical`；锁重放允许但会警告。
+
+sei 文件还可以带 `unlisted: true`，从 `sk search` 隐藏但保留直接解析与锁重放；以及包级 `deprecated`，供未单独设置消息的版本继承。
+
 ## 规则
 
 - **版本不可变。** 添加新版本；从不编辑或删除已有版本。
-- **已有版本只能改 `yanked` 与 `deprecated`。** `yanked: true` 让新解析看不到它，但锁重放仍然可用；`deprecated` 是人类可读的迁移提示。
+- **已有版本只能改 `yanked`、`deprecated` 与 `advisory`。** 包级 `unlisted` 与 `deprecated` 也可以改。`yanked: true` 让新解析看不到它，但锁重放仍然可用；`deprecated` 是人类可读的迁移提示。
 - **从不删除 sei 或版本。** 退役的方式是 yank 或 deprecate。
 - **`index.json` 的名字列表只能增长。**
 

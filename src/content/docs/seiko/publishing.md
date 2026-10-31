@@ -99,10 +99,29 @@ Before submitting, run the same check locally against a checkout of the index:
 sk index verify . --check-artifacts --strict
 ```
 
+## Retirement fields
+
+A version entry may carry:
+
+```json
+{
+  "version": "1.2.3",
+  "yanked": true,
+  "deprecated": "use 2.x instead",
+  "advisory": { "severity": "critical", "url": "https://example.com/advisories/1" }
+}
+```
+
+- `yanked` hides the version from new resolution; lock replay still works.
+- `deprecated` is shown when the version is selected or queried.
+- `advisory.severity` is `low`, `moderate`, `high`, or `critical`. A `critical` version is skipped by new resolution unless the user passes `--allow-critical`; lock replay is allowed and warns.
+
+A sei file may also carry `unlisted: true`, which hides it from `sk search` while keeping direct resolution and lock replay working, and a package-level `deprecated` message inherited by versions that do not set their own.
+
 ## Rules
 
 - **Versions are immutable.** Add new versions; never edit or delete an existing one.
-- **Only `yanked` and `deprecated` may change** in an existing version. `yanked: true` hides it from new resolutions but keeps lock replay working; `deprecated` is a human-readable migration message.
+- **Only `yanked`, `deprecated`, and `advisory` may change** in an existing version. Package-level `unlisted` and `deprecated` may also change. `yanked: true` hides it from new resolutions but keeps lock replay working; `deprecated` is a human-readable migration message.
 - **Never delete a sei or a version.** Yanking or deprecating is the retirement path.
 - **The name list in `index.json` may only grow.**
 

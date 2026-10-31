@@ -25,6 +25,7 @@ Progress bars appear only when stdout is an interactive terminal, and never with
 | `--jobs <n>` | `sync`, `add`, `remove`, `update` | Maximum concurrent HTTP requests; default 4. |
 | `--pre` | resolution commands | Allow prerelease versions. |
 | `--latest-installable` | `sync`, `add`, `update` | Skip versions with no artifact for the resolved graph; the default is the highest version. |
+| `--allow-critical` | `sync`, `add`, `remove`, `update` | Allow resolving versions with a critical advisory; otherwise they are skipped with a warning. |
 
 ## Lifecycle
 
@@ -42,12 +43,15 @@ Resolve the declaration and deploy it. Alias: `sk install`.
 | `--locked` | Resolve, but fail if the result differs from the existing lock. |
 | `--pre` | Allow prerelease versions. |
 | `--latest-installable` | Skip versions without a matching artifact; incompatible with `--frozen`. |
+| `--allow-critical` | Allow resolving versions with a critical advisory. |
 
 `--frozen` and `--locked` are mutually exclusive. `--frozen` does not rewrite the lock.
 
+`sync`, `add`, and `update` print warnings when they select a deprecated version or replay a locked yanked or critical version. They also warn when a critical version matches the requested range but is skipped; skipped yanked versions stay silent. `--json` carries the same messages in `data.warnings`.
+
 ### `sk add <name[@range]>`
 
-Add a direct declaration to `sei` and sync. A bare `1.2.0` means 1.2.0 or newer; use `[1.2.0]` to pin exactly. `--latest-installable` applies to the sync.
+Add a direct declaration to `sei` and sync. A bare `1.2.0` means 1.2.0 or newer; use `[1.2.0]` to pin exactly. `--latest-installable` applies to the sync; `--allow-critical` permits a version with a critical advisory.
 
 ### `sk remove <name>`
 
@@ -55,7 +59,7 @@ Remove a direct declaration from `sei` or `components` and sync the rest.
 
 ### `sk update [name] [--latest]`
 
-Re-resolve direct declarations, preferring newer versions within their ranges. With `name`, only that declaration; without, all of them. `--latest` rewrites the selected direct ranges to the latest version (`[x.y.z]`); `--latest-installable` skips versions with no matching artifact.
+Re-resolve direct declarations, preferring newer versions within their ranges. With `name`, only that declaration; without, all of them. `--latest` rewrites the selected direct ranges to the latest version (`[x.y.z]`); `--latest-installable` skips versions with no matching artifact; `--allow-critical` permits a version with a critical advisory.
 
 ### `sk rollback [--to <generation>] [--proxy <url>]`
 
