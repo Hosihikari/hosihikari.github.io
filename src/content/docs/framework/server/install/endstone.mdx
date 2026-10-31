@@ -35,14 +35,15 @@ Download two archives from GitHub releases and extract both into the server root
 
 On Windows the carrier archive writes `plugins/hosihikari.dll` and `nethost.dll`; on Linux it writes `plugins/hosihikari.so` and `plugins/libnethost.so`. The core archive writes the plugin manager into `plugins/hosihikari/`. The HostingShim release notes name the compatible core line.
 
+  </TabItem>
+</Tabs>
+
 Start the server through the Endstone CLI, which is how Endstone injects its runtime into the vanilla server binary:
 
 ```bash
 endstone -s <server root>
 ```
 
-  </TabItem>
-</Tabs>
 ## Verify
 
 The server log should show the CLR starting, the carrier registering as an Endstone plugin, Endstone enabling it, and the plugin manager reporting what it found under `plugins/`. If none of that appears, see [Recovery](/framework/server/recovery/).

@@ -35,14 +35,15 @@ sk add hosihikari-hosting-endstone
 
 Windows 上载体归档写 `plugins/hosihikari.dll` 与 `nethost.dll`；Linux 上写 `plugins/hosihikari.so` 与 `plugins/libnethost.so`。核心归档把插件管理器写进 `plugins/hosihikari/`。HostingShim 的发布说明会写明兼容的核心版本线。
 
+  </TabItem>
+</Tabs>
+
 通过 Endstone 的 CLI 启动服务端——Endstone 就是这样把运行时注入原版服务端二进制的：
 
 ```bash
 endstone -s <服务端根目录>
 ```
 
-  </TabItem>
-</Tabs>
 ## 验证
 
 日志里应当能看到 CLR 启动、载体作为 Endstone 插件登记、Endstone 启用它，以及插件管理器报告在 `plugins/` 下发现了什么。都没有就看[故障恢复](/zh/framework/server/recovery/)。
