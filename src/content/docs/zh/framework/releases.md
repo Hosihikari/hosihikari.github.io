@@ -9,13 +9,20 @@ description: 星光框架、加载器与模板的已发布版本。
 | --- | --- | --- |
 | [PluginAbstractions](https://www.nuget.org/packages/Hosihikari.Plugin.Abstractions/1.1.0) | 1.1.0 | NuGet |
 | [PluginManager](https://github.com/HosihikariFramework/PluginManager/releases/tag/v1.2.0) | v1.2.0 | Release 归档、NuGet、sei |
-| [HostingShim](https://github.com/HosihikariFramework/HostingShim/releases/tag/v1.2.0) | v1.2.0 | Release 归档，五个载体目标 |
+| [HostingShim](https://github.com/HosihikariFramework/HostingShim/releases/tag/v1.2.1) | v1.2.1 | Release 归档，五个载体目标、sei |
 | [C# Loader](https://github.com/HosihikariFramework/CSharpLoader/releases/tag/v1.1.0) | v1.1.0 | Release 归档、sei |
 | [F# Loader](https://github.com/HosihikariFramework/FSharpLoader/releases/tag/v1.1.0) | v1.1.0 | Release 归档、sei |
 | [RPC Loader](https://github.com/HosihikariFramework/RpcLoader/releases/tag/v1.1.0) | v1.1.0 | Release 归档、sei |
 | [Plugin.Build](https://www.nuget.org/packages/Hosihikari.Plugin.Build/1.0.0) | 1.0.0 | NuGet |
 | [Testing](https://www.nuget.org/packages/Hosihikari.Testing/1.0.0) | 1.0.0 | NuGet |
 | [插件模板](https://www.nuget.org/packages/Hosihikari.Plugin.Templates/1.0.1) | 1.0.1 | `dotnet new` |
+
+## 1.2.1
+
+- 每个 HostingShim 发布归档都带根级 `sei.json`；`hosihikari-hosting` 1.2.1 已收录进 [Seiko](/zh/seiko/) 索引，五个附件按载体与 RID 选择。
+- 三个载体 bundle —— `hosihikari-hosting-levilamina`、`hosihikari-hosting-endstone` 与 `hosihikari-hosting-selfhosted`（1.0.0）—— 依赖 hosting。声明一个 bundle 会通过依赖带入 hosting，并选中对应载体的附件。
+- 自持态 Linux 归档通过 `sei.json` 的 `modes` 给启动器设可执行位。
+- 入口契约与插件 API 无变化。
 
 ## 1.2.0
 
