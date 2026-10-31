@@ -3,35 +3,30 @@ title: 升级与回滚
 description: 升到新版本，出问题时回得去。
 ---
 
-各部分独立升级：载体、插件管理器、加载器、插件包。命令在每个载体上都一样，只有包的标签不同。
+各部分独立升级：载体、插件管理器、加载器、插件包。每一份都是解压到服务端根目录的 Release 归档。把装过的 Release 标签记下来；框架不写锁文件。
 
 ## 先看现在装了什么
 
-```bash
-lip list
-```
+每一部分的版本就是你下载的 Release 标签。升级前记下来：
 
-已安装的包连同版本一起列出；带标签装的包会显示标签（`HostingShim#levilamina@1.1.0`）。升级前把这行 输出留一份。
+- 载体的 HostingShim Release 标签；
+- 核心的 PluginManager Release 标签；
+- 各加载器的 Release 标签；
+- `plugins/<name>/` 下的插件包。
 
 ## 升级
 
-```bash
-lip update github.com/HosihikariFramework/HostingShim#levilamina
-```
+停服，下载新的归档并在服务端根目录解压，覆盖旧文件：
 
-`lip update` 接受与 `lip install` 相同的包写法，包括 `#variant` 标签。加 `-n` 只预览不执行。
+- 来自 [HostingShim 的 Release](https://github.com/HosihikariFramework/HostingShim/releases) 的 `hosihikari-<载体>-<平台>-x64.zip`；
+- 来自 [Core 的 Release](https://github.com/HosihikariFramework/PluginManager/releases) 的 `hosihikari-core-<版本>.zip`；
+- 各加载器自己 Release 里的归档。
 
-没有 `lip upgrade` 这个命令。
+重启，确认日志里框架重新接管。
 
 ## 锁定版本，或退回去
 
-`lip install` 带显式版本号既能升级也能降级：
-
-```bash
-lip install github.com/HosihikariFramework/HostingShim#levilamina@1.1.0
-```
-
-这就是回滚路径。装上能用的那版，重启，确认日志里框架重新接管。
+下载能用的那个版本的 Release 归档，解压到同样的路径。这就是回滚路径。重启，确认日志里框架重新接管。
 
 ## 哪些要重启
 
@@ -48,8 +43,8 @@ lip install github.com/HosihikariFramework/HostingShim#levilamina@1.1.0
 - **寄宿契约版本。** 原生载体与插件管理器在启动前互相核对。不一致会中止启动序列，见[故障恢复](/zh/framework/server/recovery/)。
 - **`api_version`。** 插件清单声明它按哪条契约构建。不兼容的插件在运行前就被拒绝。
 
-看你正要升到的那条线的[发布记录](/zh/framework/releases/)。
+HostingShim 的发布说明会写明那一版按哪条核心版本线构建。看你正要升到的那条线的[发布记录](/zh/framework/releases/)。
 
 ## 升级顺序
 
-几个包一起动时，先升载体——它会把需要的插件管理器作为 lip 依赖带上——再升加载器包，最后升插件包。 最后统一重启一次。
+几部分一起动时，先升载体与核心，再升加载器归档，最后升插件包。最后统一重启一次。

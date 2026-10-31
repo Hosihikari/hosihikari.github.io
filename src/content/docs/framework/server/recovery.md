@@ -58,7 +58,7 @@ Unload is verified: the framework asks the loader to confirm the assembly load c
 
 ## What to include in a report
 
-- The framework, loader, and plugin versions (`lip list`).
+- The release tags of the framework and loaders, and each plugin's manifest `version`.
 - The carrier and the BDS version.
 - The log lines around the failure, from `logs/latest.log`.
 - Any crash files from the paths above.

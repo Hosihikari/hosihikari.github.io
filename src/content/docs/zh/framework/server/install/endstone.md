@@ -9,18 +9,16 @@ Endstone 载体以一个 Endstone 插件的形式装进去。框架是插件管�
 
 - Windows x64 或 Linux x64。
 - 基岩版专用服务器 1.26.52 或更新，且已装好可用的 Endstone 0.11 或更新。
-- [lip](https://github.com/LiteLDev/lip)。
 - .NET 10 运行时。框架把 CLR 托进服务端进程；没有运行时，启动序列会停下来并在日志里说明原因。
 
 ## 安装
 
-在服务端根目录执行：
+从 GitHub Release 下载两个归档，并都解压到服务端根目录：
 
-```bash
-lip install github.com/HosihikariFramework/HostingShim#endstone
-```
+- 来自 [HostingShim 的 Release](https://github.com/HosihikariFramework/HostingShim/releases) 的 `hosihikari-endstone-windows-x64.zip` 或 `hosihikari-endstone-linux-x64.zip`。
+- 来自 [Core 的 Release](https://github.com/HosihikariFramework/PluginManager/releases) 的 `hosihikari-core-<版本>.zip`。
 
-`#endstone` 标签选择变体，lip 按服务端平台取 Windows 或 Linux 的包。不带后缀的包是 Linux 自持态载体， 在这里装不上。这个包依赖插件管理器，lip 会一并装上，落在 `plugins/hosihikari/`。
+Windows 上载体归档写 `plugins/hosihikari.dll` 与 `nethost.dll`；Linux 上写 `plugins/hosihikari.so` 与 `plugins/libnethost.so`。核心归档把插件管理器写进 `plugins/hosihikari/`。HostingShim 的发布说明会写明兼容的核心版本线。
 
 通过 Endstone 的 CLI 启动服务端——Endstone 就是这样把运行时注入原版服务端二进制的：
 
@@ -35,7 +33,7 @@ endstone -s <服务端根目录>
 ## 两处 Endstone 特有的细节
 
 - **插件名会被规范化。** Endstone 只接受 `^[a-z0-9_]+$`，且不允许以 `endstone` 开头。名为 `Bar` 的插件 在 Endstone 眼里是 `bar`；框架仍按清单名记录它。按名字操作插件的命令要用 Endstone 的写法。
-- **nethost 库必须能被解析。** Windows 上 `nethost.dll` 放在 `bedrock_server.exe` 旁边；Linux 上 `libnethost.so` 放在插件旁边，靠 `$ORIGIN` 找到。包会处理好，只有手工部署时才需要在意。
+- **nethost 库必须能被解析。** Windows 上 `nethost.dll` 放在 `bedrock_server.exe` 旁边；Linux 上 `libnethost.so` 放在插件旁边，靠 `$ORIGIN` 找到。发布归档已经按这个形状铺好。
 
 ## 文件位置
 
@@ -50,8 +48,4 @@ endstone -s <服务端根目录>
 
 ## 卸载
 
-```bash
-lip uninstall github.com/HosihikariFramework/HostingShim#endstone
-```
-
-标签是包标识的一部分。漏掉标签，lip 会回答未显式安装。
+停服后删除 `plugins/hosihikari/` 与载体文件（`plugins/hosihikari.dll` 或 `plugins/hosihikari.so`）。`nethost.dll` 或 `plugins/libnethost.so` 只在没有别的插件使用时才删除。`plugins/<name>/` 下的插件包单独移除。

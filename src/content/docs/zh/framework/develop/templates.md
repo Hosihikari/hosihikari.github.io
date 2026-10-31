@@ -33,10 +33,10 @@ dotnet build -t:PackPlugin
 
 C# 与 F# 加载器在装载时编译源码；包里放源码，没有构建产物。
 
-| 模板 | 加载器 | 安装 |
+| 模板 | 加载器 | 加载器归档 |
 |---|---|---|
-| [CSharpPluginTemplate](https://github.com/HosihikariFramework/CSharpPluginTemplate) | `hosihikari-csharp` | `lip install github.com/HosihikariFramework/CSharpLoader` |
-| [FSharpPluginTemplate](https://github.com/HosihikariFramework/FSharpPluginTemplate) | `hosihikari-fsharp` | `lip install github.com/HosihikariFramework/FSharpLoader` |
+| [CSharpPluginTemplate](https://github.com/HosihikariFramework/CSharpPluginTemplate) | `hosihikari-csharp` | [`hosihikari-csharp-<版本>.zip`](https://github.com/HosihikariFramework/CSharpLoader/releases) |
+| [FSharpPluginTemplate](https://github.com/HosihikariFramework/FSharpPluginTemplate) | `hosihikari-fsharp` | [`hosihikari-fsharp-<版本>.zip`](https://github.com/HosihikariFramework/FSharpLoader/releases) |
 
 `CSharpPluginTemplate` 演示 `#:package` 与 `#:include`；先跑它的 `pack.ps1` 或 `pack.sh`，
 再把 `dist/MyCSharpPlugin/` 复制到 `plugins/`。`FSharpPluginTemplate` 演示 `#load`，直接复制仓库

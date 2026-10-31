@@ -9,18 +9,16 @@ The Endstone carrier installs as an Endstone plugin. The framework is the plugin
 
 - Windows x64 or Linux x64.
 - Bedrock Dedicated Server 1.26.52 or newer, with Endstone 0.11 or newer installed and working.
-- [lip](https://github.com/LiteLDev/lip).
 - The .NET 10 runtime. The framework hosts the CLR inside the server process; without the runtime the startup sequence stops and says so in the log.
 
 ## Install
 
-Run this in the server root:
+Download two archives from GitHub releases and extract both into the server root:
 
-```bash
-lip install github.com/HosihikariFramework/HostingShim#endstone
-```
+- `hosihikari-endstone-windows-x64.zip` or `hosihikari-endstone-linux-x64.zip` from the [HostingShim releases](https://github.com/HosihikariFramework/HostingShim/releases).
+- `hosihikari-core-<version>.zip` from the [Core releases](https://github.com/HosihikariFramework/PluginManager/releases).
 
-The `#endstone` label selects the variant; lip picks the Windows or Linux archive from the server's platform. The suffix-less package is the Linux self-hosted carrier and will not work here. The package depends on the plugin manager, so lip installs that too, under `plugins/hosihikari/`.
+On Windows the carrier archive writes `plugins/hosihikari.dll` and `nethost.dll`; on Linux it writes `plugins/hosihikari.so` and `plugins/libnethost.so`. The core archive writes the plugin manager into `plugins/hosihikari/`. The HostingShim release notes name the compatible core line.
 
 Start the server through the Endstone CLI, which is how Endstone injects its runtime into the vanilla server binary:
 
@@ -35,7 +33,7 @@ The server log should show the CLR starting, the carrier registering as an Endst
 ## Two Endstone-specific details
 
 - **Plugin names are normalised.** Endstone accepts `^[a-z0-9_]+$` and forbids a leading `endstone`. A plugin named `Bar` appears to Endstone as `bar`; the framework still tracks it by its manifest name. Commands that address plugins by name take the Endstone spelling.
-- **The nethost library must be resolvable.** On Windows `nethost.dll` sits next to `bedrock_server.exe`; on Linux `libnethost.so` sits next to the plugin and is found through `$ORIGIN`. The package handles this; it matters only when you deploy by hand.
+- **The nethost library must be resolvable.** On Windows `nethost.dll` sits next to `bedrock_server.exe`; on Linux `libnethost.so` sits next to the plugin and is found through `$ORIGIN`. The release archive already lays them out this way.
 
 ## Where things live
 
@@ -50,8 +48,4 @@ The server log should show the CLR starting, the carrier registering as an Endst
 
 ## Uninstall
 
-```bash
-lip uninstall github.com/HosihikariFramework/HostingShim#endstone
-```
-
-The label is part of the package identity. Without it lip answers that the package is not explicitly installed.
+Stop the server, then delete `plugins/hosihikari/` and the carrier file (`plugins/hosihikari.dll` or `plugins/hosihikari.so`). Delete `nethost.dll` or `plugins/libnethost.so` only when no other plugin uses it. Plugin packages in `plugins/<name>/` are removed separately.

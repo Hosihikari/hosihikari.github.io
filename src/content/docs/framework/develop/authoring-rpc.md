@@ -14,10 +14,7 @@ RpcLoader is the official out-of-process loader. It runs plugins in a child proc
 Pick the HostingShim variant for the server (see [Choosing a carrier](/framework/server/carriers/)); the examples below use
 LeviLamina:
 
-```bash
-lip install github.com/HosihikariFramework/HostingShim#levilamina
-lip install github.com/HosihikariFramework/RpcLoader
-```
+Extract the LeviLamina carrier archive, `hosihikari-core-<version>.zip`, and `hosihikari-rpc-<version>.zip` into the server root.
 
 The [RPC templates](/framework/develop/templates/) cover Node.js/TypeScript, Python, and Kotlin/JVM.
 

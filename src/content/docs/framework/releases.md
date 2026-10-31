@@ -3,20 +3,27 @@ title: Releases
 description: Published versions of the framework, loaders, and templates.
 ---
 
-The current release line was published on 22 October 2026; the template package was updated on
-the same day.
+The current release line was published on 31 October 2026; the template package was last updated
+on 22 October 2026.
 
 | Component | Version | Distribution |
 | --- | --- | --- |
 | [PluginAbstractions](https://www.nuget.org/packages/Hosihikari.Plugin.Abstractions/1.1.0) | 1.1.0 | NuGet |
-| [PluginManager](https://github.com/HosihikariFramework/PluginManager/releases/tag/v1.1.0) | v1.1.0 | lip, NuGet |
-| [HostingShim](https://github.com/HosihikariFramework/HostingShim/releases/tag/v1.1.0) | v1.1.0 | lip, four carrier variants |
-| [C# Loader](https://github.com/HosihikariFramework/CSharpLoader/releases/tag/v1.0.0) | v1.0.0 | lip |
-| [F# Loader](https://github.com/HosihikariFramework/FSharpLoader/releases/tag/v1.0.0) | v1.0.0 | lip |
-| [RPC Loader](https://github.com/HosihikariFramework/RpcLoader/releases/tag/v1.0.0) | v1.0.0 | lip |
+| [PluginManager](https://github.com/HosihikariFramework/PluginManager/releases/tag/v1.2.0) | v1.2.0 | Release archive, NuGet, sei |
+| [HostingShim](https://github.com/HosihikariFramework/HostingShim/releases/tag/v1.2.0) | v1.2.0 | Release archive, five carrier targets |
+| [C# Loader](https://github.com/HosihikariFramework/CSharpLoader/releases/tag/v1.1.0) | v1.1.0 | Release archive, sei |
+| [F# Loader](https://github.com/HosihikariFramework/FSharpLoader/releases/tag/v1.1.0) | v1.1.0 | Release archive, sei |
+| [RPC Loader](https://github.com/HosihikariFramework/RpcLoader/releases/tag/v1.1.0) | v1.1.0 | Release archive, sei |
 | [Plugin.Build](https://www.nuget.org/packages/Hosihikari.Plugin.Build/1.0.0) | 1.0.0 | NuGet |
 | [Testing](https://www.nuget.org/packages/Hosihikari.Testing/1.0.0) | 1.0.0 | NuGet |
 | [Plugin templates](https://www.nuget.org/packages/Hosihikari.Plugin.Templates/1.0.1) | 1.0.1 | `dotnet new` |
+
+## 1.2.0
+
+- Components are distributed as GitHub release archives that extract at the server root; lip is no longer used. The managed core is `hosihikari-core-<version>.zip`, and the loaders are `hosihikari-csharp-<version>.zip`, `hosihikari-fsharp-<version>.zip`, and `hosihikari-rpc-<version>.zip`.
+- `HostingShim` v1.2.0 adds the self-hosted Windows carrier: `hosihikari-server.exe` starts `bedrock_server.exe` suspended, injects the shim, and calls its exported entry before the server's `main`. Its target is BDS 1.21.3.01, the same ceiling as self-hosted Linux.
+- `PluginManager` v1.2.0 and the loaders publish a root `sei.json` for the [Seiko](/seiko/) package index; the core is `hosihikari` and the loaders are `hosihikari-csharp`, `hosihikari-fsharp`, and `hosihikari-rpc`.
+- The hosting contract stays 1 and the plugin API stays at version 2; existing plugins keep working.
 
 ## Plugin template 1.0.1
 
@@ -117,30 +124,21 @@ The 1.1.0 line adds to the 1.0 API; existing plugins keep working without change
 
 ## Install
 
+.NET packages:
+
 ```bash
 dotnet add package Hosihikari.Plugin.Abstractions --version 1.1.0
 dotnet add package Hosihikari.Plugin.Build --version 1.0.0
 dotnet add package Hosihikari.Testing --version 1.0.0
 dotnet new install Hosihikari.Plugin.Templates::1.0.1
-
-lip install github.com/HosihikariFramework/HostingShim
-lip install github.com/HosihikariFramework/CSharpLoader
-lip install github.com/HosihikariFramework/FSharpLoader
-lip install github.com/HosihikariFramework/RpcLoader
 ```
 
-The HostingShim package installs PluginManager as a lip dependency. To pin PluginManager explicitly:
+Server components are GitHub release archives: download the carrier for your platform, the core archive, and any loader archives, then extract them into the server root. See [Installing on LeviLamina](/framework/server/install/levilamina/), [Installing on Endstone](/framework/server/install/endstone/), [self-hosted Linux](/framework/server/install/selfhosted/), and [self-hosted Windows](/framework/server/install/selfhosted-windows/).
 
-```bash
-lip install github.com/HosihikariFramework/PluginManager@1.1.0
-```
-
-HostingShim variants for LeviLamina and Endstone are selected with `#levilamina` and `#endstone`; the
-package without a suffix installs the Linux self-hosted carrier. The loaders stay on v1.0.0 and
-install alongside the 1.1.0 core.
+The [Seiko](/seiko/) index also lists the core and the loaders as seis; Seiko installs the core when a loader is added.
 
 ## Compatibility
 
-PluginManager v1.1.0 and HostingShim v1.1.0 use hosting contract version 1, and HostingShim declares a `1.1.*` dependency.
+PluginManager v1.2.0 and HostingShim v1.2.0 use hosting contract version 1.
 Plugins built against Hosihikari.Plugin.Abstractions 1.1.0 use API version 2 and manifest `manifest_version` 1, the same as 1.0.0.
 The previous release line was PluginAbstractions 0.7.1, PluginManager v0.7.2, HostingShim v0.7.0, C# Loader v0.2.3, F# Loader v0.1.5, RPC Loader v0.2.4, and template 0.1.2.

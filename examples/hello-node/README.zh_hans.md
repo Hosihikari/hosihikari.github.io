@@ -13,9 +13,8 @@
 ```powershell
 git clone https://github.com/Hosihikari/hosihikari.github.io
 cd hosihikari.github.io
-# 以 LeviLamina 为例；其他载体用 #endstone 或无后缀自持态
-lip install github.com/HosihikariFramework/HostingShim#levilamina
-lip install github.com/HosihikariFramework/RpcLoader
+# 从各自的 GitHub Release 下载 LeviLamina 载体、核心与 RPC 加载器归档，
+# 解压到服务端根目录。
 $Server = 'C:\bedrock-server'
 Copy-Item -Recurse .\examples\hello-node "$Server\plugins\hello-node"
 Copy-Item "$Server\plugins\hosihikari-rpc\bindings\node\hosihikari.mjs" "$Server\plugins\hello-node\hosihikari.mjs"

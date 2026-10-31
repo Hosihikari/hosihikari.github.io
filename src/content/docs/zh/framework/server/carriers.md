@@ -1,6 +1,6 @@
 ---
 title: 选择载体
-description: 框架支持的三种载体环境，以及各自要付什么代价。
+description: 框架支持的四种载体目标，以及各自要付什么代价。
 ---
 
 **载体**是一套具体的运行环境，由三个分量确定：平台、父级插件加载器（自持态没有），以及原生 API 提供方——LeviLamina 的 LLAPI、Endstone 的 API、自持态 BDS 1.21.3 的 MCAPI。框架只依赖平台与父级加载器；原生 API 一侧由投影提供。先选载体再动手装；三条载体的安装步骤不一样，不能互换。
@@ -9,11 +9,12 @@ description: 框架支持的三种载体环境，以及各自要付什么代价�
 | --- | --- | --- | --- |
 | [LeviLamina](/zh/framework/server/install/levilamina/) | Windows x64 | LeviLamina | 1.26.51+，配 LeviLamina 26.51+ |
 | [Endstone](/zh/framework/server/install/endstone/) | Windows x64、Linux x64 | Endstone | 1.26.52+，配 Endstone 0.11+ |
-| [自持态](/zh/framework/server/install/selfhosted/) | Linux x64 | 无 | 1.21.3 |
+| [自持态（Linux）](/zh/framework/server/install/selfhosted/) | Linux x64 | 无 | 1.21.3 |
+| [自持态（Windows）](/zh/framework/server/install/selfhosted-windows/) | Windows x64 | 无 | 1.21.3.01 |
 
 ## 父级态与自持态
 
-在 **LeviLamina** 或 **Endstone** 之下，框架是别人插件系统里的一个插件管理器。发现、启用、停用、卸载 都由父级发起，我们再把这些调用转给管理的插件。已经在跑那个加载器，就选它；Windows 上也只有这两个选择。
+在 **LeviLamina** 或 **Endstone** 之下，框架是别人插件系统里的一个插件管理器。发现、启用、停用、卸载 都由父级发起，我们再把这些调用转给管理的插件。已经在跑那个加载器，就选它。
 
 **自持态**没有父级：框架就是最外层的插件系统。它是唯一能在原版 BDS 上直接跑的载体，也是最受约束的一个：
 
@@ -24,7 +25,7 @@ description: 框架支持的三种载体环境，以及各自要付什么代价�
 ## 怎么定
 
 - **已经在跑 LeviLamina 或 Endstone。** 用对应载体，别的组合不受支持。
-- **Windows、没有加载器。** LeviLamina 与 Endstone 都可以，都是 Windows x64。
+- **Windows、没有加载器。** 自持态 Windows（BDS 1.21.3.01）；已经装了加载器则用 LeviLamina 或 Endstone。
 - **Linux、没有加载器、BDS 1.21.3。** 自持态。
 - **Linux、没有加载器、更新的 BDS。** 走 Endstone 载体。
 
@@ -32,4 +33,4 @@ description: 框架支持的三种载体环境，以及各自要付什么代价�
 
 插件包在每个载体上都一样：`plugins/` 下的一个目录，带 `manifest.json`。插件契约、生命周期、隔离模型 也都一样。把插件包在载体之间搬动不需要重新构建。
 
-插件管理器本身是载体包的 lip 依赖，随它一起装上，不需要单独安装。
+插件管理器是单独的 Release 归档，与载体归档一起解压。
