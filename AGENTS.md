@@ -31,6 +31,8 @@ Use `bun run dev` for a local preview. The deploy workflow runs the same install
 - Add sidebar entries and their `zh-CN` translations in `astro.config.mjs`. Keep the product links
   in `src/components/Header.astro` in sync across locales.
 - Keep examples and commands aligned with the current release line and package names.
+- Document the current major version only. Do not publish cross-major change summaries or
+  migration notes, and do not show v0-era information now that v1 is out.
 - Do not edit `dist/`, `.astro/`, or `node_modules/`.
 - Public default branches are protected. Work on a branch, open a pull request, and squash merge.
 
