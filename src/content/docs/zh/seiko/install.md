@@ -7,9 +7,9 @@ Seiko 发布两个 NativeAOT 二进制：CLI `sk` 与 MCP server `seiko-mcp`。�
 
 ## 要求
 
-- Linux x64 或 arm64，使用 glibc，例如 Ubuntu 22.04 及以上。不支持 musl/Alpine。
-- macOS arm64（Apple Silicon）。不发布 `osx-x64`。
-- Windows x64 或 arm64。
+- Windows x64、arm64 或 x86。
+- Linux x64 或 arm64，支持 glibc（Ubuntu 22.04 及以上）与 musl；Linux arm 仅支持 glibc。
+- macOS x64 或 arm64。
 
 二进制未做代码签名。在 macOS 或 Windows 上手动下载可能触发 Gatekeeper 或 SmartScreen；推荐用安装器直接使用 Release 资产。
 
@@ -35,14 +35,14 @@ Unix：
 
 ```bash
 curl -fsSL https://github.com/Hosihikari/Seiko/releases/latest/download/install.sh \
-  | sh -s -- --version v0.2.1 --dir "$HOME/bin"
+  | sh -s -- --version vX.Y.Z --dir "$HOME/bin"
 ```
 
 PowerShell：
 
 ```powershell
 irm https://github.com/Hosihikari/Seiko/releases/latest/download/install.ps1 -OutFile install.ps1
-./install.ps1 -Version v0.2.1 -Dir "$env:USERPROFILE\bin"
+./install.ps1 -Version vX.Y.Z -Dir "$env:USERPROFILE\bin"
 ```
 
 `--dry-run`（PowerShell 为 `-DryRun`）只解析版本与摘要并打印计划，不写任何文件。`--base-url` 是给镜像用的高级选项。
@@ -57,7 +57,7 @@ seiko-mcp --version
 手动下载的归档与安装器做同样的检查：
 
 ```bash
-gh attestation verify sk-0.2.1-linux-x64.tar.gz --repo Hosihikari/Seiko
+gh attestation verify 'sk-<version>-linux-x64.tar.gz' --repo Hosihikari/Seiko
 sha256sum -c SHA256SUMS --ignore-missing
 ```
 
@@ -68,7 +68,7 @@ sha256sum -c SHA256SUMS --ignore-missing
 | `SHA256SUMS` | 所有 Release 资产的摘要 |
 | `install.sh`、`install.ps1` | 安装脚本 |
 
-`<rid>` 是 `win-x64`、`win-arm64`、`linux-x64`、`linux-arm64` 或 `osx-arm64`。
+`<rid>` 是 `win-x64`、`win-arm64`、`win-x86`、`linux-x64`、`linux-arm64`、`linux-arm`、`linux-musl-x64`、`linux-musl-arm64`、`osx-x64` 或 `osx-arm64`。
 
 ## 升级与卸载
 

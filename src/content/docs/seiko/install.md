@@ -7,9 +7,9 @@ Seiko ships as two NativeAOT binaries: `sk`, the CLI, and `seiko-mcp`, the MCP s
 
 ## Requirements
 
-- Linux x64 or arm64 with glibc, such as Ubuntu 22.04 or newer. musl/Alpine is not supported.
-- macOS arm64 (Apple Silicon). `osx-x64` is not published.
-- Windows x64 or arm64.
+- Windows x64, arm64, or x86.
+- Linux x64 or arm64 on glibc (Ubuntu 22.04 or newer) or musl; Linux arm on glibc.
+- macOS x64 or arm64.
 
 The binaries are not code-signed. A browser download on macOS or Windows may trigger Gatekeeper or SmartScreen; the installer uses the release assets directly and is the recommended path.
 
@@ -35,14 +35,14 @@ Unix:
 
 ```bash
 curl -fsSL https://github.com/Hosihikari/Seiko/releases/latest/download/install.sh \
-  | sh -s -- --version v0.2.1 --dir "$HOME/bin"
+  | sh -s -- --version vX.Y.Z --dir "$HOME/bin"
 ```
 
 PowerShell:
 
 ```powershell
 irm https://github.com/Hosihikari/Seiko/releases/latest/download/install.ps1 -OutFile install.ps1
-./install.ps1 -Version v0.2.1 -Dir "$env:USERPROFILE\bin"
+./install.ps1 -Version vX.Y.Z -Dir "$env:USERPROFILE\bin"
 ```
 
 `--dry-run` (PowerShell: `-DryRun`) resolves the release and checksum and prints the plan without writing anything. `--base-url` is an advanced option for mirrors.
@@ -57,7 +57,7 @@ seiko-mcp --version
 Manual downloads are checked the same way as the installer:
 
 ```bash
-gh attestation verify sk-0.2.1-linux-x64.tar.gz --repo Hosihikari/Seiko
+gh attestation verify 'sk-<version>-linux-x64.tar.gz' --repo Hosihikari/Seiko
 sha256sum -c SHA256SUMS --ignore-missing
 ```
 
@@ -68,7 +68,7 @@ sha256sum -c SHA256SUMS --ignore-missing
 | `SHA256SUMS` | Checksums for every release asset |
 | `install.sh`, `install.ps1` | Installers |
 
-`<rid>` is one of `win-x64`, `win-arm64`, `linux-x64`, `linux-arm64`, or `osx-arm64`.
+`<rid>` is one of `win-x64`, `win-arm64`, `win-x86`, `linux-x64`, `linux-arm64`, `linux-arm`, `linux-musl-x64`, `linux-musl-arm64`, `osx-x64`, or `osx-arm64`.
 
 ## Upgrade and uninstall
 
