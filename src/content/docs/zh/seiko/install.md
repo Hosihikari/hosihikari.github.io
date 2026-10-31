@@ -7,9 +7,9 @@ Seiko 发布两个 NativeAOT 二进制：CLI `sk` 与 MCP server `seiko-mcp`。�
 
 ## 要求
 
-- Linux x64 或 arm64，使用 glibc，例如 Ubuntu 22.04 及以上。不支持 musl/Alpine。
-- macOS arm64（Apple Silicon）。不发布 `osx-x64`。
-- Windows x64 或 arm64。
+- Windows x64、arm64 或 x86。
+- Linux x64、arm64 或 arm，支持 glibc（Ubuntu 22.04 及以上）与 musl。
+- macOS x64 或 arm64。
 
 二进制未做代码签名。在 macOS 或 Windows 上手动下载可能触发 Gatekeeper 或 SmartScreen；推荐用安装器直接使用 Release 资产。
 
@@ -68,7 +68,7 @@ sha256sum -c SHA256SUMS --ignore-missing
 | `SHA256SUMS` | 所有 Release 资产的摘要 |
 | `install.sh`、`install.ps1` | 安装脚本 |
 
-`<rid>` 是 `win-x64`、`win-arm64`、`linux-x64`、`linux-arm64` 或 `osx-arm64`。
+`<rid>` 是 `win-x64`、`win-arm64`、`win-x86`、`linux-x64`、`linux-arm64`、`linux-arm`、`linux-musl-x64`、`linux-musl-arm64`、`linux-musl-arm`、`osx-x64` 或 `osx-arm64`。
 
 ## 升级与卸载
 

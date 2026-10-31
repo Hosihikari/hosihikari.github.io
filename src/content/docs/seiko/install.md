@@ -7,9 +7,9 @@ Seiko ships as two NativeAOT binaries: `sk`, the CLI, and `seiko-mcp`, the MCP s
 
 ## Requirements
 
-- Linux x64 or arm64 with glibc, such as Ubuntu 22.04 or newer. musl/Alpine is not supported.
-- macOS arm64 (Apple Silicon). `osx-x64` is not published.
-- Windows x64 or arm64.
+- Windows x64, arm64, or x86.
+- Linux x64, arm64, or arm on glibc (Ubuntu 22.04 or newer) or musl.
+- macOS x64 or arm64.
 
 The binaries are not code-signed. A browser download on macOS or Windows may trigger Gatekeeper or SmartScreen; the installer uses the release assets directly and is the recommended path.
 
@@ -68,7 +68,7 @@ sha256sum -c SHA256SUMS --ignore-missing
 | `SHA256SUMS` | Checksums for every release asset |
 | `install.sh`, `install.ps1` | Installers |
 
-`<rid>` is one of `win-x64`, `win-arm64`, `linux-x64`, `linux-arm64`, or `osx-arm64`.
+`<rid>` is one of `win-x64`, `win-arm64`, `win-x86`, `linux-x64`, `linux-arm64`, `linux-arm`, `linux-musl-x64`, `linux-musl-arm64`, `linux-musl-arm`, `osx-x64`, or `osx-arm64`.
 
 ## Upgrade and uninstall
 
