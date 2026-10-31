@@ -3,6 +3,8 @@ title: Installing the self-hosted carrier (Linux)
 description: Install the self-hosted Linux carrier.
 ---
 
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
 The self-hosted carrier has no parent loader: it preloads the framework into a stock Bedrock Dedicated Server. It is the only carrier that runs without LeviLamina or Endstone.
 
 ## Requirements
@@ -12,6 +14,19 @@ The self-hosted carrier has no parent loader: it preloads the framework into a s
 - The **.NET 10 runtime** on the machine.
 
 ## Install
+
+<Tabs syncKey="install">
+  <TabItem label="Seiko">
+
+```bash
+sk init
+sk add hosihikari-hosting-selfhosted
+```
+
+`sk init` creates `seiko.conf` with the official source; run it once in the server root, and skip it when the file already exists. `sk add` writes the declaration and syncs immediately: it installs `hosihikari-hosting-selfhosted`, `hosihikari-hosting`, and the core `hosihikari`.
+
+  </TabItem>
+  <TabItem label="Release archives">
 
 Download two archives from GitHub releases and extract both into the server root:
 
@@ -24,6 +39,8 @@ The carrier archive writes `hosihikari-server` and the native shim into `plugins
 chmod +x hosihikari-server
 ```
 
+  </TabItem>
+</Tabs>
 ## Run
 
 Start the server through the launcher, not through `bedrock_server` directly:

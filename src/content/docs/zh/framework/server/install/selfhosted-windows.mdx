@@ -3,6 +3,8 @@ title: 安装自持态载体（Windows）
 description: 安装自持态 Windows 载体。
 ---
 
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
 自持态 Windows 载体没有父级加载器。启动器挂起启动原版 `bedrock_server.exe`，注入原生垫片，调用它的导出入口，再恢复服务端运行；CLR 与插件管理器因此在服务端 `main` 之前起来。
 
 ## 环境要求
@@ -13,6 +15,19 @@ description: 安装自持态 Windows 载体。
 
 ## 安装
 
+<Tabs syncKey="install">
+  <TabItem label="Seiko">
+
+```bash
+sk init
+sk add hosihikari-hosting-selfhosted
+```
+
+`sk init` 会在服务端根目录生成带官方源的 `seiko.conf`，只在还没有这个文件时执行一次。`sk add` 会写入声明并立即同步：装好 `hosihikari-hosting-selfhosted`、`hosihikari-hosting` 与核心 `hosihikari`。
+
+  </TabItem>
+  <TabItem label="手动安装">
+
 从 GitHub Release 下载两个归档，并都解压到服务端根目录：
 
 - 来自 [HostingShim 的 Release](https://github.com/HosihikariFramework/HostingShim/releases) 的 `hosihikari-selfhosted-windows-x64.zip`。
@@ -20,6 +35,8 @@ description: 安装自持态 Windows 载体。
 
 载体归档写 `hosihikari-server.exe` 与 `plugins/hosihikari/` 下的原生垫片；核心归档把插件管理器加进同一个目录。垫片静态链接 nethost，不需要 `nethost.dll`。
 
+  </TabItem>
+</Tabs>
 ## 启动
 
 通过启动器启动，不要直接跑 `bedrock_server.exe`：

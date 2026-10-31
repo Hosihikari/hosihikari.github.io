@@ -3,6 +3,8 @@ title: Installing on Endstone
 description: Install the framework on an Endstone server.
 ---
 
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
 The Endstone carrier installs as an Endstone plugin. The framework is the plugin manager; Endstone is its parent.
 
 ## Requirements
@@ -13,12 +15,28 @@ The Endstone carrier installs as an Endstone plugin. The framework is the plugin
 
 ## Install
 
+<Tabs syncKey="install">
+  <TabItem label="Seiko">
+
+```bash
+sk init
+sk add hosihikari-hosting-endstone
+```
+
+`sk init` creates `seiko.conf` with the official source; run it once in the server root, and skip it when the file already exists. `sk add` writes the declaration and syncs immediately: it installs `hosihikari-hosting-endstone`, `hosihikari-hosting`, and the core `hosihikari`.
+
+  </TabItem>
+  <TabItem label="Release archives">
+
 Download two archives from GitHub releases and extract both into the server root:
 
 - `hosihikari-endstone-windows-x64.zip` or `hosihikari-endstone-linux-x64.zip` from the [HostingShim releases](https://github.com/HosihikariFramework/HostingShim/releases).
 - `hosihikari-core-<version>.zip` from the [Core releases](https://github.com/HosihikariFramework/PluginManager/releases).
 
 On Windows the carrier archive writes `plugins/hosihikari.dll` and `nethost.dll`; on Linux it writes `plugins/hosihikari.so` and `plugins/libnethost.so`. The core archive writes the plugin manager into `plugins/hosihikari/`. The HostingShim release notes name the compatible core line.
+
+  </TabItem>
+</Tabs>
 
 Start the server through the Endstone CLI, which is how Endstone injects its runtime into the vanilla server binary:
 

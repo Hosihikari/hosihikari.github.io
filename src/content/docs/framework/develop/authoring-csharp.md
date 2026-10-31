@@ -10,7 +10,7 @@ C# runs on the CLR, so `Hosihikari.PluginLoader.CSharp` compiles `.cs` at load w
 Pick the HostingShim variant for the server (see [Choosing a carrier](/framework/server/carriers/)); the examples below use
 LeviLamina:
 
-Extract the LeviLamina carrier archive, `hosihikari-core-<version>.zip`, and `hosihikari-csharp-<version>.zip` into the server root.
+Extract the LeviLamina carrier archive, `hosihikari-core-<version>.zip`, and `hosihikari-csharp-<version>.zip` into the server root. With Seiko, `sk add hosihikari-csharp` installs the loader and the core.
 
 The [C# template](/framework/develop/templates/) is a complete package you can copy and rename.
 

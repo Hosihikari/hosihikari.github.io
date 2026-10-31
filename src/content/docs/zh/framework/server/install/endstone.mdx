@@ -3,6 +3,8 @@ title: 在 Endstone 上安装
 description: 在 Endstone 服务端上安装框架。
 ---
 
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
 Endstone 载体以一个 Endstone 插件的形式装进去。框架是插件管理器，Endstone 是它的父级。
 
 ## 环境要求
@@ -13,12 +15,28 @@ Endstone 载体以一个 Endstone 插件的形式装进去。框架是插件管�
 
 ## 安装
 
+<Tabs syncKey="install">
+  <TabItem label="Seiko">
+
+```bash
+sk init
+sk add hosihikari-hosting-endstone
+```
+
+`sk init` 会在服务端根目录生成带官方源的 `seiko.conf`，只在还没有这个文件时执行一次。`sk add` 会写入声明并立即同步：装好 `hosihikari-hosting-endstone`、`hosihikari-hosting` 与核心 `hosihikari`。
+
+  </TabItem>
+  <TabItem label="手动安装">
+
 从 GitHub Release 下载两个归档，并都解压到服务端根目录：
 
 - 来自 [HostingShim 的 Release](https://github.com/HosihikariFramework/HostingShim/releases) 的 `hosihikari-endstone-windows-x64.zip` 或 `hosihikari-endstone-linux-x64.zip`。
 - 来自 [Core 的 Release](https://github.com/HosihikariFramework/PluginManager/releases) 的 `hosihikari-core-<版本>.zip`。
 
 Windows 上载体归档写 `plugins/hosihikari.dll` 与 `nethost.dll`；Linux 上写 `plugins/hosihikari.so` 与 `plugins/libnethost.so`。核心归档把插件管理器写进 `plugins/hosihikari/`。HostingShim 的发布说明会写明兼容的核心版本线。
+
+  </TabItem>
+</Tabs>
 
 通过 Endstone 的 CLI 启动服务端——Endstone 就是这样把运行时注入原版服务端二进制的：
 
