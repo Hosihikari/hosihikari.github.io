@@ -10,13 +10,20 @@ on 22 October 2026.
 | --- | --- | --- |
 | [PluginAbstractions](https://www.nuget.org/packages/Hosihikari.Plugin.Abstractions/1.1.0) | 1.1.0 | NuGet |
 | [PluginManager](https://github.com/HosihikariFramework/PluginManager/releases/tag/v1.2.0) | v1.2.0 | Release archive, NuGet, sei |
-| [HostingShim](https://github.com/HosihikariFramework/HostingShim/releases/tag/v1.2.0) | v1.2.0 | Release archive, five carrier targets |
+| [HostingShim](https://github.com/HosihikariFramework/HostingShim/releases/tag/v1.2.1) | v1.2.1 | Release archive, five carrier targets, sei |
 | [C# Loader](https://github.com/HosihikariFramework/CSharpLoader/releases/tag/v1.1.0) | v1.1.0 | Release archive, sei |
 | [F# Loader](https://github.com/HosihikariFramework/FSharpLoader/releases/tag/v1.1.0) | v1.1.0 | Release archive, sei |
 | [RPC Loader](https://github.com/HosihikariFramework/RpcLoader/releases/tag/v1.1.0) | v1.1.0 | Release archive, sei |
 | [Plugin.Build](https://www.nuget.org/packages/Hosihikari.Plugin.Build/1.0.0) | 1.0.0 | NuGet |
 | [Testing](https://www.nuget.org/packages/Hosihikari.Testing/1.0.0) | 1.0.0 | NuGet |
 | [Plugin templates](https://www.nuget.org/packages/Hosihikari.Plugin.Templates/1.0.1) | 1.0.1 | `dotnet new` |
+
+## 1.2.1
+
+- Every HostingShim release archive carries a root `sei.json`; `hosihikari-hosting` 1.2.1 is in the [Seiko](/seiko/) index with five artifacts selected by carrier and RID.
+- Three carrier bundles — `hosihikari-hosting-levilamina`, `hosihikari-hosting-endstone`, and `hosihikari-hosting-selfhosted` (1.0.0) — depend on hosting. Declaring one bundle installs hosting through its dependency and selects the matching carrier artifact.
+- The self-hosted Linux archive sets the launcher's executable bit through `sei.json` `modes`.
+- No hosting-contract or plugin-API change.
 
 ## 1.2.0
 
