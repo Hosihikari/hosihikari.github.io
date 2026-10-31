@@ -47,7 +47,7 @@ Resolve the declaration and deploy it. Alias: `sk install`.
 
 `--frozen` and `--locked` are mutually exclusive. `--frozen` does not rewrite the lock.
 
-`sync`, `add`, and `update` print warnings when they select a deprecated version or replay a locked yanked or critical version. They also warn when a yanked or critical version matches the requested range but is skipped. `--json` carries the same messages in `data.warnings`.
+`sync`, `add`, and `update` print warnings when they select a deprecated version or replay a locked yanked or critical version. They also warn when a critical version matches the requested range but is skipped; skipped yanked versions stay silent. `--json` carries the same messages in `data.warnings`.
 
 ### `sk add <name[@range]>`
 

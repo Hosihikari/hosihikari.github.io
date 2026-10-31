@@ -47,7 +47,7 @@ description: sk 的命令、选项与机器可读输出。
 
 `--frozen` 与 `--locked` 互斥。`--frozen` 不改写锁。
 
-`sync`、`add` 与 `update` 在选中弃用版本，或重放锁定的 yanked / critical 版本时会打印警告；范围内匹配到但被跳过的 yanked / critical 版本也会警告。`--json` 在 `data.warnings` 中给出同样的消息。
+`sync`、`add` 与 `update` 在选中弃用版本，或重放锁定的 yanked / critical 版本时会打印警告；范围内匹配到但被跳过的 critical 版本也会警告，被跳过的 yanked 版本保持静默。`--json` 在 `data.warnings` 中给出同样的消息。
 
 ### `sk add <name[@range]>`
 
