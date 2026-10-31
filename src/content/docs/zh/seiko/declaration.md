@@ -28,8 +28,7 @@ components = []
 | --- | --- |
 | `sources[].id` | 锁与解析器使用的源标识，必须唯一。 |
 | `sources[].index` | `index.json` 的 HTTPS URL，或索引文件的本地路径（相对路径从安装根解析）。 |
-| `sources[].tokenEnv` | 保存私有源 bearer token 的环境变量。 |
-| `sources[].tokenHosts` | 额外允许接收该 token 的 HTTPS 主机。 |
+| `sources[].tokenHosts` | 额外允许接收其主机 token 的 HTTPS 主机。 |
 | `rid` | 写入锁的目标平台；默认运行平台。 |
 | `sei[].name` | 直接 sei 名。 |
 | `sei[].version` | NuGet 版本范围；省略或 `*` 表示任意稳定版本。 |

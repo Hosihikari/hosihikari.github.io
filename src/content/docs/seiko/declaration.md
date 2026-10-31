@@ -28,8 +28,7 @@ components = []
 | --- | --- |
 | `sources[].id` | Name used by the lock and the resolver; must be unique. |
 | `sources[].index` | HTTPS URL of `index.json`, or a local path to the index file (relative paths resolve from the install root). |
-| `sources[].tokenEnv` | Environment variable holding a bearer token for a private source. |
-| `sources[].tokenHosts` | Extra HTTPS hosts allowed to receive that token. |
+| `sources[].tokenHosts` | Extra HTTPS hosts allowed to receive their host-keyed token. |
 | `rid` | Target platform written into the lock; defaults to the running platform. |
 | `sei[].name` | Direct sei name. |
 | `sei[].version` | NuGet version range; omitted or `*` means any stable version. |

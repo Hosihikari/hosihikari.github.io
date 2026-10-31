@@ -77,7 +77,7 @@ Restore the previous deployment generation, or the one named by `--to`. Generati
 | Command | Meaning |
 | --- | --- |
 | `sk source list` | Sources in declaration order. |
-| `sk source add <id> <index> [--token-env <env>] [--token-host <host>]...` | Append a source; `--token-host` is repeatable. |
+| `sk source add <id> <index> [--token-host <host>]...` | Append a source; `--token-host` is repeatable. Private-source tokens come from `SEIKO_TOKEN_<HOST>`. |
 | `sk source remove <id>` | Remove a source. |
 | `sk config get <key>` | Read `rid`. |
 | `sk config set <key> <value>` | Write a value; an empty value removes the key. |

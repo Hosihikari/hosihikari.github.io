@@ -30,20 +30,19 @@ Sources are tried in declaration order. The first source that contains a sei nam
 
 ## Private sources
 
-Put the token in an environment variable and name that variable in the source:
+Private sources use a host-keyed bearer token. The destination host selects the environment variable; `seiko.conf` cannot name one:
 
 ```hocon
 sources = [
   {
     id = "private",
     index = "https://packages.example.com/seiko/index.json",
-    tokenEnv = "SEIKO_PRIVATE_TOKEN",
     tokenHosts = ["cdn.example.com"]
   }
 ]
 ```
 
-The bearer token is sent only to the index's own origin (scheme, host, and port) and to hosts listed in `tokenHosts`. `tokenHosts` entries must be HTTPS. Artifacts on any other host never receive the token, so public or third-party download hosts stay unauthenticated.
+Set `SEIKO_TOKEN_<HOST>`: ASCII letters and digits are kept uppercase, and every other UTF-8 byte is written as `_XX`. For `packages.example.com` the variable is `SEIKO_TOKEN_PACKAGES_2EEXAMPLE_2ECOM`. Tokens are only sent over HTTPS to the index host or to hosts listed in `tokenHosts`. Artifacts on any other host never receive a token, so public or third-party download hosts stay unauthenticated.
 
 ## Index layout
 

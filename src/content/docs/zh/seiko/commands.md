@@ -77,7 +77,7 @@ description: sk 的命令、选项与机器可读输出。
 | 命令 | 说明 |
 | --- | --- |
 | `sk source list` | 按声明顺序列出源。 |
-| `sk source add <id> <index> [--token-env <env>] [--token-host <host>]...` | 追加源；`--token-host` 可重复。 |
+| `sk source add <id> <index> [--token-host <host>]...` | 追加源；`--token-host` 可重复。私有源 token 来自 `SEIKO_TOKEN_<HOST>`。 |
 | `sk source remove <id>` | 删除源。 |
 | `sk config get <key>` | 读取 `rid`。 |
 | `sk config set <key> <value>` | 写入配置；空值删除该键。 |
