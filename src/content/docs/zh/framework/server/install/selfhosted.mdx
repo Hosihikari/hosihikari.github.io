@@ -3,6 +3,8 @@ title: 安装自持态载体（Linux）
 description: 安装自持态 Linux 载体。
 ---
 
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
 自持态载体没有父级加载器：它把框架预加载进原版基岩版专用服务器。它是唯一不需要 LeviLamina 或 Endstone 就能跑的载体。
 
 ## 环境要求
@@ -12,6 +14,19 @@ description: 安装自持态 Linux 载体。
 - 机器上装有 **.NET 10 运行时**。
 
 ## 安装
+
+<Tabs syncKey="install">
+  <TabItem label="Seiko">
+
+```bash
+sk init
+sk add hosihikari-hosting-selfhosted
+```
+
+`sk add` 会写入声明并立即同步：装好 `hosihikari-hosting-selfhosted`、`hosihikari-hosting` 与核心 `hosihikari`。
+
+  </TabItem>
+  <TabItem label="手动安装">
 
 从 GitHub Release 下载两个归档，并都解压到服务端根目录：
 
@@ -24,6 +39,8 @@ description: 安装自持态 Linux 载体。
 chmod +x hosihikari-server
 ```
 
+  </TabItem>
+</Tabs>
 ## 启动
 
 通过启动器启动，不要直接跑 `bedrock_server`：

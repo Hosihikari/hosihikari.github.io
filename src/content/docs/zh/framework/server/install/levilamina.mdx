@@ -3,6 +3,8 @@ title: 在 LeviLamina 上安装
 description: 在 LeviLamina 服务端上安装框架。
 ---
 
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
 LeviLamina 载体以一个 mod 的形式装进去。框架是插件管理器，LeviLamina 是它的父级。
 
 ## 环境要求
@@ -13,6 +15,19 @@ LeviLamina 载体以一个 mod 的形式装进去。框架是插件管理器，L
 
 ## 安装
 
+<Tabs syncKey="install">
+  <TabItem label="Seiko">
+
+```bash
+sk init
+sk add hosihikari-hosting-levilamina
+```
+
+`sk add` 会写入声明并立即同步：装好 `hosihikari-hosting-levilamina`、`hosihikari-hosting` 与核心 `hosihikari`。
+
+  </TabItem>
+  <TabItem label="手动安装">
+
 从 GitHub Release 下载两个归档，并都解压到服务端根目录：
 
 - 来自 [HostingShim 的 Release](https://github.com/HosihikariFramework/HostingShim/releases) 的 `hosihikari-levilamina-windows-x64.zip`。
@@ -22,6 +37,8 @@ LeviLamina 载体以一个 mod 的形式装进去。框架是插件管理器，L
 
 然后照常启动服务端。
 
+  </TabItem>
+</Tabs>
 ## 验证
 
 服务端日志里应当能看到框架接管：

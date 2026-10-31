@@ -3,6 +3,8 @@ title: Installing the self-hosted carrier (Windows)
 description: Install the self-hosted Windows carrier.
 ---
 
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
 The self-hosted Windows carrier has no parent loader. A launcher starts a stock `bedrock_server.exe` suspended, injects the native shim, calls its exported entry, and resumes the server, so the CLR and the plugin manager come up before the server's `main`.
 
 ## Requirements
@@ -13,6 +15,19 @@ The self-hosted Windows carrier has no parent loader. A launcher starts a stock 
 
 ## Install
 
+<Tabs syncKey="install">
+  <TabItem label="Seiko">
+
+```bash
+sk init
+sk add hosihikari-hosting-selfhosted
+```
+
+`sk add` writes the declaration and syncs immediately: it installs `hosihikari-hosting-selfhosted`, `hosihikari-hosting`, and the core `hosihikari`.
+
+  </TabItem>
+  <TabItem label="Release archives">
+
 Download two archives from GitHub releases and extract both into the server root:
 
 - `hosihikari-selfhosted-windows-x64.zip` from the [HostingShim releases](https://github.com/HosihikariFramework/HostingShim/releases).
@@ -20,6 +35,8 @@ Download two archives from GitHub releases and extract both into the server root
 
 The carrier archive writes `hosihikari-server.exe` and the native shim into `plugins/hosihikari/`; the core archive adds the plugin manager to the same directory. The shim links nethost statically, so no `nethost.dll` is needed.
 
+  </TabItem>
+</Tabs>
 ## Run
 
 Start the server through the launcher, not through `bedrock_server.exe` directly:

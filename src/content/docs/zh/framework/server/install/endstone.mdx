@@ -3,6 +3,8 @@ title: 在 Endstone 上安装
 description: 在 Endstone 服务端上安装框架。
 ---
 
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
 Endstone 载体以一个 Endstone 插件的形式装进去。框架是插件管理器，Endstone 是它的父级。
 
 ## 环境要求
@@ -12,6 +14,19 @@ Endstone 载体以一个 Endstone 插件的形式装进去。框架是插件管�
 - .NET 10 运行时。框架把 CLR 托进服务端进程；没有运行时，启动序列会停下来并在日志里说明原因。
 
 ## 安装
+
+<Tabs syncKey="install">
+  <TabItem label="Seiko">
+
+```bash
+sk init
+sk add hosihikari-hosting-endstone
+```
+
+`sk add` 会写入声明并立即同步：装好 `hosihikari-hosting-endstone`、`hosihikari-hosting` 与核心 `hosihikari`。
+
+  </TabItem>
+  <TabItem label="手动安装">
 
 从 GitHub Release 下载两个归档，并都解压到服务端根目录：
 
@@ -26,6 +41,8 @@ Windows 上载体归档写 `plugins/hosihikari.dll` 与 `nethost.dll`；Linux �
 endstone -s <服务端根目录>
 ```
 
+  </TabItem>
+</Tabs>
 ## 验证
 
 日志里应当能看到 CLR 启动、载体作为 Endstone 插件登记、Endstone 启用它，以及插件管理器报告在 `plugins/` 下发现了什么。都没有就看[故障恢复](/zh/framework/server/recovery/)。

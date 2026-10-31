@@ -3,6 +3,8 @@ title: Installing on Endstone
 description: Install the framework on an Endstone server.
 ---
 
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
 The Endstone carrier installs as an Endstone plugin. The framework is the plugin manager; Endstone is its parent.
 
 ## Requirements
@@ -12,6 +14,19 @@ The Endstone carrier installs as an Endstone plugin. The framework is the plugin
 - The .NET 10 runtime. The framework hosts the CLR inside the server process; without the runtime the startup sequence stops and says so in the log.
 
 ## Install
+
+<Tabs syncKey="install">
+  <TabItem label="Seiko">
+
+```bash
+sk init
+sk add hosihikari-hosting-endstone
+```
+
+`sk add` writes the declaration and syncs immediately: it installs `hosihikari-hosting-endstone`, `hosihikari-hosting`, and the core `hosihikari`.
+
+  </TabItem>
+  <TabItem label="Release archives">
 
 Download two archives from GitHub releases and extract both into the server root:
 
@@ -26,6 +41,8 @@ Start the server through the Endstone CLI, which is how Endstone injects its run
 endstone -s <server root>
 ```
 
+  </TabItem>
+</Tabs>
 ## Verify
 
 The server log should show the CLR starting, the carrier registering as an Endstone plugin, Endstone enabling it, and the plugin manager reporting what it found under `plugins/`. If none of that appears, see [Recovery](/framework/server/recovery/).

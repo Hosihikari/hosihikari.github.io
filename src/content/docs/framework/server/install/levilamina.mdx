@@ -3,6 +3,8 @@ title: Installing on LeviLamina
 description: Install the framework on a LeviLamina server.
 ---
 
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
 The LeviLamina carrier installs as a mod. The framework is the plugin manager; LeviLamina is its parent.
 
 ## Requirements
@@ -13,6 +15,19 @@ The LeviLamina carrier installs as a mod. The framework is the plugin manager; L
 
 ## Install
 
+<Tabs syncKey="install">
+  <TabItem label="Seiko">
+
+```bash
+sk init
+sk add hosihikari-hosting-levilamina
+```
+
+`sk add` writes the declaration and syncs immediately: it installs `hosihikari-hosting-levilamina`, `hosihikari-hosting`, and the core `hosihikari`.
+
+  </TabItem>
+  <TabItem label="Release archives">
+
 Download two archives from GitHub releases and extract both into the server root:
 
 - `hosihikari-levilamina-windows-x64.zip` from the [HostingShim releases](https://github.com/HosihikariFramework/HostingShim/releases).
@@ -22,6 +37,8 @@ They write different files under `plugins/hosihikari/` and are meant to be merge
 
 Then start the server as usual.
 
+  </TabItem>
+</Tabs>
 ## Verify
 
 The server log should show the framework taking over:

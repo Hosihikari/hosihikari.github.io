@@ -11,7 +11,7 @@ The package layout, the manifest fields, the lifecycle, configuration, and the d
 
 Pick the HostingShim variant for the server (see [Choosing a carrier](/framework/server/carriers/)), then install the F# loader:
 
-Extract the LeviLamina carrier archive, `hosihikari-core-<version>.zip`, and `hosihikari-fsharp-<version>.zip` into the server root.
+Extract the LeviLamina carrier archive, `hosihikari-core-<version>.zip`, and `hosihikari-fsharp-<version>.zip` into the server root. With Seiko, `sk add hosihikari-fsharp` installs the loader and the core.
 
 The [F# template](https://github.com/HosihikariFramework/FSharpPluginTemplate) is a package you can copy into `plugins/`, rename, and restart. The `dotnet new` package also ships an F# precompiled template, `hosihikari-plugin-fsharp`.
 

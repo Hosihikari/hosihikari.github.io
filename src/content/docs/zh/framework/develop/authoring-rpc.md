@@ -13,7 +13,7 @@ RpcLoader 是官方进程外加载器：插件在子进程中运行，不把源�
 
 按服务端选 HostingShim 变体（见[选择载体](/zh/framework/server/carriers/)）；下面以 LeviLamina 为例：
 
-把 LeviLamina 载体归档、`hosihikari-core-<版本>.zip` 与 `hosihikari-rpc-<版本>.zip` 解压到服务端根目录。
+把 LeviLamina 载体归档、`hosihikari-core-<版本>.zip` 与 `hosihikari-rpc-<版本>.zip` 解压到服务端根目录。用 Seiko 时，`sk add hosihikari-rpc` 会连同核心一起装好。
 
 [RPC 模板](/zh/framework/develop/templates/)覆盖 Node.js/TypeScript、Python 与 Kotlin/JVM。
 
