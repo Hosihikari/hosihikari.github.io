@@ -25,7 +25,7 @@ description: sk 的命令、选项与机器可读输出。
 | `--jobs <n>` | `sync`、`add`、`remove`、`update` | 最大并发 HTTP 请求数，默认 4。 |
 | `--pre` | 解析类命令 | 允许预发布版本。 |
 | `--latest-installable` | `sync`、`add`、`update` | 跳过没有匹配当前依赖图构件的版本；默认仍选最高版本。 |
-| `--allow-critical` | `sync`、`add`、`update` | 允许解析带 critical 公告的版本；否则这些版本会被跳过并给出警告。 |
+| `--allow-critical` | `sync`、`add`、`remove`、`update` | 允许解析带 critical 公告的版本；否则这些版本会被跳过并给出警告。 |
 
 ## 生命周期
 

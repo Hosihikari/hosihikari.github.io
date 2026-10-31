@@ -25,7 +25,7 @@ Progress bars appear only when stdout is an interactive terminal, and never with
 | `--jobs <n>` | `sync`, `add`, `remove`, `update` | Maximum concurrent HTTP requests; default 4. |
 | `--pre` | resolution commands | Allow prerelease versions. |
 | `--latest-installable` | `sync`, `add`, `update` | Skip versions with no artifact for the resolved graph; the default is the highest version. |
-| `--allow-critical` | `sync`, `add`, `update` | Allow resolving versions with a critical advisory; otherwise they are skipped with a warning. |
+| `--allow-critical` | `sync`, `add`, `remove`, `update` | Allow resolving versions with a critical advisory; otherwise they are skipped with a warning. |
 
 ## Lifecycle
 
