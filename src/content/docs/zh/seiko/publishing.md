@@ -17,6 +17,8 @@ hello-csharp.zip
 
 zip 根只能有一个 `sei.json`。其余都是载荷；路径相对安装根部署，所以载荷路径 `plugins/hello-csharp/manifest.json` 会变成 `<root>/plugins/hello-csharp/manifest.json`。Seiko 不读 `manifest.json`；它属于加载插件的运行时。星光框架的插件包契约见[插件包与清单](/zh/framework/develop/plugin-package/)。
 
+构件有硬上限：最多 100,000 个条目、单文件 1 GiB、总计 4 GiB。
+
 `sei.json` 描述这个包：
 
 ```json
@@ -40,7 +42,7 @@ zip 根只能有一个 `sei.json`。其余都是载荷；路径相对安装根�
 | `dependencies` | 名字与可选的版本范围，按与声明相同的规则解析。 |
 | `selectors` | 可选的构件选择器，见下。 |
 | `layout` | `root`（或省略）。目前只支持根布局。 |
-| `modes` | 可选的载荷路径到 Unix 模式的映射；Windows 忽略。 |
+| `modes` | 可选的载荷路径到 Unix 模式的映射。只接受 `0000–0777`；setuid/setgid/sticky 会被拒绝。Windows 忽略模式。 |
 
 ## 选择器
 

@@ -64,4 +64,4 @@ sk rollback --to 1                 # 恢复到指定代
 
 `sk add`、`sk remove`、`sk update` 与 `sk sync` 都是一次部署：各自写一个新代，`sk rollback` 可以回到更早的部署。
 
-预发布版本默认跳过；传 `--pre`，或声明的范围本身点名了预发布版本，才会被选中。每个命令的选项见[命令参考](/zh/seiko/commands/)。
+预发布版本默认跳过；传 `--pre`，或声明的范围本身点名了预发布版本，才会被选中。`sk sync`、`sk add`、`sk update` 可传 `--latest-installable`，跳过没有匹配当前依赖图构件的版本；默认仍选最高版本。每个命令的选项见[命令参考](/zh/seiko/commands/)。

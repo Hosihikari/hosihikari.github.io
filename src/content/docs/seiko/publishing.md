@@ -17,6 +17,8 @@ hello-csharp.zip
 
 The zip root must contain exactly one `sei.json`. Everything else is payload; paths are deployed relative to the install root, so a payload path `plugins/hello-csharp/manifest.json` becomes `<root>/plugins/hello-csharp/manifest.json`. Seiko does not read `manifest.json`; it belongs to whatever loads the plugin. For the Hosihikari Framework's plugin package contract, see [Plugin packages](/framework/develop/plugin-package/).
 
+Artifacts are bounded: at most 100,000 entries, 1 GiB per entry, and 4 GiB in total.
+
 `sei.json` describes the package:
 
 ```json
@@ -40,7 +42,7 @@ The zip root must contain exactly one `sei.json`. Everything else is payload; pa
 | `dependencies` | Names with optional version ranges; resolved by the same rules as declarations. |
 | `selectors` | Optional artifact selection; see below. |
 | `layout` | `root` (or omitted). Only root layout is supported. |
-| `modes` | Optional map of payload path to Unix mode; Windows ignores it. |
+| `modes` | Optional map of payload path to Unix mode. Only `0000–0777` is accepted; setuid/setgid/sticky are rejected. Windows ignores modes. |
 
 ## Selectors
 

@@ -46,14 +46,14 @@ The resolver produced a different lock than the committed one. Run `sk sync` to 
 
 ### Corrupted store
 
-`sk cache verify` re-hashes stored payload files; `sk doctor` reports store findings. If one artifact is damaged, remove that artifact's directory (named by its SHA-256) from the store and run `sk sync --frozen`; Seiko downloads it again. `sk cache clean` only removes artifacts no root references, so it will not repair a damaged artifact that the lock still needs.
+`sk cache verify` re-hashes stored payload files; `sk doctor` reports store findings. A missing or unreadable digest record, a missing or extra payload file, or a digest mismatch makes the next `sk sync` replace that artifact and download it again. Rollback does the same for the target generation. `sk cache clean` only removes artifacts no root references; it is not a repair command.
 
 ### Deployed files changed
 
 Do not edit deployed payload files in place.
 
 - **Reflink:** writes are copy-on-write, so the edit stays in the deployed file and the store is unchanged. Run `sk sync` or `sk sync --frozen` to restore the file from the store.
-- **Hardlink:** the deployed file and the store share an inode, so an in-place edit also changes the store. The next `sk sync` or `sk cache verify` rejects the artifact as corrupt; remove that artifact's directory from the store and replay the lock to download it again.
+- **Hardlink:** the deployed file and the store share an inode, so an in-place edit also changes the store. The next `sk sync` detects the mismatch, downloads the artifact again, and restores both the store and the deployment.
 
 Change the source package and publish a new version when the content actually needs to change.
 
@@ -67,7 +67,7 @@ Partial files live under `<store>/.partial` and resume automatically. `sk doctor
 
 ### Rollback failed
 
-`sk rollback` needs the artifacts of the target generation to still exist in the store. If `cache clean` ran from another root, a retained generation may have lost its payload; run `sk sync --frozen` at the current lock or publish the missing artifact again. Check what generations exist under `.seiko/generations/`.
+`sk rollback` downloads missing or corrupt artifacts for the target generation from the configured sources, so it needs those sources to be reachable (use `--proxy` if needed). If a source no longer carries the artifact or the index, rollback fails; restore the source or republish the version. Check what generations exist under `.seiko/generations/`.
 
 ## Reporting a bug
 
