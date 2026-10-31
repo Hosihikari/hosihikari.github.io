@@ -24,6 +24,7 @@ Progress bars appear only when stdout is an interactive terminal, and never with
 | `--proxy <url>` | network commands | HTTP proxy. Defaults to the system proxy. |
 | `--jobs <n>` | `sync`, `add`, `remove`, `update` | Maximum concurrent HTTP requests; default 4. |
 | `--pre` | resolution commands | Allow prerelease versions. |
+| `--latest-installable` | `sync`, `add`, `update` | Skip versions with no artifact for the resolved graph; the default is the highest version. |
 
 ## Lifecycle
 
@@ -40,12 +41,13 @@ Resolve the declaration and deploy it. Alias: `sk install`.
 | `--frozen` | Replay `seiko.lock.json` without resolving; the declared direct set must match the lock. |
 | `--locked` | Resolve, but fail if the result differs from the existing lock. |
 | `--pre` | Allow prerelease versions. |
+| `--latest-installable` | Skip versions without a matching artifact; incompatible with `--frozen`. |
 
 `--frozen` and `--locked` are mutually exclusive. `--frozen` does not rewrite the lock.
 
 ### `sk add <name[@range]>`
 
-Add a direct declaration to `sei` and sync. A bare `1.2.0` means 1.2.0 or newer; use `[1.2.0]` to pin exactly.
+Add a direct declaration to `sei` and sync. A bare `1.2.0` means 1.2.0 or newer; use `[1.2.0]` to pin exactly. `--latest-installable` applies to the sync.
 
 ### `sk remove <name>`
 
@@ -53,11 +55,11 @@ Remove a direct declaration from `sei` or `components` and sync the rest.
 
 ### `sk update [name] [--latest]`
 
-Re-resolve direct declarations, preferring newer versions within their ranges. With `name`, only that declaration; without, all of them. `--latest` rewrites the selected direct ranges to the latest version (`[x.y.z]`).
+Re-resolve direct declarations, preferring newer versions within their ranges. With `name`, only that declaration; without, all of them. `--latest` rewrites the selected direct ranges to the latest version (`[x.y.z]`); `--latest-installable` skips versions with no matching artifact.
 
-### `sk rollback [--to <generation>]`
+### `sk rollback [--to <generation>] [--proxy <url>]`
 
-Restore the previous deployment generation, or the one named by `--to`. Generations are recorded under `.seiko/generations/`.
+Restore the previous deployment generation, or the one named by `--to`. Generations are recorded under `.seiko/generations/`. If the target generation's artifacts are missing or corrupt, rollback downloads them again from the configured sources.
 
 ## Inspect
 
@@ -65,7 +67,7 @@ Restore the previous deployment generation, or the one named by `--to`. Generati
 | --- | --- |
 | `sk list` | Installed sei from the lock. |
 | `sk why <name>` | Dependency chains that bring a sei into the graph. |
-| `sk outdated [--pre]` | Newer versions in range and overall. |
+| `sk outdated [--pre]` | Newer versions in range, overall, and latest installable. |
 | `sk search <term>` | Search sei names in the configured indexes. |
 | `sk info <name>` | Versions, dependencies, and artifact counts for one sei. |
 | `sk doctor [--clean]` | Check the lock, store, deployment, and partial downloads; `--clean` deletes all partial downloads. |
@@ -75,7 +77,7 @@ Restore the previous deployment generation, or the one named by `--to`. Generati
 | Command | Meaning |
 | --- | --- |
 | `sk source list` | Sources in declaration order. |
-| `sk source add <id> <index> [--token-env <env>] [--token-host <host>]...` | Append a source; `--token-host` is repeatable. |
+| `sk source add <id> <index> [--token-host <host>]...` | Append a source; `--token-host` is repeatable. Private-source tokens come from `SEIKO_TOKEN_<HOST>`. |
 | `sk source remove <id>` | Remove a source. |
 | `sk config get <key>` | Read `rid`. |
 | `sk config set <key> <value>` | Write a value; an empty value removes the key. |
@@ -90,7 +92,7 @@ Restore the previous deployment generation, or the one named by `--to`. Generati
 | `sk cache verify` | Verify stored payload files against their digests. |
 | `sk cache clean` | Remove artifacts not referenced by any registered install root's lock or its retained rollback generations. |
 
-`cache clean` needs a root only to resolve the store; it protects every registered root, not just the one passed.
+`cache clean` needs a root only to resolve the store; it protects every registered root, not just the one passed. Sync and rollback re-download artifacts whose digest metadata or payload is missing or corrupt; `cache verify` only reports.
 
 ## Index authoring
 

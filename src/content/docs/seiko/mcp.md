@@ -15,6 +15,8 @@ seiko-mcp --root /path/to/root
 | --- | --- |
 | `--root <path>` | Default install root. Defaults to the current directory, not the nearest `seiko.conf`. |
 | `--allow-mutations` | Register mutating tools. Without it the server is read-only. |
+| `--allowed-root <path>` | Repeatable. Mutation roots must be inside one of these directories. |
+| `--allowed-store <path>` | Repeatable. With an allowlist active, mutation stores must be the default store or inside one of these directories. |
 | `-h`, `--help` | Show usage. |
 | `-V`, `--version` | Print the build version. |
 
@@ -50,7 +52,7 @@ Mutation tools are registered only with `--allow-mutations`:
 | `config_set` | Write a configuration value. |
 | `cache_clean` | Remove unreferenced artifacts. |
 
-Every mutation requires an explicit `root` argument; the server refuses to infer it. Read-only tools accept an optional `root`. The server takes the same install-root lock as `sk`, so a mutation cannot race a CLI sync.
+Every mutation requires an explicit `root` argument; the server refuses to infer it. Read-only tools accept an optional `root` and are not restricted by the allowlists. With `--allowed-root`, a mutation root must be the allowed directory or lie beneath it, after resolving symlinks. The server takes the same install-root lock as `sk`, so a mutation cannot race a CLI sync.
 
 ## Client configuration
 

@@ -64,4 +64,4 @@ sk rollback --to 1                 # restore a specific generation
 
 `sk add`, `sk remove`, `sk update`, and `sk sync` are all deployments: each one writes a new generation, and `sk rollback` can return to an earlier one.
 
-Prerelease versions are skipped unless `--pre` is passed or the declared range itself names a prerelease. See [Commands](/seiko/commands/) for the options of every command.
+Prerelease versions are skipped unless `--pre` is passed or the declared range itself names a prerelease. Add `--latest-installable` to `sk sync`, `sk add`, or `sk update` to skip versions that have no artifact for the resolved graph; the default remains the highest version. See [Commands](/seiko/commands/) for the options of every command.

@@ -15,6 +15,8 @@ seiko-mcp --root /path/to/root
 | --- | --- |
 | `--root <path>` | 默认安装根。缺省为当前目录，而不是最近的 `seiko.conf`。 |
 | `--allow-mutations` | 注册变更工具。不传时 server 只读。 |
+| `--allowed-root <path>` | 可重复。变更工具的 root 必须位于这些目录之下。 |
+| `--allowed-store <path>` | 可重复。启用白名单时，变更的 store 必须是默认 store 或位于这些目录之下。 |
 | `-h`、`--help` | 显示用法。 |
 | `-V`、`--version` | 打印构建版本。 |
 
@@ -50,7 +52,7 @@ server 通过 stdio 使用行分隔 JSON-RPC，协议版本为 `2025-06-18`。`i
 | `config_set` | 写入配置。 |
 | `cache_clean` | 删除未被引用的构件。 |
 
-每个变更工具都必须显式传 `root`；server 不会自行推断。只读工具的 `root` 可选。server 与 `sk` 共用安装根锁，因此变更不会与 CLI 同步并发冲突。
+每个变更工具都必须显式传 `root`；server 不会自行推断。只读工具的 `root` 可选，且不受白名单限制。启用 `--allowed-root` 后，变更 root 在解析符号链接后必须等于允许目录或位于其下。server 与 `sk` 共用安装根锁，因此变更不会与 CLI 同步并发冲突。
 
 ## 客户端配置
 

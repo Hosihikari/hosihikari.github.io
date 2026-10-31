@@ -30,20 +30,19 @@ sk source add local ../my-index/index.json
 
 ## 私有源
 
-把 token 放进环境变量，并在源里写变量名：
+私有源用按主机名派生的 bearer token。目标主机决定环境变量，`seiko.conf` 不能指定变量名：
 
 ```hocon
 sources = [
   {
     id = "private",
     index = "https://packages.example.com/seiko/index.json",
-    tokenEnv = "SEIKO_PRIVATE_TOKEN",
     tokenHosts = ["cdn.example.com"]
   }
 ]
 ```
 
-bearer token 只发给索引自己的同源地址（scheme、host、port）以及 `tokenHosts` 中列出的主机。`tokenHosts` 只接受 HTTPS。位于其他主机的构件不会收到 token，因此公共或第三方下载主机保持无认证。
+设置 `SEIKO_TOKEN_<HOST>`：ASCII 字母与数字转大写，其余字符的每个 UTF-8 字节写成 `_XX`。`packages.example.com` 对应 `SEIKO_TOKEN_PACKAGES_2EEXAMPLE_2ECOM`。token 只通过 HTTPS 发给索引主机或 `tokenHosts` 中列出的主机。位于其他主机的构件不会收到 token，因此公共或第三方下载主机保持无认证。
 
 ## 索引布局
 

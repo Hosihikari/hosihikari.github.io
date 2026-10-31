@@ -24,6 +24,7 @@ description: sk 的命令、选项与机器可读输出。
 | `--proxy <url>` | 联网命令 | HTTP 代理，默认使用系统代理。 |
 | `--jobs <n>` | `sync`、`add`、`remove`、`update` | 最大并发 HTTP 请求数，默认 4。 |
 | `--pre` | 解析类命令 | 允许预发布版本。 |
+| `--latest-installable` | `sync`、`add`、`update` | 跳过没有匹配当前依赖图构件的版本；默认仍选最高版本。 |
 
 ## 生命周期
 
@@ -40,12 +41,13 @@ description: sk 的命令、选项与机器可读输出。
 | `--frozen` | 按 `seiko.lock.json` 重放，不重新解析；声明的直接集合必须与锁一致。 |
 | `--locked` | 正常解析，但结果与现有锁不同就失败。 |
 | `--pre` | 允许预发布版本。 |
+| `--latest-installable` | 跳过没有匹配构件的版本；不能与 `--frozen` 同用。 |
 
 `--frozen` 与 `--locked` 互斥。`--frozen` 不改写锁。
 
 ### `sk add <name[@range]>`
 
-把直接声明加入 `sei` 并同步。裸写 `1.2.0` 表示 1.2.0 或更高；精确锁定用 `[1.2.0]`。
+把直接声明加入 `sei` 并同步。裸写 `1.2.0` 表示 1.2.0 或更高；精确锁定用 `[1.2.0]`。`--latest-installable` 作用于这次同步。
 
 ### `sk remove <name>`
 
@@ -53,11 +55,11 @@ description: sk 的命令、选项与机器可读输出。
 
 ### `sk update [name] [--latest]`
 
-重新解析直接声明，在范围内优先选新版本。传 `name` 只更新该声明；不传则更新全部。`--latest` 把选中的直接范围改写成最新版本（`[x.y.z]`）。
+重新解析直接声明，在范围内优先选新版本。传 `name` 只更新该声明；不传则更新全部。`--latest` 把选中的直接范围改写成最新版本（`[x.y.z]`）；`--latest-installable` 跳过没有匹配构件的版本。
 
-### `sk rollback [--to <generation>]`
+### `sk rollback [--to <generation>] [--proxy <url>]`
 
-恢复上一代部署，或 `--to` 指定的代。部署代记录在 `.seiko/generations/` 下。
+恢复上一代部署，或 `--to` 指定的代。部署代记录在 `.seiko/generations/` 下。目标代的构件缺失或损坏时，回滚会从配置的源重新下载。
 
 ## 查看
 
@@ -65,7 +67,7 @@ description: sk 的命令、选项与机器可读输出。
 | --- | --- |
 | `sk list` | 从锁列出已安装的 sei。 |
 | `sk why <name>` | 把某个 sei 带入依赖图的依赖链。 |
-| `sk outdated [--pre]` | 范围内与整体的新版本。 |
+| `sk outdated [--pre]` | 范围内、整体与最新可安装版本。 |
 | `sk search <term>` | 在配置的索引里搜索 sei 名。 |
 | `sk info <name>` | 单个 sei 的版本、依赖与构件数。 |
 | `sk doctor [--clean]` | 检查锁、存储、部署与残留下载；`--clean` 删除所有未完成下载。 |
@@ -75,7 +77,7 @@ description: sk 的命令、选项与机器可读输出。
 | 命令 | 说明 |
 | --- | --- |
 | `sk source list` | 按声明顺序列出源。 |
-| `sk source add <id> <index> [--token-env <env>] [--token-host <host>]...` | 追加源；`--token-host` 可重复。 |
+| `sk source add <id> <index> [--token-host <host>]...` | 追加源；`--token-host` 可重复。私有源 token 来自 `SEIKO_TOKEN_<HOST>`。 |
 | `sk source remove <id>` | 删除源。 |
 | `sk config get <key>` | 读取 `rid`。 |
 | `sk config set <key> <value>` | 写入配置；空值删除该键。 |
@@ -90,7 +92,7 @@ description: sk 的命令、选项与机器可读输出。
 | `sk cache verify` | 按摘要校验存储中的载荷文件。 |
 | `sk cache clean` | 删除未被任何已注册安装根的锁及其保留回滚代引用的构件。 |
 
-`cache clean` 传 root 只是为了定位存储；它保护所有已注册的根，而不只是传入的那个。
+`cache clean` 传 root 只是为了定位存储；它保护所有已注册的根，而不只是传入的那个。摘要元数据或载荷缺失、损坏的构件会被同步与回滚重新下载；`cache verify` 只报告。
 
 ## 索引编写
 
