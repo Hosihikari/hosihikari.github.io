@@ -35,14 +35,14 @@ Unix：
 
 ```bash
 curl -fsSL https://github.com/Hosihikari/Seiko/releases/latest/download/install.sh \
-  | sh -s -- --version v0.2.1 --dir "$HOME/bin"
+  | sh -s -- --version vX.Y.Z --dir "$HOME/bin"
 ```
 
 PowerShell：
 
 ```powershell
 irm https://github.com/Hosihikari/Seiko/releases/latest/download/install.ps1 -OutFile install.ps1
-./install.ps1 -Version v0.2.1 -Dir "$env:USERPROFILE\bin"
+./install.ps1 -Version vX.Y.Z -Dir "$env:USERPROFILE\bin"
 ```
 
 `--dry-run`（PowerShell 为 `-DryRun`）只解析版本与摘要并打印计划，不写任何文件。`--base-url` 是给镜像用的高级选项。
@@ -57,7 +57,7 @@ seiko-mcp --version
 手动下载的归档与安装器做同样的检查：
 
 ```bash
-gh attestation verify sk-0.2.1-linux-x64.tar.gz --repo Hosihikari/Seiko
+gh attestation verify 'sk-<version>-linux-x64.tar.gz' --repo Hosihikari/Seiko
 sha256sum -c SHA256SUMS --ignore-missing
 ```
 

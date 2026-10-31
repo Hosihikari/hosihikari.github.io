@@ -35,14 +35,14 @@ Unix:
 
 ```bash
 curl -fsSL https://github.com/Hosihikari/Seiko/releases/latest/download/install.sh \
-  | sh -s -- --version v0.2.1 --dir "$HOME/bin"
+  | sh -s -- --version vX.Y.Z --dir "$HOME/bin"
 ```
 
 PowerShell:
 
 ```powershell
 irm https://github.com/Hosihikari/Seiko/releases/latest/download/install.ps1 -OutFile install.ps1
-./install.ps1 -Version v0.2.1 -Dir "$env:USERPROFILE\bin"
+./install.ps1 -Version vX.Y.Z -Dir "$env:USERPROFILE\bin"
 ```
 
 `--dry-run` (PowerShell: `-DryRun`) resolves the release and checksum and prints the plan without writing anything. `--base-url` is an advanced option for mirrors.
@@ -57,7 +57,7 @@ seiko-mcp --version
 Manual downloads are checked the same way as the installer:
 
 ```bash
-gh attestation verify sk-0.2.1-linux-x64.tar.gz --repo Hosihikari/Seiko
+gh attestation verify 'sk-<version>-linux-x64.tar.gz' --repo Hosihikari/Seiko
 sha256sum -c SHA256SUMS --ignore-missing
 ```
 
