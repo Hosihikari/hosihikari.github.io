@@ -39,8 +39,10 @@ C# 与 F# 加载器在装载时编译源码；包里放源码，没有构建产�
 | [FSharpPluginTemplate](https://github.com/HosihikariFramework/FSharpPluginTemplate) | `hosihikari-fsharp` | [`hosihikari-fsharp-<版本>.zip`](https://github.com/HosihikariFramework/FSharpLoader/releases) |
 
 `CSharpPluginTemplate` 演示 `#:package` 与 `#:include`；先跑它的 `pack.ps1` 或 `pack.sh`，
-再把 `dist/MyCSharpPlugin/` 复制到 `plugins/`。`FSharpPluginTemplate` 演示 `#load`，直接复制仓库
-到 `plugins/MyFSharpPlugin/`。改名后重启。契约见 [C# 插件](/zh/framework/develop/authoring-csharp/)。
+再把 `dist/MyCSharpPlugin/` 复制到 `plugins/`。脚本调用框架打包器，因此需要并列的
+`PluginManager` 检出，或用 `HOSIHIKARI_PLUGINMANAGER` 指向一个。`FSharpPluginTemplate` 演示
+`#load`，直接复制仓库到 `plugins/MyFSharpPlugin/`。改名后重启。契约见
+[C# 插件](/zh/framework/develop/authoring-csharp/)。
 
 ## 进程外运行时
 
