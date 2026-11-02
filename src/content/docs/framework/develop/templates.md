@@ -40,8 +40,10 @@ The C# and F# loaders compile the source at load; the package carries source and
 | [FSharpPluginTemplate](https://github.com/HosihikariFramework/FSharpPluginTemplate) | `hosihikari-fsharp` | [`hosihikari-fsharp-<version>.zip`](https://github.com/HosihikariFramework/FSharpLoader/releases) |
 
 `CSharpPluginTemplate` demonstrates `#:package` and `#:include`; run its `pack.ps1` or `pack.sh`,
-then copy `dist/MyCSharpPlugin/` into `plugins/`. `FSharpPluginTemplate` demonstrates `#load`; copy
-the repository into `plugins/MyFSharpPlugin/` directly. Rename the plugin and restart. See
+then copy `dist/MyCSharpPlugin/` into `plugins/`. The scripts call the framework packer, so they
+need a sibling `PluginManager` checkout or `HOSIHIKARI_PLUGINMANAGER` pointing at one.
+`FSharpPluginTemplate` demonstrates `#load`; copy the repository into `plugins/MyFSharpPlugin/`
+directly. Rename the plugin and restart. See
 [C# plugins](/framework/develop/authoring-csharp/) for the contract.
 
 ## Out-of-process runtimes
