@@ -13,6 +13,8 @@ Start with the carrier's log, then remove plugins until the server comes up.
 | Endstone | `logs/latest.log`, plus rotated `logs/YYYY-MM-DD-N.log.gz` | `.sentry-native/` |
 | Self-hosted | The launcher's output, and the server's own log | — |
 
+The framework's first log line reports the core version, the hosting-contract version, and the plugin API version. Include those three values when versions are in question.
+
 Under LeviLamina the log is shared: server lines and framework lines land in the same file. Under Endstone the rotation limit is 1000 files; under LeviLamina it is configured in `plugins/LeviLamina/config/Config.json`.
 
 ## The framework did not start

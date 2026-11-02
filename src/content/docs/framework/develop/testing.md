@@ -3,9 +3,10 @@ title: Testing plugins
 description: Drive plugin lifecycle and host services without starting a Bedrock Dedicated Server.
 ---
 
-`Hosihikari.Testing` is the author-facing test package. It targets the 1.1.0 line: it references
-`Hosihikari.Plugin.Abstractions` 1.1.0 and `Hosihikari.PluginManager` 1.1.0. The test package is
-versioned 1.0.0.
+`Hosihikari.Testing` is the author-facing test package. It references
+`Hosihikari.Plugin.Abstractions` 1.1.0 and pins `Hosihikari.PluginManager` 1.1.0, the line the
+harness was validated against; PluginManager 1.2.0 changed distribution and version metadata only.
+The test package is versioned 1.0.0.
 
 ```bash
 dotnet add package Hosihikari.Testing --version 1.0.0

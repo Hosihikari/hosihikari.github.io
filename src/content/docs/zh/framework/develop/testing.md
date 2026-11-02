@@ -3,9 +3,9 @@ title: 测试插件
 description: 不启动基岩版专用服务器，直接驱动插件生命周期与宿主服务。
 ---
 
-`Hosihikari.Testing` 是面向插件作者的测试包，面向 1.1.0 功能线：引用
-`Hosihikari.Plugin.Abstractions` 1.1.0 与 `Hosihikari.PluginManager` 1.1.0。测试包自身的版本为
-1.0.0。
+`Hosihikari.Testing` 是面向插件作者的测试包：引用 `Hosihikari.Plugin.Abstractions` 1.1.0，并把
+`Hosihikari.PluginManager` 钉在验证过的 1.1.0 线；PluginManager 1.2.0 只改了分发与版本元数据。
+测试包自身的版本为 1.0.0。
 
 ```bash
 dotnet add package Hosihikari.Testing --version 1.0.0
