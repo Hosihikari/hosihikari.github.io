@@ -13,6 +13,8 @@ description: 读日志、排除插件、上报故障。
 | Endstone | `logs/latest.log`，另有轮转的 `logs/YYYY-MM-DD-N.log.gz` | `.sentry-native/` |
 | 自持态 | 启动器的输出，以及服务端自己的日志 | — |
 
+框架启动时的第一行日志给出核心版本、入口契约版本与插件 API 版本；版本可疑时，报告里带上这三个值。
+
 LeviLamina 下日志是共用的：服务端行与框架行落在同一个文件。Endstone 的轮转上限是 1000 个文件； LeviLamina 的在 `plugins/LeviLamina/config/Config.json` 里配。
 
 ## 框架没起来
