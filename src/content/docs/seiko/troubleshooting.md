@@ -3,7 +3,7 @@ title: Troubleshooting
 description: Read Seiko errors, inspect a root, and recover a damaged store or deployment.
 ---
 
-Start with `sk doctor`. It checks the declaration, lock, store, deployment state, and partial downloads, and prints a finding code for anything that needs attention. `--clean` removes leftover partial downloads.
+Start with `sk doctor` (or `sk check` for a read-only run). It checks the declaration, lock, store, deployment state, and partial downloads, and prints a finding code for anything that needs attention. `--clean` removes leftover partial downloads.
 
 ## Error codes
 
@@ -38,7 +38,7 @@ Confirm the name exists in one of the configured indexes with `sk search <term>`
 
 ### `--frozen` fails
 
-`--frozen` requires `seiko.lock.json`, requires the declared direct set to equal the lock's direct entries, and replays each sei from the source id recorded in the lock. If a direct sei was added, removed, or the source was renamed, run a normal `sk sync` to write a new lock. Commit the lock with the declaration.
+`--frozen` requires `seiko.lock.json`, requires the declared direct set to equal the lock's direct entries, requires the configured `rid` to equal the lock's target, and replays each sei from the source id recorded in the lock. If a direct sei was added or removed, the source was renamed, or the platform changed, run a normal `sk sync` to write a new lock. Commit the lock with the declaration.
 
 ### `--locked` says the lock is out of date
 
@@ -50,10 +50,10 @@ The resolver produced a different lock than the committed one. Run `sk sync` to 
 
 ### Deployed files changed
 
-Do not edit deployed payload files in place.
+Seiko blocks overwriting files you edited: a normal `sk sync` stops with a `deploy` error. Use `--adopt` to keep the edit and record it as adopted, or `--force` to overwrite it with the artifact content. The same flags handle an unmanaged file sitting where the artifact wants to write.
 
-- **Reflink:** writes are copy-on-write, so the edit stays in the deployed file and the store is unchanged. Run `sk sync` or `sk sync --frozen` to restore the file from the store.
-- **Hardlink:** the deployed file and the store share an inode, so an in-place edit also changes the store. The next `sk sync` detects the mismatch, downloads the artifact again, and restores both the store and the deployment.
+- **Reflink:** writes are copy-on-write, so the edit stays in the deployed file and the store is unchanged. `sk sync --force` (or `sk sync --frozen --force`) restores the file from the store.
+- **Hardlink:** the deployed file and the store share an inode, so an in-place edit also changes the store. The next `sk sync` detects the mismatch; `--force` downloads the artifact again and restores both the store and the deployment.
 
 Change the source package and publish a new version when the content actually needs to change.
 

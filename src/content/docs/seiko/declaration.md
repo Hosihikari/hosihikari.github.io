@@ -8,6 +8,8 @@ An install root has two Seiko files: `seiko.conf`, the declaration you edit, and
 ## seiko.conf
 
 ```hocon
+schemaVersion = 2
+
 # The official index; remove it or add sources to use other seis.
 sources = [
   { id = "official", index = "https://raw.githubusercontent.com/Hosihikari/SeiIndex/main/index.json" }
@@ -18,23 +20,21 @@ rid = "linux-x64"
 
 sei = [
   { name = "hosihikari" },
-  { name = "hello-csharp", version = "[1.0.0,2.0.0)" }
+  { name = "hello-seiko", version = "[1.0.0,2.0.0)" }
 ]
-
-components = []
 ```
 
 | Field | Meaning |
 | --- | --- |
+| `schemaVersion` | Required; currently `2`. |
 | `sources[].id` | Name used by the lock and the resolver; must be unique. |
 | `sources[].index` | HTTPS URL of `index.json`, or a local path to the index file (relative paths resolve from the install root). |
 | `sources[].tokenHosts` | Extra HTTPS hosts allowed to receive their host-keyed token. |
 | `rid` | Target platform written into the lock; defaults to the running platform. |
 | `sei[].name` | Direct sei name. |
 | `sei[].version` | NuGet version range; omitted or `*` means any stable version. |
-| `components[]` | The same shape as `sei`, kept as a separate group for environment packages. |
 
-`components` is only a grouping: entries resolve exactly like `sei` entries, and both are direct declarations. `sk add` writes to `sei` and refuses a name that is already declared in `components`.
+Direct declarations live only in `sei`. The lock records the resolved graph, including the version- and artifact-level relations, the selected artifact, and its `rid`.
 
 `seiko.conf` is HOCON. `#` starts a comment, and quoted strings are usually optional. The file must declare at least one source before resolving.
 
@@ -53,7 +53,7 @@ The resolver prefers the locked version when it still satisfies every constraint
 
 ```json
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "target": { "rid": "linux-x64" },
   "sources": ["official"],
   "sei": [
@@ -62,10 +62,18 @@ The resolver prefers the locked version when it still satisfies every constraint
       "version": "1.2.0",
       "source": "official",
       "direct": true,
+      "dependencies": [],
+      "prerequisites": [],
+      "optionalPeers": [],
+      "conflicts": [],
       "artifact": {
-        "sha256": "a65309e97137560672f74998c4895877b85a4a76cb618d173049b75ea5f51afc"
-      },
-      "dependencies": []
+        "sha256": "a65309e97137560672f74998c4895877b85a4a76cb618d173049b75ea5f51afc",
+        "rid": "linux-x64",
+        "dependencies": [],
+        "prerequisites": [],
+        "optionalPeers": [],
+        "conflicts": []
+      }
     }
   ]
 }
@@ -78,14 +86,16 @@ The resolver prefers the locked version when it still satisfies every constraint
 | `sei[].source` | The source that provided this sei; replay uses the same source id. |
 | `sei[].direct` | Whether this sei is a direct declaration. |
 | `sei[].artifact.sha256` | Digest of the selected artifact. |
-| `sei[].artifact.selectors` | The selectors that chose the artifact, when any. |
-| `sei[].dependencies` | Logical dependencies declared by the sei. |
+| `sei[].artifact.rid` | Platform condition of the selected artifact, when any. |
+| `sei[].dependencies` | Version-level dependencies declared by the sei. |
+| `sei[].prerequisites`, `optionalPeers`, `conflicts` | The other version-level relations. |
+| `sei[].artifact.*` | The artifact-level relations, kept separately for replay and diagnostics. |
 
 The lock is deterministic and machine-written. Do not edit it by hand; change `seiko.conf` or run an update instead.
 
 ## Replay
 
-- `sk sync --frozen` replays the lock without resolving. The declared direct set must equal the lock's direct entries, and each entry's source, selectors, and dependencies must still match the index.
+- `sk sync --frozen` replays the lock without resolving. The declared direct set must equal the lock's direct entries, the lock's target `rid` must equal the configured `rid`, and each entry's source, relations, artifact `rid`, and dependencies must still match the index.
 - `sk sync --locked` resolves normally and fails if the resulting lock differs from the committed one.
 - Normal `sk sync` resolves, deploys, and rewrites the lock.
 

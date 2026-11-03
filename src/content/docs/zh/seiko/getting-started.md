@@ -14,7 +14,7 @@ sk init
 sk add hosihikari
 ```
 
-`sk init` 写入 `seiko.conf` 模板：官方索引作为 `official` 源，`sei` 与 `components` 为空。它不解析、不安装任何东西。
+`sk init` 写入最小 `seiko.conf`：必填 `schemaVersion`、官方索引作为 `official` 源、`sei` 为空。它不解析、不安装任何东西。
 
 `sk add hosihikari` 添加直接声明并立即同步：
 
@@ -54,8 +54,8 @@ sk sync --locked        # 正常解析，但结果与锁不一致时报错
 ## 修改声明
 
 ```bash
-sk add hello-csharp@1.2.0          # 直接声明，范围 1.2.0 或更高
-sk remove hello-csharp             # 删除声明并同步
+sk add hello-seiko@1.2.0           # 直接声明，范围 1.2.0 或更高
+sk remove hello-seiko              # 删除声明并同步
 sk update                          # 在范围内更新所有直接声明
 sk update hosihikari --latest      # 把直接范围钉到最新版本
 sk rollback                        # 恢复上一代

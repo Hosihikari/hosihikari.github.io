@@ -50,16 +50,16 @@ Set `SEIKO_TOKEN_<HOST>`: ASCII letters and digits are kept uppercase, and every
 index.json
 sei/
   hosihikari.json
-  hello-csharp.json
+  hello-seiko.json
 ```
 
 `index.json` lists names for search:
 
 ```json
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "generatedBy": "SeiIndex maintainers",
-  "sei": ["hello-csharp", "hosihikari"]
+  "sei": ["hello-seiko", "hosihikari"]
 }
 ```
 
@@ -85,4 +85,4 @@ sk index verify . --check-artifacts --strict
 
 Without arguments, the command validates the current directory. `--check-artifacts` downloads every artifact and verifies its size, SHA-256, and embedded `sei.json`; `--strict` also fails on warnings. The SeiIndex CI runs the same command before merging a submission.
 
-`--proxy` applies to index and artifact requests. Index responses are cached for the duration of one command; run the command again to see a new index revision.
+`--proxy` applies to index and artifact requests. HTTP index metadata is also cached under `<store>/.metadata`; `--offline` replays from that cache for `sync --locked`/`--frozen`, `rollback`, `--dry-run`, and read-only commands. Missing cache entries are listed together and the environment is left unchanged.

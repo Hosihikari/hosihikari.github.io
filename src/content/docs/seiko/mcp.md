@@ -17,6 +17,7 @@ seiko-mcp --root /path/to/root
 | `--allow-mutations` | Register mutating tools. Without it the server is read-only. |
 | `--allowed-root <path>` | Repeatable. Mutation roots must be inside one of these directories. |
 | `--allowed-store <path>` | Repeatable. With an allowlist active, mutation stores must be the default store or inside one of these directories. |
+| `--audit-log <path>` | Append one JSON line per tool call (tool, root, arguments, outcome, truncated result); no credentials. |
 | `-h`, `--help` | Show usage. |
 | `-V`, `--version` | Print the build version. |
 
@@ -37,7 +38,10 @@ Read-only tools:
 | `cache_status` | Store artifact and partial counts. |
 | `cache_verify` | Verify stored artifacts. |
 | `why` | Dependency chains to a sei. |
-| `outdated` | Newer versions in range and overall. |
+| `outdated` | Newer versions in range and overall, with `blockers`. |
+| `doctor` | Check the lock, store, deployment, and partial downloads. |
+| `check` | Read-only `doctor` without `.part` cleanup. |
+| `index_verify` | Validate a static index directory. |
 
 Mutation tools are registered only with `--allow-mutations`:
 
@@ -46,13 +50,14 @@ Mutation tools are registered only with `--allow-mutations`:
 | `add` | Add a direct declaration and sync. |
 | `remove` | Remove a direct declaration and sync. |
 | `update` | Update direct declarations and sync. |
+| `init` | Write a minimal `seiko.conf`. |
 | `sync` | Resolve and deploy sei. |
 | `rollback` | Restore a previous generation. |
 | `source_add`, `source_remove` | Edit sources. |
 | `config_set` | Write a configuration value. |
 | `cache_clean` | Remove unreferenced artifacts. |
 
-Every mutation requires an explicit `root` argument; the server refuses to infer it. Read-only tools accept an optional `root` and are not restricted by the allowlists. With `--allowed-root`, a mutation root must be the allowed directory or lie beneath it, after resolving symlinks. The server takes the same install-root lock as `sk`, so a mutation cannot race a CLI sync.
+Mutation tools take `dryRun`, `offline`, `adopt`, and `force`, matching the CLI. Every mutation requires an explicit `root` argument; the server refuses to infer it. Read-only tools accept an optional `root` and are not restricted by the allowlists. With `--allowed-root`, a mutation root must be the allowed directory or lie beneath it, after resolving symlinks. The server takes the same install-root lock as `sk`, so a mutation cannot race a CLI sync.
 
 ## Client configuration
 
@@ -77,4 +82,4 @@ Claude Desktop (`claude_desktop_config.json`):
 
 Add `"--allow-mutations"` to `args` when the client should be able to sync or change the root. Start read-only and grant mutations only to clients you trust with the root.
 
-Tool results are JSON text; a failed tool call returns an error result rather than crashing the server. Source credentials are read from the configured environment variables as usual, and tokens are never included in results.
+Tool results are JSON text; a failed tool call returns an error result rather than crashing the server. `dryRun` returns the same `changes`, `blocked`, and `diagnostics` shape as the CLI preview. Source credentials are read from the configured environment variables as usual, and tokens are never included in results or audit lines.

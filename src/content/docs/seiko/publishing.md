@@ -8,14 +8,14 @@ A sei is a zip whose root contains `sei.json` and the payload. Publishing means 
 ## Build the artifact
 
 ```
-hello-csharp.zip
+hello-seiko.zip
   sei.json
-  plugins/hello-csharp/manifest.json
-  plugins/hello-csharp/main.cs
-  plugins/hello-csharp/start.sh
+  plugins/hello-seiko/manifest.json
+  plugins/hello-seiko/main.cs
+  plugins/hello-seiko/start.sh
 ```
 
-The zip root must contain exactly one `sei.json`. Everything else is payload; paths are deployed relative to the install root, so a payload path `plugins/hello-csharp/manifest.json` becomes `<root>/plugins/hello-csharp/manifest.json`. Seiko does not read `manifest.json`; it belongs to whatever loads the plugin. For the Hosihikari Framework's plugin package contract, see [Plugin packages](/framework/develop/plugin-package/).
+The zip root must contain exactly one `sei.json`. Everything else is payload; paths are deployed relative to the install root, so a payload path `plugins/hello-seiko/manifest.json` becomes `<root>/plugins/hello-seiko/manifest.json`. Seiko does not read `manifest.json`; it belongs to whatever loads the plugin. For the Hosihikari Framework's plugin package contract, see [Plugin packages](/framework/develop/plugin-package/).
 
 Artifacts are bounded: at most 100,000 entries, 1 GiB per entry, and 4 GiB in total.
 
@@ -23,36 +23,48 @@ Artifacts are bounded: at most 100,000 entries, 1 GiB per entry, and 4 GiB in to
 
 ```json
 {
-  "schemaVersion": 1,
-  "name": "hello-csharp",
+  "schemaVersion": 2,
+  "name": "hello-seiko",
   "version": "1.0.0",
   "dependencies": [
     { "name": "hosihikari", "version": "[1.1.0,1.2.0)" }
   ],
-  "layout": "root",
-  "modes": { "plugins/hello-csharp/start.sh": "0755" }
+  "prerequisites": [],
+  "optionalPeers": [],
+  "conflicts": [],
+  "artifact": {
+    "rid": "linux-x64",
+    "dependencies": [],
+    "prerequisites": [],
+    "optionalPeers": [],
+    "conflicts": [],
+    "layout": "root",
+    "modes": { "plugins/hello-seiko/start.sh": "0755" }
+  }
 }
 ```
 
 | Field | Meaning |
 | --- | --- |
-| `schemaVersion` | Currently `1`. |
+| `schemaVersion` | Required; currently `2`. |
 | `name` | Sei name; must match the index file and be path-safe. |
 | `version` | NuGet SemVer version. Pre-releases use a suffix such as `1.3.0-beta.1`. |
 | `dependencies` | Names with optional version ranges; resolved by the same rules as declarations. |
-| `selectors` | Optional artifact selection; see below. |
-| `layout` | `root` (or omitted). Only root layout is supported. |
-| `modes` | Optional map of payload path to Unix mode. Only `0000–0777` is accepted; setuid/setgid/sticky are rejected. Windows ignores modes. |
+| `prerequisites`, `optionalPeers`, `conflicts` | The other version-level relations; see [Relations](/seiko/publishing/#relations). |
+| `artifact` | The current artifact only: `rid`, its own relations, `layout`, and `modes`. |
 
-## Selectors
+## Relations
 
-A version may publish several artifacts, each with a different `selectors` object:
+The version-level relations constrain the whole version; the same fields inside `artifact` constrain only that artifact. Both scopes apply together.
 
-- `rid` matches the target platform, such as `win-x64` or `linux-arm64`.
-- Any other key names a sei that must be present in the dependency graph. For example, `{ "carrier": "levilamina" }` matches when a sei named `levilamina` is in the graph.
-- All pairs must match. Among matching artifacts, the one with the most selector keys wins; equal specificity is an ambiguity error.
+| Field | Meaning |
+| --- | --- |
+| `dependencies` | Must be installed; the target joins the graph. |
+| `prerequisites` | Must already be in the graph; does not add it. Used to select artifacts. |
+| `optionalPeers` | May be absent; when present its version must match. |
+| `conflicts` | A matching target may not be present. |
 
-Omit `selectors` for a platform-independent artifact. Two artifacts in one version cannot have identical selectors.
+An artifact is chosen by `rid` plus its `prerequisites`: an artifact whose prerequisites are not satisfied cannot be selected. Among selectable artifacts, the one with the most satisfied prerequisites wins; equal specificity is an ambiguity error. Because `prerequisites` do not add anything, the sei naming the condition must be declared or pulled in by a dependency.
 
 ## Host the artifact
 
@@ -68,11 +80,20 @@ The index keeps one file per name. A version entry looks like this:
   "dependencies": [
     { "name": "hosihikari", "version": "[1.1.0,1.2.0)" }
   ],
+  "prerequisites": [],
+  "optionalPeers": [],
+  "conflicts": [],
   "artifacts": [
     {
+      "rid": "linux-x64",
+      "dependencies": [],
+      "prerequisites": [],
+      "optionalPeers": [],
+      "conflicts": [],
       "layout": "root",
+      "modes": { "plugins/hello-seiko/start.sh": "0755" },
       "source": {
-        "url": "https://github.com/example/hello-csharp/releases/download/v1.0.0/hello-csharp.zip",
+        "url": "https://github.com/example/hello-seiko/releases/download/v1.0.0/hello-seiko.zip",
         "sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
         "size": 12345
       }
@@ -81,7 +102,7 @@ The index keeps one file per name. A version entry looks like this:
 }
 ```
 
-`sha256` is the digest of the exact zip, 64 lowercase hexadecimal characters; `size` is its byte length. The entry's `version`, `dependencies`, `selectors`, and `layout` must match the embedded `sei.json`; CI downloads the artifact and checks both, so a mismatch is rejected.
+`sha256` is the digest of the exact zip, 64 lowercase hexadecimal characters; `size` is its byte length. The entry's relations, `rid`, `layout`, and `modes` must match the embedded `sei.json`; CI downloads the artifact and checks both, so a mismatch is rejected.
 
 ## Submit to the official index
 

@@ -50,16 +50,16 @@ sources = [
 index.json
 sei/
   hosihikari.json
-  hello-csharp.json
+  hello-seiko.json
 ```
 
 `index.json` 列出供搜索使用的名字：
 
 ```json
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "generatedBy": "SeiIndex maintainers",
-  "sei": ["hello-csharp", "hosihikari"]
+  "sei": ["hello-seiko", "hosihikari"]
 }
 ```
 
@@ -85,4 +85,4 @@ sk index verify . --check-artifacts --strict
 
 不带路径时校验当前目录。`--check-artifacts` 下载每个构件并核对大小、SHA-256 与内嵌 `sei.json`；`--strict` 把警告也视为失败。SeiIndex 的 CI 在合并提交前运行同一条命令。
 
-`--proxy` 作用于索引与构件请求。索引响应在单条命令内缓存；重跑命令才能看到新的索引修订。
+`--proxy` 作用于索引与构件请求。HTTP 索引元数据还会缓存在 `<store>/.metadata`；`--offline` 下 `sync --locked`/`--frozen`、`rollback`、`--dry-run` 与只读命令都从该缓存重放。缓存缺失会一次列出，环境保持原状。
