@@ -75,10 +75,10 @@ description: sk 的命令、选项与机器可读输出。
 | 命令 | 说明 |
 | --- | --- |
 | `sk list` | 从锁列出已安装的 sei。 |
-| `sk why <name>` | 把某个 sei 带入依赖图的依赖链。 |
+| `sk why <name>` | 到某个 sei 的链，每节标明是直接声明、依赖还是前置关系。 |
 | `sk outdated [--pre]` | 范围内、整体与最新可安装版本。 |
 | `sk search <term>` | 在配置的索引里搜索 sei 名。 |
-| `sk info <name>` | 单个 sei 的版本、依赖与构件数。 |
+| `sk info <name>` | 单个 sei 的版本、四类关系与构件条件。 |
 | `sk doctor [--clean]` | 检查锁、存储、部署与残留下载；`--clean` 删除所有未完成下载。 |
 
 ## 源与配置
