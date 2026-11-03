@@ -34,7 +34,7 @@ Confirm the name exists in one of the configured indexes with `sk search <term>`
 
 ### Versions do not resolve
 
-`sk why <name>` shows the chains that put a sei in the graph, and `sk info <name>` shows available versions and dependencies. The usual fixes are widening a range in `seiko.conf`, updating a dependency, or allowing a prerelease with `--pre` when the range does not already name one.
+`sk why <name>` shows the chains that put a sei in the graph and the kind of each edge, and `sk info <name>` shows available versions, all four relation kinds, and artifact conditions. The usual fixes are widening a range in `seiko.conf`, updating a dependency, or allowing a prerelease with `--pre` when the range does not already name one.
 
 ### `--frozen` fails
 

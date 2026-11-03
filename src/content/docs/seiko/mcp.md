@@ -31,13 +31,13 @@ Read-only tools:
 | --- | --- |
 | `list` | Installed sei from the lock. |
 | `search` | Search sei names in the configured indexes. |
-| `info` | Versions, dependencies, and artifact counts. |
+| `info` | Versions, all four relation kinds, and artifact conditions. |
 | `lock` | Return the current lock file. |
 | `source_list` | Configured sources. |
 | `config_get` | Read an install-root configuration value. |
 | `cache_status` | Store artifact and partial counts. |
 | `cache_verify` | Verify stored artifacts. |
-| `why` | Dependency chains to a sei. |
+| `why` | Chains to a sei; each link has `name` and `kind`. |
 | `outdated` | Newer versions in range and overall, with `blockers`. |
 | `doctor` | Check the lock, store, deployment, and partial downloads. |
 | `check` | Read-only `doctor` without `.part` cleanup. |

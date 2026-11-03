@@ -75,10 +75,10 @@ Restore the previous generation's config, lock, and deployment, or the one named
 | Command | Meaning |
 | --- | --- |
 | `sk list` | Installed sei from the lock. |
-| `sk why <name>` | Dependency chains that bring a sei into the graph. |
+| `sk why <name>` | Chains to a sei; each link names the relation kind (direct declaration, dependency, or prerequisite). |
 | `sk outdated [--pre]` | Newer versions in range, overall, and latest installable. |
 | `sk search <term>` | Search sei names in the configured indexes. |
-| `sk info <name>` | Versions, dependencies, and artifact counts for one sei. |
+| `sk info <name>` | Versions, all four relation kinds, and artifact conditions for one sei. |
 | `sk doctor [--clean]` | Check the lock, store, deployment, and partial downloads; `--clean` deletes all partial downloads. |
 | `sk check` | The read-only form of `doctor`; never deletes anything. |
 

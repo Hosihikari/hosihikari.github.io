@@ -37,7 +37,7 @@ server 通过 stdio 使用行分隔 JSON-RPC，协议版本为 `2025-06-18`。`i
 | `config_get` | 读取安装根配置。 |
 | `cache_status` | 存储构件与未完成下载数量。 |
 | `cache_verify` | 校验存储中的构件。 |
-| `why` | 到某个 sei 的依赖链。 |
+| `why` | 到某个 sei 的链，每节含 `name` 与 `kind`。 |
 | `outdated` | 范围内与整体的新版本，含 `blockers`。 |
 | `doctor` | 检查锁、存储、部署与未完成下载。 |
 | `check` | 只读 `doctor`，不清理 `.part`。 |
