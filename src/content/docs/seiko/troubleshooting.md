@@ -52,8 +52,8 @@ The resolver produced a different lock than the committed one. Run `sk sync` to 
 
 Seiko blocks overwriting files you edited: a normal `sk sync` stops with a `deploy` error. Use `--adopt` to keep the edit and record it as adopted, or `--force` to overwrite it with the artifact content. The same flags handle an unmanaged file sitting where the artifact wants to write.
 
-- **Reflink:** writes are copy-on-write, so the edit stays in the deployed file and the store is unchanged. Run `sk sync` or `sk sync --frozen` to restore the file from the store.
-- **Hardlink:** the deployed file and the store share an inode, so an in-place edit also changes the store. The next `sk sync` detects the mismatch, downloads the artifact again, and restores both the store and the deployment.
+- **Reflink:** writes are copy-on-write, so the edit stays in the deployed file and the store is unchanged. `sk sync --force` (or `sk sync --frozen --force`) restores the file from the store.
+- **Hardlink:** the deployed file and the store share an inode, so an in-place edit also changes the store. The next `sk sync` detects the mismatch; `--force` downloads the artifact again and restores both the store and the deployment.
 
 Change the source package and publish a new version when the content actually needs to change.
 
