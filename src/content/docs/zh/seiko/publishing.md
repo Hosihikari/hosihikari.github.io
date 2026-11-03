@@ -46,7 +46,7 @@ zip 根只能有一个 `sei.json`。其余都是载荷；路径相对安装根�
 
 | 字段 | 说明 |
 | --- | --- |
-| `schemaVersion` | 0.3 中必须为 `2`。 |
+| `schemaVersion` | 必填；当前为 `2`。 |
 | `name` | sei 名；必须与索引文件一致，且路径安全。 |
 | `version` | NuGet SemVer 版本；预发布使用 `1.3.0-beta.1` 这类后缀。 |
 | `dependencies` | 名字与可选的版本范围，按与声明相同的规则解析。 |
@@ -87,12 +87,11 @@ zip 根只能有一个 `sei.json`。其余都是载荷；路径相对安装根�
     {
       "rid": "linux-x64",
       "dependencies": [],
-      "prerequisites": [
-        { "name": "hosihikari-hosting-levilamina", "version": "*" }
-      ],
+      "prerequisites": [],
       "optionalPeers": [],
       "conflicts": [],
       "layout": "root",
+      "modes": { "plugins/hello-seiko/start.sh": "0755" },
       "source": {
         "url": "https://github.com/example/hello-seiko/releases/download/v1.0.0/hello-seiko.zip",
         "sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",

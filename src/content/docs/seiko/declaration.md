@@ -26,7 +26,7 @@ sei = [
 
 | Field | Meaning |
 | --- | --- |
-| `schemaVersion` | Required; 0.3 only accepts `2`. |
+| `schemaVersion` | Required; currently `2`. |
 | `sources[].id` | Name used by the lock and the resolver; must be unique. |
 | `sources[].index` | HTTPS URL of `index.json`, or a local path to the index file (relative paths resolve from the install root). |
 | `sources[].tokenHosts` | Extra HTTPS hosts allowed to receive their host-keyed token. |
@@ -34,7 +34,7 @@ sei = [
 | `sei[].name` | Direct sei name. |
 | `sei[].version` | NuGet version range; omitted or `*` means any stable version. |
 
-Direct declarations live only in `sei`; the old `components` group is rejected with a `config` error. 0.3 does not migrate or reinterpret old files, so an old declaration must be rewritten. Lock schema 1 and old generation directories are likewise rejected: old locks map to `io`, and new generations start at 1.
+Direct declarations live only in `sei`. The lock records the resolved graph, including the version- and artifact-level relations, the selected artifact, and its `rid`.
 
 `seiko.conf` is HOCON. `#` starts a comment, and quoted strings are usually optional. The file must declare at least one source before resolving.
 

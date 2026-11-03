@@ -26,7 +26,7 @@ sei = [
 
 | 字段 | 说明 |
 | --- | --- |
-| `schemaVersion` | 必填；0.3 只接受 `2`。 |
+| `schemaVersion` | 必填；当前为 `2`。 |
 | `sources[].id` | 锁与解析器使用的源标识，必须唯一。 |
 | `sources[].index` | `index.json` 的 HTTPS URL，或索引文件的本地路径（相对路径从安装根解析）。 |
 | `sources[].tokenHosts` | 额外允许接收其主机 token 的 HTTPS 主机。 |
@@ -34,7 +34,7 @@ sei = [
 | `sei[].name` | 直接 sei 名。 |
 | `sei[].version` | NuGet 版本范围；省略或 `*` 表示任意稳定版本。 |
 
-直接声明只写在 `sei`；旧的 `components` 分组会按 `config` 错误拒绝。0.3 不迁移也不重新解释旧文件，旧声明需要重写。锁 schema 1 与旧代目录同样被拒绝：旧锁映射到 `io`，新代从 1 开始。
+直接声明只写在 `sei`。锁记录解析后的图，包括版本级与构件级关系、选中的构件及其 `rid`。
 
 `seiko.conf` 是 HOCON。`#` 开始注释，字符串通常可以不加引号。解析前必须至少声明一个源。
 

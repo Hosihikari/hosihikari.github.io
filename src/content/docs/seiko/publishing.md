@@ -46,7 +46,7 @@ Artifacts are bounded: at most 100,000 entries, 1 GiB per entry, and 4 GiB in to
 
 | Field | Meaning |
 | --- | --- |
-| `schemaVersion` | Must be `2` in 0.3. |
+| `schemaVersion` | Required; currently `2`. |
 | `name` | Sei name; must match the index file and be path-safe. |
 | `version` | NuGet SemVer version. Pre-releases use a suffix such as `1.3.0-beta.1`. |
 | `dependencies` | Names with optional version ranges; resolved by the same rules as declarations. |
@@ -87,12 +87,11 @@ The index keeps one file per name. A version entry looks like this:
     {
       "rid": "linux-x64",
       "dependencies": [],
-      "prerequisites": [
-        { "name": "hosihikari-hosting-levilamina", "version": "*" }
-      ],
+      "prerequisites": [],
       "optionalPeers": [],
       "conflicts": [],
       "layout": "root",
+      "modes": { "plugins/hello-seiko/start.sh": "0755" },
       "source": {
         "url": "https://github.com/example/hello-seiko/releases/download/v1.0.0/hello-seiko.zip",
         "sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
