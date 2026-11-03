@@ -29,8 +29,8 @@ Progress bars appear only when stdout is an interactive terminal, and never with
 | `--latest-installable` | `sync`, `add`, `update` | Skip versions with no artifact for the resolved graph; the default is the highest version. |
 | `--allow-critical` | `sync`, `add`, `remove`, `update` | Allow resolving versions with a critical advisory; otherwise they are skipped with a warning. |
 | `--dry-run` | `sync`, `add`, `remove`, `update` | Print the plan without downloading payloads or writing anything. |
-| `--adopt` | deployments | Keep existing files and record them as adopted. |
-| `--force` | deployments | Overwrite or delete conflicting existing files. |
+| `--adopt` | `sync`, `add`, `remove`, `update` | Keep existing files and record them as adopted. |
+| `--force` | `sync`, `add`, `remove`, `update` | Overwrite or delete conflicting existing files. |
 
 ## Lifecycle
 

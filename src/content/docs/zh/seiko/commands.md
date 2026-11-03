@@ -29,8 +29,8 @@ description: sk 的命令、选项与机器可读输出。
 | `--latest-installable` | `sync`、`add`、`update` | 跳过没有匹配当前依赖图构件的版本；默认仍选最高版本。 |
 | `--allow-critical` | `sync`、`add`、`remove`、`update` | 允许解析带 critical 公告的版本；否则这些版本会被跳过并给出警告。 |
 | `--dry-run` | `sync`、`add`、`remove`、`update` | 打印计划，不下载载荷、不写任何内容。 |
-| `--adopt` | 部署命令 | 保留现有文件并记录为已接管。 |
-| `--force` | 部署命令 | 覆盖或删除冲突的现有文件。 |
+| `--adopt` | `sync`、`add`、`remove`、`update` | 保留现有文件并记录为已接管。 |
+| `--force` | `sync`、`add`、`remove`、`update` | 覆盖或删除冲突的现有文件。 |
 
 ## 生命周期
 
