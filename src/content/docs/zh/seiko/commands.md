@@ -12,6 +12,8 @@ description: sk 的命令、选项与机器可读输出。
 | `--json` | 在 stdout 输出单个 JSON 文档。 |
 | `-v`、`--verbose` | 输出调试日志与完整堆栈。 |
 | `-q`、`--quiet` | 静默进度与非错误输出。 |
+| `--offline` | 只用锁、存储与缓存元数据，不联网。 |
+| `--diagnostics` | 展开关系与约束来源。 |
 
 进度条只在 stdout 是交互式终端时出现，且不会与 `--json` 同时出现。
 
@@ -26,12 +28,15 @@ description: sk 的命令、选项与机器可读输出。
 | `--pre` | 解析类命令 | 允许预发布版本。 |
 | `--latest-installable` | `sync`、`add`、`update` | 跳过没有匹配当前依赖图构件的版本；默认仍选最高版本。 |
 | `--allow-critical` | `sync`、`add`、`remove`、`update` | 允许解析带 critical 公告的版本；否则这些版本会被跳过并给出警告。 |
+| `--dry-run` | `sync`、`add`、`remove`、`update` | 打印计划，不下载载荷、不写任何内容。 |
+| `--adopt` | 部署命令 | 保留现有文件并记录为已接管。 |
+| `--force` | 部署命令 | 覆盖或删除冲突的现有文件。 |
 
 ## 生命周期
 
 ### `sk init [--root <path>]`
 
-写入带官方索引、空的 `sei` 与 `components` 的 `seiko.conf` 模板。拒绝覆盖已有文件。
+用临时文件加 rename 写入最小 `seiko.conf`（必填 `schemaVersion`、官方索引、空 `sei`）；拒绝覆盖已有文件。
 
 ### `sk sync [选项]`
 
@@ -45,17 +50,17 @@ description: sk 的命令、选项与机器可读输出。
 | `--latest-installable` | 跳过没有匹配构件的版本；不能与 `--frozen` 同用。 |
 | `--allow-critical` | 允许解析带 critical 公告的版本。 |
 
-`--frozen` 与 `--locked` 互斥。`--frozen` 不改写锁。
+`--frozen` 与 `--locked` 互斥。两者都不改写锁。`--frozen` 还会拒绝目标 `rid` 与配置不一致的锁。
 
 `sync`、`add` 与 `update` 在选中弃用版本，或重放锁定的 yanked / critical 版本时会打印警告；范围内匹配到但被跳过的 critical 版本也会警告，被跳过的 yanked 版本保持静默。`--json` 在 `data.warnings` 中给出同样的消息。
 
-### `sk add <name[@range]>`
+### `sk add <name[@range]>... [--remove <name>]...`
 
-把直接声明加入 `sei` 并同步。裸写 `1.2.0` 表示 1.2.0 或更高；精确锁定用 `[1.2.0]`。`--latest-installable` 作用于这次同步；`--allow-critical` 允许带 critical 公告的版本。
+加入直接声明并同步。裸写 `1.2.0` 表示 1.2.0 或更高；精确锁定用 `[1.2.0]`。不带范围的新声明写入 `[版本, 下一主版本)`（`0.y.z` 为下一小版本）；重复 `add A` 在现有范围内重新解析 A。`--remove` 可重复，因此 `add P --remove R` 原子地加入并移除。`--latest-installable` 作用于这次同步；`--allow-critical` 允许带 critical 公告的版本。
 
 ### `sk remove <name>`
 
-从 `sei` 或 `components` 删除直接声明，并同步剩余内容。
+从 `sei` 删除直接声明并同步剩余内容；`--purge` 还会经事务 trash 删除它的 config/data。
 
 ### `sk update [name] [--latest]`
 
@@ -63,7 +68,7 @@ description: sk 的命令、选项与机器可读输出。
 
 ### `sk rollback [--to <generation>] [--proxy <url>]`
 
-恢复上一代部署，或 `--to` 指定的代。部署代记录在 `.seiko/generations/` 下。目标代的构件缺失或损坏时，回滚会从配置的源重新下载。
+恢复上一代的配置、锁与部署，或 `--to` 指定的代。部署代记录在 `.seiko/generations/` 下。目标代的构件缺失或损坏时，回滚会从配置的源重新下载。
 
 ## 查看
 
@@ -105,6 +110,24 @@ sk index verify [path] [--check-artifacts] [--strict] [--proxy <url>]
 ```
 
 校验索引目录的 schema、名称、版本、构件 URL 与 SHA-256。`--check-artifacts` 还会下载每个构件，核对大小、摘要与内嵌 `sei.json`；`--strict` 把警告也当错误。路径默认是当前目录。追加规则由索引仓库的 CI 检查，不由这条命令检查。
+
+## 预览与离线
+
+`sync`、`add`、`remove`、`update` 的 `--dry-run` 会解析并打印 `changes` 与被阻塞项，不下载载荷，也不写配置、锁或部署。阻塞项是正常的预览结果：命令仍退出 0，`--json` 放在 `data.blocked`；`--diagnostics` 另附 `data.diagnostics`。
+
+`--offline` 接受重放（`sync --locked`/`--frozen`）、`rollback`、`--dry-run` 与只读命令；拒绝 `add`、`remove`、`update` 与需要重新求解的 `sync`，因为它们需要新元数据。缺失的缓存元数据或构件会在任何改动前一次列出。
+
+## 接管与强制
+
+部署要覆盖你改过的受管文件，或路上有未受管文件时，会以 `deploy` 错误停下。`--adopt` 保留现有内容并记录为已接管；`--force` 覆盖或删除它。两者都在部署事务内执行。
+
+## 补全
+
+```bash
+sk completion bash|zsh|fish|powershell
+```
+
+打印补全脚本，脚本通过隐藏的 `[suggest]` 指令询问二进制。
 
 ## 版本范围
 

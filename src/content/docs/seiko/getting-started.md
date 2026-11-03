@@ -14,7 +14,7 @@ sk init
 sk add hosihikari
 ```
 
-`sk init` writes a `seiko.conf` template with the official index as source `official` and empty `sei` and `components` lists. It does not resolve or install anything.
+`sk init` writes a minimal `seiko.conf` with the required `schemaVersion`, the official index as source `official`, and an empty `sei` list. It does not resolve or install anything.
 
 `sk add hosihikari` adds a direct declaration and syncs immediately:
 
@@ -42,7 +42,7 @@ sk info hosihikari      # versions, dependencies, artifact count
 
 ## Keep the lock
 
-`seiko.lock.json` records the exact versions, sources, artifact digests, and selectors that were deployed. Commit it with `seiko.conf`.
+`seiko.lock.json` records the exact versions, sources, selected artifacts and digests, relations, and target platform. Commit it with `seiko.conf`.
 
 ```bash
 sk sync --frozen        # replay the lock without resolving
@@ -54,8 +54,8 @@ sk sync --locked        # resolve, but fail if the lock would change
 ## Change the declaration
 
 ```bash
-sk add hello-csharp@1.2.0          # direct declaration, range 1.2.0 or newer
-sk remove hello-csharp             # remove the declaration and sync
+sk add hello-seiko@1.2.0           # direct declaration, range 1.2.0 or newer
+sk remove hello-seiko              # remove the declaration and sync
 sk update                          # update all direct declarations within their ranges
 sk update hosihikari --latest      # pin the direct range to the latest version
 sk rollback                        # restore the previous generation

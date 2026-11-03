@@ -12,6 +12,8 @@ Every command runs against one install root and one store. `sk --help` lists the
 | `--json` | Emit a single JSON document on stdout. |
 | `-v`, `--verbose` | Show debug logs and full stack traces. |
 | `-q`, `--quiet` | Suppress progress and non-error output. |
+| `--offline` | Use only the lock, store, and cached metadata; never touch the network. |
+| `--diagnostics` | Expand relation and constraint details. |
 
 Progress bars appear only when stdout is an interactive terminal, and never with `--json`.
 
@@ -26,12 +28,15 @@ Progress bars appear only when stdout is an interactive terminal, and never with
 | `--pre` | resolution commands | Allow prerelease versions. |
 | `--latest-installable` | `sync`, `add`, `update` | Skip versions with no artifact for the resolved graph; the default is the highest version. |
 | `--allow-critical` | `sync`, `add`, `remove`, `update` | Allow resolving versions with a critical advisory; otherwise they are skipped with a warning. |
+| `--dry-run` | `sync`, `add`, `remove`, `update` | Print the plan without downloading payloads or writing anything. |
+| `--adopt` | deployments | Keep existing files and record them as adopted. |
+| `--force` | deployments | Overwrite or delete conflicting existing files. |
 
 ## Lifecycle
 
 ### `sk init [--root <path>]`
 
-Write a `seiko.conf` template with the official index and empty `sei` and `components` lists. Refuses to overwrite an existing file.
+Write a minimal `seiko.conf` (required `schemaVersion`, the official index, empty `sei`) with a temp file and rename; refuses to overwrite an existing file.
 
 ### `sk sync [options]`
 
@@ -45,17 +50,17 @@ Resolve the declaration and deploy it. Alias: `sk install`.
 | `--latest-installable` | Skip versions without a matching artifact; incompatible with `--frozen`. |
 | `--allow-critical` | Allow resolving versions with a critical advisory. |
 
-`--frozen` and `--locked` are mutually exclusive. `--frozen` does not rewrite the lock.
+`--frozen` and `--locked` are mutually exclusive. Neither rewrites the lock. `--frozen` also rejects a lock whose target `rid` differs from the configured one.
 
 `sync`, `add`, and `update` print warnings when they select a deprecated version or replay a locked yanked or critical version. They also warn when a critical version matches the requested range but is skipped; skipped yanked versions stay silent. `--json` carries the same messages in `data.warnings`.
 
-### `sk add <name[@range]>`
+### `sk add <name[@range]>... [--remove <name>]...`
 
-Add a direct declaration to `sei` and sync. A bare `1.2.0` means 1.2.0 or newer; use `[1.2.0]` to pin exactly. `--latest-installable` applies to the sync; `--allow-critical` permits a version with a critical advisory.
+Add direct declarations and sync. A bare `1.2.0` means 1.2.0 or newer; use `[1.2.0]` to pin exactly. Without a range, a new declaration gets `[version, next-major)` (or the next minor for `0.y.z`); repeating `add A` re-resolves A within its range. `--remove` is repeatable, so `add P --remove R` adds and removes atomically. `--latest-installable` applies to the sync; `--allow-critical` permits a version with a critical advisory.
 
 ### `sk remove <name>`
 
-Remove a direct declaration from `sei` or `components` and sync the rest.
+Remove a direct declaration from `sei` and sync the rest; `--purge` also deletes its config/data through the transaction trash.
 
 ### `sk update [name] [--latest]`
 
@@ -63,7 +68,7 @@ Re-resolve direct declarations, preferring newer versions within their ranges. W
 
 ### `sk rollback [--to <generation>] [--proxy <url>]`
 
-Restore the previous deployment generation, or the one named by `--to`. Generations are recorded under `.seiko/generations/`. If the target generation's artifacts are missing or corrupt, rollback downloads them again from the configured sources.
+Restore the previous generation's config, lock, and deployment, or the one named by `--to`. Generations are recorded under `.seiko/generations/`. If the target generation's artifacts are missing or corrupt, rollback downloads them again from the configured sources.
 
 ## Inspect
 
@@ -75,6 +80,7 @@ Restore the previous deployment generation, or the one named by `--to`. Generati
 | `sk search <term>` | Search sei names in the configured indexes. |
 | `sk info <name>` | Versions, dependencies, and artifact counts for one sei. |
 | `sk doctor [--clean]` | Check the lock, store, deployment, and partial downloads; `--clean` deletes all partial downloads. |
+| `sk check` | The read-only form of `doctor`; never deletes anything. |
 
 ## Sources and configuration
 
@@ -105,6 +111,24 @@ sk index verify [path] [--check-artifacts] [--strict] [--proxy <url>]
 ```
 
 Validates an index directory: schema, names, versions, artifact URLs, and SHA-256 values. `--check-artifacts` also downloads every artifact and checks its size, digest, and embedded `sei.json`; `--strict` treats warnings as errors. The path defaults to the current directory. Append-only changes are checked by the index repository's CI, not by this command.
+
+## Preview and offline
+
+`--dry-run` on `sync`, `add`, `remove`, and `update` resolves and prints `changes` and `blocked` constraints without downloading payloads or writing config, lock, or deployment. Blocked constraints are a normal preview result: the command still exits 0, and `--json` carries them in `data.blocked`. `--diagnostics` adds `data.diagnostics`.
+
+`--offline` accepts replay (`sync --locked`/`--frozen`), `rollback`, `--dry-run`, and read-only commands. It refuses `add`, `remove`, `update`, and a resolving `sync`, because those need fresh metadata. Missing cached index metadata or artifacts are listed together before anything changes.
+
+## Adopt and force
+
+A deployment stops with a `deploy` error when it would overwrite a managed file you edited, or an unmanaged file in the way. `--adopt` keeps the existing content and records the path as adopted; `--force` overwrites or deletes it. Both run inside the deployment transaction.
+
+## Completion
+
+```bash
+sk completion bash|zsh|fish|powershell
+```
+
+Prints a completion script that asks the binary through the hidden `[suggest]` directive.
 
 ## Version ranges
 

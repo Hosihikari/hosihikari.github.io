@@ -17,6 +17,7 @@ seiko-mcp --root /path/to/root
 | `--allow-mutations` | 注册变更工具。不传时 server 只读。 |
 | `--allowed-root <path>` | 可重复。变更工具的 root 必须位于这些目录之下。 |
 | `--allowed-store <path>` | 可重复。启用白名单时，变更的 store 必须是默认 store 或位于这些目录之下。 |
+| `--audit-log <path>` | 每次工具调用追加一行 JSON（工具、root、参数、结果，截断），不含凭据。 |
 | `-h`、`--help` | 显示用法。 |
 | `-V`、`--version` | 打印构建版本。 |
 
@@ -37,7 +38,10 @@ server 通过 stdio 使用行分隔 JSON-RPC，协议版本为 `2025-06-18`。`i
 | `cache_status` | 存储构件与未完成下载数量。 |
 | `cache_verify` | 校验存储中的构件。 |
 | `why` | 到某个 sei 的依赖链。 |
-| `outdated` | 范围内与整体的新版本。 |
+| `outdated` | 范围内与整体的新版本，含 `blockers`。 |
+| `doctor` | 检查锁、存储、部署与未完成下载。 |
+| `check` | 只读 `doctor`，不清理 `.part`。 |
+| `index_verify` | 校验静态索引目录。 |
 
 只有带 `--allow-mutations` 才注册变更工具：
 
@@ -46,6 +50,7 @@ server 通过 stdio 使用行分隔 JSON-RPC，协议版本为 `2025-06-18`。`i
 | `add` | 添加直接声明并同步。 |
 | `remove` | 删除直接声明并同步。 |
 | `update` | 更新直接声明并同步。 |
+| `init` | 写入最小 `seiko.conf`。 |
 | `sync` | 解析并部署 sei。 |
 | `rollback` | 恢复上一代。 |
 | `source_add`、`source_remove` | 修改源。 |

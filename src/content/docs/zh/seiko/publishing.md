@@ -8,14 +8,14 @@ sei 是一个 zip，根部有 `sei.json`，其余是载荷。发布就是把 zip
 ## 构建构件
 
 ```
-hello-csharp.zip
+hello-seiko.zip
   sei.json
-  plugins/hello-csharp/manifest.json
-  plugins/hello-csharp/main.cs
-  plugins/hello-csharp/start.sh
+  plugins/hello-seiko/manifest.json
+  plugins/hello-seiko/main.cs
+  plugins/hello-seiko/start.sh
 ```
 
-zip 根只能有一个 `sei.json`。其余都是载荷；路径相对安装根部署，所以载荷路径 `plugins/hello-csharp/manifest.json` 会变成 `<root>/plugins/hello-csharp/manifest.json`。Seiko 不读 `manifest.json`；它属于加载插件的运行时。星光框架的插件包契约见[插件包与清单](/zh/framework/develop/plugin-package/)。
+zip 根只能有一个 `sei.json`。其余都是载荷；路径相对安装根部署，所以载荷路径 `plugins/hello-seiko/manifest.json` 会变成 `<root>/plugins/hello-seiko/manifest.json`。Seiko 不读 `manifest.json`；它属于加载插件的运行时。星光框架的插件包契约见[插件包与清单](/zh/framework/develop/plugin-package/)。
 
 构件有硬上限：最多 100,000 个条目、单文件 1 GiB、总计 4 GiB。
 
@@ -23,36 +23,48 @@ zip 根只能有一个 `sei.json`。其余都是载荷；路径相对安装根�
 
 ```json
 {
-  "schemaVersion": 1,
-  "name": "hello-csharp",
+  "schemaVersion": 2,
+  "name": "hello-seiko",
   "version": "1.0.0",
   "dependencies": [
     { "name": "hosihikari", "version": "[1.1.0,1.2.0)" }
   ],
-  "layout": "root",
-  "modes": { "plugins/hello-csharp/start.sh": "0755" }
+  "prerequisites": [],
+  "optionalPeers": [],
+  "conflicts": [],
+  "artifact": {
+    "rid": "linux-x64",
+    "dependencies": [],
+    "prerequisites": [],
+    "optionalPeers": [],
+    "conflicts": [],
+    "layout": "root",
+    "modes": { "plugins/hello-seiko/start.sh": "0755" }
+  }
 }
 ```
 
 | 字段 | 说明 |
 | --- | --- |
-| `schemaVersion` | 当前为 `1`。 |
+| `schemaVersion` | 0.3 中必须为 `2`。 |
 | `name` | sei 名；必须与索引文件一致，且路径安全。 |
 | `version` | NuGet SemVer 版本；预发布使用 `1.3.0-beta.1` 这类后缀。 |
 | `dependencies` | 名字与可选的版本范围，按与声明相同的规则解析。 |
-| `selectors` | 可选的构件选择器，见下。 |
-| `layout` | `root`（或省略）。目前只支持根布局。 |
-| `modes` | 可选的载荷路径到 Unix 模式的映射。只接受 `0000–0777`；setuid/setgid/sticky 会被拒绝。Windows 忽略模式。 |
+| `prerequisites`、`optionalPeers`、`conflicts` | 其余版本级关系，见[关系](#关系)。 |
+| `artifact` | 只描述当前构件：`rid`、构件专属关系、`layout` 与 `modes`。 |
 
-## 选择器
+## 关系
 
-一个版本可以发布多个构件，每个带不同的 `selectors`：
+版本级关系约束整个版本；`artifact` 内的同名字段只约束该构件。两个作用域同时生效。
 
-- `rid` 匹配目标平台，如 `win-x64`、`linux-arm64`。
-- 其他键的值是一个 sei 名；依赖图里有这个名字就算匹配。例如 `{ "carrier": "levilamina" }` 在图中存在名为 `levilamina` 的 sei 时匹配。
-- 所有键值对都要匹配。匹配的构件中，选择器键最多的胜出；特异度相同会报歧义。
+| 字段 | 说明 |
+| --- | --- |
+| `dependencies` | 必须安装，目标会进入依赖图。 |
+| `prerequisites` | 目标必须已在图中，不会自动加入；用于构件选择。 |
+| `optionalPeers` | 目标可以缺失；存在时版本必须匹配。 |
+| `conflicts` | 匹配的目标不能同时存在。 |
 
-平台无关的构件省略 `selectors`。同一版本的两个构件不能有完全相同的选择器。
+构件按 `rid` 与其 `prerequisites` 选择：前提不满足的构件不能被选中。可选中构件中，满足前提最多的胜出；特异度相同会报歧义。因为 `prerequisites` 不加入任何东西，点名条件的 sei 必须由声明或普通依赖带入图中。
 
 ## 托管构件
 
@@ -68,11 +80,21 @@ zip 根只能有一个 `sei.json`。其余都是载荷；路径相对安装根�
   "dependencies": [
     { "name": "hosihikari", "version": "[1.1.0,1.2.0)" }
   ],
+  "prerequisites": [],
+  "optionalPeers": [],
+  "conflicts": [],
   "artifacts": [
     {
+      "rid": "linux-x64",
+      "dependencies": [],
+      "prerequisites": [
+        { "name": "hosihikari-hosting-levilamina", "version": "*" }
+      ],
+      "optionalPeers": [],
+      "conflicts": [],
       "layout": "root",
       "source": {
-        "url": "https://github.com/example/hello-csharp/releases/download/v1.0.0/hello-csharp.zip",
+        "url": "https://github.com/example/hello-seiko/releases/download/v1.0.0/hello-seiko.zip",
         "sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
         "size": 12345
       }
@@ -81,7 +103,7 @@ zip 根只能有一个 `sei.json`。其余都是载荷；路径相对安装根�
 }
 ```
 
-`sha256` 是精确 zip 的摘要，64 位小写十六进制；`size` 是字节数。条目的 `version`、`dependencies`、`selectors` 与 `layout` 必须与内嵌的 `sei.json` 一致；CI 会下载构件并核对两者，不一致会被拒绝。
+`sha256` 是精确 zip 的摘要，64 位小写十六进制；`size` 是字节数。条目的关系、`rid`、`layout` 与 `modes` 必须与内嵌的 `sei.json` 一致；CI 会下载构件并核对两者，不一致会被拒绝。
 
 ## 提交到官方索引
 

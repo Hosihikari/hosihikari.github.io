@@ -20,6 +20,7 @@ An artifact is stored under its SHA-256. The store also keeps:
 | --- | --- |
 | `<sha>/` | The extracted artifact |
 | `.meta/<sha>.json` | Per-file digests recorded at extraction |
+| `.metadata/` | Cached HTTP index metadata for `--offline` |
 | `.partial/` | Incomplete downloads, resumable across processes |
 | `.locks/` | Per-artifact download locks |
 
@@ -39,7 +40,9 @@ Payload files are placed with the cheapest available mechanism, in this order:
 2. **Hardlink** when source and target are on the same volume.
 3. **Copy** otherwise.
 
-Reflinked and hardlinked files share storage with the store. Reflink writes are copy-on-write: editing a deployed file leaves the store unchanged. A hardlinked edit does change the store, and the next `sk sync` or `sk cache verify` rejects the artifact. Do not edit deployed payload files in place; change the source package and publish a new version instead.
+Reflinked and hardlinked files share storage with the store. Reflink writes are copy-on-write: editing a deployed file leaves the store unchanged. A hardlinked edit does change the store, and the next `sk sync` or `sk cache verify` rejects the artifact, but a mismatch between the deployed file and the recorded digest is still treated as a user edit: the deployment stops and asks for `--adopt` or `--force`.
+
+Seiko treats edits as user state. `--adopt` keeps them and records the path as adopted; `--force` overwrites them. The same two flags handle an unmanaged file already sitting where the artifact wants to write; without them the deployment stops before changing anything.
 
 Unix modes from `sei.json` are applied after deployment; Windows ignores them. Only `0000–0777` is accepted: setuid, setgid, and sticky bits are rejected before files change. Seiko refuses to write through symlinks or reparse points, and reserves the control paths `seiko.conf`, `seiko.lock.json`, and `.seiko/` for itself.
 
@@ -79,4 +82,4 @@ sk doctor
 sk doctor --clean
 ```
 
-`doctor` checks that the lock matches the declaration, that the store still has the referenced artifacts, that the deployment state is consistent, and whether partial downloads are lying around. `--clean` removes all partial downloads. See [Troubleshooting](/seiko/troubleshooting/) for the error codes.
+`doctor` checks that the lock matches the declaration, that the store still has the referenced artifacts, that the deployment state is consistent, and whether partial downloads are lying around. `--clean` removes all partial downloads. `sk check` is the read-only form and never deletes. See [Troubleshooting](/seiko/troubleshooting/) for the error codes.
