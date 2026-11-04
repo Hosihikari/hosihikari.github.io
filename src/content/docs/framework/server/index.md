@@ -16,4 +16,4 @@ By hand rather than by reading: the framework runs plugins inside the server pro
 
 ## Language
 
-Framework messages — logs, load reports, and unload failures — are available in Arabic, Chinese, English, French, Russian, and Spanish. The server's UI culture selects the language; English is the fallback. The culture comes from the host operating system, so no configuration is needed.
+Framework messages — logs, load reports, and unload failures — are available in Arabic, Simplified Chinese, English, French, Russian, and Spanish. The server's UI culture selects the language; English is the fallback, and every Chinese variant (including Traditional Chinese) uses the Simplified Chinese resources. The culture comes from the host operating system, so no configuration is needed.
