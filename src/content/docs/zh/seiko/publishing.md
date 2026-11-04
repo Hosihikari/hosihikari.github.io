@@ -46,12 +46,44 @@ zip 根只能有一个 `sei.json`。其余都是载荷；路径相对安装根�
 
 | 字段 | 说明 |
 | --- | --- |
-| `schemaVersion` | 必填；当前为 `2`。 |
+| `schemaVersion` | 必填；通常为 `2`，构件带外链文件时为 `3`。 |
 | `name` | sei 名；必须与索引文件一致，且路径安全。 |
 | `version` | NuGet SemVer 版本；预发布使用 `1.3.0-beta.1` 这类后缀。 |
 | `dependencies` | 名字与可选的版本范围，按与声明相同的规则解析。 |
 | `prerequisites`、`optionalPeers`、`conflicts` | 其余版本级关系，见[关系](#关系)。 |
-| `artifact` | 只描述当前构件：`rid`、构件专属关系、`layout` 与 `modes`。 |
+| `artifact` | 只描述当前构件：`rid`、构件专属关系、`layout`、`modes` 与可选外链。 |
+
+## 外链文件
+
+载荷允许下载但不允许再分发时，zip 里只放元数据，指向厂商 URL。zip 仍需根级 `sei.json`；外链字节在安装时获取，并按声明的 SHA-256 校验。
+
+```json
+{
+  "schemaVersion": 3,
+  "name": "proprietary-server",
+  "version": "1.0.0",
+  "artifact": {
+    "rid": "linux-x64",
+    "externalFiles": [
+      { "path": "server/server.bin", "url": "https://vendor.example/server.bin", "sha256": "…" }
+    ],
+    "externalArchives": [
+      {
+        "url": "https://vendor.example/assets.zip",
+        "sha256": "…",
+        "format": "zip",
+        "members": [{ "member": "assets/icon.png", "path": "server/icon.png" }]
+      }
+    ]
+  }
+}
+```
+
+- 用到外链字段的版本必须声明 `schemaVersion: 3`；不认识的旧客户端会拒绝该版本，而不是装成空包。
+- 每个文件与归档都必须有小写 SHA-256；`size` 可选，只用于更早失败。归档摘要覆盖全部成员，成员不再单独带摘要。
+- `format` 为 `zip`、`tar` 或 `tar.gz`。只抽取列出的成员；要把归档本身作为文件部署，用 `externalFiles`。
+- 目标是包内相对路径；`layout` 不生效，`modes` 仍生效。目标之间及与 zip 内文件都不得冲突。
+- URL 必须是绝对 `http(s)`，允许 query，不得内嵌凭据。换地址就发新版本，不设备用地址。
 
 ## 关系
 

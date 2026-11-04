@@ -46,12 +46,44 @@ Artifacts are bounded: at most 100,000 entries, 1 GiB per entry, and 4 GiB in to
 
 | Field | Meaning |
 | --- | --- |
-| `schemaVersion` | Required; currently `2`. |
+| `schemaVersion` | Required; `2` normally, `3` when the artifact declares external files. |
 | `name` | Sei name; must match the index file and be path-safe. |
 | `version` | NuGet SemVer version. Pre-releases use a suffix such as `1.3.0-beta.1`. |
 | `dependencies` | Names with optional version ranges; resolved by the same rules as declarations. |
 | `prerequisites`, `optionalPeers`, `conflicts` | The other version-level relations; see [Relations](/seiko/publishing/#relations). |
-| `artifact` | The current artifact only: `rid`, its own relations, `layout`, and `modes`. |
+| `artifact` | The current artifact only: `rid`, its own relations, `layout`, `modes`, and optional external files. |
+
+## External files
+
+When the payload may be downloaded but not redistributed, keep only the metadata in the zip and point at the vendor URL instead. The zip still needs a root `sei.json`; the external bytes are fetched at install time and checked against the declared SHA-256.
+
+```json
+{
+  "schemaVersion": 3,
+  "name": "proprietary-server",
+  "version": "1.0.0",
+  "artifact": {
+    "rid": "linux-x64",
+    "externalFiles": [
+      { "path": "server/server.bin", "url": "https://vendor.example/server.bin", "sha256": "…" }
+    ],
+    "externalArchives": [
+      {
+        "url": "https://vendor.example/assets.zip",
+        "sha256": "…",
+        "format": "zip",
+        "members": [{ "member": "assets/icon.png", "path": "server/icon.png" }]
+      }
+    ]
+  }
+}
+```
+
+- A version that uses these fields must declare `schemaVersion: 3`; clients that predate them reject the version instead of installing an empty package.
+- Every file and archive needs a lowercase SHA-256; `size` is optional and only fails earlier. Archive digests cover all members, so members carry no digest of their own.
+- `format` is `zip`, `tar`, or `tar.gz`. Only the listed members are extracted; to deploy an archive file as-is, use `externalFiles`.
+- Targets are package-relative; `layout` does not apply, `modes` still does. Targets may not collide with each other or with files inside the zip.
+- URLs must be absolute `http(s)` with query allowed and no embedded credentials. Changing a URL means a new version; there are no mirrors.
 
 ## Relations
 
