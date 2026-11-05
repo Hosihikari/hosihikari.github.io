@@ -45,7 +45,7 @@ export default defineConfig({
   site: siteUrl,
   redirects,
   // 弯引号落到 CJK 字体上是全角宽度，英文正文里会裂开。
-  markdown: { processor: satteri({ features: { gfm: false, smartPunctuation: false } }) },
+  markdown: { processor: satteri({ features: { smartPunctuation: false } }) },
   integrations: [
     starlight({
       title: {
