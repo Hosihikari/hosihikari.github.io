@@ -67,21 +67,32 @@ Each `sei/<name>.json` holds every version of that name, with artifacts and depe
 
 Indexes are append-only: new versions are added, old versions are never edited or removed. A version can be retired with `yanked: true` (hidden from new resolutions, still usable for lock replay) or `deprecated` (a migration message).
 
+## catalog.json
+
+An index may publish `catalog.json` next to `index.json`. It holds one row per name (latest installable version, description, tags, license, retirement and advisory state) so `search`, `--tag`, `--license` and `outdated` need one request instead of one per name. It is derived data: a missing or broken catalog falls back to per-name reads, and it never decides what installs.
+
 ## Search and inspect
 
 ```bash
 sk search hosihikari
+sk search server --tag hosting --limit 10
 sk info hosihikari
+sk info hosihikari --versions
+sk audit --fail-on high
 sk outdated
 ```
 
-`search`, `info`, and `outdated` read the same sources. `sk info` shows versions, dependencies, yank/deprecated state, and artifact counts.
+`search` matches names, descriptions and tags, ranked exact name first. `sk info` is a package page: description, authors, license, tags, links, installed state, every notable version, external payload hosts and the upstream host. `sk audit` checks what the lock holds against advisories and retirement, and `--fail-on low|moderate|high|critical` turns findings into a non-zero exit for CI. A package the sources cannot answer for is reported as `unknown`, not as clean.
 
 ## Validate an index
 
 ```bash
 sk index verify . --check-artifacts --strict
+sk index verify ./sei-index.json
+sk index catalog . --check
 ```
+
+`index verify` takes a directory or a single maintainer `sei-index.json`. `index catalog` regenerates the catalog, and `--check` only compares, which is what CI uses.
 
 Without arguments, the command validates the current directory. `--check-artifacts` downloads every artifact and verifies its size, SHA-256, and embedded `sei.json`; `--strict` also fails on warnings. The SeiIndex CI runs the same command before merging a submission.
 
