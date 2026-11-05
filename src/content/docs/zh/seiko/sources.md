@@ -67,21 +67,32 @@ sei/
 
 索引只追加：只添加新版本，从不编辑或删除旧版本。某个版本可以用 `yanked: true` 退役（新解析看不见，锁重放仍可用），或用 `deprecated` 给出迁移提示。
 
+## catalog.json
+
+索引可以在 `index.json` 旁放一份 `catalog.json`：每个名字一行（最新可安装版本、简介、标签、协议、退役与 advisory 状态），让 `search`、`--tag`、`--license` 与 `outdated` 只需一次请求而不是逐名请求。它是派生数据：缺失或损坏时回退逐名读取，且从不决定安装什么。
+
 ## 搜索与查看
 
 ```bash
 sk search hosihikari
+sk search server --tag hosting --limit 10
 sk info hosihikari
+sk info hosihikari --versions
+sk audit --fail-on high
 sk outdated
 ```
 
-`search`、`info` 与 `outdated` 读取同一组源。`sk info` 显示版本、依赖、yank/deprecated 状态与构件数。
+`search` 匹配名字、简介与标签，完全同名排最前。`sk info` 是包页面：简介、作者、协议、标签、链接、安装状态、值得看的版本、外链主机与上游主机。`sk audit` 拿锁里的版本对照 advisory 与退役状态，`--fail-on low|moderate|high|critical` 让 CI 在命中严重度时非零退出；源答不上来的包报 `unknown`，不当成干净。
 
 ## 校验索引
 
 ```bash
 sk index verify . --check-artifacts --strict
+sk index verify ./sei-index.json
+sk index catalog . --check
 ```
+
+`index verify` 接受目录或单个维护者 `sei-index.json`。`index catalog` 重新生成 catalog，`--check` 只比较，CI 用的就是后者。
 
 不带路径时校验当前目录。`--check-artifacts` 下载每个构件并核对大小、SHA-256 与内嵌 `sei.json`；`--strict` 把警告也视为失败。SeiIndex 的 CI 在合并提交前运行同一条命令。
 
