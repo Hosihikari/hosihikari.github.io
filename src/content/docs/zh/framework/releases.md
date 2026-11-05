@@ -78,5 +78,5 @@ dotnet new install Hosihikari.Plugin.Templates::1.0.1
 
 ## 兼容
 
-PluginManager v1.2.0 与 HostingShim v1.2.0 使用入口契约版本 1。
-按 Hosihikari.Plugin.Abstractions 1.1.0 构建的插件使用 API 版本 2 与清单 `manifest_version` 1，与 1.0.0 相同。
+PluginManager v1.3.0 与 HostingShim v1.2.1 使用入口契约版本 1。
+按 Hosihikari.Plugin.Abstractions 1.2.0 构建的插件使用 API 版本 2 与清单 `manifest_version` 1，与 1.0.0 相同。核心 v1.3.0 起，每个插件清单都必须声明 `hosihikari` 依赖。

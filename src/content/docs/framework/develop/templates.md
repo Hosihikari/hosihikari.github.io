@@ -5,7 +5,7 @@ description: Start a plugin from a maintained template for each plugin kind.
 
 Each template is a complete plugin package. Copy it into the server as `plugins/<Name>/`, then change
 `name` in `manifest.json` and the matching `.conf`; the directory name must equal the manifest name.
-The templates are MIT-0; Hosihikari.Plugin.Abstractions 1.0.0 and later are MIT.
+The templates are MIT-0; Hosihikari.Plugin.Abstractions 1.0.0 and later are MIT. The RPC templates live in [RpcPluginTemplate](https://github.com/HosihikariFramework/RpcPluginTemplate); copy the runtime directory you want.
 
 ## Precompiled assembly
 
@@ -18,11 +18,11 @@ dotnet new hosihikari-plugin -n MyPlugin          # C#
 dotnet new hosihikari-plugin-fsharp -n MyPlugin   # F#
 ```
 
-Build and pack with `Hosihikari.Plugin.Build`; no framework checkout is needed:
+Build and pack with `Hosihikari.Plugin.Build`:
 
 ```bash
 cd MyPlugin
-dotnet add package Hosihikari.Plugin.Build --version 1.0.0
+dotnet add package Hosihikari.Plugin.Build --version 1.1.0
 dotnet build -t:PackPlugin
 ```
 
@@ -49,7 +49,7 @@ directly. Rename the plugin and restart. See
 ## Out-of-process runtimes
 
 RpcLoader starts the command from `extraInfo.command` and speaks JSON-RPC over stdio. Each
-directory below is a complete package; the binding is copied from the loader and refreshed when
+directory below is a complete package; the protocol definition is copied from the loader and refreshed when
 the loader is upgraded.
 
 | Template | Runtime | Build |

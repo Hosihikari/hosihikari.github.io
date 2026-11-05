@@ -4,7 +4,7 @@ description: 从每种插件种类的维护模板开始。
 ---
 
 每个模板都是一个完整的插件包。复制到服务端 `plugins/<名称>/`，改 `manifest.json` 的 `name`
-与同名 `.conf`；目录名必须与清单 `name` 一致。模板为 MIT-0；Hosihikari.Plugin.Abstractions 1.0.0 及之后为 MIT。
+与同名 `.conf`；目录名必须与清单 `name` 一致。模板为 MIT-0；Hosihikari.Plugin.Abstractions 1.0.0 及之后为 MIT。RPC 模板在 [RpcPluginTemplate](https://github.com/HosihikariFramework/RpcPluginTemplate)，复制需要的运行时目录。
 
 ## 预编译程序集
 

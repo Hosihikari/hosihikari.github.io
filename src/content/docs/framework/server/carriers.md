@@ -1,6 +1,6 @@
 ---
 title: Choosing a carrier
-description: The four carrier targets the framework supports, and what each one costs.
+description: The carrier targets the framework supports, and what each one costs.
 ---
 
 A **carrier** is a concrete runtime environment, fixed by three components: the platform, the parent plugin loader (none in the self-hosted case), and the native API provider — LLAPI for LeviLamina, the Endstone API for Endstone, and MCAPI for the self-hosted BDS 1.21.3. The framework depends only on the platform and the parent loader; the native API side comes from the projection. Pick the carrier before you install anything; the install steps differ per carrier and are not interchangeable.
@@ -16,7 +16,7 @@ A **carrier** is a concrete runtime environment, fixed by three components: the 
 
 Under **LeviLamina** or **Endstone**, the framework is a plugin manager inside someone else's plugin system. The parent discovers, enables, disables, and unloads us; we pass those calls to the plugins we manage. This is the choice when you already run that loader.
 
-The **self-hosted** carrier has no parent: the framework is the outermost plugin system. It is the only carrier that runs on stock BDS without a third-party loader, and it is also the most constrained one:
+The **self-hosted** carriers have no parent: the framework is the outermost plugin system. They are also the most constrained ones:
 
 - The launcher runs one BDS version, 1.21.3.
 - The server needs the **.NET 10 runtime** installed. So do the parented carriers — the runtime lookup lives in shared native code — but under a parent it is easy to overlook.

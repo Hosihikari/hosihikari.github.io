@@ -41,11 +41,13 @@ plugins/
 | `entry` | Path inside the package; absolute paths and `..` are rejected. |
 | `type` | Routing key; always `hosihikari`. |
 | `version` | The plugin's own SemVer version. |
-| `dependencies` | Plugin names with optional SemVer ranges; the dependency graph decides load order and checks versions. |
+| `dependencies` | Required: must include `hosihikari`, so the parent loads the shim first. Other names carry optional SemVer ranges; the graph decides load order and checks versions. |
 | `extraInfo.api_version` | Contract major version; currently `2`. |
 | `extraInfo.manifest_version` | Manifest schema version; currently `1`. |
 | `extraInfo.loader` | The loader that handles this package. `assembly` is the plugin manager's built-in path; `csharp` and `fsharp` are in-process loaders; `rpc` is the out-of-process loader. |
-| `extraInfo.command` | `rpc` only: a JSON array encoded as a string. |
+| `extraInfo.command` | `rpc` only: the argument vector, as a JSON array or encoded as a string. |
+| `extraInfo.prepack` | Commands run in the package directory at pack time, e.g. `npm ci`; pack-time only, the server never restores. |
+| `extraInfo.packageKind` | `plugin` (default), `loader`, or `carrier`. The self-hosted scan skips carrier packages. |
 
 Dependencies are sorted by name. A dependency may carry a NuGet SemVer range:
 
@@ -99,6 +101,7 @@ The configuration format is HOCON. Layering goes through the framework's provide
 - An allowed `OnEnable` opens the scope gate; a refusal keeps the plugin loaded and disabled.
 - Before `OnDisable`, the framework closes the gate and stops delivering events and timers; a refusal reopens it.
 - Unload goes through disable; `OnUnload` releases what the plugin holds.
+- `Enable` and `Disable` are both idempotent: repeating either does not call the hook again. A carrier reload disables and re-enables the plugins it reloads.
 - An exception from a hook is a fault: the host unloads the plugin and notifies the carrier.
 
 The gate covers framework-delivered events and timers. Threads, service registrations, and direct references owned by the plugin must be released in `OnUnload`.

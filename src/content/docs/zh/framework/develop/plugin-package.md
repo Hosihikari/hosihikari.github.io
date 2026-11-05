@@ -41,11 +41,13 @@ plugins/
 | `entry` | 包内相对路径；绝对路径与 `..` 出界。 |
 | `type` | 路由键，`hosihikari`。 |
 | `version` | 插件自己的 SemVer 版本。 |
-| `dependencies` | 依赖的插件名，可带 SemVer 范围；依赖图决定装载顺序并检查版本。 |
+| `dependencies` | 必填 `hosihikari`，父级才会先装寄宿垫片。其余是被依赖的插件名，可带 SemVer 范围；依赖图决定装载顺序并检查版本。 |
 | `extraInfo.api_version` | 契约主版本，当前 `2`。 |
 | `extraInfo.manifest_version` | 清单 schema 版本，当前 `1`。 |
 | `extraInfo.loader` | 处理这个包的加载器。`assembly` 是插件管理器内置入口；`csharp`、`fsharp` 是进程内加载器；`rpc` 是进程外加载器。 |
-| `extraInfo.command` | 仅 `rpc`：编码成字符串的 JSON 数组。 |
+| `extraInfo.command` | 仅 `rpc`：参数表，用 JSON 数组或编码成字符串。 |
+| `extraInfo.prepack` | 打包期在包目录执行的命令，例如 `npm ci`；只在打包期跑，服务端不还原。 |
+| `extraInfo.packageKind` | `plugin`（缺省）、`loader` 或 `carrier`。自持态扫描会跳过载体包。 |
 
 依赖按名字排序；每条依赖可以带一个 NuGet SemVer 范围：
 
@@ -99,6 +101,7 @@ plugins/
 - `OnEnable` 允许后打开作用域闸门；拒绝时插件留在册、保持未启用。
 - `OnDisable` 之前框架关闭闸门，不再投递事件与定时器；拒绝时闸门重开。
 - 卸载经停用；`OnUnload` 释放插件持有的东西。
+- `Enable` 与 `Disable` 都幂等：重复调用不会再跑钩子。载体重载会先停用、再启用它重载的那些插件。
 - 钩子抛异常是故障：宿主卸载插件并通知载体。
 
 回调闸门只管框架投递的事件与定时器。插件自有的线程、服务登记与直接引用要自己在 `OnUnload` 里收尾。
