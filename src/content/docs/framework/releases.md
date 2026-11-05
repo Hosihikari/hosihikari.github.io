@@ -83,5 +83,5 @@ The [Seiko](/seiko/) index also lists the core and the loaders as seis; Seiko in
 
 ## Compatibility
 
-PluginManager v1.2.0 and HostingShim v1.2.0 use hosting contract version 1.
-Plugins built against Hosihikari.Plugin.Abstractions 1.1.0 use API version 2 and manifest `manifest_version` 1, the same as 1.0.0.
+PluginManager v1.3.0 and HostingShim v1.2.1 use hosting contract version 1.
+Plugins built against Hosihikari.Plugin.Abstractions 1.2.0 use API version 2 and manifest `manifest_version` 1, the same as 1.0.0. Since core v1.3.0 every plugin manifest must declare the `hosihikari` dependency.

@@ -35,7 +35,6 @@ bun run preview
 | `src/content/docs/zh/` | 简体中文文档，按同样分区镜像。 |
 | `examples/` | 文档引用的示例插件。 |
 | `astro.config.mjs` | 站点配置、跳转与双语侧边栏。 |
-| `patches/` | Bun 应用的依赖补丁。 |
 
 页面是带 Starlight frontmatter 的 Markdown 或 MDX。每页属于一个项目分区，放在对应目录下。顶栏链接在 `src/components/Header.astro`；侧边栏标签在 `astro.config.mjs` 里，条目用 `slug`，同一条目会解析到英文与中文页面。
 

@@ -1,6 +1,7 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
+import { satteri } from '@astrojs/markdown-satteri';
 
 const siteUrl = 'https://hoshi.srcz.one';
 const ogImage = new URL('/og-image.png', siteUrl).href;
@@ -44,7 +45,7 @@ export default defineConfig({
   site: siteUrl,
   redirects,
   // 弯引号落到 CJK 字体上是全角宽度，英文正文里会裂开。
-  markdown: { smartypants: false },
+  markdown: { processor: satteri({ features: { gfm: false, smartPunctuation: false } }) },
   integrations: [
     starlight({
       title: {

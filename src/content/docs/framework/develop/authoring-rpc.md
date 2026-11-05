@@ -51,7 +51,7 @@ plugins/hello-node/
 
 `command` is a JSON array encoded as a string; the working directory is the package directory, and no shell is involved.
 
-Copy the binding from the installed loader package:
+Copy the protocol definition from the installed loader package:
 
 ```bash
 cp <server>/plugins/hosihikari-rpc/protocol/node/hosihikari.mjs .
@@ -105,9 +105,9 @@ Events are asynchronous by default. Disabling closes the gate; subscription call
 
 stdout carries the protocol; stderr carries text logs. The Node binding redirects `console.log` to stderr; do not write to stdout.
 
-## Bindings
+## Protocol definitions
 
-The loader package ships reference bindings:
+The loader package ships reference protocol definitions:
 
 - `protocol/node/hosihikari.mjs` and `hosihikari.d.ts` (TypeScript declarations)
 - `protocol/quickjs/hosihikari.js` (requires `qjs`; JSDoc types)
@@ -124,7 +124,7 @@ The Endstone CLI replaces the child process `PATH` with Python's `sys.path`; if 
 
 ## Protocol
 
-A custom binding implements the same protocol:
+A custom protocol definition implements the same protocol:
 
 - Host → plugin: `hosihikari/hello`, `hosihikari/enable`, `hosihikari/disable`, `hosihikari/unload`, `hosihikari/events/deliver`
 - Plugin → host: `hosihikari/events/publish`, `hosihikari/events/subscribe`, `hosihikari/events/unsubscribe`, `hosihikari/log`

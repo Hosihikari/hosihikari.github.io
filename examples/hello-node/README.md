@@ -17,14 +17,14 @@ cd hosihikari.github.io
 # GitHub releases and extract them into the server root.
 $Server = 'C:\bedrock-server'
 Copy-Item -Recurse .\examples\hello-node "$Server\plugins\hello-node"
-Copy-Item "$Server\plugins\hosihikari-rpc\bindings\node\hosihikari.mjs" "$Server\plugins\hello-node\hosihikari.mjs"
+Copy-Item "$Server\plugins\hosihikari-rpc\protocol\node\hosihikari.mjs" "$Server\plugins\hello-node\hosihikari.mjs"
 ```
 
 `node` must be on `PATH`. On Endstone, if it cannot be found, use the absolute path in `manifest.json`'s `command`.
 
 ## Files
 
-- `manifest.json`: `loader` is `rpc`; depends on `hosihikari` and `hosihikari-rpc`; `command` points at the binding and the entry.
+- `manifest.json`: `loader` is `rpc`; depends on `hosihikari` and `hosihikari-rpc`; `command` points at the protocol definition and the entry.
 - `main.mjs`: default-exports the four hooks.
 - `hello-node.conf`: package defaults.
 - `hosihikari.mjs`: copied from the loader package at install time.
