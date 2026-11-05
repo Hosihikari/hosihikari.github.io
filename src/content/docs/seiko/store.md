@@ -61,7 +61,7 @@ Every deployment records a generation inside the root:
     hosihikari/1.2.0/sei.json
 ```
 
-`sk rollback` restores the previous generation; `sk rollback --to <n>` restores a specific one. If the target generation's artifacts are missing or corrupt, rollback downloads them again from the configured sources (`--proxy` is supported). `sk cache clean` keeps artifacts referenced by retained generations.
+`sk rollback` restores the previous generation; `sk rollback --to <n>` restores a specific one. A rollback restores that generation only: adopted files come back from the content saved with it, and files it did not have are removed. A missing generation state or a snapshot whose digest does not match fails the rollback before anything on disk changes. If the target generation's artifacts are missing or corrupt, rollback downloads them again from the configured sources (`--proxy` is supported). `sk cache clean` keeps artifacts referenced by retained generations.
 
 A deployment is transactional: files, state, lock, and the generation directory are written through a journal, and a failure restores the previous deployment. If a run is interrupted, the next command recovers or discards the unfinished transaction before doing anything else.
 
