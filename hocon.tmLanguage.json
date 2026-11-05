@@ -1,0 +1,44 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "hocon",
+  "scopeName": "source.hocon",
+  "patterns": [
+    { "include": "#comments" },
+    { "include": "#strings" },
+    { "include": "#keys" },
+    { "include": "#values" }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        { "name": "comment.line.number-sign.hocon", "match": "#.*$" },
+        { "name": "comment.line.double-slash.hocon", "match": "//.*$" }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        { "name": "string.quoted.triple.hocon", "begin": "\"\"\"", "end": "\"\"\"" },
+        {
+          "name": "string.quoted.double.hocon",
+          "begin": "\"",
+          "end": "\"",
+          "patterns": [{ "name": "constant.character.escape.hocon", "match": "\\\\." }]
+        }
+      ]
+    },
+    "keys": {
+      "patterns": [
+        { "name": "support.type.property-name.hocon", "match": "(?:^\\s*)[A-Za-z0-9_.\\-]+(?=\\s*[:=])" },
+        { "name": "support.type.property-name.hocon", "match": "(?<=\\{)\\s*[A-Za-z0-9_.\\-]+(?=\\s*[:=])" }
+      ]
+    },
+    "values": {
+      "patterns": [
+        { "name": "keyword.other.include.hocon", "match": "\\b(?:include|required)\\b" },
+        { "name": "keyword.other.substitution.hocon", "match": "\\$\\{[^}]*\\}" },
+        { "name": "constant.language.hocon", "match": "\\b(?:true|false|null)\\b" },
+        { "name": "constant.numeric.hocon", "match": "\\b-?\\d+(?:\\.\\d+)?\\b" }
+      ]
+    }
+  }
+}

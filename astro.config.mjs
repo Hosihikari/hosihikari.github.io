@@ -2,6 +2,7 @@
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 import { satteri } from '@astrojs/markdown-satteri';
+import hocon from './hocon.tmLanguage.json' with { type: 'json' };
 
 const siteUrl = 'https://hoshi.srcz.one';
 const ogImage = new URL('/og-image.png', siteUrl).href;
@@ -45,7 +46,11 @@ export default defineConfig({
   site: siteUrl,
   redirects,
   // 弯引号落到 CJK 字体上是全角宽度，英文正文里会裂开。
-  markdown: { processor: satteri({ features: { smartPunctuation: false } }) },
+  // Shiki 没有 HOCON 语法；sei 的两页用它写配置，加一份自己的语法。
+  markdown: {
+    processor: satteri({ features: { smartPunctuation: false } }),
+    shikiConfig: { langs: [hocon] },
+  },
   integrations: [
     starlight({
       title: {
