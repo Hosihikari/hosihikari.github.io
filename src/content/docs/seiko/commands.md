@@ -58,6 +58,14 @@ Resolve the declaration and deploy it. Alias: `sk install`.
 
 Add direct declarations and sync. A bare `1.2.0` means 1.2.0 or newer; use `[1.2.0]` to pin exactly. Without a range, a new declaration gets `[version, next-major)` (or the next minor for `0.y.z`); repeating `add A` re-resolves A within its range. `--remove` is repeatable, so `add P --remove R` adds and removes atomically. `--latest-installable` applies to the sync; `--allow-critical` permits a version with a critical advisory.
 
+### `sk add <path>` — install a local file
+
+`add` also takes a local `.sei` file instead of a name. A token containing a path separator, ending in `.sei`, or naming an existing file is read as a path; write `./x.sei` when a configured source also carries a sei called `x`. A path takes one artifact pinned by its digest, so `@range` is not accepted with it.
+
+The path is stored relative to the install root — input is resolved against the working directory, `./` and `../` are allowed in the stored form, and an absolute path or a `file:` URL is rejected. A file on another volume has no relative form and is rejected too. The bytes are snapshotted into `<store>/origin/<name>-<sha>.sei` when you add it, so deleting or rebuilding the original does not break the lock; rebuilding it under the same version is a `checksum` error until you bump the version or `sk remove` and add it again. A plain `sk add <name>` drops the origin declaration.
+
+Output, `--dry-run`, `sk info`, and the JSON envelopes mark such entries as `origin` and not index-verified, and origin entries are exempt from the cross-source digest check: nothing published can disagree with bytes you chose. `origin` is a reserved source id. `--offline` accepts an add whose specifications are all paths.
+
 ### `sk remove <name>`
 
 Remove a direct declaration from `sei` and sync the rest; `--purge` also deletes its config/data through the transaction trash.
@@ -78,17 +86,20 @@ Restore the previous generation's config, lock, and deployment, or the one named
 | `sk why <name>` | Chains to a sei; each link names the relation kind (direct declaration, dependency, or prerequisite). |
 | `sk outdated [--pre]` | Newer versions in range, overall, and latest installable. |
 | `sk search <term>` | Search sei names in the configured indexes. |
-| `sk info <name>` | Versions, all four relation kinds, and artifact conditions for one sei. |
+| `sk info <name> [--versions]` | Versions (all of them with `--versions`), all four relation kinds, artifact conditions, and origin state. |
+| `sk audit [--security-only] [--fail-on <level>]` | Check the lock against advisories and retirement; `--fail-on` makes findings a non-zero exit for CI. |
 | `sk doctor [--clean]` | Check the lock, store, deployment, and partial downloads; `--clean` deletes all partial downloads. |
 | `sk check` | The read-only form of `doctor`; never deletes anything. |
+| `sk generation list` | Generations retained in the root. |
 
 ## Sources and configuration
 
 | Command | Meaning |
 | --- | --- |
 | `sk source list` | Sources in declaration order. |
-| `sk source add <id> <index> [--token-host <host>]...` | Append a source; `--token-host` is repeatable. Private-source tokens come from `SEIKO_TOKEN_<HOST>`. |
+| `sk source add <id> <index> [--token-host <host>]...` | Append a source; the index may name the directory that holds `index.json`. `--token-host` is repeatable. Private-source tokens come from `SEIKO_TOKEN_<HOST>`. |
 | `sk source remove <id>` | Remove a source. |
+| `sk source status [id]` | Check each source's reachability, index, and catalog. |
 | `sk config get <key>` | Read `rid`. |
 | `sk config set <key> <value>` | Write a value; an empty value removes the key. |
 
@@ -110,13 +121,13 @@ Restore the previous generation's config, lock, and deployment, or the one named
 sk index verify [path] [--check-artifacts] [--strict] [--proxy <url>]
 ```
 
-Validates an index directory: schema, names, versions, artifact URLs, and SHA-256 values. `--check-artifacts` also downloads every artifact and checks its size, digest, and embedded `sei.json`; `--strict` treats warnings as errors. The path defaults to the current directory. Append-only changes are checked by the index repository's CI, not by this command.
+Validates an index directory: schema, names, versions, artifact URLs, and SHA-256 values. `sk index catalog [path] --check` regenerates `catalog.json`, or with `--check` only compares it. `--check-artifacts` also downloads every artifact and checks its size, digest, and embedded `sei.json`; `--strict` treats warnings as errors. The path defaults to the current directory. Append-only changes are checked by the index repository's CI, not by this command.
 
 ## Preview and offline
 
 `--dry-run` on `sync`, `add`, `remove`, and `update` resolves and prints `changes` and `blocked` constraints without downloading payloads or writing config, lock, or deployment. Blocked constraints are a normal preview result: the command still exits 0, and `--json` carries them in `data.blocked`. `--diagnostics` adds `data.diagnostics`.
 
-`--offline` accepts replay (`sync --locked`/`--frozen`), `rollback`, `--dry-run`, and read-only commands. It refuses `add`, `remove`, `update`, and a resolving `sync`, because those need fresh metadata. Missing cached index metadata or artifacts are listed together before anything changes.
+`--offline` accepts replay (`sync --locked`/`--frozen`), `rollback`, `--dry-run`, read-only commands, and `add` when every specification is a path. It still refuses an `add` by name, `remove`, `update`, and a resolving `sync`, because those need fresh metadata. Missing cached index metadata or artifacts are listed together before anything changes.
 
 ## Adopt and force
 
@@ -150,5 +161,7 @@ Prerelease versions are excluded unless `--pre` is passed or the range itself na
 | `0` | Success. |
 | `1` | Runtime failure. |
 | `2` | Usage error. |
+
+`sync`'s `data.packages` lists every resolved sei with its source and an `indexVerified` flag (false for `origin`); previews carry `external`, `externalBytes`, and `externalUnknown`.
 
 `--json` emits `{"schemaVersion":1,"command":"...","data":...}` on success and `{"schemaVersion":1,"command":"...","error":{"code":"...","message":"..."}}` on failure. Error codes are `usage`, `config`, `source`, `resolve`, `download`, `checksum`, `deploy`, `lock`, `io`, and `internal`; see [Troubleshooting](/seiko/troubleshooting/).

@@ -24,7 +24,7 @@ sk source add internal https://packages.example.com/seiko/index.json
 sk source add local ../my-index/index.json
 ```
 
-The index path for a local source is a file, not a directory. Relative paths resolve from the install root. `sk source list` prints the current order, and `sk source remove <id>` removes one.
+The index path for a local source may be the index file or the directory that holds it, which implies `index.json`; relative paths resolve from the install root. A local path is checked to exist before the config is written, while an http(s) index is not probed, so `source add` stays offline. `sk source list` prints the current order, and `sk source remove <id>` removes one.
 
 Sources are tried in declaration order. The first source that contains a sei name provides all versions of that sei; later sources are not merged into it. There is no `priority` field: reorder the `sources` array to change precedence.
 
@@ -65,7 +65,7 @@ sei/
 
 Each `sei/<name>.json` holds every version of that name, with artifacts and dependencies. The format is described in [Publishing a sei](/seiko/publishing/).
 
-Indexes are append-only: new versions are added, old versions are never edited or removed. A version can be retired with `yanked: true` (hidden from new resolutions, still usable for lock replay) or `deprecated` (a migration message).
+Indexes are append-only: new versions are added, old versions are never edited or removed. Local `origin` files are the exception to the index rules — they never enter an index, are not cross-checked against one, and re-adding the same file with new bytes under the same version is what the `checksum` guard is for. A version can be retired with `yanked: true` (hidden from new resolutions, still usable for lock replay) or `deprecated` (a migration message).
 
 ## catalog.json
 

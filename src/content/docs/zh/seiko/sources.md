@@ -24,7 +24,7 @@ sk source add internal https://packages.example.com/seiko/index.json
 sk source add local ../my-index/index.json
 ```
 
-本地源的索引路径是文件，不是目录。相对路径从安装根解析。`sk source list` 打印当前顺序，`sk source remove <id>` 删除一个源。
+本地源的索引路径可以是索引文件，也可以是放有它的目录（后者隐含 `index.json`）；相对路径从安装根解析。本地路径在写配置前先检查存在，http(s) 索引不探测，因此 `source add` 保持离线。`sk source list` 打印当前顺序，`sk source remove <id>` 删除一个源。
 
 源按声明顺序尝试。第一个包含某个 sei 名字的源提供该 sei 的全部版本，后面的源不会与之合并。没有 `priority` 字段：要改优先级就调整 `sources` 数组的顺序。
 
@@ -65,7 +65,7 @@ sei/
 
 每个 `sei/<name>.json` 保存该名字的全部版本、构件与依赖。格式见[发布 sei](/zh/seiko/publishing/)。
 
-索引只追加：只添加新版本，从不编辑或删除旧版本。某个版本可以用 `yanked: true` 退役（新解析看不见，锁重放仍可用），或用 `deprecated` 给出迁移提示。
+索引只追加：只添加新版本，从不编辑或删除旧版本。本地 `origin` 文件是索引规则的例外——不进索引、不与索引交叉核对，同一版本下改字节后重新添加正是 `checksum` 守卫要拦的。某个版本可以用 `yanked: true` 退役（新解析看不见，锁重放仍可用），或用 `deprecated` 给出迁移提示。
 
 ## catalog.json
 

@@ -22,6 +22,15 @@ sei = [
   { name = "hosihikari" },
   { name = "hello-seiko", version = "[1.0.0,2.0.0)" }
 ]
+
+# Optional: local .sei files, each paired with its own sei entry above.
+origin = [
+  {
+    name = "hello-seiko"
+    paths = ["dist/hello-seiko.sei"]
+    selectors = [ { rid = "linux-x64" } ]
+  }
+]
 ```
 
 | Field | Meaning |
@@ -33,8 +42,11 @@ sei = [
 | `rid` | Target platform written into the lock; defaults to the running platform. |
 | `sei[].name` | Direct sei name. |
 | `sei[].version` | NuGet version range; omitted or `*` means any stable version. |
+| `origin[].name` | Sei supplied by a local file; must also appear in `sei`. |
+| `origin[].paths` | Stored paths relative to the install root; `./` and `../` allowed, absolute paths rejected. |
+| `origin[].selectors` | Optional conditions (`rid`, `prerequisites`) selecting a path, matching artifact selectors. |
 
-Direct declarations live only in `sei`. The lock records the resolved graph, including the version- and artifact-level relations, the selected artifact, and its `rid`.
+Direct declarations live only in `sei`. The lock records the resolved graph, including the version- and artifact-level relations, the selected artifact, and its `rid`. `origin` is a reserved source id: it pairs with a `sei` entry and only pins where that entry's bytes come from, so a configured source may not use it.
 
 `seiko.conf` is HOCON. `#` starts a comment, and quoted strings are usually optional. The file must declare at least one source before resolving.
 
@@ -83,7 +95,8 @@ The resolver prefers the locked version when it still satisfies every constraint
 | --- | --- |
 | `target.rid` | Platform used to select artifacts. |
 | `sources` | Source ids in declaration order. |
-| `sei[].source` | The source that provided this sei; replay uses the same source id. |
+| `sei[].source` | The source that provided this sei; replay uses the same source id. `origin` for a local file. |
+| `sei[].originPath` | Origin entries only (omitted otherwise): the stored path the bytes are read from, or matched against a snapshot. |
 | `sei[].direct` | Whether this sei is a direct declaration. |
 | `sei[].artifact.sha256` | Digest of the selected artifact. |
 | `sei[].artifact.rid` | Platform condition of the selected artifact, when any. |
@@ -95,7 +108,7 @@ The lock is deterministic and machine-written. Do not edit it by hand; change `s
 
 ## Replay
 
-- `sk sync --frozen` replays the lock without resolving. The declared direct set must equal the lock's direct entries, the lock's target `rid` must equal the configured `rid`, and each entry's source, relations, artifact `rid`, and dependencies must still match the index.
+- `sk sync --frozen` replays the lock without resolving. The declared direct set must equal the lock's direct entries, the lock's target `rid` must equal the configured `rid`, and each entry's source, relations, artifact `rid`, and dependencies must still match the index. An `origin` entry replays from its locked `originPath` (falling back to the stored snapshot when the file itself is gone) and the digest and selector conditions already in the lock, never from the current declaration.
 - `sk sync --locked` resolves normally and fails if the resulting lock differs from the committed one.
 - Normal `sk sync` resolves, deploys, and rewrites the lock.
 

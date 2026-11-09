@@ -54,12 +54,13 @@ sk --version
 seiko-mcp --version
 ```
 
-手动下载的归档与安装器做同样的检查：
+手动下载按与安装器相同的方式、对 `SHA256SUMS` 校验：
 
 ```bash
-gh attestation verify 'sk-<version>-linux-x64.tar.gz' --repo Hosihikari/Seiko
 sha256sum -c SHA256SUMS --ignore-missing
 ```
+
+`SHA256SUMS` 覆盖全部发布资产。`gh attestation verify 'sk-<version>-<rid>.tar.gz' --repo Hosihikari/Seiko` 另行证明包资产由本仓的 workflow 构建；安装器没有 attestation。
 
 | 资产 | 内容 |
 | --- | --- |

@@ -58,6 +58,14 @@ description: sk 的命令、选项与机器可读输出。
 
 加入直接声明并同步。裸写 `1.2.0` 表示 1.2.0 或更高；精确锁定用 `[1.2.0]`。不带范围的新声明写入 `[版本, 下一主版本)`（`0.y.z` 为下一小版本）；重复 `add A` 在现有范围内重新解析 A。`--remove` 可重复，因此 `add P --remove R` 原子地加入并移除。`--latest-installable` 作用于这次同步；`--allow-critical` 允许带 critical 公告的版本。
 
+### `sk add <path>` —— 安装本地文件
+
+`add` 也可以直接收一个本地 `.sei` 文件。带路径分隔符、以 `.sei` 结尾、或存在同名文件时按路径处理；配置的源里也有叫 `x` 的 sei 时写 `./x.sei` 区分。路径模式下一个文件只按自身摘要固定一个构件，因此不接受 `@range`。
+
+路径以相对安装根的形式存储——输入按工作目录解析，存储形式允许 `./` 与 `../`，绝对路径与 `file:` URL 一律拒绝；落在另一个卷上的文件没有相对形式，同样拒绝。添加时字节会复制为 `<store>/origin/<name>-<sha>.sei` 快照，删除或重建原件都不会弄坏锁；版本号不变而字节变化按 `checksum` 报错，需要升版本或先 `sk remove` 再重新添加。不带路径的 `sk add <name>` 会清掉该声明。
+
+输出、`--dry-run`、`sk info` 与 JSON 信封会把这类条目标成 `origin` 且未经索引校验；`origin` 条目也豁免跨源摘要核对——用户自己选的字节不会被已发布内容推翻。`origin` 是保留的源 id。`--offline` 在全部输入都是路径时可用。
+
 ### `sk remove <name>`
 
 从 `sei` 删除直接声明并同步剩余内容；`--purge` 还会经事务 trash 删除它的 config/data。
@@ -78,16 +86,20 @@ description: sk 的命令、选项与机器可读输出。
 | `sk why <name>` | 到某个 sei 的链，每节标明是直接声明、依赖还是前置关系。 |
 | `sk outdated [--pre]` | 范围内、整体与最新可安装版本。 |
 | `sk search <term>` | 在配置的索引里搜索 sei 名。 |
-| `sk info <name>` | 单个 sei 的版本、四类关系与构件条件。 |
+| `sk info <name> [--versions]` | 单个 sei 的版本（带 `--versions` 时全部）、四类关系、构件条件与 origin 状态。 |
+| `sk audit [--security-only] [--fail-on <level>]` | 拿锁对照 advisory 与退役状态；`--fail-on` 让命中成为 CI 的非零退出。 |
 | `sk doctor [--clean]` | 检查锁、存储、部署与残留下载；`--clean` 删除所有未完成下载。 |
+| `sk check` | `doctor` 的只读形式，从不删除。 |
+| `sk generation list` | 根目录里保留的部署代。 |
 
 ## 源与配置
 
 | 命令 | 说明 |
 | --- | --- |
 | `sk source list` | 按声明顺序列出源。 |
-| `sk source add <id> <index> [--token-host <host>]...` | 追加源；`--token-host` 可重复。私有源 token 来自 `SEIKO_TOKEN_<HOST>`。 |
+| `sk source add <id> <index> [--token-host <host>]...` | 追加源；索引可以只写放有 `index.json` 的目录。`--token-host` 可重复。私有源 token 来自 `SEIKO_TOKEN_<HOST>`。 |
 | `sk source remove <id>` | 删除源。 |
+| `sk source status [id]` | 检查每个源的可达性、索引与 catalog。 |
 | `sk config get <key>` | 读取 `rid`。 |
 | `sk config set <key> <value>` | 写入配置；空值删除该键。 |
 
@@ -109,13 +121,13 @@ description: sk 的命令、选项与机器可读输出。
 sk index verify [path] [--check-artifacts] [--strict] [--proxy <url>]
 ```
 
-校验索引目录的 schema、名称、版本、构件 URL 与 SHA-256。`--check-artifacts` 还会下载每个构件，核对大小、摘要与内嵌 `sei.json`；`--strict` 把警告也当错误。路径默认是当前目录。追加规则由索引仓库的 CI 检查，不由这条命令检查。
+校验索引目录的 schema、名称、版本、构件 URL 与 SHA-256。`sk index catalog [path] --check` 重新生成 `catalog.json`，带 `--check` 时只比较。`--check-artifacts` 还会下载每个构件，核对大小、摘要与内嵌 `sei.json`；`--strict` 把警告也当错误。路径默认是当前目录。追加规则由索引仓库的 CI 检查，不由这条命令检查。
 
 ## 预览与离线
 
 `sync`、`add`、`remove`、`update` 的 `--dry-run` 会解析并打印 `changes` 与被阻塞项，不下载载荷，也不写配置、锁或部署。阻塞项是正常的预览结果：命令仍退出 0，`--json` 放在 `data.blocked`；`--diagnostics` 另附 `data.diagnostics`。
 
-`--offline` 接受重放（`sync --locked`/`--frozen`）、`rollback`、`--dry-run` 与只读命令；拒绝 `add`、`remove`、`update` 与需要重新求解的 `sync`，因为它们需要新元数据。缺失的缓存元数据或构件会在任何改动前一次列出。
+`--offline` 接受重放（`sync --locked`/`--frozen`）、`rollback`、`--dry-run`、只读命令，以及全部输入都是路径的 `add`；按名字的 `add`、`remove`、`update` 与需要重新求解的 `sync` 仍然拒绝，因为它们需要新元数据。缺失的缓存元数据或构件会在任何改动前一次列出。
 
 ## 接管与强制
 
@@ -149,5 +161,7 @@ sk completion bash|zsh|fish|powershell
 | `0` | 成功。 |
 | `1` | 运行期失败。 |
 | `2` | 用法错误。 |
+
+`sync` 的 `data.packages` 逐个列出解析到的 sei、来源与 `indexVerified`（`origin` 为 false）；预览另有 `external`、`externalBytes`、`externalUnknown`。
 
 `--json` 成功时输出 `{"schemaVersion":1,"command":"...","data":...}`，失败时输出 `{"schemaVersion":1,"command":"...","error":{"code":"...","message":"..."}}`。错误码为 `usage`、`config`、`source`、`resolve`、`download`、`checksum`、`deploy`、`lock`、`io` 与 `internal`；见[常见问题](/zh/seiko/troubleshooting/)。
