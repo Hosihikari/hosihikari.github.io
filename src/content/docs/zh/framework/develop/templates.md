@@ -21,7 +21,7 @@ dotnet new hosihikari-plugin-fsharp -n MyPlugin   # F#
 
 ```bash
 cd MyPlugin
-dotnet add package Hosihikari.Plugin.Build --version 1.0.0
+dotnet add package Hosihikari.Plugin.Build --version 1.1.0
 dotnet build -t:PackPlugin
 ```
 

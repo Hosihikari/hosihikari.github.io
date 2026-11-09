@@ -8,7 +8,7 @@ description: 不启动基岩版专用服务器，直接驱动插件生命周期�
 测试包自身的版本为 1.0.0。
 
 ```bash
-dotnet add package Hosihikari.Testing --version 1.0.0
+dotnet add package Hosihikari.Testing --version 1.1.0
 ```
 
 ## 生命周期宿主

@@ -9,7 +9,7 @@ harness was validated against; PluginManager 1.2.0 changed distribution and vers
 The test package is versioned 1.0.0.
 
 ```bash
-dotnet add package Hosihikari.Testing --version 1.0.0
+dotnet add package Hosihikari.Testing --version 1.1.0
 ```
 
 ## Lifecycle host

@@ -3,19 +3,29 @@ title: 发布记录
 description: 星光框架、加载器与模板的已发布版本。
 ---
 
-当前功能线发布于 2026 年 10 月 31 日；模板包最近一次更新在 10 月 22 日（1.0.1）。
+当前功能线发布于 2026 年 11 月 9 日；模板包最近一次更新在 10 月 22 日（1.0.1）。
 
 | 组件 | 版本 | 分发方式 |
 | --- | --- | --- |
-| [PluginAbstractions](https://www.nuget.org/packages/Hosihikari.Plugin.Abstractions/1.1.0) | 1.1.0 | NuGet |
-| [PluginManager](https://github.com/HosihikariFramework/PluginManager/releases/tag/v1.2.0) | v1.2.0 | Release 归档、NuGet、sei |
-| [HostingShim](https://github.com/HosihikariFramework/HostingShim/releases/tag/v1.2.1) | v1.2.1 | Release 归档，五个载体目标、sei |
-| [C# Loader](https://github.com/HosihikariFramework/CSharpLoader/releases/tag/v1.1.0) | v1.1.0 | Release 归档、sei |
-| [F# Loader](https://github.com/HosihikariFramework/FSharpLoader/releases/tag/v1.1.0) | v1.1.0 | Release 归档、sei |
-| [RPC Loader](https://github.com/HosihikariFramework/RpcLoader/releases/tag/v1.1.0) | v1.1.0 | Release 归档、sei |
-| [Plugin.Build](https://www.nuget.org/packages/Hosihikari.Plugin.Build/1.0.0) | 1.0.0 | NuGet |
-| [Testing](https://www.nuget.org/packages/Hosihikari.Testing/1.0.0) | 1.0.0 | NuGet |
-| [插件模板](https://www.nuget.org/packages/Hosihikari.Plugin.Templates/1.0.1) | 1.0.1 | `dotnet new` |
+| [PluginAbstractions](https://www.nuget.org/packages/Hosihikari.Plugin.Abstractions/1.2.0) | 1.2.0 | NuGet |
+| [PluginManager](https://github.com/HosihikariFramework/PluginManager/releases/tag/v1.3.0) | v1.3.0 | Release 归档、NuGet、sei |
+| [HostingShim](https://github.com/HosihikariFramework/HostingShim/releases/tag/v1.2.2) | v1.2.2 | Release 归档，五个载体目标、sei |
+| [C# Loader](https://github.com/HosihikariFramework/CSharpLoader/releases/tag/v1.2.0) | v1.2.0 | Release 归档、sei |
+| [F# Loader](https://github.com/HosihikariFramework/FSharpLoader/releases/tag/v1.2.0) | v1.2.0 | Release 归档、sei |
+| [RPC Loader](https://github.com/HosihikariFramework/RpcLoader/releases/tag/v1.2.0) | v1.2.0 | Release 归档、sei |
+| [Plugin.Build](https://www.nuget.org/packages/Hosihikari.Plugin.Build/1.1.0) | 1.1.0 | NuGet |
+| [Testing](https://www.nuget.org/packages/Hosihikari.Testing/1.1.0) | 1.1.0 | NuGet |
+| [插件模板](https://www.nuget.org/packages/Hosihikari.Plugin.Templates/1.1.0) | 1.1.0 | `dotnet new` |
+
+## 1.3.0
+
+- 生成的 `sei.json` 用 schema 3（ADR-0055），索引侧的 `sei/<名称>.json` 仍是 2。装这一线需要 Seiko 0.4 及以上。
+- 加载器与载体依赖 `hosihikari [1.3.0,2.0.0)`。加载器 1.2.0 从契约 1.2.0 读共享层名单，配旧核心会在装载时失败，走到解析期才报更晚。
+- `Hosihikari.Plugin.Abstractions` 1.2.0 公开 `PluginContractInfo.SharedAssemblyFileNames` 与 `AddSharedAssemblies`；载体把绑定程序集追加进名单，不再扫描 `FrameworkContext`。
+- 每个插件包都必须声明 `hosihikari` 依赖，`extraInfo.packageKind` 认 `plugin`、`loader` 或 `carrier`；两者都在装载与打包期拦截。
+- `extraInfo.prepack` 在打包期以白名单环境和超时执行；操作员文本完成本地化。
+- `Disable` 幂等，待回收的插件仍算依赖者；`Hosihikari.Plugin.Pack` 同时作为 `hosihikari-pack` dotnet 工具发布。
+- `HostingShim` v1.2.2 修好 Endstone 的插件移除，载体重载不再报未在场。入口契约版本不变，仍为 1。
 
 ## 1.2.1
 
@@ -66,10 +76,10 @@ description: 星光框架、加载器与模板的已发布版本。
 .NET 包：
 
 ```bash
-dotnet add package Hosihikari.Plugin.Abstractions --version 1.1.0
-dotnet add package Hosihikari.Plugin.Build --version 1.0.0
-dotnet add package Hosihikari.Testing --version 1.0.0
-dotnet new install Hosihikari.Plugin.Templates::1.0.1
+dotnet add package Hosihikari.Plugin.Abstractions --version 1.2.0
+dotnet add package Hosihikari.Plugin.Build --version 1.1.0
+dotnet add package Hosihikari.Testing --version 1.1.0
+dotnet new install Hosihikari.Plugin.Templates::1.1.0
 ```
 
 服务端组件是 GitHub Release 归档：下载对应平台的载体、核心归档与所需加载器归档，解压到服务端根目录。见[在 LeviLamina 上安装](/zh/framework/server/install/levilamina/)、[在 Endstone 上安装](/zh/framework/server/install/endstone/)、[自持态 Linux](/zh/framework/server/install/selfhosted/)与[自持态 Windows](/zh/framework/server/install/selfhosted-windows/)。
@@ -78,5 +88,5 @@ dotnet new install Hosihikari.Plugin.Templates::1.0.1
 
 ## 兼容
 
-PluginManager v1.3.0 与 HostingShim v1.2.1 使用入口契约版本 1。
+PluginManager v1.3.0 与 HostingShim v1.2.2 使用入口契约版本 1。
 按 Hosihikari.Plugin.Abstractions 1.2.0 构建的插件使用 API 版本 2 与清单 `manifest_version` 1，与 1.0.0 相同。核心 v1.3.0 起，每个插件清单都必须声明 `hosihikari` 依赖。
