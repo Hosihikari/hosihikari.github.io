@@ -57,7 +57,7 @@ Mutation tools are registered only with `--allow-mutations`:
 | `config_set` | Write a configuration value. |
 | `cache_clean` | Remove unreferenced artifacts. |
 
-Mutation tools take `dryRun`, `offline`, `adopt`, and `force`, matching the CLI. `add` takes paths exactly like `sk add`: a relative path is resolved against the server process's working directory, so prefer paths relative to the root or run the server from the root. Every mutation requires an explicit `root` argument; the server refuses to infer it. Read-only tools accept an optional `root` and are not restricted by the allowlists. With `--allowed-root`, a mutation root must be the allowed directory or lie beneath it, after resolving symlinks. The server takes the same install-root lock as `sk`, so a mutation cannot race a CLI sync.
+Mutation tools take `dryRun`, `offline`, `adopt`, and `force`, matching the CLI. `add` takes paths exactly like `sk add`, and a relative path is resolved against the server process's working directory — not `root`. Start the server in the install root, or pass a path relative to its working directory. Every mutation requires an explicit `root` argument; the server refuses to infer it. Read-only tools accept an optional `root` and are not restricted by the allowlists. With `--allowed-root`, a mutation root must be the allowed directory or lie beneath it, after resolving symlinks. The server takes the same install-root lock as `sk`, so a mutation cannot race a CLI sync.
 
 ## Client configuration
 

@@ -57,7 +57,7 @@ server 通过 stdio 使用行分隔 JSON-RPC，协议版本为 `2025-06-18`。`i
 | `config_set` | 写入配置。 |
 | `cache_clean` | 删除未被引用的构件。 |
 
-变更类工具接受 `dryRun`、`offline`、`adopt` 与 `force`，与 CLI 一致。`add` 与 `sk add` 一样收路径：相对路径按 server 进程的工作目录解析，因此优先用相对 root 的路径，或从 root 启动 server。
+变更类工具接受 `dryRun`、`offline`、`adopt` 与 `force`，与 CLI 一致。`add` 与 `sk add` 一样收路径；相对路径按 server 进程的工作目录解析，而不是 `root`。从安装根启动 server，或给相对 server 工作目录的路径。
 
 每个变更工具都必须显式传 `root`；server 不会自行推断。只读工具的 `root` 可选，且不受白名单限制。启用 `--allowed-root` 后，变更 root 在解析符号链接后必须等于允许目录或位于其下。server 与 `sk` 共用安装根锁，因此变更不会与 CLI 同步并发冲突。
 
