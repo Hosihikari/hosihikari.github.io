@@ -54,12 +54,13 @@ sk --version
 seiko-mcp --version
 ```
 
-Manual downloads are checked the same way as the installer:
+A manual download is checked the way the installer does it, against `SHA256SUMS`:
 
 ```bash
-gh attestation verify 'sk-<version>-linux-x64.tar.gz' --repo Hosihikari/Seiko
 sha256sum -c SHA256SUMS --ignore-missing
 ```
+
+`SHA256SUMS` covers every release asset. `gh attestation verify 'sk-<version>-<rid>.tar.gz' --repo Hosihikari/Seiko` additionally proves the package assets were built by this repository's workflow; the installers carry no attestation.
 
 | Asset | Contents |
 | --- | --- |

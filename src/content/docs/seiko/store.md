@@ -20,9 +20,12 @@ An artifact is stored under its SHA-256. The store also keeps:
 | --- | --- |
 | `<sha>/` | The extracted artifact |
 | `.meta/<sha>.json` | Per-file digests recorded at extraction |
-| `.metadata/` | Cached HTTP index metadata for `--offline` |
+| `.metadata/` | Cached HTTP index metadata for `--offline`; a recorded 404 sits beside the entry as `<file>.404` |
 | `.partial/` | Incomplete downloads, resumable across processes |
 | `.locks/` | Per-artifact download locks |
+| `origin/` | Immutable `.sei` snapshots for local-file entries |
+
+Local files added with `sk add <path>` are copied into `origin/<name>-<sha>.sei` at add time and are immutable there; deleting or rebuilding the original cannot take an installed generation away. `sk cache clean` and rollback treat snapshots like any other stored artifact.
 
 Downloads use a global request budget (`--jobs`, default 4), retries with backoff, and Range chunks for large files when the server supports them. An interrupted download resumes from `.partial` on the next run.
 

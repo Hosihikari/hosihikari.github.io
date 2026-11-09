@@ -51,6 +51,14 @@ sk sync --locked        # resolve, but fail if the lock would change
 
 `--frozen` requires the declaration's direct set to match the lock's direct entries; it never rewrites the lock. `--locked` is the CI check: it resolves normally and fails when the result differs from the committed lock. `sk install` is an alias for `sk sync`.
 
+## Install a local file
+
+```bash
+sk add ./dist/hello-seiko.sei
+```
+
+A path installs that file directly, pinned by its digest; write `./x.sei` when a source also has a sei called `x`. The path is stored relative to the install root and the bytes are snapshotted into the store, so you can move or delete the original afterwards. `--offline` works for a path. See [Commands](/seiko/commands/#sk-add-path--install-a-local-file) for the rules.
+
 ## Change the declaration
 
 ```bash

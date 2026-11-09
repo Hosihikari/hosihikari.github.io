@@ -11,7 +11,7 @@ Every `sk` failure carries one of these codes; with `--json` it is in `error.cod
 
 | Code | Typical cause | What to do |
 | --- | --- | --- |
-| `usage` | Bad arguments or an invalid version range. | Check `sk <command> --help`. |
+| `usage` | Bad arguments, an invalid version range, an absolute path, or `@range` on a file. | Check `sk <command> --help`. |
 | `config` | Missing or invalid `seiko.conf`, or a source without `id`/`index`. | Run `sk init` or fix the file. |
 | `source` | Index missing, invalid, or an HTTP failure while reading it. | Check the source path/URL and credentials. |
 | `resolve` | No version satisfies the graph, or a version conflict. | Inspect with `sk why` and `sk info`; loosen a range. |
@@ -43,6 +43,22 @@ Confirm the name exists in one of the configured indexes with `sk search <term>`
 ### `--locked` says the lock is out of date
 
 The resolver produced a different lock than the committed one. Run `sk sync` to review and accept the update, then commit `seiko.lock.json`. Keep `--locked` in CI so an uncommitted change fails instead of slipping through.
+
+### A local file changed, moved, or was deleted
+
+`add` snapshots the bytes into the store, so a deleted or moved original does not break later syncs: replay reads the snapshot. Rebuilding the same path under the same version is the one thing that fails — it is a `checksum` error, because the lock pinned the old digest. Bump the version and add it again, or `sk remove` and `sk add` the file anew, which records the new bytes.
+
+### An absolute path is rejected
+
+Only relative input is accepted, so the lock survives moving the machine or the checkout. An absolute path and a `file:` URL are rejected on input. A path on another volume has no relative form either. Copy or move the file under the install root and add it by a relative path, using `../` when it must live outside the root.
+
+### `origin` is a reserved source id
+
+A configured source cannot be named `origin`; the lock uses that id for local files. Rename the source with `sk source remove` and `sk source add`, or edit `seiko.conf`.
+
+### `@range` does not apply to a file
+
+A path pins one artifact by its digest, so `sk add hello.sei@1.2.0` is a usage error. Drop the `@range`; the version comes from the file's own `sei.json`.
 
 ### Corrupted store
 

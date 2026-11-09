@@ -51,6 +51,14 @@ sk sync --locked        # 正常解析，但结果与锁不一致时报错
 
 `--frozen` 要求声明的直接集合与锁中的直接条目一致，且不会改写锁。`--locked` 是 CI 用的检查：正常解析，结果与已提交的锁不同就失败。`sk install` 是 `sk sync` 的别名。
 
+## 安装本地文件
+
+```bash
+sk add ./dist/hello-seiko.sei
+```
+
+路径会直接安装该文件，并按摘要钉住；源里也有叫 `x` 的 sei 时写 `./x.sei`。路径以相对安装根的形式存储，字节同时快照进存储，之后可以移走或删除原件。路径可用 `--offline`。规则见[命令参考](/zh/seiko/commands/#sk-add-path--安装本地文件)。
+
 ## 修改声明
 
 ```bash
