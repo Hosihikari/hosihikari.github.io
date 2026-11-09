@@ -71,7 +71,7 @@ var options = new PluginManagerOptions
 var manager = new PluginManager(pluginsRoot, dataRoot, configRoot, reportFault, carrierServices, onRemoved, options);
 ```
 
-`UnloadVerificationTimeout` is the budget for confirming that a detached plugin was actually reclaimed. It defaults to 30 seconds. A finite value must be positive and no more than about 49.7 days; use `Timeout.InfiniteTimeSpan` for no timer. The timeout is one of the failure modes described in [Lifecycle](/framework/embed/lifecycle/).
+`UnloadVerificationTimeout` is the budget for confirming that a detached plugin was actually reclaimed. It defaults to 30 seconds. A finite value must be positive and no more than about 49.7 days; `Timeout.InfiniteTimeSpan` turns the timer off and waits until the loader's verification finishes. The timeout is one of the failure modes described in [Lifecycle](/framework/embed/lifecycle/).
 
 ## Next
 
