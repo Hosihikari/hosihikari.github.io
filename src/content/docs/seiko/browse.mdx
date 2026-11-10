@@ -1,0 +1,37 @@
+---
+title: Sei browser
+description: Search and filter the official index in the browser, and copy the matching sk command.
+template: splash
+---
+
+import SeiBrowser from '../../../components/sei/SeiBrowser.svelte';
+
+<SeiBrowser client:visible lang="en" />
+
+The official index is readable without Seiko: this page loads its `catalog.json`, searches names, descriptions, and tags, and narrows by tag or licence. Each row opens a detail view at `?sei=<name>` that can be linked and survives a reload; it fetches that sei's own `sei/<name>.json` for versions and prerequisites.
+
+The catalog is derived data and refreshes on the index's own schedule, so a fresh submission can lag here. Seiko reads the index files directly, never this page; a missing catalog only degrades the page.
+
+## Filters and sorting
+
+The left column counts what each tag and licence would leave, and both combine. Unlisted sei are hidden by default, as in `sk search`; they still resolve by name. `Deprecated only` narrows to sei whose package or latest version carries a deprecation message.
+
+Sorting offers best match (exact name, then prefix, then tags, then description), newest, or name. Results page 20 or 50 at a time and switch between list and grid.
+
+## The detail view
+
+`?sei=<name>` shows the description, authors, licence, project and repository links, and every version with its advisory, deprecation state, artifact platforms, and prerequisites. Copy takes the exact command:
+
+```bash
+sk add hosihikari@1.3.0     # one version, exact
+```
+
+Run `sk add` inside the install root. A name without `@` range resolves the newest stable version, and a version that only a later source carries works the same way. Yanked versions fold into a collapsible block.
+
+## What the page does not do
+
+- It does not decide what installs; see [Sources and indexes](/seiko/sources/) and `sk info`.
+- It does not authenticate, so private indexes are not listed here; add them with `sk source add`.
+- It does not download artifacts; the copy button only gives you the command.
+
+To publish into this index, see [Publishing a sei](/seiko/publishing/) and the submission forms in `SeiIndex`.

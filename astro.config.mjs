@@ -2,6 +2,7 @@
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 import { satteri } from '@astrojs/markdown-satteri';
+import svelte from '@astrojs/svelte';
 import hocon from './hocon.tmLanguage.json' with { type: 'json' };
 
 const siteUrl = 'https://hoshi.srcz.one';
@@ -52,6 +53,7 @@ export default defineConfig({
     shikiConfig: { langs: [hocon] },
   },
   integrations: [
+    svelte(),
     starlight({
       title: {
         en: 'Hosihikari',
@@ -214,6 +216,7 @@ export default defineConfig({
               ],
             },
             { label: 'MCP server', translations: { 'zh-CN': 'MCP server' }, slug: 'seiko/mcp' },
+            { label: 'Sei browser', translations: { 'zh-CN': 'sei 浏览' }, slug: 'seiko/browse' },
             { label: 'Publishing a sei', translations: { 'zh-CN': '发布 sei' }, slug: 'seiko/publishing' },
             { label: 'Troubleshooting', translations: { 'zh-CN': '常见问题' }, slug: 'seiko/troubleshooting' },
           ],

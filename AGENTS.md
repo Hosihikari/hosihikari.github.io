@@ -9,6 +9,8 @@ Starlight.
   sits under `framework/`, `projection/`, or `seiko/`.
 - `astro.config.mjs` — site configuration, redirects, locales, and sidebar.
 - `src/components/Header.astro` — the three product links in the site header.
+- `src/components/sei/SeiBrowser.svelte` — the interactive browser on `seiko/browse`; Svelte
+  renders on the server and hydrates on `client:visible`, driven by `@astrojs/svelte`.
 - `examples/` — example plugin packages referenced by the guides.
 - `public/` — static assets and the Pages `CNAME`.
 - `.github/workflows/deploy.yml` — builds and deploys the site.

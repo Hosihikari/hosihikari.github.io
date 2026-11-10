@@ -31,7 +31,8 @@ bun run preview
 | `src/content/docs/` | English documentation (root locale). |
 | `src/content/docs/framework/` | Framework pages: server, plugin authoring, and embedding. |
 | `src/content/docs/projection/` | Projection overview. |
-| `src/content/docs/seiko/` | Seiko overview. |
+| `src/content/docs/seiko/` | Seiko overview and the sei browser. |
+| `src/components/sei/` | The interactive Svelte sei browser used by `seiko/browse`. |
 | `src/content/docs/zh/` | Simplified Chinese documentation, mirroring the same sections. |
 | `examples/` | Example plugins referenced by the guides. |
 | `astro.config.mjs` | Site configuration, redirects, and the bilingual sidebar. |

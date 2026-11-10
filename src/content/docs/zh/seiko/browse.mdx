@@ -1,0 +1,37 @@
+---
+title: sei 浏览
+description: 在浏览器里搜索、筛选官方索引，并复制对应的 sk 命令。
+template: splash
+---
+
+import SeiBrowser from '../../../../components/sei/SeiBrowser.svelte';
+
+<SeiBrowser client:visible lang="zh" />
+
+官方索引不装 Seiko 也能看：这个页面读取索引的 `catalog.json`，搜索名字、简介与标签，并按标签或协议收窄。每行在 `?sei=<name>` 打开详情，可以分享、刷新后仍在；详情会抓取该 sei 自己的 `sei/<name>.json`，列出各版本与前置。
+
+catalog 是派生数据，按索引自己的节奏刷新，刚提交的版本可能在这里迟到。Seiko 直接读索引文件，不看这个页面；catalog 缺失只会让页面降级。
+
+## 筛选与排序
+
+左栏给每个标签、协议标出筛掉后的剩余计数，两者叠加生效。已下架的 sei 默认隐藏，与 `sk search` 一致；按名字仍能解析。「只看已弃用」收窄到包或最新版本带弃用信息的 sei。
+
+排序有最佳匹配（先完全同名，再前缀、标签、简介）、最新、名字三种。结果按 20 或 50 个一页分页，并可切换列表与网格。
+
+## 详情
+
+`?sei=<name>` 显示简介、作者、协议、项目与源码链接，以及每个版本及其 advisory、弃用状态、构件平台与前置。复制给出准确的命令：
+
+```bash
+sk add hosihikari@1.3.0     # 指定版本，精确
+```
+
+在安装根里运行 `sk add`。不带 `@` 范围的名字解析最新稳定版；只存在于后面源里的版本也同样可用。已撤回的版本折在可展开块里。
+
+## 这个页面不做什么
+
+- 不决定装载什么，见[源与索引](/zh/seiko/sources/)与 `sk info`。
+- 不做认证，所以私有索引不列在这里；用 `sk source add` 添加。
+- 不下载构件，复制按钮只给命令。
+
+要往这个索引发布，见[发布 sei](/zh/seiko/publishing/)与 `SeiIndex` 里的提交表单。
