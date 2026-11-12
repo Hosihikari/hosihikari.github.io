@@ -13,10 +13,11 @@ A backup worth keeping has two halves: what the game owns, and what the plugins 
 | `keys/server_identity_key.pem` | The server's identity key | Once |
 | `allowlist.json` | The allow list | On allowlist edits |
 | `plugins/` | Plugin packages, including `plugins/hosihikari/` | On install and update |
+| `mods/hosihikari/` | The LeviLamina carrier | On install and update |
 | `config/hosihikari/` | Server-side configuration overrides | On configuration edits |
 | `data/hosihikari/` | Data the framework hands to plugins | While plugins run |
 
-The last three are the framework's. `plugins/` is worth backing up even though it can be reinstalled: the exact package versions on a working server are part of what you are preserving.
+The `plugins/`, `mods/hosihikari/`, `config/hosihikari/` and `data/hosihikari/` rows are the framework's. `plugins/` is worth backing up even though it can be reinstalled: the exact package versions on a working server are part of what you are preserving.
 
 ## Take one while the server is down
 

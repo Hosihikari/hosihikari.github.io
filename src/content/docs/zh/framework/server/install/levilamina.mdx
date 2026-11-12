@@ -33,7 +33,7 @@ sk add hosihikari-hosting-levilamina
 - 来自 [HostingShim 的 Release](https://github.com/HosihikariFramework/HostingShim/releases) 的 `hosihikari-levilamina-windows-x64.zip`。
 - 来自 [Core 的 Release](https://github.com/HosihikariFramework/PluginManager/releases) 的 `hosihikari-core-<版本>.zip`。
 
-两者写 `plugins/hosihikari/` 下的不同文件，按文件合并。HostingShim 的发布说明会写明兼容的核心版本线；原生垫片启动时会核对入口契约版本。
+两者写不同位置的文件，按文件合并。LeviLamina 26.60 从 `mods/` 加载模组，载体归档因此写 `mods/hosihikari/`；核心归档写 `plugins/hosihikari/`。载体优先用自己目录下的核心，找不到时回退到 `plugins/hosihikari/`。HostingShim 的发布说明会写明兼容的核心版本线；原生垫片启动时会核对入口契约版本。
 
   </TabItem>
 </Tabs>
@@ -55,7 +55,8 @@ sk add hosihikari-hosting-levilamina
 
 | 路径 | 内容 |
 | --- | --- |
-| `plugins/hosihikari/` | 载体、插件管理器与它的依赖。 |
+| `mods/hosihikari/` | 载体：LeviLamina 从模组根加载它。 |
+| `plugins/hosihikari/` | 插件管理器与它的依赖。 |
 | `plugins/<name>/` | 插件包。 |
 | `config/hosihikari/<name>.conf` | 服务端侧的配置覆盖。 |
 | `data/hosihikari/<name>/` | 框架交给每个插件的数据目录。 |
@@ -63,4 +64,4 @@ sk add hosihikari-hosting-levilamina
 
 ## 卸载
 
-停服后删除 `plugins/hosihikari/`。插件包在 `plugins/<name>/` 下，单独移除。`config/hosihikari/` 与 `data/hosihikari/` 里的配置和数据可以保留，也可以一并删除。
+停服后删除 `mods/hosihikari/` 与 `plugins/hosihikari/`。插件包在 `plugins/<name>/` 下，单独移除。`config/hosihikari/` 与 `data/hosihikari/` 里的配置和数据可以保留，也可以一并删除。

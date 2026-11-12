@@ -45,8 +45,8 @@ When the server will not start and you do not know which plugin is responsible, 
 
 1. Stop the server.
 2. Move the plugin directories under `plugins/` somewhere else, but keep the infrastructure:
-   - always keep `plugins/hosihikari/` — that is the framework itself;
-   - under LeviLamina also keep `plugins/LeviLamina/` — that is the parent loader, installed into the same folder;
+   - always keep `plugins/hosihikari/` — that is the plugin manager;
+   - under LeviLamina also keep `mods/hosihikari/` and `mods/LeviLamina/` — the first is our carrier, the second is the parent loader, both live in the mods root;
    - under Endstone the parent is not under `plugins/`, so nothing else needs keeping.
 3. Start the server. If it comes up, the framework is fine and one of the packages is the problem.
 4. Move packages back in halves, restarting between rounds, until the server fails. The last batch contains the culprit.

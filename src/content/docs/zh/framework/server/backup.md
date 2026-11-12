@@ -13,10 +13,11 @@ description: 保存世界与框架状态，以及把它们放回去。
 | `keys/server_identity_key.pem` | 服务端身份钥 | 一次 |
 | `allowlist.json` | 白名单 | 改名单时 |
 | `plugins/` | 插件包，含 `plugins/hosihikari/` | 安装与升级时 |
+| `mods/hosihikari/` | LeviLamina 的载体 | 安装与升级时 |
 | `config/hosihikari/` | 服务端侧的配置覆盖 | 改配置时 |
 | `data/hosihikari/` | 框架交给插件的数据 | 插件运行时 |
 
-后三项是框架的。`plugins/` 虽然能重装，也值得备份：一台能跑的服务端上装的到底是哪几个版本的包， 本身就是你要保住的东西。
+`plugins/`、`mods/hosihikari/`、`config/hosihikari/` 与 `data/hosihikari/` 这四项是框架的。`plugins/` 虽然能重装，也值得备份：一台能跑的服务端上装的到底是哪几个版本的包， 本身就是你要保住的东西。
 
 ## 停服备份
 

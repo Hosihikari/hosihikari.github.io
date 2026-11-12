@@ -33,7 +33,7 @@ Download two archives from GitHub releases and extract both into the server root
 - `hosihikari-levilamina-windows-x64.zip` from the [HostingShim releases](https://github.com/HosihikariFramework/HostingShim/releases).
 - `hosihikari-core-<version>.zip` from the [Core releases](https://github.com/HosihikariFramework/PluginManager/releases).
 
-They write different files under `plugins/hosihikari/` and are meant to be merged. The HostingShim release notes name the compatible core line; the native shim checks the hosting-contract version at startup.
+They write different files and are meant to be merged. LeviLamina 26.60 loads mods from `mods/`, so the carrier archive writes `mods/hosihikari/`. The core archive writes `plugins/hosihikari/`; the shim loads the core from its own folder and falls back to `plugins/hosihikari/`. The HostingShim release notes name the compatible core line; the native shim checks the hosting-contract version at startup.
 
   </TabItem>
 </Tabs>
@@ -55,7 +55,8 @@ If none of that appears, the log line right after startup tells you why. See [Re
 
 | Path | What |
 | --- | --- |
-| `plugins/hosihikari/` | The carrier, the plugin manager and its dependencies. |
+| `mods/hosihikari/` | The carrier: LeviLamina loads it from the mods root. |
+| `plugins/hosihikari/` | The plugin manager and its dependencies. |
 | `plugins/<name>/` | Plugin packages. |
 | `config/hosihikari/<name>.conf` | Server-side configuration overrides. |
 | `data/hosihikari/<name>/` | Data the framework hands to each plugin. |
@@ -63,4 +64,4 @@ If none of that appears, the log line right after startup tells you why. See [Re
 
 ## Uninstall
 
-Stop the server, then delete `plugins/hosihikari/`. Plugin packages live in `plugins/<name>/` and are removed separately. Configuration and data under `config/hosihikari/` and `data/hosihikari/` can be kept or deleted.
+Stop the server, then delete `mods/hosihikari/` and `plugins/hosihikari/`. Plugin packages live in `plugins/<name>/` and are removed separately. Configuration and data under `config/hosihikari/` and `data/hosihikari/` can be kept or deleted.
