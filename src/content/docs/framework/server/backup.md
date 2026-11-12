@@ -48,7 +48,7 @@ Then copy the framework paths normally. They are plain directories and are not c
 
 1. Stop the server.
 2. Replace `worlds/`, `keys/`, and `allowlist.json` with the copies.
-3. Replace `plugins/`, `config/hosihikari/`, and `data/hosihikari/`.
+3. Replace `plugins/`, `mods/hosihikari/` (LeviLamina carrier), `config/hosihikari/`, and `data/hosihikari/`.
 4. Start the server and check the log for the framework taking over and for the plugin list.
 
 Restoring an older `plugins/` alongside a newer framework is the usual cause of a plugin being refused on `api_version`. Restore the framework and plugins from the same date.
