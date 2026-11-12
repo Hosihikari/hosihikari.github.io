@@ -7,8 +7,8 @@ description: 框架支持的载体目标，以及各自要付什么代价。
 
 | 载体 | 平台 | 父级 | BDS |
 | --- | --- | --- | --- |
-| [LeviLamina](/zh/framework/server/install/levilamina/) | Windows x64 | LeviLamina | 1.26.51+，配 LeviLamina 26.51+ |
-| [Endstone](/zh/framework/server/install/endstone/) | Windows x64、Linux x64 | Endstone | 1.26.52+，配 Endstone 0.11+ |
+| [LeviLamina](/zh/framework/server/install/levilamina/) | Windows x64 | LeviLamina | 1.26.60+，配 LeviLamina 26.60.6+ |
+| [Endstone](/zh/framework/server/install/endstone/) | Windows x64、Linux x64 | Endstone | 1.26.60+，配 Endstone 0.11.15+ |
 | [自持态（Linux）](/zh/framework/server/install/selfhosted/) | Linux x64 | 无 | 1.21.3 |
 | [自持态（Windows）](/zh/framework/server/install/selfhosted-windows/) | Windows x64 | 无 | 1.21.3.01 |
 

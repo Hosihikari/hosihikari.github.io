@@ -7,8 +7,8 @@ A **carrier** is a concrete runtime environment, fixed by three components: the 
 
 | Carrier | Platform | Parent | BDS |
 | --- | --- | --- | --- |
-| [LeviLamina](/framework/server/install/levilamina/) | Windows x64 | LeviLamina | 1.26.51+ with LeviLamina 26.51+ |
-| [Endstone](/framework/server/install/endstone/) | Windows x64, Linux x64 | Endstone | 1.26.52+ with Endstone 0.11+ |
+| [LeviLamina](/framework/server/install/levilamina/) | Windows x64 | LeviLamina | 1.26.60+ with LeviLamina 26.60.6+ |
+| [Endstone](/framework/server/install/endstone/) | Windows x64, Linux x64 | Endstone | 1.26.60+ with Endstone 0.11.15+ |
 | [Self-hosted (Linux)](/framework/server/install/selfhosted/) | Linux x64 | none | 1.21.3 |
 | [Self-hosted (Windows)](/framework/server/install/selfhosted-windows/) | Windows x64 | none | 1.21.3.01 |
 
