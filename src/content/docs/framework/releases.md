@@ -10,7 +10,7 @@ on 22 October 2026.
 | --- | --- | --- |
 | [PluginAbstractions](https://www.nuget.org/packages/Hosihikari.Plugin.Abstractions/1.2.0) | 1.2.0 | NuGet |
 | [PluginManager](https://github.com/HosihikariFramework/PluginManager/releases/tag/v1.3.0) | v1.3.0 | Release archive, NuGet, sei |
-| [HostingShim](https://github.com/HosihikariFramework/HostingShim/releases/tag/v1.2.2) | v1.2.2 | Release archive, five carrier targets, sei |
+| [HostingShim](https://github.com/HosihikariFramework/HostingShim/releases/tag/v1.2.3) | v1.2.3 | Release archive, five carrier targets, sei |
 | [C# Loader](https://github.com/HosihikariFramework/CSharpLoader/releases/tag/v1.2.0) | v1.2.0 | Release archive, sei |
 | [F# Loader](https://github.com/HosihikariFramework/FSharpLoader/releases/tag/v1.2.0) | v1.2.0 | Release archive, sei |
 | [RPC Loader](https://github.com/HosihikariFramework/RpcLoader/releases/tag/v1.2.0) | v1.2.0 | Release archive, sei |
@@ -27,6 +27,7 @@ on 22 October 2026.
 - `extraInfo.prepack` runs at pack time with a whitelisted environment and a timeout; operator text is localized.
 - `Disable` is idempotent, a detached plugin still counts as a dependent, and `Hosihikari.Plugin.Pack` is also published as the `hosihikari-pack` dotnet tool.
 - `HostingShim` v1.2.2 fixes Endstone plugin removal on reload. No hosting-contract change; hosting contract version stays 1.
+- `HostingShim` v1.2.3 moves the LeviLamina carrier to `mods/hosihikari/`: LeviLamina 26.60 loads mods from `mods/`. The core archive stays in `plugins/hosihikari/`, and the shim falls back to it when the core is not beside the mod. Installing this line needs LeviLamina 26.60 or newer.
 
 ## 1.2.1
 
@@ -93,5 +94,5 @@ The [Seiko](/seiko/) index also lists the core and the loaders as seis; Seiko in
 
 ## Compatibility
 
-PluginManager v1.3.0 and HostingShim v1.2.2 use hosting contract version 1.
+PluginManager v1.3.0 and HostingShim v1.2.3 use hosting contract version 1.
 Plugins built against Hosihikari.Plugin.Abstractions 1.2.0 use API version 2 and manifest `manifest_version` 1, the same as 1.0.0. Since core v1.3.0 every plugin manifest must declare the `hosihikari` dependency.
