@@ -9,7 +9,7 @@ description: 星光框架、加载器与模板的已发布版本。
 | --- | --- | --- |
 | [PluginAbstractions](https://www.nuget.org/packages/Hosihikari.Plugin.Abstractions/1.2.0) | 1.2.0 | NuGet |
 | [PluginManager](https://github.com/HosihikariFramework/PluginManager/releases/tag/v1.3.0) | v1.3.0 | Release 归档、NuGet、sei |
-| [HostingShim](https://github.com/HosihikariFramework/HostingShim/releases/tag/v1.2.2) | v1.2.2 | Release 归档，五个载体目标、sei |
+| [HostingShim](https://github.com/HosihikariFramework/HostingShim/releases/tag/v1.2.3) | v1.2.3 | Release 归档，五个载体目标、sei |
 | [C# Loader](https://github.com/HosihikariFramework/CSharpLoader/releases/tag/v1.2.0) | v1.2.0 | Release 归档、sei |
 | [F# Loader](https://github.com/HosihikariFramework/FSharpLoader/releases/tag/v1.2.0) | v1.2.0 | Release 归档、sei |
 | [RPC Loader](https://github.com/HosihikariFramework/RpcLoader/releases/tag/v1.2.0) | v1.2.0 | Release 归档、sei |
@@ -26,6 +26,7 @@ description: 星光框架、加载器与模板的已发布版本。
 - `extraInfo.prepack` 在打包期以白名单环境和超时执行；操作员文本完成本地化。
 - `Disable` 幂等，待回收的插件仍算依赖者；`Hosihikari.Plugin.Pack` 同时作为 `hosihikari-pack` dotnet 工具发布。
 - `HostingShim` v1.2.2 修好 Endstone 的插件移除，载体重载不再报未在场。入口契约版本不变，仍为 1。
+- `HostingShim` v1.2.3 把 LeviLamina 载体挪到 `mods/hosihikari/`：LeviLamina 26.60 从 `mods/` 加载模组。核心归档仍在 `plugins/hosihikari/`，核心不在模组目录时垫片回退到那里。装这条线需要 LeviLamina 26.60 或更新。
 
 ## 1.2.1
 
@@ -88,5 +89,5 @@ dotnet new install Hosihikari.Plugin.Templates::1.1.0
 
 ## 兼容
 
-PluginManager v1.3.0 与 HostingShim v1.2.2 使用入口契约版本 1。
+PluginManager v1.3.0 与 HostingShim v1.2.3 使用入口契约版本 1。
 按 Hosihikari.Plugin.Abstractions 1.2.0 构建的插件使用 API 版本 2 与清单 `manifest_version` 1，与 1.0.0 相同。核心 v1.3.0 起，每个插件清单都必须声明 `hosihikari` 依赖。

@@ -45,8 +45,8 @@ LeviLamina 下日志是共用的：服务端行与框架行落在同一个文件
 
 1. 停服。
 2. 把 `plugins/` 下的插件目录移走，但把基础设施留下：
-   - `plugins/hosihikari/` 每次都留——那是框架本身；
-   - LeviLamina 下 `plugins/LeviLamina/` 也要留——那是父级加载器，就装在这个目录里；
+   - `plugins/hosihikari/` 每次都留——那是插件管理器；
+   - LeviLamina 下 `mods/hosihikari/` 与 `mods/LeviLamina/` 也要留——前者是我们的载体，后者是父级加载器，都在模组根里；
    - Endstone 的父级不在 `plugins/` 下，不用另留。
 3. 启动。能起来，说明框架没问题，问题在某个包里。
 4. 分两半搬回来，每轮之间重启，直到服务端失败。最后那一批里有问题插件。
