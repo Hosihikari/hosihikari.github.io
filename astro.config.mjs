@@ -32,6 +32,7 @@ const frameworkRoutes = [
   'embed/carrier-services',
   'embed/lifecycle',
   'embed/events-and-callbacks',
+  'migrate/v2',
   'releases',
 ];
 
@@ -177,6 +178,11 @@ export default defineConfig({
                 { label: 'Lifecycle', translations: { 'zh-CN': '生命周期' }, slug: 'framework/embed/lifecycle' },
                 { label: 'Events and callbacks', translations: { 'zh-CN': '事件与回调' }, slug: 'framework/embed/events-and-callbacks' },
               ],
+            },
+            {
+              label: 'Migrate',
+              translations: { 'zh-CN': '迁移' },
+              items: [{ label: 'From 1.x to 2.0', translations: { 'zh-CN': '从 1.x 迁到 2.0' }, slug: 'framework/migrate/v2' }],
             },
             {
               label: 'Releases',
