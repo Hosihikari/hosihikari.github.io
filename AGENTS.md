@@ -32,8 +32,9 @@ Use `bun run dev` for a local preview. The deploy workflow runs the same install
   in `src/components/Header.astro` in sync across locales.
 - Keep examples and commands aligned with the current release line and package names.
 - Document the current major version only: no v0-era information, no per-version change summaries.
-  Every major-version hop from v1 onward gets a migration page under `framework/migrate/`, kept
-  beside the current docs rather than replaced by the next one.
+  Outside v0's minor versions, every release ships a migration page: minor versions under
+  `framework/migrate/`, major-version hops kept beside the current docs rather than replaced by
+  the next one.
 - Do not edit `dist/`, `.astro/`, or `node_modules/`.
 - Public default branches are protected. Work on a branch, open a pull request, and squash merge.
 
