@@ -14,7 +14,13 @@ cd hosihikari.github.io
 # 从各自的 GitHub Release 下载 LeviLamina 载体、核心与 C# 加载器归档，
 # 解压到服务端根目录。
 $Server = 'C:\bedrock-server'
-Copy-Item -Recurse .\examples\hello-csharp "$Server\plugins\hello-csharp"
+# 父级靠打包器生成的 manifest.json 信封发现包；先打包，再复制输出。
+dotnet tool install -g Hosihikari.Plugin.Pack
+$Stage = Join-Path ([System.IO.Path]::GetTempPath()) 'hello-csharp'
+New-Item -ItemType Directory -Force $Stage | Out-Null
+Copy-Item -Recurse .\examples\hello-csharp\* $Stage
+hosihikari-pack pack-plugin $Stage .\examples\hello-csharp\hosihikari.json .\examples\hello-csharp\dist
+Copy-Item -Recurse .\examples\hello-csharp\dist\hello-csharp "$Server\plugins\hello-csharp"
 ```
 
 目标目录名必须是 `hello-csharp`。

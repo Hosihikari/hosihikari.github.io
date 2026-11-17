@@ -16,7 +16,13 @@ cd hosihikari.github.io
 # 从各自的 GitHub Release 下载 LeviLamina 载体、核心与 RPC 加载器归档，
 # 解压到服务端根目录。
 $Server = 'C:\bedrock-server'
-Copy-Item -Recurse .\examples\hello-node "$Server\plugins\hello-node"
+# 父级靠打包器生成的 manifest.json 信封发现包；先打包，再复制输出。
+dotnet tool install -g Hosihikari.Plugin.Pack
+$Stage = Join-Path ([System.IO.Path]::GetTempPath()) 'hello-node'
+New-Item -ItemType Directory -Force $Stage | Out-Null
+Copy-Item -Recurse .\examples\hello-node\* $Stage
+hosihikari-pack pack-plugin $Stage .\examples\hello-node\hosihikari.json .\examples\hello-node\dist
+Copy-Item -Recurse .\examples\hello-node\dist\hello-node "$Server\plugins\hello-node"
 Copy-Item "$Server\plugins\hosihikari-rpc\protocol\node\hosihikari.mjs" "$Server\plugins\hello-node\hosihikari.mjs"
 ```
 

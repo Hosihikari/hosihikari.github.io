@@ -16,7 +16,14 @@ cd hosihikari.github.io
 # Download the LeviLamina carrier, the core, and the RPC loader archives from their
 # GitHub releases and extract them into the server root.
 $Server = 'C:\bedrock-server'
-Copy-Item -Recurse .\examples\hello-node "$Server\plugins\hello-node"
+# The parent discovers packages through the manifest.json envelope, which only the packer writes,
+# so pack the example first and copy the output.
+dotnet tool install -g Hosihikari.Plugin.Pack
+$Stage = Join-Path ([System.IO.Path]::GetTempPath()) 'hello-node'
+New-Item -ItemType Directory -Force $Stage | Out-Null
+Copy-Item -Recurse .\examples\hello-node\* $Stage
+hosihikari-pack pack-plugin $Stage .\examples\hello-node\hosihikari.json .\examples\hello-node\dist
+Copy-Item -Recurse .\examples\hello-node\dist\hello-node "$Server\plugins\hello-node"
 Copy-Item "$Server\plugins\hosihikari-rpc\protocol\node\hosihikari.mjs" "$Server\plugins\hello-node\hosihikari.mjs"
 ```
 
