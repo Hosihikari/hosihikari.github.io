@@ -23,11 +23,11 @@ The result is a complete precompiled plugin project. Choose the F# template with
 ## Pack
 
 ```bash
-dotnet add ./HelloPlugin/HelloPlugin.csproj package Hosihikari.Plugin.Build --version 1.1.0
+dotnet add ./HelloPlugin/HelloPlugin.csproj package Hosihikari.Plugin.Build --version 1.2.0
 dotnet build ./HelloPlugin/HelloPlugin.csproj -t:PackPlugin
 ```
 
-`PackPlugin` produces `HelloPlugin/dist/HelloPlugin/` — the package directory, with the manifest already filled in. A multi-target project needs `-f <tfm>`.
+`PackPlugin` produces `HelloPlugin/dist/HelloPlugin/` — the package directory, with `hosihikari.json` and the generated `manifest.json` already filled in. A multi-target project needs `-f <tfm>`.
 
 ## Install on the server
 
@@ -52,7 +52,7 @@ Copy the directory into the server:
 cp -r ./HelloPlugin/dist/HelloPlugin "$Server/plugins/HelloPlugin"
 ```
 
-The directory name must equal `name` in the manifest. Restart the server.
+The directory name must equal `name` in `hosihikari.json`. Restart the server.
 
 ## Verify
 
@@ -73,4 +73,4 @@ A data directory with the plugin's files means it ran.
 
 ## Writing source instead
 
-The templates produce a precompiled assembly. To ship `.cs` or `.fsx` source that the server compiles at load, install the matching loader package and point the manifest at the source file. See [C# plugins](/framework/develop/authoring-csharp/) for the layout.
+The templates produce a precompiled assembly. To ship `.cs` or `.fsx` source that the server compiles at load, install the matching loader package and point `entry` at the source file. See [C# plugins](/framework/develop/authoring-csharp/) for the layout.

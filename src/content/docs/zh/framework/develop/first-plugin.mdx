@@ -23,11 +23,11 @@ dotnet new hosihikari-plugin -n HelloPlugin -o HelloPlugin
 ## 打包
 
 ```bash
-dotnet add ./HelloPlugin/HelloPlugin.csproj package Hosihikari.Plugin.Build --version 1.1.0
+dotnet add ./HelloPlugin/HelloPlugin.csproj package Hosihikari.Plugin.Build --version 1.2.0
 dotnet build ./HelloPlugin/HelloPlugin.csproj -t:PackPlugin
 ```
 
-`PackPlugin` 产出 `HelloPlugin/dist/HelloPlugin/`——插件包目录，清单已经填好。多目标项目要带 `-f <tfm>`。
+`PackPlugin` 产出 `HelloPlugin/dist/HelloPlugin/`——插件包目录，`hosihikari.json` 与生成的信封都已经在里面。多目标项目要带 `-f <tfm>`。
 
 ## 装到服务端
 
@@ -52,7 +52,7 @@ dotnet build ./HelloPlugin/HelloPlugin.csproj -t:PackPlugin
 cp -r ./HelloPlugin/dist/HelloPlugin "$Server/plugins/HelloPlugin"
 ```
 
-目录名必须与清单里的 `name` 相等。重启服务端。
+目录名必须与 `hosihikari.json` 里的 `name` 相等。重启服务端。
 
 ## 验证
 
@@ -73,4 +73,4 @@ ls "$Server/data/hosihikari/HelloPlugin"
 
 ## 改走源码
 
-模板产出的是预编译程序集。要交付在装载时编译的 `.cs` 或 `.fsx` 源码，装上对应的加载器包，把清单指向 源文件即可。包的结构见 [C# 插件](/zh/framework/develop/authoring-csharp/)。
+模板产出的是预编译程序集。要交付在装载时编译的 `.cs` 或 `.fsx` 源码，装上对应的加载器包，把 `entry` 指向源文件即可。包的结构见 [C# 插件](/zh/framework/develop/authoring-csharp/)。

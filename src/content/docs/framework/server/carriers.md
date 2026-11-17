@@ -31,6 +31,6 @@ The **self-hosted** carriers have no parent: the framework is the outermost plug
 
 ## What a carrier does not change
 
-Plugin packages are identical on every carrier: a directory under `plugins/` with a `manifest.json`. The plugin contract, the lifecycle, and the isolation model are the same. Moving a plugin package between carriers does not need a rebuild.
+Plugin packages are identical on every carrier: a directory under `plugins/` with a `hosihikari.json`. The plugin contract, the lifecycle, and the isolation model are the same. Moving a plugin package between carriers does not need a rebuild.
 
 The plugin manager is a separate release archive; extract it alongside the carrier archive.

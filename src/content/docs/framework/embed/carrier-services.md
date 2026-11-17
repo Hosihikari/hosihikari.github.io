@@ -24,11 +24,15 @@ The manager routes a package to whichever loader claims it. It ships with one lo
 manager.RegisterLoader(new AssemblyPluginLoader());
 ```
 
-Every other loader is a plugin package that registers itself during `OnLoad`:
+Every other loader is a plugin package with `kind: loader` that registers itself during `OnLoad`. Only those packages receive `ILoaderContext`, so the parameter has to be typed that way:
 
 ```csharp
 // inside a loader plugin's OnLoad
-context.RegisterLoader(new MyLoader());
+public ValueTask OnLoad(ILoaderContext context, CancellationToken token)
+{
+    context.RegisterLoader(new MyLoader());
+    return ValueTask.CompletedTask;
+}
 ```
 
 The manager records the registration and returns `false` if the id is already taken. Registration cannot be undone: the types a loader hands out live in its load context, so replacing or removing a loader means restarting the server.
@@ -49,16 +53,16 @@ A package that arrives before its loader has no loader claiming it, and is skipp
 A loader can implement `IPluginLoaderDiagnostics` to inspect a package before it is loaded. The manager calls `Validate` after `CanLoad` has selected this loader and before `Load` runs:
 
 ```csharp
-public IReadOnlyList<string> Validate(PluginManifest manifest, string packageDirectory)
+public IReadOnlyList<PluginDiagnostic> Validate(PluginManifest manifest, string packageDirectory)
 {
     var entryPath = Path.Combine(packageDirectory, manifest.EntryPath);
     return File.Exists(entryPath)
         ? []
-        : [$"entry not found: {manifest.EntryPath}"];
+        : [PluginDiagnostic.Error("entry-missing", $"entry not found: {manifest.EntryPath}")];
 }
 ```
 
-A non-empty list joins the load report and the package is skipped; an empty list lets the load continue. Diagnostics report problems — `CanLoad` still decides routing.
+Each diagnostic joins the load report and the package is skipped; an empty list lets the load continue. Diagnostics report problems — `CanLoad` still decides routing.
 
 ## What the host does not get
 

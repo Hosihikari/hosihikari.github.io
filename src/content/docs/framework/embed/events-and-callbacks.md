@@ -12,7 +12,7 @@ Three things travel between the manager and your process: events plugins publish
 ```csharp
 public interface IEventBus
 {
-    IDisposable Subscribe<TEvent>(Action<TEvent> handler);
+    IDisposable Subscribe<TEvent>(Action<TEvent> handler, EventPriority priority = EventPriority.Normal);
     void Publish<TEvent>(TEvent @event);
 }
 ```
@@ -20,6 +20,7 @@ public interface IEventBus
 - **Dispatch is synchronous, on the publisher's thread.** A subscriber that blocks blocks the publisher.
 - **A subscriber that throws is contained.** The exception is caught and reported; the remaining subscribers still run.
 - **Matching is by the exact type.** Publishing a base-class instance does not reach handlers subscribed to a derived type.
+- **Order is by priority.** Dispatch runs from `Lowest` to `Highest`, then `Monitor`, and subscription order within a level; `Normal` is the default. `Monitor` is a read-only level by contract.
 - **Subscriptions are process-wide.** The framework unsubscribes a plugin's subscriptions on unload, so a forgotten `Dispose` does not pin the plugin — but unsubscribing explicitly is still the right habit.
 
 The host can publish on the same bus. That is how carrier events reach plugins: the carrier publishes, plugins subscribe, and neither side needs to know the other.
@@ -52,7 +53,7 @@ Send it to your log at error level. A fault is not fatal to the process — one 
 In-process code that hits a fault outside a hook can report it itself:
 
 ```csharp
-context.ReportFault("child process exited with code 1");
+context.ReportFault(PluginDiagnostic.Error("child-exit", "child process exited with code 1"));
 ```
 
 The manager treats that as a fault: it unloads the plugin and, if the unload succeeds, calls `onRemoved`.

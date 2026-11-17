@@ -7,13 +7,13 @@ description: 进程外加载器：官方 RPC 桥，使用行分隔 JSON-RPC。
 RpcLoader 是官方进程外加载器：插件在子进程中运行，不把源码 AOT 为 IL（ADR-0031）。
 :::
 
-`Hosihikari.PluginLoader.Rpc` 用行分隔 JSON-RPC 2.0 over stdio 驱动子进程。RPC 桥只认清单里的命令与协议。插件可以用任何语言写。卸载就是让子进程退出，子进程与它持有的状态一起消失。
+`Hosihikari.PluginLoader.Rpc` 用行分隔 JSON-RPC 2.0 over stdio 驱动子进程。RPC 桥只认 `hosihikari.json` 里的 `pack.command` 与协议。插件可以用任何语言写。卸载就是让子进程退出，子进程与它持有的状态一起消失。
 
 ## 准备
 
 按服务端选 HostingShim 变体（见[选择载体](/zh/framework/server/carriers/)）；下面以 LeviLamina 为例：
 
-把 LeviLamina 载体归档、`hosihikari-core-<版本>.zip` 与 `hosihikari-rpc-<版本>.zip` 解压到服务端根目录。用 Seiko 时，`sk add hosihikari-rpc` 会连同核心一起装好。
+把 LeviLamina 载体归档、`hosihikari-core-<版本>.zip` 与 `hosihikari-rpc-<版本>.zip` 解压到服务端根目录。用 Seiko 时，`sk add hosihikari-rpc` 会连同插件管理器一起装好。
 
 [RPC 模板](/zh/framework/develop/templates/)覆盖 Node.js/TypeScript、Python 与 Kotlin/JVM。
 
@@ -23,32 +23,40 @@ RpcLoader 是官方进程外加载器：插件在子进程中运行，不把源�
 
 ```
 plugins/hello-node/
-  manifest.json
+  hosihikari.json
   main.mjs
   hosihikari.mjs   ← 从加载器包的 protocol/node 拷来
   hello-node.conf
 ```
 
+上面的结构是源码树。父级靠打包器生成的 `manifest.json` 信封发现包，所以安装前先打包。在插件目录里、装好 `hosihikari-pack` 工具（`dotnet tool install -g Hosihikari.Plugin.Pack`）后：
+
+```bash
+hosihikari-pack pack-plugin . ./hosihikari.json ./dist
+```
+
+再把 `dist/hello-node/` 复制到服务端 `plugins/hello-node/`，并从加载器包的 `protocol/node` 复制 `hosihikari.mjs`。
+
 ```json
 {
+  "schemaVersion": 1,
   "name": "hello-node",
-  "entry": "main.mjs",
-  "type": "hosihikari",
   "version": "1.0.0",
+  "entry": "main.mjs",
+  "loader": "rpc",
+  "kind": "plugin",
+  "apiVersion": 3,
   "dependencies": [
     { "name": "hosihikari" },
     { "name": "hosihikari-rpc" }
   ],
-  "extraInfo": {
-    "api_version": "2",
-    "manifest_version": "1",
-    "loader": "rpc",
-    "command": "[\"node\", \"./hosihikari.mjs\", \"./main.mjs\"]"
+  "pack": {
+    "command": ["node", "./hosihikari.mjs", "./main.mjs"]
   }
 }
 ```
 
-`command` 是编码成字符串的 JSON 数组；工作目录是包目录，不经 shell。
+`pack.command` 是 JSON 数组；工作目录是包目录，不经 shell。1.x 编码成字符串的写法也收，但 `migrate` 与模板写出的是普通数组。
 
 绑定从安装好的加载器包里取：
 
@@ -82,7 +90,7 @@ export default {
 };
 ```
 
-钩子可以 async。返回值：`undefined` 或 `true` 允许；`false` 或 `{ allowed: false, reason }` 拒绝；抛异常是故障。
+钩子可以 async。返回值：`undefined` 或 `true` 允许；`false` 或 `{ allowed: false, reason }` 拒绝；抛异常是故障。要机器可读的拒绝，就改传诊断形状：`{ allowed: false, diagnostic: { code, severity, message } }`，severity 取 `Info`、`Warning` 或 `Error`。
 
 ## 上下文
 
@@ -119,12 +127,15 @@ Node 与 QuickJS 发往宿主的请求 30 秒超时；超时的请求会被拒�
 
 ## Endstone 的 PATH
 
-Endstone CLI 会把子进程的 `PATH` 换成 Python 的 `sys.path`；找不到可执行文件时，把 `command` 里的可执行文件改成绝对路径。
+Endstone CLI 会把子进程的 `PATH` 换成 Python 的 `sys.path`；找不到可执行文件时，把 `pack.command` 里的可执行文件改成绝对路径。
 
 ## 协议
 
+线协议是版本 2，双方在 `hello` 里核对这个数字；1.x 的定义过不了握手，加载器一升级就要换掉拷来的定义。
+
 自定义绑定按同一份协议实现：
 
-- 宿主 → 插件：`hosihikari/hello`、`hosihikari/enable`、`hosihikari/disable`、`hosihikari/unload`、`hosihikari/events/deliver`
+- 宿主 → 插件：`hosihikari/hello`（带 `protocolVersion`）、`hosihikari/enable`、`hosihikari/disable`、`hosihikari/unload`、`hosihikari/events/deliver`
 - 插件 → 宿主：`hosihikari/events/publish`、`hosihikari/events/subscribe`、`hosihikari/events/unsubscribe`、`hosihikari/log`
+- 拒绝：`{ "allowed": false, "diagnostic": { "code", "severity", "message" } }`；异常的消息与类型名随诊断一起过线，不带堆栈
 - 卸载：`unload` 请求 → 关 stdin → 等 5 秒 → 杀进程树。

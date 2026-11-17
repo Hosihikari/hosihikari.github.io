@@ -51,7 +51,7 @@ save resume
 3. 替换 `plugins/`、`mods/hosihikari/`（LeviLamina 载体）、`config/hosihikari/` 与 `data/hosihikari/`。
 4. 启动，看日志里框架是否重新接管、插件列表是否正确。
 
-把旧的 `plugins/` 配上新框架，是插件因 `api_version` 被拒绝的常见原因。框架与插件用同一天的备份还原。
+把旧的 `plugins/` 配上新框架，是插件因 `apiVersion` 被拒绝的常见原因。框架与插件用同一天的备份还原。
 
 ## 备份覆盖不到的东西
 

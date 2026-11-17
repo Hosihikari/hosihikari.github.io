@@ -1,0 +1,193 @@
+---
+title: 从 1.x 迁到 2.0
+description: 把插件源码与插件包从 1.x 线搬到 2.0。
+---
+
+2.0 不对 1.x 承诺二进制兼容。插件契约、清单与包检查都换了，每个包都要重编译再重打包，每份插件源码都要改钩子。从 1.x 归档里解出来的包在被走完这一页之前会一直被拒载。
+
+拒载发生在载入之前，来自两处改动：清单文件现在是 `hosihikari.json`（ADR-0058），`apiVersion` 现在是数字 `3`（ADR-0059）。拒绝信息里写着 `hosihikari-pack migrate`，一条命令重写元数据。只重写元数据跑不起旧二进制——钩子签名变了，重编译仍要做。
+
+以下四步按顺序走：[改清单](#1-换掉清单)、[改钩子](#2-钩子改异步)、[重编译](#3-重编译)、[重打包](#4-重打包)。
+
+## 1. 换掉清单
+
+在包根写 `hosihikari.json`，从源码树删掉 `manifest.json`。如果手上只剩旧清单，跑打包器的 `migrate`：
+
+```bash
+dotnet tool update --global Hosihikari.Plugin.Pack
+hosihikari-pack migrate ./HelloPlugin
+```
+
+`migrate` 按旧清单写出 `hosihikari.json`，能映射的字段照搬，删掉旧文件。打包期设置与载体组在 1.x 里没有对应物，`migrate` 只把它们列成备注交给你手补；`hosihikari.json` 已存在时它拒绝执行。对着下表复查结果。
+
+### 字段
+
+文件是扁平 camelCase。`schemaVersion` 是自己的轴，契约版本在 `apiVersion` 里。`extraInfo` 消失：除打包期设置住在 `pack` 下，每个键都在顶层。
+
+| 字段 | 类型 | 说明 |
+| --- | --- | --- |
+| `schemaVersion` | 数字 | 清单 schema 版本，`1`。取代 `manifest_version`。 |
+| `name` | 字符串 | 插件名，必须等于插件包目录名。 |
+| `version` | 字符串 | 插件自己的 SemVer 版本。 |
+| `type` | 字符串 | 可省。父级路由键；写了就必须是 `hosihikari`。信封里恒有它。 |
+| `entry` | 字符串 | 包内入口文件路径；相对路径，不越出 `..`。 |
+| `loader` | 字符串 | 加载器 id：`assembly`（缺省）、`csharp`、`fsharp` 或 `rpc`。 |
+| `kind` | 字符串 | 包类型：`plugin`（缺省）、`loader` 或 `carrier`。 |
+| `apiVersion` | 数字 | 这个包编译时依赖的契约主版本，`3`。 |
+| `dependencies` | 数组 | `{ name, version? }` 条目，带 NuGet SemVer 范围；`plugin` 与 `loader` 包必须声明 `hosihikari`。 |
+| `description` | 字符串 | 展示文本，会抄进信封。 |
+| `author` | 字符串 | 展示文本，会抄进信封。 |
+| `pack.command` | 字符串数组 | 仅 `rpc`：启动子进程的参数表。编码成字符串的数组也收。 |
+| `pack.packages` | 字符串数组 | 打包期还原的 `Id/Version` 或 `Id` NuGet 包。 |
+| `pack.prepack` | 字符串数组 | 打包期在包目录执行的命令；单个字符串也收。每次执行限 5 分钟。 |
+| `carrier.sharedAssemblies` | 字符串数组 | 仅 `carrier`：载体额外带进共享层的文件名。 |
+| `carrier.components` | 数组 | 仅 `carrier`：载体组件，元素为 `{ assembly, type }`。 |
+
+最小的插件清单：
+
+```json
+{
+  "schemaVersion": 1,
+  "name": "HelloPlugin",
+  "version": "1.0.0",
+  "entry": "HelloPlugin.dll",
+  "loader": "assembly",
+  "kind": "plugin",
+  "apiVersion": 3,
+  "dependencies": [{ "name": "hosihikari" }],
+  "description": "向服务器打招呼。",
+  "author": "you"
+}
+```
+
+### 信封
+
+`manifest.json` 现在只存在于输出包里。打包器按 `hosihikari.json` 生成它，带 `name`、`type: hosihikari`、`entry`、`version`、`hosihikari` 依赖，以及有则写的 `description`/`author`。父级仍按这个文件路由与排序；框架读的是 `hosihikari.json`。
+
+不要手写信封，也不要把它提交进源码树：留在源码树里的副本会在打包期被覆盖。派生出来的展示字段是打包那一刻的快照；改了要重新打包。三个模板都只带 `hosihikari.json`，不带 `manifest.json`。
+
+### 载体包
+
+`kind: carrier` 的包就是载体本身，`name` 是 `hosihikari`，也不需要对 `hosihikari` 的依赖。它声明两样东西，打包器都会校验：
+
+- `carrier.sharedAssemblies`：载体在基地清单之外额外带进共享层的文件名。每个文件都必须真的在包里。基地清单是 `PluginContractInfo.BaseSharedAssemblyFileNames`；运行期与打包器把载体这份并到它之后，所以插件包不得自带任何一边的副本。
+- `carrier.components`：进程级托管组件，每项是一份程序集与一个类型。打包器校验程序集文件存在、类型存在，且是实现了 `ICarrierComponent` 的具体类。插件管理器每进程构造一份实例，在事件分发对插件开启之前、在服务端线程上启动；在分发停止之前按启动的逆序停止。任一组件启动失败，整次启动按失败处理；`StopAsync` 的令牌按 `ComponentStopTimeout` 取消，超时后框架记账并继续进程退出。
+
+组件拿到 `ICarrierComponentContext`，暴露 `Events`、`Logger` 与 `CarrierServices`（载体提供的服务提供器，与插件面用的是同一份）：组件可以从它取宿主句柄（例如 Endstone 的 `Plugin`），核心不认识这些对象。两次调用都在服务端线程上跑：`SynchronizationContext` 只对设置它的线程生效。
+
+服务端线程同步上下文的安装与载体事件发布器就是这样的组件（投影 ADR-0028）。Endstone 的原生事件处理器无法反注册，`StopAsync` 只停托管分发，原生监听器留到进程退出。
+
+## 2. 钩子改异步
+
+四个钩子全部返回 `ValueTask` 并接收 `CancellationToken`。`OnEnable` 与 `OnDisable` 返回 `ValueTask<PluginHookResult>`；`OnLoad` 与 `OnUnload` 返回纯 `ValueTask`。拒绝仍经 `PluginHookResult` 回传，只是里面装的是 `PluginDiagnostic`。
+
+| 1.x | 2.0 |
+| --- | --- |
+| `void OnLoad(IPluginContext context)` | `ValueTask OnLoad(IPluginContext context, CancellationToken token)` |
+| `PluginHookResult OnEnable()` | `ValueTask<PluginHookResult> OnEnable(CancellationToken token)` |
+| `PluginHookResult OnDisable()` | `ValueTask<PluginHookResult> OnDisable(CancellationToken token)` |
+| `void OnUnload()` | `ValueTask OnUnload(CancellationToken token)` |
+
+框架在专起的一根线程上跑钩子，它底下没有 `SynchronizationContext`，钩子里同步阻塞不会把服务端线程等死。取消是协作式的：框架给令牌，钩子自己选停在哪里。框架对被取消的钩子怎么处理，按钩子分：
+
+| 钩子 | 取消的含义 |
+| --- | --- |
+| `OnLoad` | 装载回滚，插件什么都不留下。 |
+| `OnEnable` | 插件留在场、保持停用。 |
+| `OnDisable` | 到了钩子超时；框架不再等待，记账后继续。 |
+| `OnUnload` | 同 `OnDisable`；此后照常进入回收验证。 |
+
+被取消的 `OnDisable` / `OnUnload` 钩子会在后台继续跑。把线程与原生句柄在 `await` 之前释放掉，迟到完成就没有东西可破坏。
+
+## 3. 重编译
+
+契约包升到 3.0，重新构建：
+
+```bash
+dotnet add ./HelloPlugin/HelloPlugin.csproj package Hosihikari.Plugin.Abstractions --version 3.0.0
+dotnet build ./HelloPlugin/HelloPlugin.csproj
+```
+
+预编译程序集插件、进程内 C# 与 F# 插件、加载器都这么重编译。三个官方加载器与 RPC 握手跟着契约一起走，加载器包也要一并更新。
+
+### 重编译背后的契约改动
+
+- **一种诊断形状。** `PluginDiagnostic { Code, Severity, Message, Exception? }` 是唯一可机器读的诊断，严重级别取 `Info`、`Warning` 或 `Error`。钩子拒绝在 `PluginHookResult` 里携带它，`IPluginLoaderDiagnostics.Validate` 返回 `IReadOnlyList<PluginDiagnostic>`，`IPluginContext.ReportFault` 收它。跨语言绑定线上只传 `{ code, severity, message }`；异常留在本地，不传堆栈。RPC 握手协议是版本 2，要从加载器包里换掉协议定义——1.x 的绑定过不了握手。
+- **加载器登记移出插件上下文。** `RegisterLoader` 挪到 `ILoaderContext`；它继承 `IPluginContext`，只发给 `kind: loader` 的包。普通插件拿到的是只实现 `IPluginContext` 的视图，强转到 `ILoaderContext` 会在运行期失败。
+- **`apiVersion` 按 3 校验。** 不匹配的包在载入前拒载。改清单里的数字不改变类型面，重新编译过的包才是真修好。
+- **共享层的静态清单换成基地清单加载体。** `PluginContractInfo.AddSharedAssemblies` 与 `SharedAssemblyFileNames` 已删除。`PluginContractInfo.BaseSharedAssemblyFileNames` 是基地清单：契约、清单模型与契约引用的抽象包。载体用 `carrier.sharedAssemblies` 并入自己的绑定程序集，运行期把两份合起来。给某个载体打包时传 `--carrier <载体包目录>`，打包器才会两份都剔；不传就只剔基地清单。插件包自带副本会被打包器拦下。
+
+## 4. 重打包
+
+用 2.0 打包器重打包，替换服务端上的旧包：
+
+```bash
+dotnet tool update --global Hosihikari.Plugin.Pack
+# PackPlugin 来自项目里的构建包；它不跟着升，打出来的还是 1.x 的包。
+dotnet add ./HelloPlugin/HelloPlugin.csproj package Hosihikari.Plugin.Build --version 1.2.0
+dotnet build ./HelloPlugin/HelloPlugin.csproj -t:PackPlugin
+```
+
+输出目录里必须有 `hosihikari.json` 与生成出来的 `manifest.json`。打包器校验 `kind`、必填的 `hosihikari` 依赖、`carrier.components` 里每个程序集、类型与实现，以及 `carrier.sharedAssemblies` 里的每个文件；不合规就带着原因停下。
+
+先把旧包目录从 `plugins/<name>/` 移除，再拷进新包，然后重启。2.0 同样拒载 1.x 的加载器包与载体包，整套要一起动：载体与插件管理器在前，加载器其次，插件最后。
+
+`sei.json` 形状不变。经 Seiko 发布的包照同样方式重打包、升版本。
+
+## 事件
+
+`EventPriority` 六档：`Lowest`、`Low`、`Normal`（缺省）、`High`、`Highest`、`Monitor`。订阅时给档位：
+
+```csharp
+context.Events.Subscribe<SomeEvent>(OnSomeEvent, EventPriority.High);
+```
+
+分发从 `Lowest` 到 `Highest`，`Monitor` 最后；同档按订阅顺序。要抢在别的处理器之前拦截就用低档，要在之后观察就用 `Monitor`。
+
+`Monitor` 是约定上的只读档：处理器不得修改事件对象，不得取消。没有第二个订阅 API，也没有运行期强制——在 `Monitor` 里写事件的处理器照样能编译。
+
+优先级只在托管处理器之间排序。载体对每个原生事件只注册一个固定优先级的原生监听器，插件档位不改变与其它原生 mod 的相对顺序。
+
+## 生命周期
+
+### Reload
+
+`Reload(name)` 只在自持态提供，那里插件集归框架所有。父级态下插件集归父级（ADR-0003），调用返回 `NotSupported`，诊断写明所有权在父级。调用内部依次执行 `Disable` → `Unload` → `Load` → `Enable`，并回报停在哪一步。
+
+自持态下它依次执行 `Disable` → `Unload` → `Load` → `Enable`，每一步按结构化诊断回报。第一个失败的步骤让序列停下并如实记账；重载期间插件名从在场名单中消失，状态事件按真实迁移发出。被原生库钉死的包（ADR-0034）在卸载时仍返回需要重启，`Reload` 不提供绕过。
+
+### 三项超时
+
+`PluginManagerOptions` 上有三份独立的预算，谁也不管别人的阶段：
+
+| 选项 | 管什么 | 默认 |
+| --- | --- | --- |
+| `HookTimeout` | 每个生命周期钩子，`OnLoad` / `OnEnable` / `OnDisable` / `OnUnload`；到点取消令牌，框架不再等待——装载回滚、启用保持停用、卸载继续往下走 | 30 秒 |
+| `UnloadVerificationTimeout` | 等待加载器确认搬运单元已回收 | 30 秒 |
+| `ComponentStopTimeout` | 进程退出时每个载体组件的 `StopAsync`；到点框架记账，继续退出 | 30 秒 |
+
+三项都接受 `Timeout.InfiniteTimeSpan`，关掉对应计时器。有限值必须为正，且不超过约 49.7 天。
+
+`UnloadResult` 用 `UnloadFailure` 说明失败在哪一段——`HookTimedOut`、`HookRefused`、`HookThrew`、`ReclamationTimedOut`、`HookAndReclamationTimedOut` 或 `ReclamationFailed`——它的 `HookTimedOut` 标志另算，钩子超时之后回收验证照样可能通过，两边同时为真。分开正是要点：钩子挂住是插件代码的问题，回收不掉是运行时与引用图的问题，组件停住是进程收尾的问题；合成一份总预算，看日志时就失去了答案。
+
+## 迁移清单
+
+1. 用 `hosihikari.json` 替换 `manifest.json`——手写或跑 `hosihikari-pack migrate`。
+2. 把四个钩子改写成接收并尊重令牌的异步方法。
+3. 针对 `Hosihikari.Plugin.Abstractions` 3.0 重编译，并更新加载器包与协议定义。
+4. 用 2.0 打包器重打包（给载体打包时带 `--carrier`），确认信封在场，替换服务端上的包并重启。
+
+加载器包还要把登记挪到 `ILoaderContext`；载体包还要填 `carrier` 组。两者都跟其它包一样重编译、重打包。
+
+## 包被拒载时
+
+加载报告写原因；对旧包会附上 `migrate` 命令。本页涉及的原因有：
+
+- 只有 `manifest.json`：跑 `hosihikari-pack migrate`，然后重编译、重打包。
+- `apiVersion` 不是 3：包是针对旧契约编译的，重新编译它。
+- `schemaVersion` 不是 1：清单不在 v2 的 schema 上，照上表重来。
+- 清单里还是 `extraInfo.api`、`extraInfo.provider` 或 `extraInfo.format_version`：解析器不再认这几个名字。它们分别改为 `extraInfo.api_version`、`loader` 与 `manifest_version`；在 `hosihikari.json` 里，这些值归顶层（`loader`、`kind`）或 `pack` 下（`command`、`packages`、`prepack`）。只写 `extraInfo.api_version` 与 `extraInfo.manifest_version` 还能按兜底读出来，但 `extraInfo` 下的其余键都没有意义。
+- `kind` 未知，或载体包没叫 `hosihikari`：见[载体包](#载体包)。
+- `plugin` 或 `loader` 包的 `dependencies` 缺 `hosihikari`：补上 `{ "name": "hosihikari" }`。
+
+与迁移无关的拒载见[常见问题](/zh/framework/develop/troubleshooting/)。

@@ -51,7 +51,7 @@ Then copy the framework paths normally. They are plain directories and are not c
 3. Replace `plugins/`, `mods/hosihikari/` (LeviLamina carrier), `config/hosihikari/`, and `data/hosihikari/`.
 4. Start the server and check the log for the framework taking over and for the plugin list.
 
-Restoring an older `plugins/` alongside a newer framework is the usual cause of a plugin being refused on `api_version`. Restore the framework and plugins from the same date.
+Restoring an older `plugins/` alongside a newer framework is the usual cause of a plugin being refused on `apiVersion`. Restore the framework and plugins from the same date.
 
 ## What a backup does not cover
 

@@ -10,12 +10,12 @@ A sei is a zip whose root contains `sei.json` and the payload. Publishing means 
 ```
 hello-seiko.zip
   sei.json
-  plugins/hello-seiko/manifest.json
+  plugins/hello-seiko/hosihikari.json
   plugins/hello-seiko/main.cs
   plugins/hello-seiko/start.sh
 ```
 
-The zip root must contain exactly one `sei.json`. Everything else is payload; paths are deployed relative to the install root, so a payload path `plugins/hello-seiko/manifest.json` becomes `<root>/plugins/hello-seiko/manifest.json`. Seiko does not read `manifest.json`; it belongs to whatever loads the plugin. For the Hosihikari Framework's plugin package contract, see [Plugin packages](/framework/develop/plugin-package/).
+The zip root must contain exactly one `sei.json`. Everything else is payload; paths are deployed relative to the install root, so a payload path `plugins/hello-seiko/hosihikari.json` becomes `<root>/plugins/hello-seiko/hosihikari.json`. Seiko does not read the manifest; it belongs to whatever loads the plugin. For the Hosihikari Framework's plugin package contract, see [Plugin packages](/framework/develop/plugin-package/).
 
 Artifacts are bounded: at most 100,000 entries, 1 GiB per entry, and 4 GiB in total.
 

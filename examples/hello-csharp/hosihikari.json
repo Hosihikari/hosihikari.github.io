@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "name": "hello-csharp",
+  "version": "1.0.0",
+  "entry": "main.cs",
+  "loader": "csharp",
+  "kind": "plugin",
+  "apiVersion": 3,
+  "dependencies": [
+    { "name": "hosihikari" },
+    { "name": "hosihikari-csharp" }
+  ],
+  "description": "A minimal C# source plugin compiled at load.",
+  "author": "HosihikariFramework"
+}

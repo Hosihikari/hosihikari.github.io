@@ -36,7 +36,8 @@ The plugin manager reports each package it refused and why. The common causes:
 
 - **The directory name and the manifest `name` disagree.** They must be equal.
 - **A declared dependency is absent.** The plugin is skipped, not loaded partially.
-- **`api_version` is not compatible** with this framework line.
+- **`apiVersion` is not compatible** with this framework line.
+- **The package is a 1.x one** with only `manifest.json`; run `hosihikari-pack migrate` and repack.
 - **No loader claims the package.** A source plugin needs its loader package installed; under a parent this is the most common reason a package from another server does not run.
 
 ## Rule plugins out

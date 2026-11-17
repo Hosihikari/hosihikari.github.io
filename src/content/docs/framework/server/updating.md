@@ -41,7 +41,7 @@ Everything the framework loads runs inside the server process:
 The release page lists which versions were published together. Two numbers do the actual work:
 
 - **Hosting contract version.** The native carrier and the plugin manager check each other before starting. A mismatch stops the startup sequence; see [Recovery](/framework/server/recovery/).
-- **`api_version`.** The plugin manifest declares the contract it was built against. A plugin built for an incompatible line is refused before it runs.
+- **`apiVersion`.** The plugin manifest declares the contract it was built against. A plugin built for an incompatible line is refused before it runs.
 
 The HostingShim release notes name the core line that release was built against. Read the [release notes](/framework/releases/) for the line you are moving to.
 

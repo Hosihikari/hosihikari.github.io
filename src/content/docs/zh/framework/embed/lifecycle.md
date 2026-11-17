@@ -15,29 +15,36 @@ manager.Disable("Hello");
 manager.Unload("Hello");
 ```
 
-`Load` 与 `Enable` 返回 bool。`Unload` 返回带两个字段的 `UnloadResult`：
+`Load` 与 `Enable` 返回 bool。`Unload` 返回 `UnloadResult`：
 
 ```csharp
-public readonly record struct UnloadResult(bool Released, string? Error);
+public readonly record struct UnloadResult(
+    bool Released,
+    string? Error,
+    UnloadFailure Failure = UnloadFailure.None,
+    bool HookTimedOut = false);
 ```
 
 - `Released` 只在插件真的被回收时为 true。
 - `Error` 在没回收时带上原因。
+- `Failure` 写明失败在哪一段：`HookTimedOut`、`HookRefused`、`HookThrew`、`ReclamationTimedOut`、`HookAndReclamationTimedOut` 或 `ReclamationFailed`。
+- `HookTimedOut` 与 `Released` 无关：钩子超时之后验证通过，两者同时为真。
 
-## 卸载分两段
+## 卸载分段
 
-卸载不是一步。管理器先放下实例与作用域，再等加载器确认程序集装载上下文已被回收。两段的失败方式不一样：
+卸载不是一步。管理器先在它自己的预算里跑停用钩子，再放下实例与作用域，再等加载器确认程序集装载上下文已被回收。各段的失败方式不一样：
 
 | 情况 | 结果 |
 | --- | --- |
 | 还有插件依赖它 | 拒绝，`Released` 为 false。先卸下游插件——管理器不做级联。 |
 | 这个插件是已登记的加载器 | 拒绝；加载器不能在运行期更换。重启服务端。 |
 | 插件拒绝了停用 | 拒绝；插件留在原处，可能仍在活跃。 |
+| 停用或卸载钩子超过 `HookTimeout` | 令牌取消，框架不再等待，卸载继续往下走；`HookTimedOut` 置位。 |
 | 已放下，但回收没被确认 | `Released` 为 false，`Error` 里写超时；插件停在 `Detached`。再调一次 `Unload` 重新验证。 |
 
 最后一种值得记住。实例已经没了，但装载上下文被什么东西钉住——静态字段、还在跑的线程、`OnUnload` 里没清掉的引用。再调 `Unload` 只重跑验证，暂时被钉住的上下文第二次可能就过了。
 
-`UnloadVerificationTimeout` 设定这段等待的预算，见[开始内嵌](/zh/framework/embed/getting-started/)。
+`HookTimeout` 与 `UnloadVerificationTimeout` 设定这两段等待的预算，见[开始内嵌](/zh/framework/embed/getting-started/)。无视令牌的钩子只会撞上钩子超时，它本身不挡回收。
 
 ## 状态快照
 
@@ -66,6 +73,8 @@ foreach (var info in manager.Plugins)
 - `Enabled` 是另一条轴。插件可以同时是已装载且已停用。
 
 `LoadedNames` 是在场且为 `Loaded` 的插件名，短一些的那份清单。
+
+状态迁移也会以 `PluginStateChanged` 发到事件总线上，带迁移前后的状态。
 
 ## 快照不是什么
 

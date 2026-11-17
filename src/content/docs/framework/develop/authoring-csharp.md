@@ -7,10 +7,9 @@ C# runs on the CLR, so `Hosihikari.PluginLoader.CSharp` compiles `.cs` at load w
 
 ## Setup
 
-Pick the HostingShim variant for the server (see [Choosing a carrier](/framework/server/carriers/)); the examples below use
-LeviLamina:
+Pick the HostingShim variant for the server (see [Choosing a carrier](/framework/server/carriers/)); the examples below use LeviLamina:
 
-Extract the LeviLamina carrier archive, `hosihikari-core-<version>.zip`, and `hosihikari-csharp-<version>.zip` into the server root. With Seiko, `sk add hosihikari-csharp` installs the loader and the core.
+Extract the LeviLamina carrier archive, `hosihikari-core-<version>.zip`, and `hosihikari-csharp-<version>.zip` into the server root. With Seiko, `sk add hosihikari-csharp` installs the loader and the plugin manager.
 
 The [C# template](/framework/develop/templates/) is a complete package you can copy and rename.
 
@@ -18,49 +17,54 @@ The [C# template](/framework/develop/templates/) is a complete package you can c
 
 ```
 plugins/hello-csharp/
-  manifest.json
+  hosihikari.json
   main.cs
   hello-csharp.conf
 ```
+
+The layout above is the source tree. The parent discovers packages through the generated `manifest.json` envelope, so pack before installing. From the plugin directory, with the `hosihikari-pack` dotnet tool (`dotnet tool install -g Hosihikari.Plugin.Pack`):
+
+```bash
+hosihikari-pack pack-plugin . ./hosihikari.json ./dist
+```
+
+Copy `dist/hello-csharp/` into the server as `plugins/hello-csharp/`.
 
 Manifest:
 
 ```json
 {
+  "schemaVersion": 1,
   "name": "hello-csharp",
-  "entry": "main.cs",
-  "type": "hosihikari",
   "version": "1.0.0",
+  "entry": "main.cs",
+  "loader": "csharp",
+  "kind": "plugin",
+  "apiVersion": 3,
   "dependencies": [
     { "name": "hosihikari" },
     { "name": "hosihikari-csharp" }
-  ],
-  "extraInfo": { "api_version": "2", "manifest_version": "1", "loader": "csharp" }
+  ]
 }
 ```
 
 ## File-based app directives
 
-The entry file accepts two directives from .NET file-based apps. They are replaced with blank lines
-before Roslyn compiles, and the packer acts on them:
+The entry file accepts two directives from .NET file-based apps. They are replaced with blank lines before Roslyn compiles, and the packer acts on them:
 
-- `#:package Newtonsoft.Json@13.0.3` restores the package at pack time into the plugin package.
-  The server never restores or downloads packages when it loads a plugin.
-- `#:include helpers.cs` compiles another `.cs` file from the package with the entry. Paths are
-  relative to the including file, may be quoted, and may use `..` to reach sibling directories
-  inside the package. `*`, `**`, and `?` globs are supported, for example
-  `#:include "../shared/*.cs"`.
+- `#:package Newtonsoft.Json@13.0.3` restores the package at pack time into the plugin package. The server never restores or downloads packages when it loads a plugin.
+- `#:include helpers.cs` compiles another `.cs` file from the package with the entry. Paths are relative to the including file, may be quoted, and may use `..` to reach sibling directories inside the package. `*`, `**`, and `?` globs are supported, for example `#:include "../shared/*.cs"`.
 
-`#:project`, `#:property`, `#:sdk`, and top-level statements are not supported. The entry still
-defines an `IPlugin` type. For a standalone run loop, use a normal file-based app or a project, then
-package the compiled assembly with the precompiled template.
+`#:project`, `#:property`, `#:sdk`, and top-level statements are not supported. The entry still defines an `IPlugin` type. For a standalone run loop, use a normal file-based app or a project, then package the compiled assembly with the precompiled template.
 
 ## Entry
 
-Define a type that implements `IPlugin` and has a parameterless constructor. The loader finds it and creates an instance.
+Define a type that implements `IPlugin` and has a parameterless constructor. The loader finds it and creates an instance. All four hooks are async and receive a `CancellationToken`; `OnEnable` and `OnDisable` return `PluginHookResult`.
 
 ```csharp
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 using Hosihikari;
 using Microsoft.Extensions.Logging;
 
@@ -68,28 +72,30 @@ public sealed class HelloPlugin : IPlugin
 {
     private IPluginContext _context = null!;
 
-    public void OnLoad(IPluginContext context)
+    public ValueTask OnLoad(IPluginContext context, CancellationToken token)
     {
         _context = context;
         context.Logger.LogInformation("loaded, package {Dir}", context.PackageDirectory);
         File.WriteAllText(Path.Combine(context.DataDirectory, "loaded.txt"), "loaded");
+        return ValueTask.CompletedTask;
     }
 
-    public PluginHookResult OnEnable()
+    public ValueTask<PluginHookResult> OnEnable(CancellationToken token)
     {
         var greeting = _context.Configuration["greeting"];
         _context.Logger.LogInformation("enabled, greeting={Greeting}", greeting);
         File.WriteAllText(Path.Combine(_context.DataDirectory, "enabled.txt"), greeting ?? "");
-        return PluginHookResult.Allow();
+        return ValueTask.FromResult(PluginHookResult.Allow());
     }
 
-    public PluginHookResult OnDisable() => PluginHookResult.Allow();
+    public ValueTask<PluginHookResult> OnDisable(CancellationToken token) =>
+        ValueTask.FromResult(PluginHookResult.Allow());
 
-    public void OnUnload() { }
+    public ValueTask OnUnload(CancellationToken token) => ValueTask.CompletedTask;
 }
 ```
 
-`using Microsoft.Extensions.Logging;` is required: `LogInformation` is an extension method.
+`using Microsoft.Extensions.Logging;` is required: `LogInformation` is an extension method. The framework runs hooks on a dedicated thread with no `SynchronizationContext`, so blocking inside a hook is safe; honour the token so the hook timeout can cut it short.
 
 ## Compilation and cache
 
@@ -111,7 +117,7 @@ The server override is `config/hosihikari/hello-csharp.conf`; environment variab
 
 ## Events and timers
 
-`context.Events` and `context.Scheduler` come from the framework. Disabling closes the gate first, so event and timer callbacks stop; start periodic work in `OnEnable`.
+`context.Events` and `context.Scheduler` come from the framework. Disabling closes the gate first, so event and timer callbacks stop; start periodic work in `OnEnable`. Subscribe with a priority when order matters: `context.Events.Subscribe<SomeEvent>(OnSomeEvent, EventPriority.High)`.
 
 ## Assembly plugins
 
@@ -124,11 +130,11 @@ If you already have a compiled DLL, put it in the package, set `loader` to `asse
 Reference the contract and exclude its runtime assets so the package does not carry a second copy:
 
 ```xml
-<PackageReference Include="Hosihikari.Plugin.Abstractions" Version="[1.1.0]" ExcludeAssets="runtime" />
+<PackageReference Include="Hosihikari.Plugin.Abstractions" Version="[3.0.0]" ExcludeAssets="runtime" />
 ```
 
 The assembly declares exactly one `EntryPoint<T>`; the entry type implements `IPlugin` and has a parameterless constructor.
 
 ## Deploy and verify
 
-Put the directory under `plugins/` and start the server. The log should show `loaded, package` and `enabled`; `loaded.txt` and `enabled.txt` appear in the data directory. On unload the plugin manager uses the plugin's `PluginHandle`: `Unload()` / `WaitForUnloadAsync()` release it, and `IsUnloaded` verifies reclamation after the ALC is dropped.
+Copy the packed directory under `plugins/` and start the server. The log should show `loaded, package` and `enabled`; `loaded.txt` and `enabled.txt` appear in the data directory. On unload the plugin manager uses the plugin's `PluginHandle`: `Unload()` / `WaitForUnloadAsync()` release it, and `IsUnloaded` verifies reclamation after the ALC is dropped.

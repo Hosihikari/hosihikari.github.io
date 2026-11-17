@@ -12,5 +12,5 @@ Two ready-made packages: one C# source plugin and one Node out-of-process plugin
 
 The [first plugin](/framework/develop/first-plugin/) walkthrough generates its own plugin from a template; these two are
 ready-made packages for reading. hello-csharp is the in-process loader, hello-node the out-of-process one. Both are
-official. Copy an example directory into the server's `plugins/`; the directory name must match `name` in the
-manifest.
+official. Copy an example directory into the server's `plugins/`; the directory name must match `name` in
+`hosihikari.json`.
