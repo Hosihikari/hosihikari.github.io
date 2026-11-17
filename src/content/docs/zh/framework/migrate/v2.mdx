@@ -73,7 +73,7 @@ hosihikari-pack migrate ./HelloPlugin
 - `carrier.sharedAssemblies`：载体在基地清单之外额外带进共享层的文件名。每个文件都必须真的在包里。基地清单是 `PluginContractInfo.BaseSharedAssemblyFileNames`；运行期与打包器把载体这份并到它之后，所以插件包不得自带任何一边的副本。
 - `carrier.components`：进程级托管组件，每项是一份程序集与一个类型。打包器校验程序集文件存在、类型存在，且是实现了 `ICarrierComponent` 的具体类。插件管理器每进程构造一份实例，在事件分发对插件开启之前、在服务端线程上启动；在分发停止之前按启动的逆序停止。任一组件启动失败，整次启动按失败处理；`StopAsync` 的令牌按 `ComponentStopTimeout` 取消，超时后框架记账并继续进程退出。
 
-组件拿到 `ICarrierComponentContext`，只暴露 `Events` 与 `Logger`，不给插件面。两次调用都在服务端线程上跑：`SynchronizationContext` 只对设置它的线程生效。
+组件拿到 `ICarrierComponentContext`，暴露 `Events`、`Logger` 与 `CarrierServices`（载体提供的服务提供器，与插件面用的是同一份）：组件可以从它取宿主句柄（例如 Endstone 的 `Plugin`），核心不认识这些对象。两次调用都在服务端线程上跑：`SynchronizationContext` 只对设置它的线程生效。
 
 服务端线程同步上下文的安装与载体事件发布器就是这样的组件（投影 ADR-0028）。Endstone 的原生事件处理器无法反注册，`StopAsync` 只停托管分发，原生监听器留到进程退出。
 
