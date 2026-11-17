@@ -12,7 +12,7 @@ description: 事件总线、回到宿主的那两个回调，以及调度器。
 ```csharp
 public interface IEventBus
 {
-    IDisposable Subscribe<TEvent>(Action<TEvent> handler);
+    IDisposable Subscribe<TEvent>(Action<TEvent> handler, EventPriority priority = EventPriority.Normal);
     void Publish<TEvent>(TEvent @event);
 }
 ```
@@ -20,6 +20,7 @@ public interface IEventBus
 - **分发是同步的，在发布者的线程上。** 订阅者阻塞，发布者就阻塞。
 - **抛异常的订阅者被隔离。** 异常被捕获并上报，其余订阅者照常执行。
 - **按类型精确匹配。** 用基类实例发布，不会命中按派生类型订阅的 handler。
+- **顺序按档位。** 分发从 `Lowest` 到 `Highest`，`Monitor` 最后，同档按订阅顺序；缺省是 `Normal`。`Monitor` 是约定上的只读档。
 - **订阅是进程级的。** 插件卸载时框架会替它退订，漏掉 `Dispose` 不会钉住插件——但显式退订仍是好习惯。
 
 宿主可以在同一条总线上发布。载体事件就是这样到达插件的：载体发布，插件订阅，两边都不需要认识对方。
@@ -52,7 +53,7 @@ reportFault: entry => logger.LogError("加载问题：{Entry}", entry)
 进程内的代码在钩子之外遇到故障，可以自己上报：
 
 ```csharp
-context.ReportFault("子进程以退出码 1 结束");
+context.ReportFault(PluginDiagnostic.Error("child-exit", "子进程以退出码 1 结束"));
 ```
 
 管理器按故障处理：卸载该插件，卸载成功后再调 `onRemoved`。

@@ -23,7 +23,7 @@ resolved 1 sei, deployed 29 file(s)
   hosihikari 1.2.0 (direct)
 ```
 
-Files land according to the artifact's layout. For `hosihikari` they go under `plugins/hosihikari/`; Seiko does not interpret what is there. Valuable output like `manifest.json` is payload, not something Seiko reads.
+Files land according to the artifact's layout. For `hosihikari` they go under `plugins/hosihikari/`; Seiko does not interpret what is there. The package manifest `hosihikari.json` is payload, not something Seiko reads.
 
 ## Find the root
 

@@ -3,8 +3,7 @@ title: 模板
 description: 从每种插件种类的维护模板开始。
 ---
 
-每个模板都是一个完整的插件包。复制到服务端 `plugins/<名称>/`，改 `manifest.json` 的 `name`
-与同名 `.conf`；目录名必须与清单 `name` 一致。模板为 MIT-0；Hosihikari.Plugin.Abstractions 1.0.0 及之后为 MIT。RPC 模板在 [RpcPluginTemplate](https://github.com/HosihikariFramework/RpcPluginTemplate)，复制需要的运行时目录。
+每个模板都是一个插件包。复制到服务端 `plugins/<名称>/` 并改名，让目录名等于清单 `name`。源码与 RPC 模板带 `hosihikari.json` 供你改名；`dotnet new` 模板的源码树里没有清单文件，`Hosihikari.Plugin.Build` 在打包期生成它。模板都不带 `manifest.json`——信封由打包器按 `hosihikari.json` 生成。模板为 MIT-0；Hosihikari.Plugin.Abstractions 1.0.0 及之后为 MIT。RPC 模板在 [RpcPluginTemplate](https://github.com/HosihikariFramework/RpcPluginTemplate)，复制需要的运行时目录。
 
 ## 预编译程序集
 
@@ -17,17 +16,15 @@ dotnet new hosihikari-plugin -n MyPlugin          # C#
 dotnet new hosihikari-plugin-fsharp -n MyPlugin   # F#
 ```
 
-用 `Hosihikari.Plugin.Build` 构建打包，不需要框架检出：
+`dotnet new` 生成的项目源码树里没有清单文件：`Hosihikari.Plugin.Build` 在打包期按项目属性生成 `hosihikari.json`。用它构建打包：
 
 ```bash
 cd MyPlugin
-dotnet add package Hosihikari.Plugin.Build --version 1.1.0
+dotnet add package Hosihikari.Plugin.Build
 dotnet build -t:PackPlugin
 ```
 
-目标会把包写到 `dist/MyPlugin/`；多目标项目要带 `-f <tfm>`。测试包见
-[测试插件](/zh/framework/develop/testing/)，模板说明见
-[模板说明](https://github.com/HosihikariFramework/PluginAbstractions/tree/main/templates/Hosihikari.Plugin.Templates)。
+目标把 `hosihikari.json` 与生成的信封一起写到 `dist/MyPlugin/`；多目标项目要带 `-f <tfm>`。测试包见 [测试插件](/zh/framework/develop/testing/)，模板说明见 [模板说明](https://github.com/HosihikariFramework/PluginAbstractions/tree/main/templates/Hosihikari.Plugin.Templates)。
 
 ## C# 与 F# 源码
 
@@ -38,16 +35,11 @@ C# 与 F# 加载器在装载时编译源码；包里放源码，没有构建产�
 | [CSharpPluginTemplate](https://github.com/HosihikariFramework/CSharpPluginTemplate) | `hosihikari-csharp` | [`hosihikari-csharp-<版本>.zip`](https://github.com/HosihikariFramework/CSharpLoader/releases) |
 | [FSharpPluginTemplate](https://github.com/HosihikariFramework/FSharpPluginTemplate) | `hosihikari-fsharp` | [`hosihikari-fsharp-<版本>.zip`](https://github.com/HosihikariFramework/FSharpLoader/releases) |
 
-`CSharpPluginTemplate` 演示 `#:package` 与 `#:include`；先跑它的 `pack.ps1` 或 `pack.sh`，
-再把 `dist/MyCSharpPlugin/` 复制到 `plugins/`。脚本调用框架打包器，因此需要并列的
-`PluginManager` 检出，或用 `HOSIHIKARI_PLUGINMANAGER` 指向一个。`FSharpPluginTemplate` 演示
-`#load`，直接复制仓库到 `plugins/MyFSharpPlugin/`。改名后重启。契约见
-[C# 插件](/zh/framework/develop/authoring-csharp/)。
+`CSharpPluginTemplate` 演示 `#:package` 与 `#:include`；先跑它的 `pack.ps1` 或 `pack.sh`，再把 `dist/MyCSharpPlugin/` 复制到 `plugins/`。脚本调用框架打包器，因此需要并列的 `PluginManager` 检出，或用 `HOSIHIKARI_PLUGINMANAGER` 指向一个；目录里还留着 1.x 的 `manifest.json` 时，脚本会先停在 `migrate` 上。`FSharpPluginTemplate` 演示 `#load`，直接复制仓库到 `plugins/MyFSharpPlugin/`。改名后重启。契约见 [C# 插件](/zh/framework/develop/authoring-csharp/)。
 
 ## 进程外运行时
 
-RpcLoader 启动清单 `extraInfo.command` 里的命令，通过 stdio 走 JSON-RPC。下面每个目录都是
-完整插件包；绑定拷自加载器，升级加载器时同步更新。
+RpcLoader 启动清单 `pack.command` 里的命令，通过 stdio 走 JSON-RPC。下面每个目录都是完整插件包；绑定拷自加载器，升级加载器时同步更新。
 
 | 模板 | 运行时 | 构建 |
 |---|---|---|
@@ -55,8 +47,7 @@ RpcLoader 启动清单 `extraInfo.command` 里的命令，通过 stdio 走 JSON-
 | [Python](https://github.com/HosihikariFramework/RpcPluginTemplate/tree/main/python) | Python 3.8+ | 无 |
 | [Kotlin/JVM](https://github.com/HosihikariFramework/RpcPluginTemplate/tree/main/kotlin) | JDK 21+ | `./build.sh`（Windows 用 `build.ps1`） |
 
-在 `PATH` 上准备运行时与 `RpcLoader`，把目录复制到 `plugins/` 后重启。Python 清单使用
-`python3`，Windows 上改成 `python`。协议与上下文见[进程外插件](/zh/framework/develop/authoring-rpc/)。
+在 `PATH` 上准备运行时与 `RpcLoader`，把目录复制到 `plugins/` 后重启。Python 清单使用 `python3`，Windows 上改成 `python`。协议与上下文见[进程外插件](/zh/framework/develop/authoring-rpc/)。
 
 ## 怎么选
 

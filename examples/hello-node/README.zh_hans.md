@@ -20,11 +20,11 @@ Copy-Item -Recurse .\examples\hello-node "$Server\plugins\hello-node"
 Copy-Item "$Server\plugins\hosihikari-rpc\protocol\node\hosihikari.mjs" "$Server\plugins\hello-node\hosihikari.mjs"
 ```
 
-运行 `node` 必须在 `PATH` 上；Endstone 下若找不到，把 `manifest.json` 的 `command` 改成 `node` 的绝对路径。
+运行 `node` 必须在 `PATH` 上；Endstone 下若找不到，把 `hosihikari.json` 的 `pack.command` 改成 `node` 的绝对路径。
 
 ## 文件
 
-- `manifest.json`：`loader` 是 `rpc`，依赖 `hosihikari` 与 `hosihikari-rpc`，`command` 指向协议定义与入口。
+- `hosihikari.json`：`loader` 是 `rpc`，依赖 `hosihikari` 与 `hosihikari-rpc`，`pack.command` 指向协议定义与入口；`manifest.json` 信封在打包期生成。
 - `main.mjs`：默认导出四个钩子。
 - `hello-node.conf`：包内默认配置。
 - `hosihikari.mjs`：安装时从加载器包复制。

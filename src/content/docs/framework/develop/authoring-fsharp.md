@@ -11,7 +11,7 @@ The package layout, the manifest fields, the lifecycle, configuration, and the d
 
 Pick the HostingShim variant for the server (see [Choosing a carrier](/framework/server/carriers/)), then install the F# loader:
 
-Extract the LeviLamina carrier archive, `hosihikari-core-<version>.zip`, and `hosihikari-fsharp-<version>.zip` into the server root. With Seiko, `sk add hosihikari-fsharp` installs the loader and the core.
+Extract the LeviLamina carrier archive, `hosihikari-core-<version>.zip`, and `hosihikari-fsharp-<version>.zip` into the server root. With Seiko, `sk add hosihikari-fsharp` installs the loader and the plugin manager.
 
 The [F# template](https://github.com/HosihikariFramework/FSharpPluginTemplate) is a package you can copy into `plugins/`, rename, and restart. The `dotnet new` package also ships an F# precompiled template, `hosihikari-plugin-fsharp`.
 
@@ -19,7 +19,7 @@ The [F# template](https://github.com/HosihikariFramework/FSharpPluginTemplate) i
 
 ```
 plugins/hello-fsharp/
-  manifest.json
+  hosihikari.json
   main.fsx
   hello-fsharp.conf
 ```
@@ -28,41 +28,47 @@ Manifest, with the loader name and the dependency:
 
 ```json
 {
+  "schemaVersion": 1,
   "name": "hello-fsharp",
-  "entry": "main.fsx",
-  "type": "hosihikari",
   "version": "1.0.0",
+  "entry": "main.fsx",
+  "loader": "fsharp",
+  "kind": "plugin",
+  "apiVersion": 3,
   "dependencies": [
     { "name": "hosihikari" },
     { "name": "hosihikari-fsharp" }
-  ],
-  "extraInfo": { "api_version": "2", "manifest_version": "1", "loader": "fsharp" }
+  ]
 }
 ```
 
-The entry path is whatever `manifest.json` says; the file name is not fixed to `main.fsx`.
+The entry path is whatever `hosihikari.json` says; the file name is not fixed to `main.fsx`.
 
 ## Entry
 
-Define a type implementing `IPlugin` with a parameterless constructor. Annotate the hook parameter: the compiler needs the type on `OnLoad`, and it is not inferred from the interface.
+Define a type implementing `IPlugin` with a parameterless constructor. All four hooks are async and take a `CancellationToken`; annotate the hook parameter: the compiler needs the type on `OnLoad`, and it is not inferred from the interface.
 
 ```fsharp
 open Hosihikari
 open System.IO
+open System.Threading
+open System.Threading.Tasks
 
 type HelloPlugin() =
     let mutable dataDirectory = ""
 
     interface IPlugin with
-        member this.OnLoad(context: IPluginContext) =
+        member this.OnLoad(context: IPluginContext, token: CancellationToken) : ValueTask =
             dataDirectory <- context.DataDirectory
             let greeting = context.Configuration.["greeting"]
             File.WriteAllText(Path.Combine(dataDirectory, "body.txt"), "body:" + greeting)
-        member this.OnEnable() =
+            ValueTask()
+        member this.OnEnable(token: CancellationToken) : ValueTask<PluginHookResult> =
             File.WriteAllText(Path.Combine(dataDirectory, "enabled.txt"), "enabled")
-            PluginHookResult.Allow()
-        member this.OnDisable() = PluginHookResult.Allow()
-        member this.OnUnload() = ()
+            ValueTask.FromResult(PluginHookResult.Allow())
+        member this.OnDisable(token: CancellationToken) : ValueTask<PluginHookResult> =
+            ValueTask.FromResult(PluginHookResult.Allow())
+        member this.OnUnload(token: CancellationToken) : ValueTask = ValueTask()
 ```
 
 `context.Events` and `context.Scheduler` are available exactly as in C#.

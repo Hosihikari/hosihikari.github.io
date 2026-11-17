@@ -23,7 +23,7 @@ resolved 1 sei, deployed 29 file(s)
   hosihikari 1.2.0 (direct)
 ```
 
-文件按构件的布局落盘。`hosihikari` 的文件在 `plugins/hosihikari/` 下；Seiko 不解释那里的内容。像 `manifest.json` 这样的运行期清单是载荷，Seiko 不读取。
+文件按构件的布局落盘。`hosihikari` 的文件在 `plugins/hosihikari/` 下；Seiko 不解释那里的内容。插件清单 `hosihikari.json` 是载荷，Seiko 不读取。
 
 ## 找到安装根
 

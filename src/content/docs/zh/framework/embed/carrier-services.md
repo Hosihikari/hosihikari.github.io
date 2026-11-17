@@ -24,11 +24,15 @@ description: 宿主必须提供什么，加载器怎么登记自己。
 manager.RegisterLoader(new AssemblyPluginLoader());
 ```
 
-其余加载器都是插件包，在 `OnLoad` 里自己登记：
+其余加载器都是 `kind: loader` 的插件包，在 `OnLoad` 里自己登记。只有这类包拿到 `ILoaderContext`，所以参数要按这个类型写：
 
 ```csharp
 // 某个加载器插件的 OnLoad 里
-context.RegisterLoader(new MyLoader());
+public ValueTask OnLoad(ILoaderContext context, CancellationToken token)
+{
+    context.RegisterLoader(new MyLoader());
+    return ValueTask.CompletedTask;
+}
 ```
 
 管理器记下这条登记；id 已被占用时返回 `false`。登记不能撤销：加载器交出的类型住在它的装载上下文里，所以更换或移除加载器意味着重启服务端。
@@ -49,16 +53,16 @@ context.RegisterLoader(new MyLoader());
 加载器可以实现 `IPluginLoaderDiagnostics`，在装载前检查包。管理器在 `CanLoad` 选中这个加载器之后、`Load` 开始之前调用 `Validate`：
 
 ```csharp
-public IReadOnlyList<string> Validate(PluginManifest manifest, string packageDirectory)
+public IReadOnlyList<PluginDiagnostic> Validate(PluginManifest manifest, string packageDirectory)
 {
     var entryPath = Path.Combine(packageDirectory, manifest.EntryPath);
     return File.Exists(entryPath)
         ? []
-        : [$"entry not found: {manifest.EntryPath}"];
+        : [PluginDiagnostic.Error("entry-missing", $"entry not found: {manifest.EntryPath}")];
 }
 ```
 
-返回非空列表时，问题并入装载报告并跳过该包；空列表则继续装载。诊断只报告问题——路由仍由 `CanLoad` 决定。
+返回非空列表时，每条诊断并入装载报告并跳过该包；空列表则继续装载。诊断只报告问题——路由仍由 `CanLoad` 决定。
 
 ## 宿主拿不到的东西
 

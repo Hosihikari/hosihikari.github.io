@@ -5,7 +5,7 @@ description: Move plugin sources and packages from the 1.x line to 2.0.
 
 2.0 keeps no binary compatibility with 1.x. The plugin contract, the manifest, and the package checks all changed, so every package moves by source recompile and repack, and every plugin source needs its hooks rewritten. A package unpacked from a 1.x archive stays refused until it goes through this page.
 
-Two changes do the refusing before load: the manifest file is now `hosihikari.json` (ADR-0058), and `apiVersion` is now 3 (ADR-0059). The refusal message names `hosihikari-pack migrate`, which rewrites the metadata in one command. The rewritten metadata alone does not make an old binary run — the hook signatures changed, so a rebuild is still required.
+Two changes do the refusing before load: the manifest file is now `hosihikari.json` (ADR-0058), and `apiVersion` is now the number `3` (ADR-0059). The refusal message names `hosihikari-pack migrate`, which rewrites the metadata in one command. The rewritten metadata alone does not make an old binary run — the hook signatures changed, so a rebuild is still required.
 
 The page runs through the four migration steps below, in order: [manifest](#1-replace-the-manifest), [hooks](#2-make-the-hooks-async), [recompile](#3-recompile), [repack](#4-repack).
 
@@ -18,17 +18,18 @@ dotnet tool update --global Hosihikari.Plugin.Pack
 hosihikari-pack migrate ./HelloPlugin
 ```
 
-`migrate` writes `hosihikari.json` from the old manifest, maps the fields it can, and removes the old file. Review the result against the table below and fill in what `migrate` had to drop.
+`migrate` writes `hosihikari.json` from the old manifest, maps the fields it can, and removes the old file. Pack settings and a carrier block have no 1.x counterpart, so `migrate` lists them as notes for you to fill in by hand; it refuses when `hosihikari.json` already exists. Review the result against the table below.
 
 ### Fields
 
-The file is flat camelCase. `schemaVersion` is its own axis; the contract version lives in `apiVersion`.
+The file is flat camelCase. `schemaVersion` is its own axis; the contract version lives in `apiVersion`. `extraInfo` is gone: every key is top-level except the pack-time settings, which live under `pack`.
 
 | Field | Type | Meaning |
 | --- | --- | --- |
 | `schemaVersion` | number | Manifest schema version; `1`. Replaces `manifest_version`. |
 | `name` | string | Plugin name; must equal the package directory name. |
 | `version` | string | The plugin's own SemVer version. |
+| `type` | string | Optional parent routing key; must be `hosihikari` when present. The envelope always carries it. |
 | `entry` | string | Entry file path inside the package; relative, no `..`. |
 | `loader` | string | Loader id: `assembly` (default), `csharp`, `fsharp`, or `rpc`. |
 | `kind` | string | Package kind: `plugin` (default), `loader`, or `carrier`. |
@@ -36,10 +37,10 @@ The file is flat camelCase. `schemaVersion` is its own axis; the contract versio
 | `dependencies` | array | `{ name, version? }` entries with NuGet SemVer ranges; `hosihikari` is required for `plugin` and `loader` packages. |
 | `description` | string | Display text; copied into the envelope. |
 | `author` | string | Display text; copied into the envelope. |
-| `pack.command` | string array | `rpc` only: the argument vector that starts the child process. |
-| `pack.packages` | string array | `Id/Version` NuGet packages restored at pack time. |
-| `pack.prepack` | string array | Commands run in the package directory at pack time. |
-| `carrier.sharedAssemblies` | string array | `carrier` only: the shared-layer file names. |
+| `pack.command` | string array | `rpc` only: the argument vector that starts the child process. A string holding the encoded array is still accepted. |
+| `pack.packages` | string array | `Id/Version` or `Id` NuGet packages restored at pack time. |
+| `pack.prepack` | string array | Commands run in the package directory at pack time; a single string is also accepted. Each run is limited to 5 minutes. |
+| `carrier.sharedAssemblies` | string array | `carrier` only: extra shared-layer file names the carrier brings. |
 | `carrier.components` | array | `carrier` only: carrier components as `{ assembly, type }`. |
 
 A minimal plugin manifest:
@@ -61,22 +62,24 @@ A minimal plugin manifest:
 
 ### The envelope
 
-`manifest.json` now exists only in the output package. The packer generates it from `hosihikari.json`, carrying `name`, `type: hosihikari`, `entry`, `version`, and the `hosihikari` dependency. The parent still routes and sorts on that file; the framework reads `hosihikari.json`.
+`manifest.json` now exists only in the output package. The packer generates it from `hosihikari.json`, carrying `name`, `type: hosihikari`, `entry`, `version`, the `hosihikari` dependency, and `description`/`author` when present. The parent still routes and sorts on that file; the framework reads `hosihikari.json`.
 
-Never hand-write the envelope, and do not commit it to the source tree. A hand-written copy left in the source tree is overwritten at pack time, and nothing afterwards tells the two apart.
+Never hand-write the envelope, and do not commit it to the source tree: a copy left there is overwritten at pack time. The derived display fields are a snapshot of pack time; change them and repack. All three templates ship `hosihikari.json` and no `manifest.json`.
 
 ### Carrier packages
 
 A package with `kind: carrier` is the carrier itself, so its `name` is `hosihikari` and it needs no `hosihikari` dependency. It declares two things the packer validates:
 
-- `carrier.sharedAssemblies`: the shared-layer file names. The core and the packer read the same list; plugin packages must not ship copies of them.
-- `carrier.components`: the process-level managed components, each an assembly and a type implementing `ICarrierComponent`. The core constructs one instance per process and starts it before event dispatch opens to plugins, stops it before dispatch closes. Both calls run on the server thread — a `SynchronizationContext` only takes effect on the thread that sets it. Any component failing to start fails the whole startup; `StopAsync` gets a token cancelled by the manager's hook timeout, and after a timeout the framework records it and lets the process exit.
+- `carrier.sharedAssemblies`: the shared-layer file names the carrier brings in addition to the base list. Each file must exist in the package. The base list is `PluginContractInfo.BaseSharedAssemblyFileNames`; the runtime and the packer merge the carrier's list after it, so plugin packages must not ship copies of either.
+- `carrier.components`: the process-level managed components, each an assembly and a type. The packer checks that the assembly file exists, that the type exists, and that it is a concrete class implementing `ICarrierComponent`. The plugin manager constructs one instance per process and starts it on the server thread before event dispatch opens to plugins; it stops the components before dispatch closes, in reverse start order. Any component failing to start fails the whole startup; `StopAsync` gets a token cancelled by `ComponentStopTimeout`, and after a timeout the framework records it and lets the process exit.
+
+A component receives `ICarrierComponentContext`, which exposes only `Events` and `Logger` — not the plugin surface. Both calls run on the server thread: a `SynchronizationContext` only takes effect on the thread that sets it.
 
 The synchronization-context installation and the carrier event publisher are such components (Projection ADR-0028). Under Endstone the native event handlers cannot be unregistered, so `StopAsync` only stops managed dispatch; the native listener stays until the process exits.
 
 ## 2. Make the hooks async
 
-All four hooks return `ValueTask` and receive a `CancellationToken`. `OnEnable` and `OnDisable` return `ValueTask<PluginHookResult>`; `OnLoad` and `OnUnload` return plain `ValueTask`.
+All four hooks return `ValueTask` and receive a `CancellationToken`. `OnEnable` and `OnDisable` return `ValueTask<PluginHookResult>`; `OnLoad` and `OnUnload` return plain `ValueTask`. A refusal still travels as `PluginHookResult`, now carrying a `PluginDiagnostic`.
 
 | 1.x | 2.0 |
 | --- | --- |
@@ -85,7 +88,7 @@ All four hooks return `ValueTask` and receive a `CancellationToken`. `OnEnable` 
 | `PluginHookResult OnDisable()` | `ValueTask<PluginHookResult> OnDisable(CancellationToken token)` |
 | `void OnUnload()` | `ValueTask OnUnload(CancellationToken token)` |
 
-Cancellation is cooperative: the framework signals the token, the hook chooses where to stop. What the framework does with the cancelled hook depends on the hook:
+The framework runs a hook on a dedicated thread, so there is no `SynchronizationContext` under it and blocking inside a hook cannot deadlock the server thread. Cancellation is cooperative: the framework signals the token, the hook chooses where to stop. What the framework does with the cancelled hook depends on the hook:
 
 | Hook | Cancellation means |
 | --- | --- |
@@ -109,10 +112,10 @@ Precompiled assembly plugins, in-process C# and F# plugins, and loaders all rebu
 
 ### Contract changes behind the rebuild
 
-- **One diagnostic shape.** `PluginDiagnostic { Code, Severity, Message, Exception? }` is the only machine-readable diagnostic. Hook refusals carry it in `PluginHookResult`, `IPluginLoaderDiagnostics.Validate` returns `IReadOnlyList<PluginDiagnostic>`, and `IPluginContext.ReportFault` takes it. Cross-language bindings serialize this one shape; the exception travels as message and type name, without a stack trace.
-- **Loader registration left the plugin context.** `RegisterLoader` moved to `ILoaderContext`, which extends `IPluginContext` and is handed only to packages with `kind: loader`. A normal plugin no longer sees the method.
+- **One diagnostic shape.** `PluginDiagnostic { Code, Severity, Message, Exception? }` is the only machine-readable diagnostic, with severity `Info`, `Warning`, or `Error`. Hook refusals carry it in `PluginHookResult`, `IPluginLoaderDiagnostics.Validate` returns `IReadOnlyList<PluginDiagnostic>`, and `IPluginContext.ReportFault` takes it. Cross-language bindings put exactly `{ code, severity, message }` on the wire; the exception stays local, with no stack trace sent. The RPC handshake protocol is version 2, so refresh the protocol definition from the loader package — a 1.x binding fails the handshake.
+- **Loader registration left the plugin context.** `RegisterLoader` moved to `ILoaderContext`, which extends `IPluginContext` and is handed only to packages with `kind: loader`. A normal plugin receives a view that implements `IPluginContext` and nothing else, so a cast to `ILoaderContext` fails at run time.
 - **`apiVersion` is checked at 3.** A mismatch refuses the package before load. Editing the number in the manifest does not change the type surface, so a rebuilt package is the only real fix.
-- **The shared-layer static list is gone.** `PluginContractInfo.AddSharedAssemblies` and `SharedAssemblyFileNames` were deleted; the list comes from `carrier.sharedAssemblies`. A carrier no longer calls anything to publish its binding assemblies.
+- **The shared-layer static list is replaced by a base list plus the carrier.** `PluginContractInfo.AddSharedAssemblies` and `SharedAssemblyFileNames` were deleted. `PluginContractInfo.BaseSharedAssemblyFileNames` is the base list: the contract, the manifest model, and the abstractions the contract references. A carrier adds its binding assemblies with `carrier.sharedAssemblies`, and the runtime merges the two. When packing for a carrier, pass `--carrier <carrier package directory>` so the packer strips both; without it the packer strips only the base list. The packer rejects a plugin package that ships a copy.
 
 ## 4. Repack
 
@@ -123,9 +126,9 @@ dotnet tool update --global Hosihikari.Plugin.Pack
 dotnet build ./HelloPlugin/HelloPlugin.csproj -t:PackPlugin
 ```
 
-The output directory must contain `hosihikari.json` and the generated `manifest.json`. The packer validates `kind`, the required `hosihikari` dependency, and that every `carrier.components` assembly and type exists; a failure stops the pack with the reason.
+The output directory must contain `hosihikari.json` and the generated `manifest.json`. The packer validates `kind`, the required `hosihikari` dependency, every `carrier.components` assembly, type, and implementation, and every `carrier.sharedAssemblies` file; a failure stops the pack with the reason.
 
-Remove the old package directory from `plugins/<name>/` before copying the new one in, then restart. Version 2.0 also refuses loader and carrier packages from 1.x, so the whole set moves together: carrier and core first, loaders next, plugins last.
+Remove the old package directory from `plugins/<name>/` before copying the new one in, then restart. Version 2.0 also refuses loader and carrier packages from 1.x, so the whole set moves together: carrier and plugin manager first, loaders next, plugins last.
 
 The `sei.json` shape is unchanged. A package published through Seiko is repacked the same way and its version bumped.
 
@@ -147,29 +150,30 @@ Priority orders managed handlers against each other only. The carrier registers 
 
 ### Reload
 
-`Reload(name)` exists only in the self-hosted topology, where the framework owns the plugin set. Under a parent the plugin set belongs to the parent (ADR-0003), and the call returns `NotSupported` with a diagnostic saying ownership is with the parent.
+`Reload(name)` exists only in the self-hosted topology, where the framework owns the plugin set. Under a parent the plugin set belongs to the parent (ADR-0003), and the call returns `NotSupported` with a diagnostic saying ownership is with the parent. The manager on the v2 line does not expose the verb yet; until it lands, reload by calling `Disable`, `Unload`, `Load`, and `Enable` yourself.
 
 Self-hosted, the call runs `Disable` → `Unload` → `Load` → `Enable` in that order and reports each step with structured diagnostics. The first failing step stops the sequence and is recorded as it happened; the plugin name leaves the roster during the reload, and state events follow the real transitions. A package pinned by native libraries (ADR-0034) still returns restart-needed at unload; `Reload` does not bypass it.
 
-### Two unload timeouts
+### Three timeouts
 
-The unload path has two separate budgets, configured on `PluginManagerOptions`:
+Three separate budgets hang off `PluginManagerOptions`; none of them covers another's stage:
 
 | Option | Covers | Default |
 | --- | --- | --- |
-| `UnloadHookTimeout` | `OnDisable` and `OnUnload`; at the limit the token is cancelled and the framework stops waiting | 30 seconds |
+| `HookTimeout` | Every lifecycle hook, `OnLoad` / `OnEnable` / `OnDisable` / `OnUnload`; at the limit the token is cancelled and the framework stops waiting — a load rolls back, an enable stays disabled, an unload continues | 30 seconds |
 | `UnloadVerificationTimeout` | Waiting for the loader to confirm the load context was reclaimed | 30 seconds |
+| `ComponentStopTimeout` | Each carrier component's `StopAsync` at process exit; at the limit the framework records it and keeps exiting | 30 seconds |
 
-Both accept `Timeout.InfiniteTimeSpan`, which turns the timer off. A finite value must be positive and no more than about 49.7 days.
+All three accept `Timeout.InfiniteTimeSpan`, which turns the timer off. A finite value must be positive and no more than about 49.7 days.
 
-An `UnloadResult` and its diagnostics distinguish three outcomes: hook timeout, verification timeout, and an explicit throw or refusal from a hook. The separation is the point — a stuck hook is plugin code, an unreclaimed context is the runtime and the reference graph, and mixing both into one budget loses the answer when you read the log.
+An `UnloadResult` reports which stage failed through `UnloadFailure` — `HookTimedOut`, `HookRefused`, `HookThrew`, `ReclamationTimedOut`, `HookAndReclamationTimedOut`, or `ReclamationFailed` — and its `HookTimedOut` flag is set independently, so a hook timeout followed by successful reclamation shows both. The separation is the point: a stuck hook is plugin code, an unreclaimed context is the runtime and the reference graph, and a stopped component is process teardown; mixing them into one budget loses the answer when you read the log.
 
 ## Migration checklist
 
 1. Replace `manifest.json` with `hosihikari.json` — by hand or with `hosihikari-pack migrate`.
 2. Rewrite the four hooks as async methods that take and honour the token.
-3. Recompile against `Hosihikari.Plugin.Abstractions` 3.0 and update the loader packages.
-4. Repack with the 2.0 packer, confirm the envelope is present, replace the package on the server, and restart.
+3. Recompile against `Hosihikari.Plugin.Abstractions` 3.0 and update the loader packages and protocol definitions.
+4. Repack with the 2.0 packer (`--carrier` when packing for a carrier), confirm the envelope is present, replace the package on the server, and restart.
 
 A loader package also moves its registration to `ILoaderContext`; a carrier package also fills in the `carrier` group. Both are rebuilt and repacked like any other package.
 
@@ -179,6 +183,9 @@ The load report names the reason and, for an old package, prints the `migrate` c
 
 - Only `manifest.json` is present: run `hosihikari-pack migrate`, then rebuild and repack.
 - `apiVersion` is not 3: the package was built against the old contract; rebuild it.
-- The manifest still uses `extraInfo`: the keys were not mapped; move `loader` and `kind` to the top level and `command`, `packages`, `prepack` into `pack`.
+- `schemaVersion` is not 1: the manifest is not on the v2 schema; start again from the table above.
+- The manifest still uses `extraInfo.api`, `extraInfo.provider`, or `extraInfo.format_version`: the reader stopped accepting those names. They become `extraInfo.api_version`, `loader`, and `manifest_version`; in `hosihikari.json` the values belong top-level (`loader`, `kind`) or under `pack` (`command`, `packages`, `prepack`). `extraInfo.api_version` and `extraInfo.manifest_version` alone still parse as a fallback, but nothing else under `extraInfo` has meaning.
+- `kind` is unknown or a carrier is not named `hosihikari`: see [Carrier packages](#carrier-packages).
+- `dependencies` lacks `hosihikari` on a plugin or loader package: add `{ "name": "hosihikari" }`.
 
 See [Troubleshooting](/framework/develop/troubleshooting/) for refusals that are not migration-related.

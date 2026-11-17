@@ -10,12 +10,12 @@ sei 是一个 zip，根部有 `sei.json`，其余是载荷。发布就是把 zip
 ```
 hello-seiko.zip
   sei.json
-  plugins/hello-seiko/manifest.json
+  plugins/hello-seiko/hosihikari.json
   plugins/hello-seiko/main.cs
   plugins/hello-seiko/start.sh
 ```
 
-zip 根只能有一个 `sei.json`。其余都是载荷；路径相对安装根部署，所以载荷路径 `plugins/hello-seiko/manifest.json` 会变成 `<root>/plugins/hello-seiko/manifest.json`。Seiko 不读 `manifest.json`；它属于加载插件的运行时。星光框架的插件包契约见[插件包与清单](/zh/framework/develop/plugin-package/)。
+zip 根只能有一个 `sei.json`。其余都是载荷；路径相对安装根部署，所以载荷路径 `plugins/hello-seiko/hosihikari.json` 会变成 `<root>/plugins/hello-seiko/hosihikari.json`。Seiko 不读清单；它属于加载插件的运行时。星光框架的插件包契约见[插件包与清单](/zh/framework/develop/plugin-package/)。
 
 构件有硬上限：最多 100,000 个条目、单文件 1 GiB、总计 4 GiB。
 

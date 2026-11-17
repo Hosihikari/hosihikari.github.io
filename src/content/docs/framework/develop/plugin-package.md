@@ -3,14 +3,16 @@ title: Plugin packages
 description: The directory layout, the manifest, and the checks the framework applies before load.
 ---
 
-A plugin package is a directory under `plugins/`. The directory name is the plugin name, and the directory must contain `manifest.json`. The framework reads the manifest before load and rejects packages that break the contract.
+A plugin package is a directory under `plugins/`. The directory name is the plugin name, and the directory must contain `hosihikari.json`. The framework reads the manifest before load and rejects packages that break the contract.
+
+`manifest.json` is the LeviLamina envelope. The packer generates it into the output package from `hosihikari.json`; the source tree holds only `hosihikari.json`. A package that has only `manifest.json` is a 1.x package and is refused with a pointer to `hosihikari-pack migrate`; see [Migrate from 1.x to 2.0](/framework/migrate/v2/).
 
 ## Layout
 
 ```
 plugins/
   hello-csharp/
-    manifest.json
+    hosihikari.json
     main.cs
     hello-csharp.conf
 ```
@@ -19,35 +21,39 @@ plugins/
 
 ```json
 {
+  "schemaVersion": 1,
   "name": "hello-csharp",
-  "entry": "main.cs",
-  "type": "hosihikari",
   "version": "1.0.0",
+  "entry": "main.cs",
+  "loader": "csharp",
+  "kind": "plugin",
+  "apiVersion": 3,
   "dependencies": [
     { "name": "hosihikari" },
     { "name": "hosihikari-csharp" }
-  ],
-  "extraInfo": {
-    "api_version": "2",
-    "manifest_version": "1",
-    "loader": "csharp"
-  }
+  ]
 }
 ```
 
 | Field | Meaning |
 |---|---|
+| `schemaVersion` | Manifest schema version; `1`. |
 | `name` | Plugin name; must equal the directory name. |
-| `entry` | Path inside the package; absolute paths and `..` are rejected. |
-| `type` | Routing key; always `hosihikari`. |
 | `version` | The plugin's own SemVer version. |
+| `entry` | Path inside the package; absolute paths and `..` are rejected. |
+| `loader` | The loader that handles this package; `assembly` when omitted. `assembly` is the plugin manager's built-in path; `csharp` and `fsharp` are in-process loaders; `rpc` is the out-of-process loader. |
+| `kind` | `plugin` (default), `loader`, or `carrier`. The self-hosted scan skips carrier packages. |
+| `apiVersion` | Contract major version; currently `3`. |
 | `dependencies` | Required: must include `hosihikari`, so the parent loads the shim first. Other names carry optional SemVer ranges; the graph decides load order and checks versions. |
-| `extraInfo.api_version` | Contract major version; currently `2`. |
-| `extraInfo.manifest_version` | Manifest schema version; currently `1`. |
-| `extraInfo.loader` | The loader that handles this package. `assembly` is the plugin manager's built-in path; `csharp` and `fsharp` are in-process loaders; `rpc` is the out-of-process loader. |
-| `extraInfo.command` | `rpc` only: the argument vector, as a JSON array or encoded as a string. |
-| `extraInfo.prepack` | Commands run in the package directory at pack time, e.g. `npm ci`; pack-time only, the server never restores. |
-| `extraInfo.packageKind` | `plugin` (default), `loader`, or `carrier`. The self-hosted scan skips carrier packages. |
+| `description` | Display text; copied into the envelope when present. |
+| `author` | Display text; copied into the envelope when present. |
+| `pack.command` | `rpc` only: the argument vector, as a JSON array or a string holding the encoded array. |
+| `pack.packages` | `Id/Version` or `Id` NuGet packages restored into the package at pack time. |
+| `pack.prepack` | A command run in the package directory at pack time, e.g. `npm ci`; a single string or an array. Pack-time only, the server never restores, and each run is limited to 5 minutes. |
+| `carrier.sharedAssemblies` | `carrier` only: file names the carrier adds to the shared layer. |
+| `carrier.components` | `carrier` only: process-level components as `{ assembly, type }`, each a concrete class implementing `ICarrierComponent`. |
+
+`type` is optional and must be `hosihikari` when written; the envelope always carries it. The envelope is generated, so a `description` or `author` edit only reaches the parent after a repack.
 
 Dependencies are sorted by name. A dependency may carry a NuGet SemVer range:
 
@@ -58,6 +64,10 @@ Dependencies are sorted by name. A dependency may carry a NuGet SemVer range:
 
 The target plugin must declare a parseable `version` when a range constrains it. The framework dependency `hosihikari` is not version-checked; loader packages load before the packages that depend on them. Plugins that use an in-process loader declare `hosihikari-csharp` or `hosihikari-fsharp`; out-of-process plugins declare `hosihikari-rpc`. Precompiled assemblies use the plugin manager's built-in path and need no loader package.
 
+## Carrier packages
+
+A carrier package has `kind: carrier`, is named `hosihikari`, and needs no `hosihikari` dependency. It is the shim itself, so the self-hosted scan skips it and the packer only emits it into the output package. It declares `carrier.sharedAssemblies` and `carrier.components`; see [Migrate from 1.x to 2.0](/framework/migrate/v2/#carrier-packages) for what the packer validates.
+
 ## Loaders and entries
 
 Official loaders come in two classes: in-process loaders compile source AOT to IL; RpcLoader is the out-of-process loader, an RPC bridge. Precompiled assemblies use the plugin manager's built-in path.
@@ -67,9 +77,11 @@ Official loaders come in two classes: in-process loaders compile source AOT to I
 | `assembly` | `.dll` | PluginManager built-in: loads a precompiled IL assembly directly; the assembly declares exactly one `[assembly: EntryPoint<T>]`. |
 | `csharp` | `.cs` | In-process loader: AOT-compiles `.cs` to IL at load with Roslyn, into a collectible ALC. |
 | `fsharp` | `.fsx` | In-process loader: AOT-compiles `.fsx` to IL at load with FSharp.Compiler.Service. |
-| `rpc` | Entry file | Out-of-process loader: `command` starts a child process speaking line-delimited JSON-RPC 2.0 over stdio. |
+| `rpc` | Entry file | Out-of-process loader: `pack.command` starts a child process speaking line-delimited JSON-RPC 2.0 over stdio. |
 
 For in-process and precompiled assembly plugins, the entry type must implement `IPlugin` and have a parameterless constructor; `EntryPoint<T>` enforces both at compile time. A missing file or the wrong number of entry declarations is reported by the loader.
+
+Only `kind: loader` packages receive `ILoaderContext`; every other package receives a view implementing only `IPluginContext`, and a cast to `ILoaderContext` fails.
 
 ## Checks before load
 
@@ -77,12 +89,15 @@ The framework rejects a package before constructing a plugin if:
 
 - `name` differs from the directory name;
 - `entry` is empty, absolute, or escapes the package directory;
-- `type` is not `hosihikari`;
-- `api_version` is not `2`;
-- `manifest_version` is not `1`;
+- `type` is present and not `hosihikari`;
+- `apiVersion` is not `3`;
+- `schemaVersion` is not `1`;
+- `kind` is not `plugin`, `loader`, or `carrier`, or a carrier is not named `hosihikari`;
+- a `plugin` or `loader` package lacks the `hosihikari` dependency;
+- a dependency repeats the package's own name;
 - the manifest is not valid JSON.
 
-These checks run before the package enters its lifecycle, and the log gives the reason.
+A package with only `manifest.json` is refused as a legacy package with the `hosihikari-pack migrate` command. These checks run before the package enters its lifecycle, and the log gives the reason.
 
 ## Configuration and data
 
@@ -95,7 +110,7 @@ The configuration format is HOCON. Layering goes through the framework's provide
 
 ## Lifecycle
 
-`OnLoad` → `OnEnable` → `OnDisable` → `OnUnload`.
+`OnLoad` → `OnEnable` → `OnDisable` → `OnUnload`. All four are async and receive a `CancellationToken`; `OnEnable` and `OnDisable` return `PluginHookResult`.
 
 - `OnLoad` runs after dependencies are ready; the server itself may not be ready.
 - An allowed `OnEnable` opens the scope gate; a refusal keeps the plugin loaded and disabled.
@@ -103,6 +118,7 @@ The configuration format is HOCON. Layering goes through the framework's provide
 - Unload goes through disable; `OnUnload` releases what the plugin holds.
 - `Enable` and `Disable` are both idempotent: repeating either does not call the hook again. A carrier reload disables and re-enables the plugins it reloads.
 - An exception from a hook is a fault: the host unloads the plugin and notifies the carrier.
+- A hook that outlives `HookTimeout` (30 seconds by default) is cancelled; a canceled load rolls back, a canceled enable stays disabled, and a canceled disable or unload stops being awaited.
 
 The gate covers framework-delivered events and timers. Threads, service registrations, and direct references owned by the plugin must be released in `OnUnload`.
 

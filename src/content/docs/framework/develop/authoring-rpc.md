@@ -7,14 +7,13 @@ description: "The out-of-process loader: an official RPC bridge using line-delim
 RpcLoader is the official out-of-process loader. It runs plugins in a child process instead of compiling source AOT to IL (ADR-0031).
 :::
 
-`Hosihikari.PluginLoader.Rpc` drives a child process with line-delimited JSON-RPC 2.0 over stdio. The RPC bridge reads only the command from the manifest and the protocol. Unload means the process exits, taking the child process and its state with it.
+`Hosihikari.PluginLoader.Rpc` drives a child process with line-delimited JSON-RPC 2.0 over stdio. The RPC bridge reads only `pack.command` from `hosihikari.json` and the protocol. Unload means the process exits, taking the child process and its state with it.
 
 ## Setup
 
-Pick the HostingShim variant for the server (see [Choosing a carrier](/framework/server/carriers/)); the examples below use
-LeviLamina:
+Pick the HostingShim variant for the server (see [Choosing a carrier](/framework/server/carriers/)); the examples below use LeviLamina:
 
-Extract the LeviLamina carrier archive, `hosihikari-core-<version>.zip`, and `hosihikari-rpc-<version>.zip` into the server root. With Seiko, `sk add hosihikari-rpc` installs the loader and the core.
+Extract the LeviLamina carrier archive, `hosihikari-core-<version>.zip`, and `hosihikari-rpc-<version>.zip` into the server root. With Seiko, `sk add hosihikari-rpc` installs the loader and the plugin manager.
 
 The [RPC templates](/framework/develop/templates/) cover Node.js/TypeScript, Python, and Kotlin/JVM.
 
@@ -24,7 +23,7 @@ The plugin package also declares a dependency on `hosihikari-rpc`. The operator 
 
 ```
 plugins/hello-node/
-  manifest.json
+  hosihikari.json
   main.mjs
   hosihikari.mjs   ← copied from the loader package's protocol/node
   hello-node.conf
@@ -32,24 +31,24 @@ plugins/hello-node/
 
 ```json
 {
+  "schemaVersion": 1,
   "name": "hello-node",
-  "entry": "main.mjs",
-  "type": "hosihikari",
   "version": "1.0.0",
+  "entry": "main.mjs",
+  "loader": "rpc",
+  "kind": "plugin",
+  "apiVersion": 3,
   "dependencies": [
     { "name": "hosihikari" },
     { "name": "hosihikari-rpc" }
   ],
-  "extraInfo": {
-    "api_version": "2",
-    "manifest_version": "1",
-    "loader": "rpc",
-    "command": "[\"node\", \"./hosihikari.mjs\", \"./main.mjs\"]"
+  "pack": {
+    "command": ["node", "./hosihikari.mjs", "./main.mjs"]
   }
 }
 ```
 
-`command` is a JSON array encoded as a string; the working directory is the package directory, and no shell is involved.
+`pack.command` is a JSON array; the working directory is the package directory, and no shell is involved. The 1.x string-encoded form is still accepted, but a plain array is what `migrate` and the templates write.
 
 Copy the protocol definition from the installed loader package:
 
@@ -83,7 +82,7 @@ export default {
 };
 ```
 
-Hooks may be async. Return values: `undefined` or `true` allows; `false` or `{ allowed: false, reason }` refuses; a thrown exception is a fault.
+Hooks may be async. Return values: `undefined` or `true` allows; `false` or `{ allowed: false, reason }` refuses; a thrown exception is a fault. For a machine-readable refusal, pass the diagnostic shape instead: `{ allowed: false, diagnostic: { code, severity, message } }`, with severity `Info`, `Warning`, or `Error`.
 
 ## Context
 
@@ -120,12 +119,15 @@ The command forms and context APIs are in the [RpcLoader README](https://github.
 
 ## Endstone and PATH
 
-The Endstone CLI replaces the child process `PATH` with Python's `sys.path`; if the executable cannot be found, use an absolute path in `command`.
+The Endstone CLI replaces the child process `PATH` with Python's `sys.path`; if the executable cannot be found, use an absolute path in `pack.command`.
 
 ## Protocol
 
+The wire protocol is version 2, and both sides check the number during `hello`; a 1.x definition fails the handshake, so replace the copied definition when the loader moves.
+
 A custom protocol definition implements the same protocol:
 
-- Host → plugin: `hosihikari/hello`, `hosihikari/enable`, `hosihikari/disable`, `hosihikari/unload`, `hosihikari/events/deliver`
+- Host → plugin: `hosihikari/hello` (carries `protocolVersion`), `hosihikari/enable`, `hosihikari/disable`, `hosihikari/unload`, `hosihikari/events/deliver`
 - Plugin → host: `hosihikari/events/publish`, `hosihikari/events/subscribe`, `hosihikari/events/unsubscribe`, `hosihikari/log`
+- Refusal: `{ "allowed": false, "diagnostic": { "code", "severity", "message" } }`; the exception's message and type name travel alongside on the diagnostic, never a stack trace
 - Unload: `unload` request → close stdin → wait 5 seconds → kill the process tree.

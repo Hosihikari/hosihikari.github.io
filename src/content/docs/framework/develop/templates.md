@@ -3,9 +3,7 @@ title: Templates
 description: Start a plugin from a maintained template for each plugin kind.
 ---
 
-Each template is a complete plugin package. Copy it into the server as `plugins/<Name>/`, then change
-`name` in `manifest.json` and the matching `.conf`; the directory name must equal the manifest name.
-The templates are MIT-0; Hosihikari.Plugin.Abstractions 1.0.0 and later are MIT. The RPC templates live in [RpcPluginTemplate](https://github.com/HosihikariFramework/RpcPluginTemplate); copy the runtime directory you want.
+Each template is a plugin package. Copy it into the server as `plugins/<Name>/` and rename it so the directory name equals the manifest `name`. The source and RPC templates ship `hosihikari.json` for you to rename; the `dotnet new` templates have no manifest file in the source tree, because `Hosihikari.Plugin.Build` generates it at pack time. No template ships `manifest.json` — the packer generates the envelope from `hosihikari.json`. The templates are MIT-0; Hosihikari.Plugin.Abstractions 1.0.0 and later are MIT. The RPC templates live in [RpcPluginTemplate](https://github.com/HosihikariFramework/RpcPluginTemplate); copy the runtime directory you want.
 
 ## Precompiled assembly
 
@@ -18,17 +16,15 @@ dotnet new hosihikari-plugin -n MyPlugin          # C#
 dotnet new hosihikari-plugin-fsharp -n MyPlugin   # F#
 ```
 
-Build and pack with `Hosihikari.Plugin.Build`:
+The `dotnet new` project has no manifest file in the source tree: `Hosihikari.Plugin.Build` generates `hosihikari.json` at pack time from the project properties. Build and pack with that package:
 
 ```bash
 cd MyPlugin
-dotnet add package Hosihikari.Plugin.Build --version 1.1.0
+dotnet add package Hosihikari.Plugin.Build
 dotnet build -t:PackPlugin
 ```
 
-The target writes `dist/MyPlugin/`. Multi-target projects pass `-f <tfm>`. See
-[Testing plugins](/framework/develop/testing/) for the test package and the
-[template README](https://github.com/HosihikariFramework/PluginAbstractions/tree/main/templates/Hosihikari.Plugin.Templates).
+The target writes `dist/MyPlugin/`, containing `hosihikari.json` and the generated envelope. Multi-target projects pass `-f <tfm>`. See [Testing plugins](/framework/develop/testing/) for the test package and the [template README](https://github.com/HosihikariFramework/PluginAbstractions/tree/main/templates/Hosihikari.Plugin.Templates).
 
 ## Source C# and F#
 
@@ -39,18 +35,11 @@ The C# and F# loaders compile the source at load; the package carries source and
 | [CSharpPluginTemplate](https://github.com/HosihikariFramework/CSharpPluginTemplate) | `hosihikari-csharp` | [`hosihikari-csharp-<version>.zip`](https://github.com/HosihikariFramework/CSharpLoader/releases) |
 | [FSharpPluginTemplate](https://github.com/HosihikariFramework/FSharpPluginTemplate) | `hosihikari-fsharp` | [`hosihikari-fsharp-<version>.zip`](https://github.com/HosihikariFramework/FSharpLoader/releases) |
 
-`CSharpPluginTemplate` demonstrates `#:package` and `#:include`; run its `pack.ps1` or `pack.sh`,
-then copy `dist/MyCSharpPlugin/` into `plugins/`. The scripts call the framework packer, so they
-need a sibling `PluginManager` checkout or `HOSIHIKARI_PLUGINMANAGER` pointing at one.
-`FSharpPluginTemplate` demonstrates `#load`; copy the repository into `plugins/MyFSharpPlugin/`
-directly. Rename the plugin and restart. See
-[C# plugins](/framework/develop/authoring-csharp/) for the contract.
+`CSharpPluginTemplate` demonstrates `#:package` and `#:include`; run its `pack.ps1` or `pack.sh`, then copy `dist/MyCSharpPlugin/` into `plugins/`. The scripts call the framework packer, so they need a sibling `PluginManager` checkout or `HOSIHIKARI_PLUGINMANAGER` pointing at one, and they stop at `migrate` when the directory still has a 1.x `manifest.json`. `FSharpPluginTemplate` demonstrates `#load`; copy the repository into `plugins/MyFSharpPlugin/` directly. Rename the plugin and restart. See [C# plugins](/framework/develop/authoring-csharp/) for the contract.
 
 ## Out-of-process runtimes
 
-RpcLoader starts the command from `extraInfo.command` and speaks JSON-RPC over stdio. Each
-directory below is a complete package; the protocol definition is copied from the loader and refreshed when
-the loader is upgraded.
+RpcLoader starts the command from `pack.command` and speaks JSON-RPC over stdio. Each directory below is a complete package; the protocol definition is copied from the loader and refreshed when the loader is upgraded.
 
 | Template | Runtime | Build |
 |---|---|---|
@@ -58,9 +47,7 @@ the loader is upgraded.
 | [Python](https://github.com/HosihikariFramework/RpcPluginTemplate/tree/main/python) | Python 3.8+ | none |
 | [Kotlin/JVM](https://github.com/HosihikariFramework/RpcPluginTemplate/tree/main/kotlin) | JDK 21+ | `./build.sh` (`build.ps1` on Windows) |
 
-Install `RpcLoader` and put the runtime executable on `PATH`, copy the directory into `plugins/`,
-and restart. The Python manifest uses `python3`; change it to `python` on Windows. See
-[out-of-process plugins](/framework/develop/authoring-rpc/) for the protocol and context.
+Install `RpcLoader` and put the runtime executable on `PATH`, copy the directory into `plugins/`, and restart. The Python manifest uses `python3`; change it to `python` on Windows. See [out-of-process plugins](/framework/develop/authoring-rpc/) for the protocol and context.
 
 ## Choosing a template
 

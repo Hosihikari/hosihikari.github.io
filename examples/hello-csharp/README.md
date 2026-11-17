@@ -21,7 +21,7 @@ The target directory must be named `hello-csharp`.
 
 ## Files
 
-- `manifest.json`: `loader` is `csharp`; depends on `hosihikari` and `hosihikari-csharp`.
+- `hosihikari.json`: `loader` is `csharp`; depends on `hosihikari` and `hosihikari-csharp`. The `manifest.json` envelope is generated at pack time.
 - `main.cs`: the `HelloPlugin` entry type.
 - `hello-csharp.conf`: package defaults.
 

@@ -21,7 +21,7 @@ Copy-Item -Recurse .\examples\hello-csharp "$Server\plugins\hello-csharp"
 
 ## 文件
 
-- `manifest.json`：`loader` 是 `csharp`，依赖 `hosihikari` 与 `hosihikari-csharp`。
+- `hosihikari.json`：`loader` 是 `csharp`，依赖 `hosihikari` 与 `hosihikari-csharp`；`manifest.json` 信封在打包期生成。
 - `main.cs`：入口类型 `HelloPlugin`。
 - `hello-csharp.conf`：包内默认配置。
 

@@ -71,7 +71,7 @@ var options = new PluginManagerOptions
 var manager = new PluginManager(pluginsRoot, dataRoot, configRoot, reportFault, carrierServices, onRemoved, options);
 ```
 
-`UnloadVerificationTimeout` 是确认已放下的插件真的被回收的时间预算，默认 30 秒。有限值必须为正且不超过约 49.7 天；`Timeout.InfiniteTimeSpan` 关闭计时器、一直等到加载器的验证结束。超时是[生命周期](/zh/framework/embed/lifecycle/)里描述的失败方式之一。
+`PluginManagerOptions` 有三份互不相干的预算：每个生命周期钩子的 `HookTimeout`、确认已放下的插件真的被回收的 `UnloadVerificationTimeout`，以及退出时载体组件 `StopAsync` 的 `ComponentStopTimeout`。各默认 30 秒；有限值必须为正且不超过约 49.7 天，`Timeout.InfiniteTimeSpan` 关掉对应计时器。验证超时是[生命周期](/zh/framework/embed/lifecycle/)里描述的失败方式之一。
 
 ## 接下来
 

@@ -15,29 +15,36 @@ manager.Disable("Hello");
 manager.Unload("Hello");
 ```
 
-`Load` and `Enable` return a bool. `Unload` returns an `UnloadResult` with two fields:
+`Load` and `Enable` return a bool. `Unload` returns an `UnloadResult`:
 
 ```csharp
-public readonly record struct UnloadResult(bool Released, string? Error);
+public readonly record struct UnloadResult(
+    bool Released,
+    string? Error,
+    UnloadFailure Failure = UnloadFailure.None,
+    bool HookTimedOut = false);
 ```
 
 - `Released` is true only when the plugin was actually reclaimed.
 - `Error` carries the reason when it was not.
+- `Failure` names the stage that failed: `HookTimedOut`, `HookRefused`, `HookThrew`, `ReclamationTimedOut`, `HookAndReclamationTimedOut`, or `ReclamationFailed`.
+- `HookTimedOut` is independent of `Released`: a hook timeout followed by a successful verification sets both.
 
-## Unload has two stages
+## Unload has stages
 
-Unload is not one step. The manager first releases the instance and its scope, then waits for the loader to confirm the assembly load context was reclaimed. Both stages can fail differently:
+Unload is not one step. The manager first runs the disable hook under its own budget, then releases the instance and its scope, then waits for the loader to confirm the assembly load context was reclaimed. The stages fail differently:
 
 | Situation | What happens |
 | --- | --- |
 | A plugin still depends on it | Refused; `Released` is false. Unload downstream plugins first — the manager does not cascade. |
 | The plugin is a registered loader | Refused; loaders cannot be replaced at runtime. Restart the server. |
 | Disable is refused by the plugin | Refused; the plugin stays in place and may still be active. |
+| The disable or unload hook outlives `HookTimeout` | The token is cancelled, the framework stops waiting, and the unload continues; `HookTimedOut` is set. |
 | Released, but reclamation is not confirmed | `Released` is false with the timeout in `Error`; the plugin stays `Detached`. Call `Unload` again to re-verify. |
 
 The last case is the one worth knowing about. The instance is gone, but the load context is pinned by something — a static field, a live thread, a reference kept in `OnUnload`. Calling `Unload` again re-runs only the verification, and a temporarily pinned context can pass the second time.
 
-`UnloadVerificationTimeout` sets the budget for that wait; see [Getting started](/framework/embed/getting-started/).
+`HookTimeout` and `UnloadVerificationTimeout` set the budgets for those two waits; see [Getting started](/framework/embed/getting-started/). A hook that ignores the token only hits the hook timeout; it does not by itself block reclamation.
 
 ## Status snapshot
 
@@ -66,6 +73,8 @@ Two fields are easy to confuse:
 - `Enabled` is a separate axis. A plugin can be loaded and disabled at the same time.
 
 `LoadedNames` is the shorter list of plugins that are present and `Loaded`.
+
+State transitions also go out as `PluginStateChanged` on the event bus, with the previous and current state.
 
 ## What the snapshot is not
 
