@@ -123,6 +123,8 @@ Repack with the 2.0 packer and replace the old package on the server:
 
 ```bash
 dotnet tool update --global Hosihikari.Plugin.Pack
+# PackPlugin comes from the project's build package; leaving it at 1.x keeps producing 1.x packages.
+dotnet add ./HelloPlugin/HelloPlugin.csproj package Hosihikari.Plugin.Build --version 1.2.0
 dotnet build ./HelloPlugin/HelloPlugin.csproj -t:PackPlugin
 ```
 

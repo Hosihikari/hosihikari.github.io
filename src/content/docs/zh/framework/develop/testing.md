@@ -3,7 +3,7 @@ title: 测试插件
 description: 不启动基岩版专用服务器，直接驱动插件生命周期与宿主服务。
 ---
 
-`Hosihikari.Testing` 是面向插件作者的测试包。它跟框架走同一条契约线（`Hosihikari.Plugin.Abstractions` 3.0），并把 `Hosihikari.PluginManager` 钉在验证过的那条线上；装的时候不写版本，或用[发布记录](/zh/framework/releases/)里的版本。
+`Hosihikari.Testing` 是面向插件作者的测试包。它跟框架走同一条契约线（`Hosihikari.Plugin.Abstractions` 3.0），并把 `Hosihikari.PluginManager` 钉在验证过的那条线上；装的时候不写版本，让 NuGet 取与契约对应的那个发布。
 
 ```bash
 dotnet add package Hosihikari.Testing

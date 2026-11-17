@@ -123,6 +123,8 @@ dotnet build ./HelloPlugin/HelloPlugin.csproj
 
 ```bash
 dotnet tool update --global Hosihikari.Plugin.Pack
+# PackPlugin 来自项目里的构建包；它不跟着升，打出来的还是 1.x 的包。
+dotnet add ./HelloPlugin/HelloPlugin.csproj package Hosihikari.Plugin.Build --version 1.2.0
 dotnet build ./HelloPlugin/HelloPlugin.csproj -t:PackPlugin
 ```
 
