@@ -150,7 +150,7 @@ Priority orders managed handlers against each other only. The carrier registers 
 
 ### Reload
 
-`Reload(name)` exists only in the self-hosted topology, where the framework owns the plugin set. Under a parent the plugin set belongs to the parent (ADR-0003), and the call returns `NotSupported` with a diagnostic saying ownership is with the parent. The manager on the v2 line does not expose the verb yet; until it lands, reload by calling `Disable`, `Unload`, `Load`, and `Enable` yourself.
+`Reload(name)` exists only in the self-hosted topology, where the framework owns the plugin set. Under a parent the plugin set belongs to the parent (ADR-0003), and the call returns `NotSupported` with a diagnostic saying ownership is with the parent. The call runs `Disable` → `Unload` → `Load` → `Enable` and reports which step failed.
 
 Self-hosted, the call runs `Disable` → `Unload` → `Load` → `Enable` in that order and reports each step with structured diagnostics. The first failing step stops the sequence and is recorded as it happened; the plugin name leaves the roster during the reload, and state events follow the real transitions. A package pinned by native libraries (ADR-0034) still returns restart-needed at unload; `Reload` does not bypass it.
 

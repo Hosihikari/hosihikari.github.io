@@ -150,7 +150,7 @@ context.Events.Subscribe<SomeEvent>(OnSomeEvent, EventPriority.High);
 
 ### Reload
 
-`Reload(name)` 只在自持态提供，那里插件集归框架所有。父级态下插件集归父级（ADR-0003），调用返回 `NotSupported`，诊断写明所有权在父级。v2 线上的管理器还没放出这个动词；落地之前，自己依次调 `Disable`、`Unload`、`Load`、`Enable` 来重载。
+`Reload(name)` 只在自持态提供，那里插件集归框架所有。父级态下插件集归父级（ADR-0003），调用返回 `NotSupported`，诊断写明所有权在父级。调用内部依次执行 `Disable` → `Unload` → `Load` → `Enable`，并回报停在哪一步。
 
 自持态下它依次执行 `Disable` → `Unload` → `Load` → `Enable`，每一步按结构化诊断回报。第一个失败的步骤让序列停下并如实记账；重载期间插件名从在场名单中消失，状态事件按真实迁移发出。被原生库钉死的包（ADR-0034）在卸载时仍返回需要重启，`Reload` 不提供绕过。
 
