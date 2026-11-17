@@ -29,6 +29,14 @@ plugins/hello-node/
   hello-node.conf
 ```
 
+上面的结构是源码树。父级靠打包器生成的 `manifest.json` 信封发现包，所以安装前先打包。在插件目录里、装好 `hosihikari-pack` 工具（`dotnet tool install -g Hosihikari.Plugin.Pack`）后：
+
+```bash
+hosihikari-pack pack-plugin . ./hosihikari.json ./dist
+```
+
+再把 `dist/hello-node/` 复制到服务端 `plugins/hello-node/`，并从加载器包的 `protocol/node` 复制 `hosihikari.mjs`。
+
 ```json
 {
   "schemaVersion": 1,

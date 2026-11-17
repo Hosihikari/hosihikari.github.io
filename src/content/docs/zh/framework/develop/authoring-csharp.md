@@ -22,6 +22,14 @@ plugins/hello-csharp/
   hello-csharp.conf
 ```
 
+上面的结构是源码树。父级靠打包器生成的 `manifest.json` 信封发现包，所以安装前先打包。在插件目录里、装好 `hosihikari-pack` 工具（`dotnet tool install -g Hosihikari.Plugin.Pack`）后：
+
+```bash
+hosihikari-pack pack-plugin . ./hosihikari.json ./dist
+```
+
+再把 `dist/hello-csharp/` 复制到服务端 `plugins/hello-csharp/`。
+
 清单：
 
 ```json
@@ -129,4 +137,4 @@ greeting = "Hello, Hosihikari"
 
 ## 部署与验证
 
-把目录放进 `plugins/` 后启动服务端。日志应出现 `loaded, package` 与 `enabled`；数据目录里出现 `loaded.txt` 与 `enabled.txt`。卸载时插件管理器通过插件的 `PluginHandle` 动手：`Unload()` / `WaitForUnloadAsync()` 释放它，`IsUnloaded` 在 ALC 放下之后验证回收。
+把打包产物复制到 `plugins/` 后启动服务端。日志应出现 `loaded, package` 与 `enabled`；数据目录里出现 `loaded.txt` 与 `enabled.txt`。卸载时插件管理器通过插件的 `PluginHandle` 动手：`Unload()` / `WaitForUnloadAsync()` 释放它，`IsUnloaded` 在 ALC 放下之后验证回收。

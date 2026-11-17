@@ -24,6 +24,14 @@ plugins/hello-fsharp/
   hello-fsharp.conf
 ```
 
+上面的结构是源码树。父级靠打包器生成的 `manifest.json` 信封发现包，所以安装前先打包。在插件目录里、装好 `hosihikari-pack` 工具（`dotnet tool install -g Hosihikari.Plugin.Pack`）后：
+
+```bash
+hosihikari-pack pack-plugin . ./hosihikari.json ./dist
+```
+
+再把 `dist/hello-fsharp/` 复制到服务端 `plugins/hello-fsharp/`。
+
 清单，注意加载器名与依赖：
 
 ```json

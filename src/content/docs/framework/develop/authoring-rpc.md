@@ -29,6 +29,14 @@ plugins/hello-node/
   hello-node.conf
 ```
 
+The layout above is the source tree. The parent discovers packages through the generated `manifest.json` envelope, so pack before installing. From the plugin directory, with the `hosihikari-pack` dotnet tool (`dotnet tool install -g Hosihikari.Plugin.Pack`):
+
+```bash
+hosihikari-pack pack-plugin . ./hosihikari.json ./dist
+```
+
+Copy `dist/hello-node/` into the server as `plugins/hello-node/`, then copy `hosihikari.mjs` from the loader package's `protocol/node`.
+
 ```json
 {
   "schemaVersion": 1,

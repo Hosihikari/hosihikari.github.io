@@ -22,6 +22,14 @@ plugins/hello-csharp/
   hello-csharp.conf
 ```
 
+The layout above is the source tree. The parent discovers packages through the generated `manifest.json` envelope, so pack before installing. From the plugin directory, with the `hosihikari-pack` dotnet tool (`dotnet tool install -g Hosihikari.Plugin.Pack`):
+
+```bash
+hosihikari-pack pack-plugin . ./hosihikari.json ./dist
+```
+
+Copy `dist/hello-csharp/` into the server as `plugins/hello-csharp/`.
+
 Manifest:
 
 ```json
@@ -129,4 +137,4 @@ The assembly declares exactly one `EntryPoint<T>`; the entry type implements `IP
 
 ## Deploy and verify
 
-Put the directory under `plugins/` and start the server. The log should show `loaded, package` and `enabled`; `loaded.txt` and `enabled.txt` appear in the data directory. On unload the plugin manager uses the plugin's `PluginHandle`: `Unload()` / `WaitForUnloadAsync()` release it, and `IsUnloaded` verifies reclamation after the ALC is dropped.
+Copy the packed directory under `plugins/` and start the server. The log should show `loaded, package` and `enabled`; `loaded.txt` and `enabled.txt` appear in the data directory. On unload the plugin manager uses the plugin's `PluginHandle`: `Unload()` / `WaitForUnloadAsync()` release it, and `IsUnloaded` verifies reclamation after the ALC is dropped.

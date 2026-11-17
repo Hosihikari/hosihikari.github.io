@@ -24,6 +24,14 @@ plugins/hello-fsharp/
   hello-fsharp.conf
 ```
 
+The layout above is the source tree. The parent discovers packages through the generated `manifest.json` envelope, so pack before installing. From the plugin directory, with the `hosihikari-pack` dotnet tool (`dotnet tool install -g Hosihikari.Plugin.Pack`):
+
+```bash
+hosihikari-pack pack-plugin . ./hosihikari.json ./dist
+```
+
+Copy `dist/hello-fsharp/` into the server as `plugins/hello-fsharp/`.
+
 Manifest, with the loader name and the dependency:
 
 ```json
@@ -98,4 +106,4 @@ The hash covers the source text, files pulled in by `#load` and local `#r`, priv
 
 ## Deploy and verify
 
-Put the directory under `plugins/` and start the server. The log should show the plugin loading and enabling; the data directory gets the files the plugin writes.
+Copy the packed directory under `plugins/` and start the server. The log should show the plugin loading and enabling; the data directory gets the files the plugin writes.
