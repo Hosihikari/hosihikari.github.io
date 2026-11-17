@@ -16,6 +16,28 @@ Two rules:
 
 The five framework services — logging, configuration, data directory, scheduler, event bus — are not carrier services. They come from the manager itself and work the same in every host.
 
+
+## Carrier packages and the configurator
+
+A carrier package is the native shim plus a `hosihikari.json` with `kind: carrier`. The manager reads that manifest from the carrier directory the shim passes at startup, so the same build works wherever the carrier is installed. Two optional groups matter here:
+
+- `carrier.components`: process-wide managed components (see [Carrier components](/framework/develop/plugin-package/)).
+- `carrier.bootstrap`: one `{ assembly, type }` implementing `ICarrierServicesConfigurator`. The manager constructs it and calls `Configure(IServiceCollection services, nint hostHandle)` before the service provider is built, then hands that provider to plugins and components as `CarrierServices`.
+
+The native handle is the carrier's own pointer (Endstone passes its `Plugin*`; the parented LeviLamina carrier passes none). The core passes it through untouched; the configurator decides what type to expose under which key, and that key type lives with your carrier code — the framework never references it.
+
+```csharp
+public sealed class CarrierServicesConfigurator : ICarrierServicesConfigurator
+{
+    public void Configure(IServiceCollection services, nint hostHandle)
+    {
+        services.AddSingleton(new HostHandle(hostHandle));
+    }
+}
+```
+
+No manifest, no configurator: a directory without `hosihikari.json` starts with a provider that holds only the logger factory, which is what the verification hosts and local runs use.
+
 ## Registering loaders
 
 The manager routes a package to whichever loader claims it. It ships with one loader only: the built-in assembly loader, for precompiled IL.

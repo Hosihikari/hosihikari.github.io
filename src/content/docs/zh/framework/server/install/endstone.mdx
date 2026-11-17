@@ -33,7 +33,7 @@ sk add hosihikari-hosting-endstone
 - 来自 [HostingShim 的 Release](https://github.com/HosihikariFramework/HostingShim/releases) 的 `hosihikari-endstone-windows-x64.zip` 或 `hosihikari-endstone-linux-x64.zip`。
 - 来自 [Core 的 Release](https://github.com/HosihikariFramework/PluginManager/releases) 的 `hosihikari-core-<版本>.zip`。
 
-Windows 上载体归档写 `plugins/hosihikari.dll` 与 `nethost.dll`；Linux 上写 `plugins/hosihikari.so` 与 `plugins/libnethost.so`。核心归档把插件管理器写进 `plugins/hosihikari/`。HostingShim 的发布说明会写明兼容的核心版本线。
+Windows 上载体归档写 `plugins/hosihikari.dll`、`plugins/hosihikari/hosihikari.json` 与 `nethost.dll`；Linux 上写 `plugins/hosihikari.so`、`plugins/hosihikari/hosihikari.json` 与 `plugins/libnethost.so`。清单告诉核心载体包在哪、声明了哪些组件。核心归档把插件管理器写进 `plugins/hosihikari/`。HostingShim 的发布说明会写明兼容的核心版本线。
 
   </TabItem>
 </Tabs>

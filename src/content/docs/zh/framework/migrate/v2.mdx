@@ -42,6 +42,7 @@ hosihikari-pack migrate ./HelloPlugin
 | `pack.prepack` | 字符串数组 | 打包期在包目录执行的命令；单个字符串也收。每次执行限 5 分钟。 |
 | `carrier.sharedAssemblies` | 字符串数组 | 仅 `carrier`：载体额外带进共享层的文件名。 |
 | `carrier.components` | 数组 | 仅 `carrier`：载体组件，元素为 `{ assembly, type }`。 |
+| `carrier.bootstrap` | 对象 | 仅 `carrier`：载体的服务配置器，元素为 `{ assembly, type }`；实现 `ICarrierServicesConfigurator`，在服务提供器建成之前运行。 |
 
 最小的插件清单：
 

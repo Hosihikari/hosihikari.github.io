@@ -16,6 +16,27 @@ description: 宿主必须提供什么，加载器怎么登记自己。
 
 框架自己的五项服务——日志、配置、数据目录、调度、事件总线——不算载体服务。它们由管理器提供，在每个宿主里都一样。
 
+## 载体包与配置器
+
+载体包是原生垫片加一份 `kind: carrier` 的 `hosihikari.json`。管理器从垫片在启动时交来的载体目录里读这份清单，所以同一份构建装到哪儿都成立。这里有两个可选组：
+
+- `carrier.components`：进程级托管组件（见[插件包](/zh/framework/develop/plugin-package/)）。
+- `carrier.bootstrap`：一个实现了 `ICarrierServicesConfigurator` 的 `{ assembly, type }`。管理器构造它，在服务提供器建成之前调用 `Configure(IServiceCollection services, nint hostHandle)`，然后把那个提供器作为 `CarrierServices` 交给插件与组件。
+
+原生句柄是载体自己的指针（Endstone 传它的 `Plugin*`；LeviLamina 父级态不传）。核心原样透传；配置器决定用哪个类型、哪个键暴露出去，键类型住在你的载体代码里——框架从不引用它。
+
+```csharp
+public sealed class CarrierServicesConfigurator : ICarrierServicesConfigurator
+{
+    public void Configure(IServiceCollection services, nint hostHandle)
+    {
+        services.AddSingleton(new HostHandle(hostHandle));
+    }
+}
+```
+
+没有清单就没有配置器：目录里没有 `hosihikari.json` 时，容器里只有日志工厂，验证宿主与本地调试走的就是这条。
+
 ## 登记加载器
 
 管理器把包路由给认领它的加载器。它只自带一个：处理预编译 IL 的内置程序集加载器。
