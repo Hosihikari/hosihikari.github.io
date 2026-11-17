@@ -3,7 +3,7 @@ title: 模板
 description: 从每种插件种类的维护模板开始。
 ---
 
-每个模板都是一个插件包。复制到服务端 `plugins/<名称>/` 并改名，让目录名等于清单 `name`。源码与 RPC 模板带 `hosihikari.json` 供你改名；`dotnet new` 模板的源码树里没有清单文件，`Hosihikari.Plugin.Build` 在打包期生成它。模板都不带 `manifest.json`——信封由打包器按 `hosihikari.json` 生成。模板为 MIT-0；Hosihikari.Plugin.Abstractions 1.0.0 及之后为 MIT。RPC 模板在 [RpcPluginTemplate](https://github.com/HosihikariFramework/RpcPluginTemplate)，复制需要的运行时目录。
+每个模板都是一个插件包。打包后把产物复制到服务端 `plugins/<名称>/`，目录名保持等于清单 `name`。源码与 RPC 模板带 `hosihikari.json` 供你改名；`dotnet new` 模板的源码树里没有清单文件，`Hosihikari.Plugin.Build` 在打包期生成它。模板都不带 `manifest.json`——信封由打包器按 `hosihikari.json` 生成。模板为 MIT-0；Hosihikari.Plugin.Abstractions 1.0.0 及之后为 MIT。RPC 模板在 [RpcPluginTemplate](https://github.com/HosihikariFramework/RpcPluginTemplate)，打包需要的运行时目录。
 
 ## 预编译程序集
 
@@ -35,7 +35,7 @@ C# 与 F# 加载器在装载时编译源码；包里放源码，没有构建产�
 | [CSharpPluginTemplate](https://github.com/HosihikariFramework/CSharpPluginTemplate) | `hosihikari-csharp` | [`hosihikari-csharp-<版本>.zip`](https://github.com/HosihikariFramework/CSharpLoader/releases) |
 | [FSharpPluginTemplate](https://github.com/HosihikariFramework/FSharpPluginTemplate) | `hosihikari-fsharp` | [`hosihikari-fsharp-<版本>.zip`](https://github.com/HosihikariFramework/FSharpLoader/releases) |
 
-`CSharpPluginTemplate` 演示 `#:package` 与 `#:include`；先跑它的 `pack.ps1` 或 `pack.sh`，再把 `dist/MyCSharpPlugin/` 复制到 `plugins/`。脚本调用框架打包器，因此需要并列的 `PluginManager` 检出，或用 `HOSIHIKARI_PLUGINMANAGER` 指向一个；目录里还留着 1.x 的 `manifest.json` 时，脚本会先停在 `migrate` 上。`FSharpPluginTemplate` 演示 `#load`，直接复制仓库到 `plugins/MyFSharpPlugin/`。改名后重启。契约见 [C# 插件](/zh/framework/develop/authoring-csharp/)。
+`CSharpPluginTemplate` 演示 `#:package` 与 `#:include`；先跑它的 `pack.ps1` 或 `pack.sh`，再把 `dist/MyCSharpPlugin/` 复制到 `plugins/`。脚本调用框架打包器，因此需要并列的 `PluginManager` 检出，或用 `HOSIHIKARI_PLUGINMANAGER` 指向一个；目录里还留着 1.x 的 `manifest.json` 时，脚本会先停在 `migrate` 上。`FSharpPluginTemplate` 演示 `#load`，同样先打包，再把 `dist/MyFSharpPlugin/` 复制到 `plugins/`。改名后重启。契约见 [C# 插件](/zh/framework/develop/authoring-csharp/)。
 
 ## 进程外运行时
 
@@ -47,7 +47,7 @@ RpcLoader 启动清单 `pack.command` 里的命令，通过 stdio 走 JSON-RPC�
 | [Python](https://github.com/HosihikariFramework/RpcPluginTemplate/tree/main/python) | Python 3.8+ | 无 |
 | [Kotlin/JVM](https://github.com/HosihikariFramework/RpcPluginTemplate/tree/main/kotlin) | JDK 21+ | `./build.sh`（Windows 用 `build.ps1`） |
 
-在 `PATH` 上准备运行时与 `RpcLoader`，把目录复制到 `plugins/` 后重启。Python 清单使用 `python3`，Windows 上改成 `python`。协议与上下文见[进程外插件](/zh/framework/develop/authoring-rpc/)。
+在 `PATH` 上准备运行时与 `RpcLoader`。先构建运行时，跑它的 `pack.sh`（Windows 用 `pack.ps1`）生成 `manifest.json` 信封，把 `dist/<名称>/` 复制到 `plugins/` 后重启。打包脚本调用框架打包器，需要并列的 `PluginManager` 检出，或用 `HOSIHIKARI_PLUGINMANAGER` 指向一个。Python 清单使用 `python3`，Windows 上改成 `python`。协议与上下文见[进程外插件](/zh/framework/develop/authoring-rpc/)。
 
 ## 怎么选
 

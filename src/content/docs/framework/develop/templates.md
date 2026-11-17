@@ -3,7 +3,7 @@ title: Templates
 description: Start a plugin from a maintained template for each plugin kind.
 ---
 
-Each template is a plugin package. Copy it into the server as `plugins/<Name>/` and rename it so the directory name equals the manifest `name`. The source and RPC templates ship `hosihikari.json` for you to rename; the `dotnet new` templates have no manifest file in the source tree, because `Hosihikari.Plugin.Build` generates it at pack time. No template ships `manifest.json` — the packer generates the envelope from `hosihikari.json`. The templates are MIT-0; Hosihikari.Plugin.Abstractions 1.0.0 and later are MIT. The RPC templates live in [RpcPluginTemplate](https://github.com/HosihikariFramework/RpcPluginTemplate); copy the runtime directory you want.
+Each template is a plugin package. Pack it, copy the output into the server as `plugins/<Name>/`, and keep the directory name equal to the manifest `name`. The source and RPC templates ship `hosihikari.json` for you to rename; the `dotnet new` templates have no manifest file in the source tree, because `Hosihikari.Plugin.Build` generates it at pack time. No template ships `manifest.json` — the packer generates the envelope from `hosihikari.json`. The templates are MIT-0; Hosihikari.Plugin.Abstractions 1.0.0 and later are MIT. The RPC templates live in [RpcPluginTemplate](https://github.com/HosihikariFramework/RpcPluginTemplate); pack the runtime directory you want.
 
 ## Precompiled assembly
 
@@ -35,7 +35,7 @@ The C# and F# loaders compile the source at load; the package carries source and
 | [CSharpPluginTemplate](https://github.com/HosihikariFramework/CSharpPluginTemplate) | `hosihikari-csharp` | [`hosihikari-csharp-<version>.zip`](https://github.com/HosihikariFramework/CSharpLoader/releases) |
 | [FSharpPluginTemplate](https://github.com/HosihikariFramework/FSharpPluginTemplate) | `hosihikari-fsharp` | [`hosihikari-fsharp-<version>.zip`](https://github.com/HosihikariFramework/FSharpLoader/releases) |
 
-`CSharpPluginTemplate` demonstrates `#:package` and `#:include`; run its `pack.ps1` or `pack.sh`, then copy `dist/MyCSharpPlugin/` into `plugins/`. The scripts call the framework packer, so they need a sibling `PluginManager` checkout or `HOSIHIKARI_PLUGINMANAGER` pointing at one, and they stop at `migrate` when the directory still has a 1.x `manifest.json`. `FSharpPluginTemplate` demonstrates `#load`; copy the repository into `plugins/MyFSharpPlugin/` directly. Rename the plugin and restart. See [C# plugins](/framework/develop/authoring-csharp/) for the contract.
+`CSharpPluginTemplate` demonstrates `#:package` and `#:include`; run its `pack.ps1` or `pack.sh`, then copy `dist/MyCSharpPlugin/` into `plugins/`. The scripts call the framework packer, so they need a sibling `PluginManager` checkout or `HOSIHIKARI_PLUGINMANAGER` pointing at one, and they stop at `migrate` when the directory still has a 1.x `manifest.json`. `FSharpPluginTemplate` demonstrates `#load`; pack it the same way and copy `dist/MyFSharpPlugin/` into `plugins/`. Rename the plugin and restart. See [C# plugins](/framework/develop/authoring-csharp/) for the contract.
 
 ## Out-of-process runtimes
 
@@ -47,7 +47,7 @@ RpcLoader starts the command from `pack.command` and speaks JSON-RPC over stdio.
 | [Python](https://github.com/HosihikariFramework/RpcPluginTemplate/tree/main/python) | Python 3.8+ | none |
 | [Kotlin/JVM](https://github.com/HosihikariFramework/RpcPluginTemplate/tree/main/kotlin) | JDK 21+ | `./build.sh` (`build.ps1` on Windows) |
 
-Install `RpcLoader` and put the runtime executable on `PATH`, copy the directory into `plugins/`, and restart. The Python manifest uses `python3`; change it to `python` on Windows. See [out-of-process plugins](/framework/develop/authoring-rpc/) for the protocol and context.
+Install `RpcLoader` and put the runtime executable on `PATH`. Build the runtime, run its `pack.sh` (`pack.ps1` on Windows) so the package gets the generated `manifest.json` envelope, copy `dist/<Name>/` into `plugins/`, and restart. The pack scripts call the framework packer and need a sibling `PluginManager` checkout or `HOSIHIKARI_PLUGINMANAGER`. The Python manifest uses `python3`; change it to `python` on Windows. See [out-of-process plugins](/framework/develop/authoring-rpc/) for the protocol and context.
 
 ## Choosing a template
 
