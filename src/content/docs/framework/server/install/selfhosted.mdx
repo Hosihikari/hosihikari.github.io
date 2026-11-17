@@ -33,7 +33,7 @@ Download two archives from GitHub releases and extract both into the server root
 - `hosihikari-selfhosted-linux-x64.zip` from the [HostingShim releases](https://github.com/HosihikariFramework/HostingShim/releases).
 - `hosihikari-core-<version>.zip` from the [Core releases](https://github.com/HosihikariFramework/PluginManager/releases).
 
-The carrier archive writes `hosihikari-server` and the native shim into `plugins/hosihikari/`; the core archive adds the plugin manager to the same directory. Mark the launcher executable after extracting:
+The carrier archive writes `hosihikari-server`, the native shim, and the carrier manifest `hosihikari.json` into `plugins/hosihikari/`; the core archive adds the plugin manager to the same directory. Mark the launcher executable after extracting:
 
 ```bash
 chmod +x hosihikari-server

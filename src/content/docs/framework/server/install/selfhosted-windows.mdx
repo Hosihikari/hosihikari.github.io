@@ -33,7 +33,7 @@ Download two archives from GitHub releases and extract both into the server root
 - `hosihikari-selfhosted-windows-x64.zip` from the [HostingShim releases](https://github.com/HosihikariFramework/HostingShim/releases).
 - `hosihikari-core-<version>.zip` from the [Core releases](https://github.com/HosihikariFramework/PluginManager/releases).
 
-The carrier archive writes `hosihikari-server.exe` and the native shim into `plugins/hosihikari/`; the core archive adds the plugin manager to the same directory. The shim links nethost statically, so no `nethost.dll` is needed.
+The carrier archive writes `hosihikari-server.exe`, the native shim, and the carrier manifest `hosihikari.json` into `plugins/hosihikari/`; the core archive adds the plugin manager to the same directory. The shim links nethost statically, so no `nethost.dll` is needed.
 
   </TabItem>
 </Tabs>

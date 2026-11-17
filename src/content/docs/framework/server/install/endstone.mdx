@@ -33,7 +33,7 @@ Download two archives from GitHub releases and extract both into the server root
 - `hosihikari-endstone-windows-x64.zip` or `hosihikari-endstone-linux-x64.zip` from the [HostingShim releases](https://github.com/HosihikariFramework/HostingShim/releases).
 - `hosihikari-core-<version>.zip` from the [Core releases](https://github.com/HosihikariFramework/PluginManager/releases).
 
-On Windows the carrier archive writes `plugins/hosihikari.dll` and `nethost.dll`; on Linux it writes `plugins/hosihikari.so` and `plugins/libnethost.so`. The core archive writes the plugin manager into `plugins/hosihikari/`. The HostingShim release notes name the compatible core line.
+On Windows the carrier archive writes `plugins/hosihikari.dll`, `plugins/hosihikari/hosihikari.json`, and `nethost.dll`; on Linux it writes `plugins/hosihikari.so`, `plugins/hosihikari/hosihikari.json`, and `plugins/libnethost.so`. The manifest tells the core where the carrier package is and which components it declares. The core archive writes the plugin manager into `plugins/hosihikari/`. The HostingShim release notes name the compatible core line.
 
   </TabItem>
 </Tabs>
