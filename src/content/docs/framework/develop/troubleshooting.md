@@ -5,7 +5,7 @@ description: Common errors and where to look.
 
 ## The log reports `apiVersion mismatch` or `schemaVersion mismatch`
 
-The plugin was built against another contract. The current contract is `apiVersion` 3 and manifest `schemaVersion` 1; rebuild with Hosihikari.Plugin.Abstractions 3.0.0. Editing the number in the manifest does not change the type surface.
+The plugin was built against another contract. The current contract is `apiVersion` 3 and manifest `schemaVersion` 1; rebuild with Hosihikari.Plugin.Abstractions 2.0.0. Editing the number in the manifest does not change the type surface.
 
 ## The log reports `legacy package (manifest.json only, ...)`
 

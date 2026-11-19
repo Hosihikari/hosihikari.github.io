@@ -130,7 +130,7 @@ greeting = "Hello, Hosihikari"
 引用契约并排除它的运行期资产，包里就不会多出一份副本：
 
 ```xml
-<PackageReference Include="Hosihikari.Plugin.Abstractions" Version="[3.0.0]" ExcludeAssets="runtime" />
+<PackageReference Include="Hosihikari.Plugin.Abstractions" Version="[2.0.0]" ExcludeAssets="runtime" />
 ```
 
 程序集里恰好一个 `EntryPoint<T>`；入口类型实现 `IPlugin` 且有无参构造。

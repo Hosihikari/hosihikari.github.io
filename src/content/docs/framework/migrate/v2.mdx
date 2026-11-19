@@ -105,7 +105,7 @@ A cancelled `OnDisable` or `OnUnload` hook keeps running in the background. Rele
 Update the contract package to 3.0 and rebuild:
 
 ```bash
-dotnet add ./HelloPlugin/HelloPlugin.csproj package Hosihikari.Plugin.Abstractions --version 3.0.0
+dotnet add ./HelloPlugin/HelloPlugin.csproj package Hosihikari.Plugin.Abstractions --version 2.0.0
 dotnet build ./HelloPlugin/HelloPlugin.csproj
 ```
 
@@ -175,7 +175,7 @@ An `UnloadResult` reports which stage failed through `UnloadFailure` — `HookTi
 
 1. Replace `manifest.json` with `hosihikari.json` — by hand or with `hosihikari-pack migrate`.
 2. Rewrite the four hooks as async methods that take and honour the token.
-3. Recompile against `Hosihikari.Plugin.Abstractions` 3.0 and update the loader packages and protocol definitions.
+3. Recompile against `Hosihikari.Plugin.Abstractions` 2.0 and update the loader packages and protocol definitions.
 4. Repack with the 2.0 packer (`--carrier` when packing for a carrier), confirm the envelope is present, replace the package on the server, and restart.
 
 A loader package also moves its registration to `ILoaderContext`; a carrier package also fills in the `carrier` group. Both are rebuilt and repacked like any other package.
