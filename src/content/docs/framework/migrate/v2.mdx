@@ -11,9 +11,11 @@ The page runs through the four migration steps below, in order: [manifest](#1-re
 
 Packages depend on the contract as `[2.0.1,3.0.0)`. Contract 2.0.0 carries a broken dependency on the singular `Hosihikari.Plugin.Model`; 2.0.1 and later depend on `Hosihikari.Plugin.Models`. The lower bound matters because NuGet resolves a version range to the **lowest** version that satisfies it, so `[2.0.0,3.0.0)` would select 2.0.0 and fail. A lock file or local NuGet cache that already holds 2.0.0 also keeps it reachable.
 
-Contract 2.0.0 is unlisted on nuget.org, but unlisting is not deletion: a project that pins it exactly still downloads it and still fails to restore. Nothing fixes that on its own — move the pin to `[2.0.1,3.0.0)`. A range is not affected, because 2.0.1 is the lowest version it can select.
+Contract 2.0.0 is unlisted on nuget.org, but unlisting is not deletion: a project that pins it exactly still downloads it and still fails to restore. Nothing fixes that on its own — move the pin to `[2.0.1,3.0.0)`. A range is not affected only if it starts at 2.0.1: NuGet still downloads 2.0.0 for a lower bound that names it, so a range still written as `[2.0.0,3.0.0)` has to raise its lower bound. An already locked resolution does not recompute on its own.
 
-Because 2.0.1 restored a working dependency, plugins built against 2.0.0 need a recompile against 2.0.1 and above. 2.0.1 is otherwise source-compatible with 2.0.0; the projection's namespace singularisation and the Endstone 0.11.16 / LeviLamina 26.60.8 carriers arrive with it.
+Because 2.0.1 restored a working dependency, plugins built against 2.0.0 need a recompile against 2.0.1 and above. 2.0.1 is otherwise source-compatible with 2.0.0 except for the binding namespaces below.
+
+The projection singularised its binding namespaces (`Hosihikari.Bindings.*` → `Hosihikari.Binding.*`), and the carriers moved to Endstone 0.11.16 and LeviLamina 26.60.8. Carrier and binding code written against the old namespaces stops compiling until the `using` and type names follow the new spelling.
 
 ## 1. Replace the manifest
 
