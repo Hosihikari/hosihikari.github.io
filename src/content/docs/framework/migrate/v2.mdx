@@ -9,7 +9,7 @@ Two changes do the refusing before load: the manifest file is now `hosihikari.js
 
 The page runs through the four migration steps below, in order: [manifest](#1-replace-the-manifest), [hooks](#2-make-the-hooks-async), [recompile](#3-recompile), [repack](#4-repack).
 
-Packages depend on the contract as `[2.0.0,3.0.0)`. Contract 2.0.0 carries a broken dependency on the singular `Hosihikari.Plugin.Model`; use 2.0.1 or later, which depends on `Hosihikari.Plugin.Models`. Resolution picks 2.0.1 for an open lower bound, so only an exact pin to 2.0.0 reaches the broken package.
+Packages depend on the contract as `[2.0.0,3.0.0)`. Contract 2.0.0 carries a broken dependency on the singular `Hosihikari.Plugin.Model`; use 2.0.1 or later, which depends on `Hosihikari.Plugin.Models`. Resolution picks 2.0.1 for an open lower bound, so the broken package is reached only by an exact pin to 2.0.0 or by a lock file or local NuGet cache that already holds 2.0.0.
 
 ## 1. Replace the manifest
 
