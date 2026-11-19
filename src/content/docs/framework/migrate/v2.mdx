@@ -9,6 +9,8 @@ Two changes do the refusing before load: the manifest file is now `hosihikari.js
 
 The page runs through the four migration steps below, in order: [manifest](#1-replace-the-manifest), [hooks](#2-make-the-hooks-async), [recompile](#3-recompile), [repack](#4-repack).
 
+Packages depend on the contract as `[2.0.0,3.0.0)`. Contract 2.0.0 carries a broken dependency on the singular `Hosihikari.Plugin.Model`; use 2.0.1 or later, which depends on `Hosihikari.Plugin.Models`. Resolution picks 2.0.1 for an open lower bound, so only an exact pin to 2.0.0 reaches the broken package.
+
 ## 1. Replace the manifest
 
 Author `hosihikari.json` at the package root and delete `manifest.json` from the source tree. If you only have the old manifest, run the packer's `migrate`:
@@ -72,7 +74,7 @@ A package with `kind: carrier` is the carrier itself, so its `name` is `hosihika
 - `carrier.sharedAssemblies`: the shared-layer file names. The core and the packer read the same list; plugin packages must not ship copies of them.
 - `carrier.components`: the process-level managed components, each an assembly and a type implementing `ICarrierComponent`. The core constructs one instance per process and starts it before event dispatch opens to plugins, stops it before dispatch closes. Both calls run on the server thread — a `SynchronizationContext` only takes effect on the thread that sets it. Any component failing to start fails the whole startup; `StopAsync` gets a token cancelled by the manager's hook timeout, and after a timeout the framework records it and lets the process exit.
 
-The synchronization-context installation and the carrier event publisher are such components (Projection ADR-0028). Under Endstone the native event handlers cannot be unregistered, so `StopAsync` only stops managed dispatch; the native listener stays until the process exits.
+The synchronization-context installation and the carrier event publisher are such components (Projection Design `docs/adr/0028`). Under Endstone the native event handlers cannot be unregistered, so `StopAsync` only stops managed dispatch; the native listener stays until the process exits.
 
 ## 2. Make the hooks async
 
