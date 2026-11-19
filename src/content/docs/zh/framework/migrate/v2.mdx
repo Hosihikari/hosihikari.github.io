@@ -102,10 +102,10 @@ hosihikari-pack migrate ./HelloPlugin
 
 ## 3. 重编译
 
-契约包升到 3.0，重新构建：
+契约包升到 2.0，重新构建：
 
 ```bash
-dotnet add ./HelloPlugin/HelloPlugin.csproj package Hosihikari.Plugin.Abstractions --version 3.0.0
+dotnet add ./HelloPlugin/HelloPlugin.csproj package Hosihikari.Plugin.Abstractions --version 2.0.0
 dotnet build ./HelloPlugin/HelloPlugin.csproj
 ```
 
@@ -175,7 +175,7 @@ context.Events.Subscribe<SomeEvent>(OnSomeEvent, EventPriority.High);
 
 1. 用 `hosihikari.json` 替换 `manifest.json`——手写或跑 `hosihikari-pack migrate`。
 2. 把四个钩子改写成接收并尊重令牌的异步方法。
-3. 针对 `Hosihikari.Plugin.Abstractions` 3.0 重编译，并更新加载器包与协议定义。
+3. 针对 `Hosihikari.Plugin.Abstractions` 2.0 重编译，并更新加载器包与协议定义。
 4. 用 2.0 打包器重打包（给载体打包时带 `--carrier`），确认信封在场，替换服务端上的包并重启。
 
 加载器包还要把登记挪到 `ILoaderContext`；载体包还要填 `carrier` 组。两者都跟其它包一样重编译、重打包。

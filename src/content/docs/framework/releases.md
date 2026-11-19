@@ -8,7 +8,7 @@ on 22 October 2026.
 
 | Component | Version | Distribution |
 | --- | --- | --- |
-| [PluginAbstractions](https://www.nuget.org/packages/Hosihikari.Plugin.Abstractions/1.2.0) | 1.2.0 | NuGet |
+| [PluginAbstractions](https://www.nuget.org/packages/Hosihikari.Plugin.Abstractions/2.0.0) | 2.0.0 | NuGet |
 | [PluginManager](https://github.com/HosihikariFramework/PluginManager/releases/tag/v1.3.0) | v1.3.0 | Release archive, NuGet, sei |
 | [HostingShim](https://github.com/HosihikariFramework/HostingShim/releases/tag/v1.2.3) | v1.2.3 | Release archive, five carrier targets, sei |
 | [C# Loader](https://github.com/HosihikariFramework/CSharpLoader/releases/tag/v1.2.0) | v1.2.0 | Release archive, sei |
