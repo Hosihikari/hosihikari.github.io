@@ -7,7 +7,7 @@ description: 星光框架、加载器与模板的已发布版本。
 
 | 组件 | 版本 | 分发方式 |
 | --- | --- | --- |
-| [PluginAbstractions](https://www.nuget.org/packages/Hosihikari.Plugin.Abstractions/1.2.0) | 1.2.0 | NuGet |
+| [PluginAbstractions](https://www.nuget.org/packages/Hosihikari.Plugin.Abstractions/2.0.0) | 2.0.0 | NuGet |
 | [PluginManager](https://github.com/HosihikariFramework/PluginManager/releases/tag/v1.3.0) | v1.3.0 | Release 归档、NuGet、sei |
 | [HostingShim](https://github.com/HosihikariFramework/HostingShim/releases/tag/v1.2.3) | v1.2.3 | Release 归档，五个载体目标、sei |
 | [C# Loader](https://github.com/HosihikariFramework/CSharpLoader/releases/tag/v1.2.0) | v1.2.0 | Release 归档、sei |

@@ -3,7 +3,7 @@ title: Testing plugins
 description: Drive plugin lifecycle and host services without starting a Bedrock Dedicated Server.
 ---
 
-`Hosihikari.Testing` is the author-facing test package. It targets the same contract line as the framework (`Hosihikari.Plugin.Abstractions` 3.0) and pins the `Hosihikari.PluginManager` line the harness was validated against; install it without a version so NuGet resolves the release that matches the contract.
+`Hosihikari.Testing` is the author-facing test package. It targets the same contract line as the framework (`Hosihikari.Plugin.Abstractions` 2.0) and pins the `Hosihikari.PluginManager` line the harness was validated against; install it without a version so NuGet resolves the release that matches the contract.
 
 ```bash
 dotnet add package Hosihikari.Testing
