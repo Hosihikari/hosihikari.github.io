@@ -5,7 +5,7 @@ description: Move plugin sources and packages from the 1.x line to 2.0.
 
 2.0 keeps no binary compatibility with 1.x. The plugin contract, the manifest, and the package checks all changed, so every package moves by source recompile and repack, and every plugin source needs its hooks rewritten. A package unpacked from a 1.x archive stays refused until it goes through this page.
 
-Two changes do the refusing before load: the manifest file is now `hosihikari.json` (ADR-0058), and `apiVersion` is now 3 (ADR-0059). The refusal message names `hosihikari-pack migrate`, which rewrites the metadata in one command. The rewritten metadata alone does not make an old binary run — the hook signatures changed, so a rebuild is still required.
+Two changes do the refusing before load: the manifest file is now `hosihikari.json` (FX-0058), and `apiVersion` is now 3 (FX-0059). The refusal message names `hosihikari-pack migrate`, which rewrites the metadata in one command. The rewritten metadata alone does not make an old binary run — the hook signatures changed, so a rebuild is still required.
 
 The page runs through the four migration steps below, in order: [manifest](#1-replace-the-manifest), [hooks](#2-make-the-hooks-async), [recompile](#3-recompile), [repack](#4-repack).
 
@@ -74,7 +74,7 @@ A package with `kind: carrier` is the carrier itself, so its `name` is `hosihika
 - `carrier.sharedAssemblies`: the shared-layer file names. The core and the packer read the same list; plugin packages must not ship copies of them.
 - `carrier.components`: the process-level managed components, each an assembly and a type implementing `ICarrierComponent`. The core constructs one instance per process and starts it before event dispatch opens to plugins, stops it before dispatch closes. Both calls run on the server thread — a `SynchronizationContext` only takes effect on the thread that sets it. Any component failing to start fails the whole startup; `StopAsync` gets a token cancelled by the manager's hook timeout, and after a timeout the framework records it and lets the process exit.
 
-The synchronization-context installation and the carrier event publisher are such components (Projection Design `docs/adr/0028`). Under Endstone the native event handlers cannot be unregistered, so `StopAsync` only stops managed dispatch; the native listener stays until the process exits.
+The synchronization-context installation and the carrier event publisher are such components (PJ-0028). Under Endstone the native event handlers cannot be unregistered, so `StopAsync` only stops managed dispatch; the native listener stays until the process exits.
 
 ## 2. Make the hooks async
 
@@ -149,9 +149,9 @@ Priority orders managed handlers against each other only. The carrier registers 
 
 ### Reload
 
-`Reload(name)` exists only in the self-hosted topology, where the framework owns the plugin set. Under a parent the plugin set belongs to the parent (ADR-0003), and the call returns `NotSupported` with a diagnostic saying ownership is with the parent.
+`Reload(name)` exists only in the self-hosted topology, where the framework owns the plugin set. Under a parent the plugin set belongs to the parent (FX-0003), and the call returns `NotSupported` with a diagnostic saying ownership is with the parent.
 
-Self-hosted, the call runs `Disable` → `Unload` → `Load` → `Enable` in that order and reports each step with structured diagnostics. The first failing step stops the sequence and is recorded as it happened; the plugin name leaves the roster during the reload, and state events follow the real transitions. A package pinned by native libraries (ADR-0034) still returns restart-needed at unload; `Reload` does not bypass it.
+Self-hosted, the call runs `Disable` → `Unload` → `Load` → `Enable` in that order and reports each step with structured diagnostics. The first failing step stops the sequence and is recorded as it happened; the plugin name leaves the roster during the reload, and state events follow the real transitions. A package pinned by native libraries (FX-0034) still returns restart-needed at unload; `Reload` does not bypass it.
 
 ### Two unload timeouts
 

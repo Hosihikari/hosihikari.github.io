@@ -4,7 +4,7 @@ description: "The out-of-process loader: an official RPC bridge using line-delim
 ---
 
 :::caution
-RpcLoader is the official out-of-process loader. It runs plugins in a child process instead of compiling source AOT to IL (ADR-0031).
+RpcLoader is the official out-of-process loader. It runs plugins in a child process instead of compiling source AOT to IL (FX-0031).
 :::
 
 `Hosihikari.PluginLoader.Rpc` drives a child process with line-delimited JSON-RPC 2.0 over stdio. The RPC bridge reads only the command from the manifest and the protocol. Unload means the process exits, taking the child process and its state with it.

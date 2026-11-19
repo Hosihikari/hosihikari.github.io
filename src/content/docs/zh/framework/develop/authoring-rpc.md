@@ -4,7 +4,7 @@ description: 进程外加载器：官方 RPC 桥，使用行分隔 JSON-RPC。
 ---
 
 :::caution
-RpcLoader 是官方进程外加载器：插件在子进程中运行，不把源码 AOT 为 IL（ADR-0031）。
+RpcLoader 是官方进程外加载器：插件在子进程中运行，不把源码 AOT 为 IL（FX-0031）。
 :::
 
 `Hosihikari.PluginLoader.Rpc` 用行分隔 JSON-RPC 2.0 over stdio 驱动子进程。RPC 桥只认清单里的命令与协议。插件可以用任何语言写。卸载就是让子进程退出，子进程与它持有的状态一起消失。

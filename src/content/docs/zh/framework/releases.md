@@ -19,7 +19,7 @@ description: 星光框架、加载器与模板的已发布版本。
 
 ## 1.3.0
 
-- 生成的 `sei.json` 用 schema 3（ADR-0055），索引侧的 `sei/<名称>.json` 仍是 2。装这一线需要 Seiko 0.4 及以上。
+- 生成的 `sei.json` 用 schema 3（FX-0055），索引侧的 `sei/<名称>.json` 仍是 2。装这一线需要 Seiko 0.4 及以上。
 - 加载器与载体依赖 `hosihikari [1.3.0,2.0.0)`。加载器 1.2.0 从契约 1.2.0 读共享层名单，配旧核心会在装载时失败，走到解析期才报更晚。
 - `Hosihikari.Plugin.Abstractions` 1.2.0 公开 `PluginContractInfo.SharedAssemblyFileNames` 与 `AddSharedAssemblies`；载体把绑定程序集追加进名单，不再扫描 `FrameworkContext`。
 - 每个插件包都必须声明 `hosihikari` 依赖，`extraInfo.packageKind` 认 `plugin`、`loader` 或 `carrier`；两者都在装载与打包期拦截。
@@ -65,7 +65,7 @@ description: 星光框架、加载器与模板的已发布版本。
 
 ## v1.0.0
 
-- 所有组件统一发布为 v1.0.0。公开命名按 ADR-0040：`PluginManager`、`IPluginLoader`（`Id`）、`PluginHandle`、`CarrierServices`、`RegisterLoader`、`ScheduleOnce` / `SchedulePeriodic`。
+- 所有组件统一发布为 v1.0.0。公开命名按 FX-0040：`PluginManager`、`IPluginLoader`（`Id`）、`PluginHandle`、`CarrierServices`、`RegisterLoader`、`ScheduleOnce` / `SchedulePeriodic`。
 - 清单字段是 `extraInfo.api_version`、`extraInfo.loader` 与 `extraInfo.manifest_version`；顶层 `type`、`entry`、`version` 保持原名。
 - 仓库是 HostingShim、PluginManager、PluginAbstractions、CSharpLoader、FSharpLoader 与 RpcLoader；NuGet 包为 `Hosihikari.Plugin.Abstractions` 与 `Hosihikari.Plugin.Templates`。
 - 卸载验证移出管理器锁，并让并发卸载共享同一个进行中的验证任务。
