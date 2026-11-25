@@ -20,7 +20,7 @@ on 22 October 2026.
 
 ## 1.3.0
 
-- Generated `sei.json` files use schema 3 (ADR-0055); the index-side `sei/<name>.json` stays at 2. Installing this line needs Seiko 0.4 or newer.
+- Generated `sei.json` files use schema 3 (FX-0055); the index-side `sei/<name>.json` stays at 2. Installing this line needs Seiko 0.4 or newer.
 - Loaders and the hosting carrier depend on `hosihikari [1.3.0,2.0.0)`. Loader 1.2.0 reads the shared-layer list from Abstractions 1.2.0, so an older core fails at load time rather than at resolve time.
 - `Hosihikari.Plugin.Abstractions` 1.2.0 publishes `PluginContractInfo.SharedAssemblyFileNames` and `AddSharedAssemblies`; carriers append their binding assemblies to the list instead of scanning `FrameworkContext`.
 - Every plugin package must declare a `hosihikari` dependency, and `extraInfo.packageKind` accepts `plugin`, `loader`, or `carrier`; both are rejected at load and pack time.
@@ -70,7 +70,7 @@ The 1.1.0 line adds to the 1.0 API; existing plugins keep working without change
 
 ## v1.0.0
 
-- All components are released as v1.0.0. Public names follow ADR-0040: `PluginManager`, `IPluginLoader` with `Id`, `PluginHandle`, `CarrierServices`, `RegisterLoader`, and `ScheduleOnce` / `SchedulePeriodic`.
+- All components are released as v1.0.0. Public names follow FX-0040: `PluginManager`, `IPluginLoader` with `Id`, `PluginHandle`, `CarrierServices`, `RegisterLoader`, and `ScheduleOnce` / `SchedulePeriodic`.
 - Manifest fields are `extraInfo.api_version`, `extraInfo.loader`, and `extraInfo.manifest_version`; the top-level `type`, `entry`, and `version` fields keep their names.
 - The repositories are HostingShim, PluginManager, PluginAbstractions, CSharpLoader, FSharpLoader, and RpcLoader; the NuGet packages are `Hosihikari.Plugin.Abstractions` and `Hosihikari.Plugin.Templates`.
 - Unload verification runs outside the manager gate and shares an in-flight verification task across concurrent unloads.
