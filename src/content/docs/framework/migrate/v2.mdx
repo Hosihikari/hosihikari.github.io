@@ -84,7 +84,7 @@ A package with `kind: carrier` is the carrier itself, so its `name` is `hosihika
 
 A component receives `ICarrierComponentContext`, which exposes `Events`, `Logger`, and `CarrierServices` — the carrier-provided service provider the plugin surface already uses, so a component can reach its host handle (for example Endstone's `Plugin`) without the core knowing it. Both calls run on the server thread: a `SynchronizationContext` only takes effect on the thread that sets it.
 
-The synchronization-context installation and the carrier event publisher are such components (Projection FX-0028). Under Endstone the native event handlers cannot be unregistered, so `StopAsync` only stops managed dispatch; the native listener stays until the process exits.
+The synchronization-context installation and the carrier event publisher are such components (PJ-0028). Under Endstone the native event handlers cannot be unregistered, so `StopAsync` only stops managed dispatch; the native listener stays until the process exits.
 
 ## 2. Make the hooks async
 

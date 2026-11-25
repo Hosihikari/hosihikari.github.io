@@ -84,7 +84,7 @@ hosihikari-pack migrate ./HelloPlugin
 
 组件拿到 `ICarrierComponentContext`，暴露 `Events`、`Logger` 与 `CarrierServices`（载体提供的服务提供器，与插件面用的是同一份）：组件可以从它取宿主句柄（例如 Endstone 的 `Plugin`），核心不认识这些对象。两次调用都在服务端线程上跑：`SynchronizationContext` 只对设置它的线程生效。
 
-服务端线程同步上下文的安装与载体事件发布器就是这样的组件（投影 FX-0028）。Endstone 的原生事件处理器无法反注册，`StopAsync` 只停托管分发，原生监听器留到进程退出。
+服务端线程同步上下文的安装与载体事件发布器就是这样的组件（PJ-0028）。Endstone 的原生事件处理器无法反注册，`StopAsync` 只停托管分发，原生监听器留到进程退出。
 
 ## 2. 钩子改异步
 
