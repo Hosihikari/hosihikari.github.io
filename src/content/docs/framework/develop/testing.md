@@ -3,7 +3,9 @@ title: Testing plugins
 description: Drive plugin lifecycle and host services without starting a Bedrock Dedicated Server.
 ---
 
-`Hosihikari.Testing` is the author-facing test package. The published 1.1.0 is still on the 1.x contract (`Hosihikari.Plugin.Abstractions` 1.2.0, `PluginManager` 1.3.0) and its hooks are the synchronous ones, so the code below is the 1.x shape. Pin it: a bare install resolves 1.1.0, which does not match the 2.0 contract the rest of these pages describe.
+`Hosihikari.Testing` is the author-facing test package, and its API follows the current contract: `ValueTask` hooks that take a `CancellationToken`, and `PluginDiagnostic` on the fault channel.
+
+The package itself is still at 1.1.0 and has not caught up. It declares a dependency on the 1.x contract, so installing it beside a 2.0 project drags `Hosihikari.Plugin.Abstractions` back to 1.2.0 and the four hooks below stop matching `IPlugin`. Until a package for the current line ships, pin the old contract too and write the hooks in the 1.x shape (`void OnLoad(IPluginContext)`, `PluginHookResult OnEnable()`, and so on):
 
 ```bash
 dotnet add package Hosihikari.Testing --version 1.1.0
@@ -38,7 +40,7 @@ The test context exposes the same service shape as production:
 - `Events` — synchronous bus with the same six priorities; handler exceptions are collected in `TestEvents.HandlerErrors`.
 - `Scheduler` — manual scheduler; call `TestScheduler.RunOnce()` or `RunPeriodic()` yourself.
 - `PluginServices` — in-memory registry; the first registration for a type wins.
-- `Faults` — the strings reported through `IPluginContext.ReportFault`.
+- `Faults` — the entries reported through `IPluginContext.ReportFault`; on the 1.x contract the hook takes a string, which is what `Faults` holds.
 - `Logger`, `Configuration`, and `CarrierServices` are replaceable.
 
 `TestPluginContext` implements `ILoaderContext`, so a loader test can call `RegisterLoader` on it.

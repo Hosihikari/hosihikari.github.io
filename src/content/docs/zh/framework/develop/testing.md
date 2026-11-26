@@ -3,7 +3,9 @@ title: 测试插件
 description: 不启动基岩版专用服务器，直接驱动插件生命周期与宿主服务。
 ---
 
-`Hosihikari.Testing` 是面向插件作者的测试包。已发布的 1.1.0 仍停在 1.x 契约（`Hosihikari.Plugin.Abstractions` 1.2.0、`PluginManager` 1.3.0），钩子也还是同步的，所以下面的代码是 1.x 形态。要钉版本：不写版本会装到 1.1.0，与本套文档其余页面讲的 2.0 契约不一致。
+`Hosihikari.Testing` 是面向插件作者的测试包，API 跟随现行契约：`ValueTask` 钩子接收 `CancellationToken`，故障通道收 `PluginDiagnostic`。
+
+包本身还停在 1.1.0，没跟上。它声明依赖 1.x 契约，装进 2.0 的工程会把 `Hosihikari.Plugin.Abstractions` 拽回 1.2.0，下面那四个钩子就不再匹配 `IPlugin`。在现行线的包发出来之前，契约也一起钉回旧版，钩子按 1.x 形状写（`void OnLoad(IPluginContext)`、`PluginHookResult OnEnable()` 等）：
 
 ```bash
 dotnet add package Hosihikari.Testing --version 1.1.0
@@ -38,7 +40,7 @@ host.RunLifecycle();
 - `Events` —— 同步事件总线，档位同样是六档；handler 异常收进 `TestEvents.HandlerErrors`。
 - `Scheduler` —— 手动调度器；自己调用 `TestScheduler.RunOnce()` 或 `RunPeriodic()`。
 - `PluginServices` —— 内存服务注册表；同类型先到先得。
-- `Faults` —— 通过 `IPluginContext.ReportFault` 报上来的字符串。
+- `Faults` —— 通过 `IPluginContext.ReportFault` 报上来的条目；1.x 契约上该钩子收字符串，`Faults` 装的就是它。
 - `Logger`、`Configuration`、`CarrierServices` 都可以替换。
 
 `TestPluginContext` 实现了 `ILoaderContext`，写加载器测试时可以直接在上面 `RegisterLoader`。

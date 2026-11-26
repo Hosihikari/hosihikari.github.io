@@ -17,33 +17,6 @@ description: 星光框架、加载器与模板的已发布版本。
 | [Testing](https://www.nuget.org/packages/Hosihikari.Testing/1.1.0) | 1.1.0 | NuGet |
 | [插件模板](https://www.nuget.org/packages/Hosihikari.Plugin.Templates/1.1.0) | 1.1.0 | `dotnet new` |
 
-## 2.0.1
-
-- **契约 2.0.0 还原不出来。** 它的 nuspec 依赖 `Hosihikari.Plugin.Model`，而模型包发的是另一个 id 且那一次推送失败，依赖永远解不出。`Hosihikari.Plugin.Abstractions` 2.0.0 已 unlist；钉着它的工程要改到 `[2.0.1,3.0.0)`。区间一律从 2.0.1 起：NuGet 取最低满足版本，下界留在 2.0.0 仍会选中坏包。
-- **载体启动即失败。** 核心落在 `IsolatedComponentLoadContext`，装配却把载体程序集装进默认上下文，`carrier.bootstrap` 的类型解析不到自己的依赖。改为在核心所在的上下文里装载，并先认已装的那份；同时补一个只在正常解析失败后才触发的包目录解析器（FX-0066）。
-- **模型包改名 `Hosihikari.Plugin.Model` → `Hosihikari.Plugin.Models`。** 程序集文件名就是共享层身份，所以按 2.0.0 编译的插件要重编。
-- **载体换代**：Endstone 0.11.16、LeviLamina 26.60.9。Endstone 0.11.16 会把服务端自我升级到 26.65，**exe 与资源包必须同版本**——只回滚 exe 会让资源包 `min_engine_version` 校验失败、插件完全不加载。
-- **投影改名**：`CapabilityExtension` → `Capabilities`，namespace 与程序集族同步单数化（`Hosihikari.Bindings.*` → `Hosihikari.Binding.*`）。载体清单的 `carrier.components[].type` 与 `bootstrap.type` 进了 `Bootstrap` 命名空间。
-- 载体归档带投影的注释文档（`.xml`），插件作者的 IntelliSense 才有内容；`verify-live` 的 BDS 默认版本跟到 26.65.1。
-- 冒烟不再用退出码判干净退出：0.11.16 起 `Quit correctly` 之后进程仍以 `-1` 退出，裸服也一样。
-- LeviLamina、Endstone Linux 与自持面的载体仍是空 `carrier` 组。
-
-## 2.0.0
-
-**契约 2.0.0 还原不出来——区间从 2.0.1 起，或直接装 2.0.1。**其余内容见下。
-
-语义与元数据换代：插件清单换成 `hosihikari.json`，钩子异步化，卸载分三段预算，事件有了优先级，载体包承担进程级组件。1.x 的包与加载器在 v2 上一律拒载，迁移见[从 1.x 迁到 2.0](/zh/framework/migrate/v2/)。
-
-- **清单换代（FX-0058）**：插件写 `hosihikari.json`，LeviLamina 需要的 `manifest.json` 信封由打包器生成。只有 `manifest.json` 的旧包被拒，`hosihikari-pack migrate` 负责把旧清单转过来。
-- **契约 3（FX-0059）**：四个钩子改异步并接收 `CancellationToken`；诊断统一成 `PluginDiagnostic`；`RegisterLoader` 移进 `ILoaderContext`，普通插件拿不到；`PluginManifest` 移出契约。`apiVersion` 必须是 3。
-- **共享层由载体包声明（FX-0061）**：`PluginContractInfo` 的静态清单删除，改成只读基地清单加 `carrier.sharedAssemblies`。
-- **宿主契约 2（FX-0065）**：启动入口改为接收载体目录与原生宿主句柄。1.3.0 及更早的核心与新垫片互不兼容，起服时在版本检查处停下。
-- **载体组件（FX-0061）**：载体包在清单里声明进程级托管组件，核心在事件分发开启之前启动、停止之前停。
-- **载体服务配置器（FX-0064）**：载体清单的 `carrier.bootstrap` 声明一个 `ICarrierServicesConfigurator`，在服务提供器建成之前注册载体自己的服务。
-- **Reload（FX-0062）**：自持态可以重载单个插件，走 Disable → Unload → Load → Enable；父级态返回不支持。
-- **事件优先级（FX-0060）**：`Lowest` / `Low` / `Normal` / `High` / `Highest` / `Monitor`，`Monitor` 按约定只读。
-- **状态事件**：每次在场迁移发一条 `PluginStateChanged`。
-
 ## 1.3.0
 
 - 生成的 `sei.json` 用 schema 3（FX-0055），索引侧的 `sei/<名称>.json` 仍是 2。装这一线需要 Seiko 0.4 及以上。
