@@ -15,7 +15,11 @@ description: 把插件源码与插件包从 1.x 线搬到 2.0。
 
 2.0.1 补回了可用的依赖，按 2.0.0 编过的插件要用 2.0.1 及以后重编。除此之外 2.0.1 与 2.0.0 源码兼容，只有下面这处命名空间例外。
 
-投影把绑定命名空间改成了单数（`Hosihikari.Bindings.*` → `Hosihikari.Binding.*`），载体同时升到 Endstone 0.11.16 与 LeviLamina 26.60.8。按旧命名空间写的载体代码与绑定代码会编不过，要跟着改 `using` 与类型名。
+从 2.0.0 升到 2.0.1 还有两处会咬人。2.0.0 上载体启动即失败——配置器的类型解析不到自己的依赖——所以载体与核心一起走到 2.0.1，载体再往 Endstone 0.11.16 与 LeviLamina 26.60.9 走。Endstone 0.11.16 会把服务端自我升级到 26.65：exe 与资源包必须同版本，只回滚 exe 会让资源包 `min_engine_version` 校验失败、什么都不加载。模型包也丢了单数名（`Hosihikari.Plugin.Model` → `Hosihikari.Plugin.Models`），而程序集文件名就是共享层身份，按 2.0.0 编的东西都要重编，也就是上面的重编译。
+
+到了 2.0.1 之后，优先用 `preserve` 字段而不是手改已部署的文件：它把已存在的文件留在原地、路径不记受管；`sync` 上的 `--reset-preserved` 取回包内那份。
+
+投影把绑定命名空间改成了单数（`Hosihikari.Bindings.*` → `Hosihikari.Binding.*`），载体同时升到 Endstone 0.11.16 与 LeviLamina 26.60.9。按旧命名空间写的载体代码与绑定代码会编不过，要跟着改 `using` 与类型名。
 
 ## 1. 换掉清单
 
@@ -110,10 +114,10 @@ hosihikari-pack migrate ./HelloPlugin
 
 ## 3. 重编译
 
-契约包升到 2.0，重新构建：
+契约包升上去，重新构建。版本直接写 2.0.1——2.0.0 还原不出来，`--version 2.0.0` 会卡在这一步：
 
 ```bash
-dotnet add ./HelloPlugin/HelloPlugin.csproj package Hosihikari.Plugin.Abstractions --version 2.0.0
+dotnet add ./HelloPlugin/HelloPlugin.csproj package Hosihikari.Plugin.Abstractions --version 2.0.1
 dotnet build ./HelloPlugin/HelloPlugin.csproj
 ```
 

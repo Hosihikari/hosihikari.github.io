@@ -31,6 +31,7 @@ description: sk 的命令、选项与机器可读输出。
 | `--dry-run` | `sync`、`add`、`remove`、`update` | 打印计划，不下载载荷、不写任何内容。 |
 | `--adopt` | `sync`、`add`、`remove`、`update` | 保留现有文件并记录为已接管。 |
 | `--force` | `sync`、`add`、`remove`、`update` | 覆盖或删除冲突的现有文件。 |
+| `--reset-preserved` | `sync`、`add`、`remove`、`update` | 用包内副本替换包声明为 `preserve` 的文件，并从此按受管处理。 |
 
 ## 生命周期
 
@@ -132,6 +133,10 @@ sk index verify [path] [--check-artifacts] [--strict] [--proxy <url>]
 ## 接管与强制
 
 部署要覆盖你改过的受管文件，或路上有未受管文件时，会以 `deploy` 错误停下。`--adopt` 保留现有内容并记录为已接管；`--force` 覆盖或删除它。两者都在部署事务内执行。
+
+## preserve 的文件
+
+构件可以声明 `preserve` 路径：它部署这些文件，但之后不拥有它们（schema 4）。已存在的文件胜过构件那份，该路径也从不记为受管。`sync`、`add`、`remove`、`update` 上的 `--reset-preserved` 用包内副本替换被保留的文件，并从此按受管处理。
 
 ## 补全
 

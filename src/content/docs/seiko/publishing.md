@@ -46,12 +46,14 @@ Artifacts are bounded: at most 100,000 entries, 1 GiB per entry, and 4 GiB in to
 
 | Field | Meaning |
 | --- | --- |
-| `schemaVersion` | Required; `2` normally, `3` when the artifact declares external files. |
+| `schemaVersion` | Required. `2` normally; `3` when the artifact declares external files; `4` when it uses `preserve` or `dependencyGroups`. |
 | `name` | Sei name; must match the index file and be path-safe. |
 | `version` | NuGet SemVer version. Pre-releases use a suffix such as `1.3.0-beta.1`. |
 | `dependencies` | Names with optional version ranges; resolved by the same rules as declarations. |
 | `prerequisites`, `optionalPeers`, `conflicts` | The other version-level relations; see [Relations](/seiko/publishing/#relations). |
-| `artifact` | The current artifact only: `rid`, its own relations, `layout`, `modes`, and optional external files. |
+| `artifact` | The current artifact only: `rid`, its own relations, `layout`, `modes`, optional external files, and optional `preserve`. |
+| `artifact.preserve` | Paths the artifact deploys but does not own afterwards: an existing file wins over the artifact's copy, and the path is never recorded as managed. `schemaVersion: 4` only. |
+| `artifact.dependencyGroups` | Mutually exclusive candidate relation sets; at most one is expanded for the selected artifact. `schemaVersion: 4` only. |
 
 ## External files
 

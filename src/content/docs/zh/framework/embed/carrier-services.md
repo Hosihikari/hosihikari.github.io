@@ -20,17 +20,17 @@ description: 宿主必须提供什么，加载器怎么登记自己。
 
 载体包是原生垫片加一份 `kind: carrier` 的 `hosihikari.json`。管理器从垫片在启动时交来的载体目录里读这份清单，所以同一份构建装到哪儿都成立。这里有两个可选组：
 
-- `carrier.components`：进程级托管组件（见[插件包](/zh/framework/develop/plugin-package/)）。
-- `carrier.bootstrap`：一个实现了 `ICarrierServicesConfigurator` 的 `{ assembly, type }`。管理器构造它，在服务提供器建成之前调用 `Configure(IServiceCollection services, nint hostHandle)`，然后把那个提供器作为 `CarrierServices` 交给插件与组件。
+- `carrier.components`：进程级托管组件（见[载体包](/zh/framework/develop/plugin-package/#载体包)）。
+- `carrier.bootstrap`：一个实现了 `ICarrierServicesConfigurator` 的 `{ assembly, type }`。管理器构造它，在服务提供器建成之前调用 `Configure(ICarrierServiceContext context)`，然后把那个提供器作为 `CarrierServices` 交给插件与组件。
 
-原生句柄是载体自己的指针（Endstone 传它的 `Plugin*`；LeviLamina 父级态不传）。核心原样透传；配置器决定用哪个类型、哪个键暴露出去，键类型住在你的载体代码里——框架从不引用它。
+上下文带着服务集合（`context.Services`）、载体包目录的绝对路径（`context.CarrierDirectory`）与原生句柄（`context.HostHandle`）。句柄是载体自己的指针（Endstone 传它的 `Plugin*`；LeviLamina 父级态不传）。核心原样透传；配置器决定用哪个类型、哪个键暴露出去，键类型住在你的载体代码里——框架从不引用它。
 
 ```csharp
 public sealed class CarrierServicesConfigurator : ICarrierServicesConfigurator
 {
-    public void Configure(IServiceCollection services, nint hostHandle)
+    public void Configure(ICarrierServiceContext context)
     {
-        services.AddSingleton(new HostHandle(hostHandle));
+        context.Services.AddSingleton(new HostHandle(context.HostHandle));
     }
 }
 ```

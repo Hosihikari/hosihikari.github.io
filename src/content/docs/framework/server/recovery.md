@@ -15,7 +15,7 @@ Start with the carrier's log, then remove plugins until the server comes up.
 
 The framework's first log line reports the core version, the hosting-contract version, and the plugin API version. Include those three values when versions are in question.
 
-Under LeviLamina the log is shared: server lines and framework lines land in the same file. Under Endstone the rotation limit is 1000 files; under LeviLamina it is configured in `plugins/LeviLamina/config/Config.json`.
+Under LeviLamina the log is shared: server lines and framework lines land in the same file. Under Endstone the rotation limit is 1000 files; under LeviLamina it is configured in `mods/LeviLamina/config/Config.json`.
 
 ## The framework did not start
 

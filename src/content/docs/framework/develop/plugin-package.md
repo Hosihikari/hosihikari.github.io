@@ -55,7 +55,7 @@ plugins/
 
 `type` is optional and must be `hosihikari` when written; the envelope always carries it. The envelope is generated, so a `description` or `author` edit only reaches the parent after a repack.
 
-Dependencies are sorted by name. A dependency may carry a NuGet SemVer range:
+Dependencies keep the order you write them in; the load order among them is the topological one. A dependency may carry a NuGet SemVer range:
 
 - omitted, empty, or `*`: any version.
 - `1.2.3`: 1.2.3 or newer.
@@ -70,13 +70,13 @@ A carrier package has `kind: carrier`, is named `hosihikari`, and needs no `hosi
 
 ## Loaders and entries
 
-Official loaders come in two classes: in-process loaders compile source AOT to IL; RpcLoader is the out-of-process loader, an RPC bridge. Precompiled assemblies use the plugin manager's built-in path.
+Official loaders come in two classes: in-process loaders compile source to IL at load; RpcLoader is the out-of-process loader, an RPC bridge. Precompiled assemblies use the plugin manager's built-in path.
 
 | `loader` | `entry` | How it loads |
 |---|---|---|
 | `assembly` | `.dll` | PluginManager built-in: loads a precompiled IL assembly directly; the assembly declares exactly one `[assembly: EntryPoint<T>]`. |
-| `csharp` | `.cs` | In-process loader: AOT-compiles `.cs` to IL at load with Roslyn, into a collectible ALC. |
-| `fsharp` | `.fsx` | In-process loader: AOT-compiles `.fsx` to IL at load with FSharp.Compiler.Service. |
+| `csharp` | `.cs` | In-process loader: compiles `.cs` to IL at load with Roslyn, into a collectible ALC. |
+| `fsharp` | `.fsx` | In-process loader: compiles `.fsx` to IL at load with FSharp.Compiler.Service. |
 | `rpc` | Entry file | Out-of-process loader: `pack.command` starts a child process speaking line-delimited JSON-RPC 2.0 over stdio. |
 
 For in-process and precompiled assembly plugins, the entry type must implement `IPlugin` and have a parameterless constructor; `EntryPoint<T>` enforces both at compile time. A missing file or the wrong number of entry declarations is reported by the loader.

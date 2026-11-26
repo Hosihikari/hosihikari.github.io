@@ -20,10 +20,18 @@ dotnet new hosihikari-plugin -n HelloPlugin -o HelloPlugin
 
 得到的是一个完整的预编译插件项目。用 `dotnet new hosihikari-plugin-fsharp` 生成 F# 版本。
 
+已发布的模板还是 1.1.0：工程钉着 1.x 契约（`[1.2.0]`），钩子是 1.x 的同步签名，它自带的构建目标也只产出旧的纯 `manifest.json` 信封。打包前先把它拉到现行线上——升契约、把钩子签名换成[从 1.x 迁到 2.0](/zh/framework/migrate/v2/#2-钩子改异步)里的异步版本、用 2.0 的构建包打包：
+
+```bash
+dotnet add ./HelloPlugin/HelloPlugin.csproj package Hosihikari.Plugin.Abstractions --version 2.0.1
+dotnet add ./HelloPlugin/HelloPlugin.csproj package Hosihikari.Plugin.Build --version 1.2.0
+```
+
+只升契约编不过——编译器会要求新钩子签名，这正是迁移页带着走的那次改写。
+
 ## 打包
 
 ```bash
-dotnet add ./HelloPlugin/HelloPlugin.csproj package Hosihikari.Plugin.Build --version 1.2.0
 dotnet build ./HelloPlugin/HelloPlugin.csproj -t:PackPlugin
 ```
 

@@ -9,7 +9,7 @@ description: 在你自己的进程里承载 Hosihikari.PluginManager。
 
 - [开始内嵌](/zh/framework/embed/getting-started/) —— 加包，立一个最小宿主。
 - [载体服务](/zh/framework/embed/carrier-services/) —— 宿主必须提供什么，加载器怎么登记。
-- [生命周期](/zh/framework/embed/lifecycle/) —— `Load`、`Enable`、`Disable`、`Unload` 与状态快照。
+- [生命周期](/zh/framework/embed/lifecycle/) —— `Load`、`Enable`、`Disable`、`Unload`、`Reload`、组件启停与状态快照。
 - [事件与回调](/zh/framework/embed/events-and-callbacks/) —— 事件总线、调度器、`reportFault`、`onRemoved`。
 
 插件本身怎么写在[写插件](/zh/framework/develop/)。

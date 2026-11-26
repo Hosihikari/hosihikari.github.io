@@ -3,17 +3,17 @@ title: 发布记录
 description: 星光框架、加载器与模板的已发布版本。
 ---
 
-当前功能线发布于 2026 年 11 月 9 日；模板包最近一次更新在 10 月 22 日（1.0.1）。
+当前功能线发布于 2026 年 11 月 19 日。
 
 | 组件 | 版本 | 分发方式 |
 | --- | --- | --- |
-| [PluginAbstractions](https://www.nuget.org/packages/Hosihikari.Plugin.Abstractions/2.0.0) | 2.0.0 | NuGet |
-| [PluginManager](https://github.com/HosihikariFramework/PluginManager/releases/tag/v1.3.0) | v1.3.0 | Release 归档、NuGet、sei |
-| [HostingShim](https://github.com/HosihikariFramework/HostingShim/releases/tag/v1.2.3) | v1.2.3 | Release 归档，五个载体目标、sei |
-| [C# Loader](https://github.com/HosihikariFramework/CSharpLoader/releases/tag/v1.2.0) | v1.2.0 | Release 归档、sei |
-| [F# Loader](https://github.com/HosihikariFramework/FSharpLoader/releases/tag/v1.2.0) | v1.2.0 | Release 归档、sei |
-| [RPC Loader](https://github.com/HosihikariFramework/RpcLoader/releases/tag/v1.2.0) | v1.2.0 | Release 归档、sei |
-| [Plugin.Build](https://www.nuget.org/packages/Hosihikari.Plugin.Build/1.1.0) | 1.1.0 | NuGet |
+| [PluginAbstractions](https://www.nuget.org/packages/Hosihikari.Plugin.Abstractions/2.0.1) | 2.0.1 | NuGet |
+| [PluginManager](https://github.com/HosihikariFramework/PluginManager/releases/tag/v2.0.1) | v2.0.1 | Release 归档、NuGet、sei |
+| [HostingShim](https://github.com/HosihikariFramework/HostingShim/releases/tag/v2.0.1) | v2.0.1 | Release 归档，五个载体目标、sei |
+| [C# Loader](https://github.com/HosihikariFramework/CSharpLoader/releases/tag/v2.0.1) | v2.0.1 | Release 归档、sei |
+| [F# Loader](https://github.com/HosihikariFramework/FSharpLoader/releases/tag/v2.0.1) | v2.0.1 | Release 归档、sei |
+| [RPC Loader](https://github.com/HosihikariFramework/RpcLoader/releases/tag/v2.0.1) | v2.0.1 | Release 归档、sei |
+| [Plugin.Build](https://www.nuget.org/packages/Hosihikari.Plugin.Build/1.2.0) | 1.2.0 | NuGet |
 | [Testing](https://www.nuget.org/packages/Hosihikari.Testing/1.1.0) | 1.1.0 | NuGet |
 | [插件模板](https://www.nuget.org/packages/Hosihikari.Plugin.Templates/1.1.0) | 1.1.0 | `dotnet new` |
 
@@ -77,8 +77,8 @@ description: 星光框架、加载器与模板的已发布版本。
 .NET 包：
 
 ```bash
-dotnet add package Hosihikari.Plugin.Abstractions --version 1.2.0
-dotnet add package Hosihikari.Plugin.Build --version 1.1.0
+dotnet add package Hosihikari.Plugin.Abstractions --version 2.0.1
+dotnet add package Hosihikari.Plugin.Build --version 1.2.0
 dotnet add package Hosihikari.Testing --version 1.1.0
 dotnet new install Hosihikari.Plugin.Templates::1.1.0
 ```
@@ -89,5 +89,5 @@ dotnet new install Hosihikari.Plugin.Templates::1.1.0
 
 ## 兼容
 
-PluginManager v1.3.0 与 HostingShim v1.2.3 使用入口契约版本 1。
-按 Hosihikari.Plugin.Abstractions 1.2.0 构建的插件使用 API 版本 2 与清单 `manifest_version` 1，与 1.0.0 相同。核心 v1.3.0 起，每个插件清单都必须声明 `hosihikari` 依赖。
+PluginManager v2.0.1 与 HostingShim v2.0.1 使用入口契约版本 2。
+插件按 Hosihikari.Plugin.Abstractions `[2.0.1,3.0.0)` 构建，声明 `apiVersion` 3 与清单 `schemaVersion` 1。每个插件清单都必须声明 `hosihikari` 依赖。1.x 的包在载入前拒载，见[从 1.x 迁到 2.0](/zh/framework/migrate/v2/)。

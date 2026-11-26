@@ -3,18 +3,17 @@ title: Releases
 description: Published versions of the framework, loaders, and templates.
 ---
 
-The current release line was published on 9 November 2026; the template package was last updated
-on 22 October 2026.
+The current release line was published on 19 November 2026.
 
 | Component | Version | Distribution |
 | --- | --- | --- |
-| [PluginAbstractions](https://www.nuget.org/packages/Hosihikari.Plugin.Abstractions/2.0.0) | 2.0.0 | NuGet |
-| [PluginManager](https://github.com/HosihikariFramework/PluginManager/releases/tag/v1.3.0) | v1.3.0 | Release archive, NuGet, sei |
-| [HostingShim](https://github.com/HosihikariFramework/HostingShim/releases/tag/v1.2.3) | v1.2.3 | Release archive, five carrier targets, sei |
-| [C# Loader](https://github.com/HosihikariFramework/CSharpLoader/releases/tag/v1.2.0) | v1.2.0 | Release archive, sei |
-| [F# Loader](https://github.com/HosihikariFramework/FSharpLoader/releases/tag/v1.2.0) | v1.2.0 | Release archive, sei |
-| [RPC Loader](https://github.com/HosihikariFramework/RpcLoader/releases/tag/v1.2.0) | v1.2.0 | Release archive, sei |
-| [Plugin.Build](https://www.nuget.org/packages/Hosihikari.Plugin.Build/1.1.0) | 1.1.0 | NuGet |
+| [PluginAbstractions](https://www.nuget.org/packages/Hosihikari.Plugin.Abstractions/2.0.1) | 2.0.1 | NuGet |
+| [PluginManager](https://github.com/HosihikariFramework/PluginManager/releases/tag/v2.0.1) | v2.0.1 | Release archive, NuGet, sei |
+| [HostingShim](https://github.com/HosihikariFramework/HostingShim/releases/tag/v2.0.1) | v2.0.1 | Release archive, five carrier targets, sei |
+| [C# Loader](https://github.com/HosihikariFramework/CSharpLoader/releases/tag/v2.0.1) | v2.0.1 | Release archive, sei |
+| [F# Loader](https://github.com/HosihikariFramework/FSharpLoader/releases/tag/v2.0.1) | v2.0.1 | Release archive, sei |
+| [RPC Loader](https://github.com/HosihikariFramework/RpcLoader/releases/tag/v2.0.1) | v2.0.1 | Release archive, sei |
+| [Plugin.Build](https://www.nuget.org/packages/Hosihikari.Plugin.Build/1.2.0) | 1.2.0 | NuGet |
 | [Testing](https://www.nuget.org/packages/Hosihikari.Testing/1.1.0) | 1.1.0 | NuGet |
 | [Plugin templates](https://www.nuget.org/packages/Hosihikari.Plugin.Templates/1.1.0) | 1.1.0 | `dotnet new` |
 
@@ -82,8 +81,8 @@ The 1.1.0 line adds to the 1.0 API; existing plugins keep working without change
 .NET packages:
 
 ```bash
-dotnet add package Hosihikari.Plugin.Abstractions --version 1.2.0
-dotnet add package Hosihikari.Plugin.Build --version 1.1.0
+dotnet add package Hosihikari.Plugin.Abstractions --version 2.0.1
+dotnet add package Hosihikari.Plugin.Build --version 1.2.0
 dotnet add package Hosihikari.Testing --version 1.1.0
 dotnet new install Hosihikari.Plugin.Templates::1.1.0
 ```
@@ -94,5 +93,5 @@ The [Seiko](/seiko/) index also lists the core and the loaders as seis; Seiko in
 
 ## Compatibility
 
-PluginManager v1.3.0 and HostingShim v1.2.3 use hosting contract version 1.
-Plugins built against Hosihikari.Plugin.Abstractions 1.2.0 use API version 2 and manifest `manifest_version` 1, the same as 1.0.0. Since core v1.3.0 every plugin manifest must declare the `hosihikari` dependency.
+PluginManager v2.0.1 and HostingShim v2.0.1 use hosting contract version 2.
+Plugins are built against Hosihikari.Plugin.Abstractions `[2.0.1,3.0.0)` and declare `apiVersion` 3 with manifest `schemaVersion` 1. Every plugin manifest must declare the `hosihikari` dependency. A 1.x package is refused before load; see [Migrate from 1.x to 2.0](/framework/migrate/v2/).

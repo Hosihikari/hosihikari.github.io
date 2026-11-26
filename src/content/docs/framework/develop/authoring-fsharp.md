@@ -102,7 +102,7 @@ The hash covers the source text, files pulled in by `#load` and local `#r`, priv
 
 - A generated F# package carries `FSharp.Core.dll`; the shared contract DLL stays out of the package.
 - Precompiled F# plugins use the same `loader: assembly` path as C#, via the `hosihikari-plugin-fsharp` template.
-- The loader is LGPL-3.0-or-later, unlike the framework's own packages.
+- The loader is LGPL-3.0-or-later, as are the plugin manager and the hosting shim. Only the contract, build, testing, and template packages are MIT family; check the `LICENSE.md` of the piece you are shipping.
 
 ## Deploy and verify
 

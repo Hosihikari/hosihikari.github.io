@@ -20,10 +20,18 @@ dotnet new hosihikari-plugin -n HelloPlugin -o HelloPlugin
 
 The result is a complete precompiled plugin project. Choose the F# template with `dotnet new hosihikari-plugin-fsharp` instead.
 
+The published template is still version 1.1.0: its project pins the 1.x contract (`[1.2.0]`), its hooks are the synchronous 1.x signatures, and its own build target writes the old `manifest.json`-only envelope. Bring it onto the current line before packing — upgrade the contract, replace the hook signatures with the async ones from [Migrate from 1.x to 2.0](/framework/migrate/v2/#2-make-the-hooks-async), and pack with the 2.0 build package:
+
+```bash
+dotnet add ./HelloPlugin/HelloPlugin.csproj package Hosihikari.Plugin.Abstractions --version 2.0.1
+dotnet add ./HelloPlugin/HelloPlugin.csproj package Hosihikari.Plugin.Build --version 1.2.0
+```
+
+Upgrading the contract alone does not compile — the compiler demands the new hook signatures, which is exactly the rewrite the migration page walks through.
+
 ## Pack
 
 ```bash
-dotnet add ./HelloPlugin/HelloPlugin.csproj package Hosihikari.Plugin.Build --version 1.2.0
 dotnet build ./HelloPlugin/HelloPlugin.csproj -t:PackPlugin
 ```
 

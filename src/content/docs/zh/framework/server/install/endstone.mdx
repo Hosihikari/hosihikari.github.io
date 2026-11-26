@@ -10,7 +10,7 @@ Endstone 载体以一个 Endstone 插件的形式装进去。框架是插件管�
 ## 环境要求
 
 - Windows x64 或 Linux x64。
-- 基岩版专用服务器 1.26.60 或更新，且已装好可用的 Endstone 0.11.15 或更新。
+- 基岩版专用服务器 1.26.60 或更新，且已装好可用的 Endstone 0.11.16 或更新。
 - .NET 10 运行时。框架把 CLR 托进服务端进程；没有运行时，启动序列会停下来并在日志里说明原因。
 
 ## 安装
@@ -33,7 +33,7 @@ sk add hosihikari-hosting-endstone
 - 来自 [HostingShim 的 Release](https://github.com/HosihikariFramework/HostingShim/releases) 的 `hosihikari-endstone-windows-x64.zip` 或 `hosihikari-endstone-linux-x64.zip`。
 - 来自 [Core 的 Release](https://github.com/HosihikariFramework/PluginManager/releases) 的 `hosihikari-core-<版本>.zip`。
 
-Windows 上载体归档写 `plugins/hosihikari.dll`、`plugins/hosihikari/hosihikari.json` 与 `nethost.dll`；Linux 上写 `plugins/hosihikari.so`、`plugins/hosihikari/hosihikari.json` 与 `plugins/libnethost.so`。清单告诉核心载体包在哪、声明了哪些组件。核心归档把插件管理器写进 `plugins/hosihikari/`。HostingShim 的发布说明会写明兼容的核心版本线。
+Windows 上载体归档写 `plugins/hosihikari.dll`、`plugins/hosihikari/hosihikari.json` 与 `nethost.dll`；Linux 上写 `plugins/hosihikari.so`、`plugins/hosihikari/hosihikari.json` 与 `plugins/libnethost.so`。清单声明载体带来哪些组件与共享程序集；载体目录与原生宿主句柄由垫片的启动调用交进核心，不走清单。核心归档把插件管理器写进 `plugins/hosihikari/`。HostingShim 的发布说明会写明兼容的核心版本线。
 
   </TabItem>
 </Tabs>

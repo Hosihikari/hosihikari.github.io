@@ -50,6 +50,7 @@ export const GET: APIRoute = async ({ site }) => {
 
   const ordered = [
     ...sections.flatMap(bySection),
+    ...entries.filter(({ id }) => id === 'framework/migrate/v2'),
     ...entries.filter(({ id }) => id === 'framework/releases'),
     ...entries.filter(({ id }) => id === 'projection' || id === 'seiko'),
   ];

@@ -15,7 +15,11 @@ Contract 2.0.0 is unlisted on nuget.org, but unlisting is not deletion: a projec
 
 Because 2.0.1 restored a working dependency, plugins built against 2.0.0 need a recompile against 2.0.1 and above. 2.0.1 is otherwise source-compatible with 2.0.0 except for the binding namespaces below.
 
-The projection singularised its binding namespaces (`Hosihikari.Bindings.*` → `Hosihikari.Binding.*`), and the carriers moved to Endstone 0.11.16 and LeviLamina 26.60.8. Carrier and binding code written against the old namespaces stops compiling until the `using` and type names follow the new spelling.
+Two more things bite when moving from 2.0.0 to 2.0.1. Carrier startup failed outright on 2.0.0 — bootstrap types could not resolve their own dependencies — so the carrier and the core both move to 2.0.1, and the carriers go on to Endstone 0.11.16 and LeviLamina 26.60.9. Under Endstone 0.11.16 the server upgrades itself to 26.65: keep the exe and the resource pack on the same version, because rolling back only the exe fails the pack's `min_engine_version` check and nothing loads. The model package also lost its singular name (`Hosihikari.Plugin.Model` → `Hosihikari.Plugin.Models`), and the assembly file name is the shared-layer identity, so anything built against 2.0.0 is rebuilt, which is the recompile above.
+
+Once on 2.0.1, prefer the `preserve` field over hand-editing deployed files. It keeps an existing file in place and leaves the path unmanaged; `--reset-preserved` on `sync` takes the package copy back.
+
+The projection singularised its binding namespaces (`Hosihikari.Bindings.*` → `Hosihikari.Binding.*`), and the carriers moved to Endstone 0.11.16 and LeviLamina 26.60.9. Carrier and binding code written against the old namespaces stops compiling until the `using` and type names follow the new spelling.
 
 ## 1. Replace the manifest
 
@@ -110,10 +114,10 @@ A cancelled `OnDisable` or `OnUnload` hook keeps running in the background. Rele
 
 ## 3. Recompile
 
-Update the contract package to 2.0 and rebuild:
+Update the contract package and rebuild. The version goes straight to 2.0.1 — 2.0.0 does not restore, so `--version 2.0.0` would stop you here:
 
 ```bash
-dotnet add ./HelloPlugin/HelloPlugin.csproj package Hosihikari.Plugin.Abstractions --version 2.0.0
+dotnet add ./HelloPlugin/HelloPlugin.csproj package Hosihikari.Plugin.Abstractions --version 2.0.1
 dotnet build ./HelloPlugin/HelloPlugin.csproj
 ```
 

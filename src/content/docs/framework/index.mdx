@@ -45,7 +45,7 @@ import { Card, CardGrid } from '@astrojs/starlight/components';
     Every plugin gets its own collectible assembly load context. Unload is verified, and a failing plugin does not take the server down.
   </Card>
   <Card title="In-process loaders" icon="rocket">
-    C# and F# source is compiled AOT to IL; the loader loads it into a collectible ALC, and the plugin manager drives lifecycle. Precompiled assemblies use the plugin manager's built-in path. RpcLoader is the out-of-process loader: an official RPC bridge.
+    C# and F# source is compiled to IL at load; the loader loads it into a collectible ALC, and the plugin manager drives lifecycle. Precompiled assemblies use the plugin manager's built-in path. RpcLoader is the out-of-process loader: an official RPC bridge.
   </Card>
   <Card title="Carriers" icon="server">
     The same plugin manager runs under LeviLamina, Endstone on Windows and Linux, and the self-hosted carriers on Linux and Windows (BDS 1.21.3).

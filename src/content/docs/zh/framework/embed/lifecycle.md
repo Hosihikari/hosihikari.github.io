@@ -13,6 +13,7 @@ manager.Load(packageDirectory); // 按路径装载单个包
 manager.Enable("Hello");        // 按清单名启用
 manager.Disable("Hello");
 manager.Unload("Hello");
+manager.Reload("Hello");        // 仅自持态，见下
 ```
 
 `Load` 与 `Enable` 返回 bool。`Unload` 返回 `UnloadResult`：
@@ -29,6 +30,29 @@ public readonly record struct UnloadResult(
 - `Error` 在没回收时带上原因。
 - `Failure` 写明失败在哪一段：`HookTimedOut`、`HookRefused`、`HookThrew`、`ReclamationTimedOut`、`HookAndReclamationTimedOut` 或 `ReclamationFailed`。
 - `HookTimedOut` 与 `Released` 无关：钩子超时之后验证通过，两者同时为真。
+
+## 重载
+
+`Reload` 一次走完 `Disable` → `Unload` → `Load` → `Enable`（FX-0062），返回 `ReloadResult`：
+
+```csharp
+public readonly record struct ReloadResult(bool Reloaded, bool NotSupported, string? Error);
+```
+
+它只在自持态提供，那里插件集归管理器所有。父级态下插件集归父级（FX-0003），调用返回 `NotSupported` 并在 `Error` 里说明；要重载就去驱动父级。第一个失败的步骤让序列停下并如实记账；重载期间插件名从在场名单中消失，状态事件按真实迁移发出。
+
+被原生库钉死的包在卸载时仍返回需要重启，`Reload` 不提供绕过。
+
+## 组件先于分发启动
+
+载体声明了 `carrier.components` 时，宿主每进程启动一次，在事件分发对插件开启之前，并在分发停止之前按启动的逆序停止：
+
+```csharp
+manager.StartComponents(carrierPackageDirectory, components); // 组件启动失败时返回 false
+manager.StopComponents();
+```
+
+任一组件启动失败，整次启动按失败处理。
 
 ## 卸载分段
 

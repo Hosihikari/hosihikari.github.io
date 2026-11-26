@@ -5,7 +5,7 @@ description: 常见错误与排查入口。
 
 ## 日志报 `apiVersion 不匹配` 或 `schemaVersion 不匹配`
 
-插件是按另一版契约构建的。当前契约是 `apiVersion` 3、清单 `schemaVersion` 1；用 Hosihikari.Plugin.Abstractions 2.0.0 重新构建。改清单里的数字不会让旧类型面变成新契约。
+插件是按另一版契约构建的。当前契约是 `apiVersion` 3、清单 `schemaVersion` 1；用 Hosihikari.Plugin.Abstractions `[2.0.1,3.0.0)` 重新构建。改清单里的数字不会让旧类型面变成新契约。
 
 ## 日志报 `这是旧包（只有 manifest.json…）`
 
