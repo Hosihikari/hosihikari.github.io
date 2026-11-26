@@ -5,12 +5,12 @@ description: The carrier targets the framework supports, and what each one costs
 
 A **carrier** is a concrete runtime environment, fixed by three components: the platform, the parent plugin loader (none in the self-hosted case), and the native API provider — LLAPI for LeviLamina, the Endstone API for Endstone, and MCAPI for the self-hosted BDS 1.21.3. The framework depends only on the platform and the parent loader; the native API side comes from the projection. Pick the carrier before you install anything; the install steps differ per carrier and are not interchangeable.
 
-| Carrier | Platform | Parent | BDS |
-| --- | --- | --- | --- |
-| [LeviLamina](/framework/server/install/levilamina/) | Windows x64 | LeviLamina | 1.26.60+ with LeviLamina 26.60.9+ |
-| [Endstone](/framework/server/install/endstone/) | Windows x64, Linux x64 | Endstone | 1.26.60+ with Endstone 0.11.16+ |
-| [Self-hosted (Linux)](/framework/server/install/selfhosted/) | Linux x64 | none | 1.21.3 |
-| [Self-hosted (Windows)](/framework/server/install/selfhosted-windows/) | Windows x64 | none | 1.21.3.01 |
+| Carrier                                                                | Platform               | Parent     | BDS                               |
+| ---------------------------------------------------------------------- | ---------------------- | ---------- | --------------------------------- |
+| [LeviLamina](/framework/server/install/levilamina/)                    | Windows x64            | LeviLamina | 1.26.60+ with LeviLamina 26.60.9+ |
+| [Endstone](/framework/server/install/endstone/)                        | Windows x64, Linux x64 | Endstone   | 1.26.60+ with Endstone 0.11.16+   |
+| [Self-hosted (Linux)](/framework/server/install/selfhosted/)           | Linux x64              | none       | 1.21.3                            |
+| [Self-hosted (Windows)](/framework/server/install/selfhosted-windows/) | Windows x64            | none       | 1.21.3.01                         |
 
 ## Parented or self-hosted
 

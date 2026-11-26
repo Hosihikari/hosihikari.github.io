@@ -20,20 +20,24 @@ hero:
       variant: secondary
 ---
 
-import { Card, CardGrid } from '@astrojs/starlight/components';
+import { Card, CardGrid } from "@astrojs/starlight/components";
 
 <CardGrid>
   <Card title="One declaration" icon="pencil">
-    `seiko.conf` lists direct sei; `seiko.lock.json` records the exact tree. Replay the lock in CI with one command.
+    `seiko.conf` lists direct sei; `seiko.lock.json` records the exact tree. Replay the lock in CI
+    with one command.
   </Card>
   <Card title="Static indexes" icon="server">
-    Official, private, or local indexes with the same layout. The first source with a name provides its versions.
+    Official, private, or local indexes with the same layout. The first source with a name provides
+    its versions.
   </Card>
   <Card title="Verified store" icon="setting">
-    Artifacts are content-addressed by SHA-256 and deployed by reflink or hardlink. Generations are kept for rollback.
+    Artifacts are content-addressed by SHA-256 and deployed by reflink or hardlink. Generations are
+    kept for rollback.
   </Card>
   <Card title="CLI and MCP" icon="rocket">
-    `sk` for terminals, `seiko-mcp` for agents. Both share the same root lock; mutation tools are opt-in.
+    `sk` for terminals, `seiko-mcp` for agents. Both share the same root lock; mutation tools are
+    opt-in.
   </Card>
 </CardGrid>
 

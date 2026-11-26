@@ -26,9 +26,7 @@ Artifacts are bounded: at most 100,000 entries, 1 GiB per entry, and 4 GiB in to
   "schemaVersion": 2,
   "name": "hello-seiko",
   "version": "1.0.0",
-  "dependencies": [
-    { "name": "hosihikari", "version": "[1.1.0,1.2.0)" }
-  ],
+  "dependencies": [{ "name": "hosihikari", "version": "[1.1.0,1.2.0)" }],
   "prerequisites": [],
   "optionalPeers": [],
   "conflicts": [],
@@ -44,16 +42,16 @@ Artifacts are bounded: at most 100,000 entries, 1 GiB per entry, and 4 GiB in to
 }
 ```
 
-| Field | Meaning |
-| --- | --- |
-| `schemaVersion` | Required. `2` normally; `3` when the artifact declares external files; `4` when it uses `preserve` or `dependencyGroups`. |
-| `name` | Sei name; must match the index file and be path-safe. |
-| `version` | NuGet SemVer version. Pre-releases use a suffix such as `1.3.0-beta.1`. |
-| `dependencies` | Names with optional version ranges; resolved by the same rules as declarations. |
-| `prerequisites`, `optionalPeers`, `conflicts` | The other version-level relations; see [Relations](/seiko/publishing/#relations). |
-| `artifact` | The current artifact only: `rid`, its own relations, `layout`, `modes`, optional external files, and optional `preserve`. |
-| `artifact.preserve` | Paths the artifact deploys but does not own afterwards: an existing file wins over the artifact's copy, and the path is never recorded as managed. `schemaVersion: 4` only. |
-| `artifact.dependencyGroups` | Mutually exclusive candidate relation sets; at most one is expanded for the selected artifact. `schemaVersion: 4` only. |
+| Field                                         | Meaning                                                                                                                                                                     |
+| --------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `schemaVersion`                               | Required. `2` normally; `3` when the artifact declares external files; `4` when it uses `preserve` or `dependencyGroups`.                                                   |
+| `name`                                        | Sei name; must match the index file and be path-safe.                                                                                                                       |
+| `version`                                     | NuGet SemVer version. Pre-releases use a suffix such as `1.3.0-beta.1`.                                                                                                     |
+| `dependencies`                                | Names with optional version ranges; resolved by the same rules as declarations.                                                                                             |
+| `prerequisites`, `optionalPeers`, `conflicts` | The other version-level relations; see [Relations](/seiko/publishing/#relations).                                                                                           |
+| `artifact`                                    | The current artifact only: `rid`, its own relations, `layout`, `modes`, optional external files, and optional `preserve`.                                                   |
+| `artifact.preserve`                           | Paths the artifact deploys but does not own afterwards: an existing file wins over the artifact's copy, and the path is never recorded as managed. `schemaVersion: 4` only. |
+| `artifact.dependencyGroups`                   | Mutually exclusive candidate relation sets; at most one is expanded for the selected artifact. `schemaVersion: 4` only.                                                     |
 
 ## External files
 
@@ -91,12 +89,12 @@ When the payload may be downloaded but not redistributed, keep only the metadata
 
 The version-level relations constrain the whole version; the same fields inside `artifact` constrain only that artifact. Both scopes apply together.
 
-| Field | Meaning |
-| --- | --- |
-| `dependencies` | Must be installed; the target joins the graph. |
+| Field           | Meaning                                                                  |
+| --------------- | ------------------------------------------------------------------------ |
+| `dependencies`  | Must be installed; the target joins the graph.                           |
 | `prerequisites` | Must already be in the graph; does not add it. Used to select artifacts. |
-| `optionalPeers` | May be absent; when present its version must match. |
-| `conflicts` | A matching target may not be present. |
+| `optionalPeers` | May be absent; when present its version must match.                      |
+| `conflicts`     | A matching target may not be present.                                    |
 
 An artifact is chosen by `rid` plus its `prerequisites`: an artifact whose prerequisites are not satisfied cannot be selected. Among selectable artifacts, the one with the most satisfied prerequisites wins; equal specificity is an ambiguity error. Because `prerequisites` do not add anything, the sei naming the condition must be declared or pulled in by a dependency.
 
@@ -111,9 +109,7 @@ The index keeps one file per name. A version entry looks like this:
 ```json
 {
   "version": "1.0.0",
-  "dependencies": [
-    { "name": "hosihikari", "version": "[1.1.0,1.2.0)" }
-  ],
+  "dependencies": [{ "name": "hosihikari", "version": "[1.1.0,1.2.0)" }],
   "prerequisites": [],
   "optionalPeers": [],
   "conflicts": [],

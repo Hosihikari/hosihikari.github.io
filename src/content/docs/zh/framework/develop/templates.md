@@ -33,8 +33,8 @@ dotnet build -t:PackPlugin
 
 C# 与 F# 加载器在装载时编译源码；包里放源码，没有构建产物。
 
-| 模板 | 加载器 | 加载器归档 |
-|---|---|---|
+| 模板                                                                                | 加载器              | 加载器归档                                                                                     |
+| ----------------------------------------------------------------------------------- | ------------------- | ---------------------------------------------------------------------------------------------- |
 | [CSharpPluginTemplate](https://github.com/HosihikariFramework/CSharpPluginTemplate) | `hosihikari-csharp` | [`hosihikari-csharp-<版本>.zip`](https://github.com/HosihikariFramework/CSharpLoader/releases) |
 | [FSharpPluginTemplate](https://github.com/HosihikariFramework/FSharpPluginTemplate) | `hosihikari-fsharp` | [`hosihikari-fsharp-<版本>.zip`](https://github.com/HosihikariFramework/FSharpLoader/releases) |
 
@@ -44,11 +44,11 @@ C# 与 F# 加载器在装载时编译源码；包里放源码，没有构建产�
 
 RpcLoader 启动清单 `pack.command` 里的命令，通过 stdio 走 JSON-RPC。下面每个目录都是完整插件包；绑定拷自加载器，升级加载器时同步更新。
 
-| 模板 | 运行时 | 构建 |
-|---|---|---|
-| [Node.js/TypeScript](https://github.com/HosihikariFramework/RpcPluginTemplate/tree/main/node-typescript) | Node.js 20+ | `npm install && npm run build` |
-| [Python](https://github.com/HosihikariFramework/RpcPluginTemplate/tree/main/python) | Python 3.8+ | 无 |
-| [Kotlin/JVM](https://github.com/HosihikariFramework/RpcPluginTemplate/tree/main/kotlin) | JDK 21+ | `./build.sh`（Windows 用 `build.ps1`） |
+| 模板                                                                                                     | 运行时      | 构建                                   |
+| -------------------------------------------------------------------------------------------------------- | ----------- | -------------------------------------- |
+| [Node.js/TypeScript](https://github.com/HosihikariFramework/RpcPluginTemplate/tree/main/node-typescript) | Node.js 20+ | `npm install && npm run build`         |
+| [Python](https://github.com/HosihikariFramework/RpcPluginTemplate/tree/main/python)                      | Python 3.8+ | 无                                     |
+| [Kotlin/JVM](https://github.com/HosihikariFramework/RpcPluginTemplate/tree/main/kotlin)                  | JDK 21+     | `./build.sh`（Windows 用 `build.ps1`） |
 
 在 `PATH` 上准备运行时与 `RpcLoader`。先构建运行时，跑它的 `pack.sh`（Windows 用 `pack.ps1`）生成 `manifest.json` 信封，把 `dist/<名称>/` 复制到 `plugins/` 后重启。打包脚本调用框架打包器，需要并列的 `PluginManager` 检出，或用 `HOSIHIKARI_PLUGINMANAGER` 指向一个。Python 清单使用 `python3`，Windows 上改成 `python`。协议与上下文见[进程外插件](/zh/framework/develop/authoring-rpc/)。
 

@@ -35,20 +35,25 @@ hero:
       variant: secondary
 ---
 
-import { Card, CardGrid } from '@astrojs/starlight/components';
+import { Card, CardGrid } from "@astrojs/starlight/components";
 
 <CardGrid>
   <Card title="One contract" icon="pencil">
-    Implement IPlugin. The framework drives load, enable, disable, and unload, and refuses packages that break the contract before they run.
+    Implement IPlugin. The framework drives load, enable, disable, and unload, and refuses packages
+    that break the contract before they run.
   </Card>
   <Card title="Isolation" icon="puzzle">
-    Every plugin gets its own collectible assembly load context. Unload is verified, and a failing plugin does not take the server down.
+    Every plugin gets its own collectible assembly load context. Unload is verified, and a failing
+    plugin does not take the server down.
   </Card>
   <Card title="In-process loaders" icon="rocket">
-    C# and F# source is compiled to IL at load; the loader loads it into a collectible ALC, and the plugin manager drives lifecycle. Precompiled assemblies use the plugin manager's built-in path. RpcLoader is the out-of-process loader: an official RPC bridge.
+    C# and F# source is compiled to IL at load; the loader loads it into a collectible ALC, and the
+    plugin manager drives lifecycle. Precompiled assemblies use the plugin manager's built-in path.
+    RpcLoader is the out-of-process loader: an official RPC bridge.
   </Card>
   <Card title="Carriers" icon="server">
-    The same plugin manager runs under LeviLamina, Endstone on Windows and Linux, and the self-hosted carriers on Linux and Windows (BDS 1.21.3).
+    The same plugin manager runs under LeviLamina, Endstone on Windows and Linux, and the
+    self-hosted carriers on Linux and Windows (BDS 1.21.3).
   </Card>
 </CardGrid>
 

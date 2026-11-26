@@ -11,15 +11,15 @@ description: Expose an install root to MCP clients with seiko-mcp.
 seiko-mcp --root /path/to/root
 ```
 
-| Option | Meaning |
-| --- | --- |
-| `--root <path>` | Default install root. Defaults to the current directory, not the nearest `seiko.conf`. |
-| `--allow-mutations` | Register mutating tools. Without it the server is read-only. |
-| `--allowed-root <path>` | Repeatable. Mutation roots must be inside one of these directories. |
+| Option                   | Meaning                                                                                                             |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------- |
+| `--root <path>`          | Default install root. Defaults to the current directory, not the nearest `seiko.conf`.                              |
+| `--allow-mutations`      | Register mutating tools. Without it the server is read-only.                                                        |
+| `--allowed-root <path>`  | Repeatable. Mutation roots must be inside one of these directories.                                                 |
 | `--allowed-store <path>` | Repeatable. With an allowlist active, mutation stores must be the default store or inside one of these directories. |
-| `--audit-log <path>` | Append one JSON line per tool call (tool, root, arguments, outcome, truncated result); no credentials. |
-| `-h`, `--help` | Show usage. |
-| `-V`, `--version` | Print the build version. |
+| `--audit-log <path>`     | Append one JSON line per tool call (tool, root, arguments, outcome, truncated result); no credentials.              |
+| `-h`, `--help`           | Show usage.                                                                                                         |
+| `-V`, `--version`        | Print the build version.                                                                                            |
 
 The server speaks line-delimited JSON-RPC over stdio and reports protocol version `2025-06-18`. `initialize` returns `serverInfo` with the binary name and the same version as `--version`.
 
@@ -27,35 +27,35 @@ The server speaks line-delimited JSON-RPC over stdio and reports protocol versio
 
 Read-only tools:
 
-| Tool | Purpose |
-| --- | --- |
-| `list` | Installed sei from the lock. |
-| `search` | Search sei names in the configured indexes. |
-| `info` | Versions, all four relation kinds, and artifact conditions. |
-| `lock` | Return the current lock file. |
-| `source_list` | Configured sources. |
-| `config_get` | Read an install-root configuration value. |
-| `cache_status` | Store artifact and partial counts. |
-| `cache_verify` | Verify stored artifacts. |
-| `why` | Chains to a sei; each link has `name` and `kind`. |
-| `outdated` | Newer versions in range and overall, with `blockers`. |
-| `doctor` | Check the lock, store, deployment, and partial downloads. |
-| `check` | Read-only `doctor` without `.part` cleanup. |
-| `index_verify` | Validate a static index directory. |
+| Tool           | Purpose                                                     |
+| -------------- | ----------------------------------------------------------- |
+| `list`         | Installed sei from the lock.                                |
+| `search`       | Search sei names in the configured indexes.                 |
+| `info`         | Versions, all four relation kinds, and artifact conditions. |
+| `lock`         | Return the current lock file.                               |
+| `source_list`  | Configured sources.                                         |
+| `config_get`   | Read an install-root configuration value.                   |
+| `cache_status` | Store artifact and partial counts.                          |
+| `cache_verify` | Verify stored artifacts.                                    |
+| `why`          | Chains to a sei; each link has `name` and `kind`.           |
+| `outdated`     | Newer versions in range and overall, with `blockers`.       |
+| `doctor`       | Check the lock, store, deployment, and partial downloads.   |
+| `check`        | Read-only `doctor` without `.part` cleanup.                 |
+| `index_verify` | Validate a static index directory.                          |
 
 Mutation tools are registered only with `--allow-mutations`:
 
-| Tool | Purpose |
-| --- | --- |
-| `add` | Add a direct declaration or a local `.sei` path and sync. |
-| `remove` | Remove a direct declaration and sync. |
-| `update` | Update direct declarations and sync. |
-| `init` | Write a minimal `seiko.conf`. |
-| `sync` | Resolve and deploy sei. |
-| `rollback` | Restore a previous generation. |
-| `source_add`, `source_remove` | Edit sources. |
-| `config_set` | Write a configuration value. |
-| `cache_clean` | Remove unreferenced artifacts. |
+| Tool                          | Purpose                                                   |
+| ----------------------------- | --------------------------------------------------------- |
+| `add`                         | Add a direct declaration or a local `.sei` path and sync. |
+| `remove`                      | Remove a direct declaration and sync.                     |
+| `update`                      | Update direct declarations and sync.                      |
+| `init`                        | Write a minimal `seiko.conf`.                             |
+| `sync`                        | Resolve and deploy sei.                                   |
+| `rollback`                    | Restore a previous generation.                            |
+| `source_add`, `source_remove` | Edit sources.                                             |
+| `config_set`                  | Write a configuration value.                              |
+| `cache_clean`                 | Remove unreferenced artifacts.                            |
 
 Mutation tools take `dryRun`, `offline`, `adopt`, and `force`, matching the CLI. `add` takes paths exactly like `sk add`, and a relative path is resolved against the server process's working directory — not `root`. Start the server in the install root, or pass a path relative to its working directory. Every mutation requires an explicit `root` argument; the server refuses to infer it. Read-only tools accept an optional `root` and are not restricted by the allowlists. With `--allowed-root`, a mutation root must be the allowed directory or lie beneath it, after resolving symlinks. The server takes the same install-root lock as `sk`, so a mutation cannot race a CLI sync.
 

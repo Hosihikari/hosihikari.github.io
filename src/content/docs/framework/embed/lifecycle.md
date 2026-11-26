@@ -58,13 +58,13 @@ A component failing to start fails the whole startup.
 
 Unload is not one step. The manager first runs the disable hook under its own budget, then releases the instance and its scope, then waits for the loader to confirm the assembly load context was reclaimed. The stages fail differently:
 
-| Situation | What happens |
-| --- | --- |
-| A plugin still depends on it | Refused; `Released` is false. Unload downstream plugins first — the manager does not cascade. |
-| The plugin is a registered loader | Refused; loaders cannot be replaced at runtime. Restart the server. |
-| Disable is refused by the plugin | Refused; the plugin stays in place and may still be active. |
-| The disable or unload hook outlives `HookTimeout` | The token is cancelled, the framework stops waiting, and the unload continues; `HookTimedOut` is set. |
-| Released, but reclamation is not confirmed | `Released` is false with the timeout in `Error`; the plugin stays `Detached`. Call `Unload` again to re-verify. |
+| Situation                                         | What happens                                                                                                    |
+| ------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| A plugin still depends on it                      | Refused; `Released` is false. Unload downstream plugins first — the manager does not cascade.                   |
+| The plugin is a registered loader                 | Refused; loaders cannot be replaced at runtime. Restart the server.                                             |
+| Disable is refused by the plugin                  | Refused; the plugin stays in place and may still be active.                                                     |
+| The disable or unload hook outlives `HookTimeout` | The token is cancelled, the framework stops waiting, and the unload continues; `HookTimedOut` is set.           |
+| Released, but reclamation is not confirmed        | `Released` is false with the timeout in `Error`; the plugin stays `Detached`. Call `Unload` again to re-verify. |
 
 The last case is the one worth knowing about. The instance is gone, but the load context is pinned by something — a static field, a live thread, a reference kept in `OnUnload`. Calling `Unload` again re-runs only the verification, and a temporarily pinned context can pass the second time.
 

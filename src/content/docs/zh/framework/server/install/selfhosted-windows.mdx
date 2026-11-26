@@ -3,7 +3,7 @@ title: 安装自持态载体（Windows）
 description: 安装自持态 Windows 载体。
 ---
 
-import { Tabs, TabItem } from '@astrojs/starlight/components';
+import { Tabs, TabItem } from "@astrojs/starlight/components";
 
 自持态 Windows 载体没有父级加载器。启动器挂起启动原版 `bedrock_server.exe`，注入原生垫片，调用它的导出入口，再恢复服务端运行；CLR 与插件管理器因此在服务端 `main` 之前起来。
 
@@ -59,14 +59,14 @@ sk add hosihikari-hosting-selfhosted
 
 ## 文件位置
 
-| 路径 | 内容 |
-| --- | --- |
-| `hosihikari-server.exe` | 启动器；用它代替 `bedrock_server.exe`。 |
-| `plugins/hosihikari/hosihikari.dll` | 被注入的垫片。 |
-| `plugins/hosihikari/` | 载体与插件管理器。 |
-| `plugins/<name>/` | 插件包。 |
-| `config/hosihikari/<name>.conf` | 服务端侧的配置覆盖。 |
-| `data/hosihikari/<name>/` | 框架交给每个插件的数据目录。 |
+| 路径                                | 内容                                    |
+| ----------------------------------- | --------------------------------------- |
+| `hosihikari-server.exe`             | 启动器；用它代替 `bedrock_server.exe`。 |
+| `plugins/hosihikari/hosihikari.dll` | 被注入的垫片。                          |
+| `plugins/hosihikari/`               | 载体与插件管理器。                      |
+| `plugins/<name>/`                   | 插件包。                                |
+| `config/hosihikari/<name>.conf`     | 服务端侧的配置覆盖。                    |
+| `data/hosihikari/<name>/`           | 框架交给每个插件的数据目录。            |
 
 ## 卸载
 

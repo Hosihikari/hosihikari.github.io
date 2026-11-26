@@ -1,10 +1,16 @@
 /* 星光框架的站点样式。这里只覆盖 Starlight 自己的 DOM，不依赖任何主题包。 */
 
 :root {
-  --sl-font-sans: 'Noto Sans SC Variable', 'Noto Sans SC', 'Source Han Sans SC', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans CJK SC', 'Noto Sans', sans-serif;
+  --sl-font-sans:
+    "Noto Sans SC Variable", "Noto Sans SC", "Source Han Sans SC", "PingFang SC",
+    "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", "Noto Sans", sans-serif;
   --sl-font: var(--sl-font-sans);
-  --sl-font-serif: 'Noto Serif SC Variable', 'Noto Serif SC', 'Source Han Serif SC', 'Noto Serif CJK SC', 'Songti SC', SimSun, Georgia, serif;
-  --sl-font-mono: 'Cascadia Code Variable', 'Cascadia Code', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --sl-font-serif:
+    "Noto Serif SC Variable", "Noto Serif SC", "Source Han Serif SC", "Noto Serif CJK SC",
+    "Songti SC", SimSun, Georgia, serif;
+  --sl-font-mono:
+    "Cascadia Code Variable", "Cascadia Code", ui-monospace, SFMono-Regular, Menlo, Consolas,
+    monospace;
 
   --hf-ink: oklch(26.702% 0.066 339.5);
   --hf-ink-soft: oklch(43.399% 0.07 341.444);
@@ -23,7 +29,7 @@
 }
 
 /* 浅色 */
-:root[data-theme='light'] {
+:root[data-theme="light"] {
   --background: var(--hf-paper);
   --foreground: var(--hf-ink);
   --sl-color-bg: var(--hf-paper);
@@ -47,7 +53,7 @@
 }
 
 /* 深色 */
-:root[data-theme='dark'] {
+:root[data-theme="dark"] {
   --background: oklch(18.985% 0.031 305.032);
   --foreground: oklch(95.948% 0.016 328.775);
   --sl-color-bg: oklch(18.985% 0.031 305.032);
@@ -166,24 +172,49 @@ header.header {
   border: 1px solid var(--hf-border);
   border-radius: 0;
   background:
-    radial-gradient(44% 54% at 80% 28%, color-mix(in oklab, var(--hf-gold) 22%, transparent), transparent 72%),
-    radial-gradient(42% 48% at 12% 16%, color-mix(in oklab, var(--hf-magenta) 13%, transparent), transparent 74%),
-    linear-gradient(135deg, var(--hf-paper) 0%, oklch(97.138% 0.018 342.021) 48%, oklch(94.52% 0.028 311.315) 100%);
+    radial-gradient(
+      44% 54% at 80% 28%,
+      color-mix(in oklab, var(--hf-gold) 22%, transparent),
+      transparent 72%
+    ),
+    radial-gradient(
+      42% 48% at 12% 16%,
+      color-mix(in oklab, var(--hf-magenta) 13%, transparent),
+      transparent 74%
+    ),
+    linear-gradient(
+      135deg,
+      var(--hf-paper) 0%,
+      oklch(97.138% 0.018 342.021) 48%,
+      oklch(94.52% 0.028 311.315) 100%
+    );
   box-shadow: 0 24px 60px -40px color-mix(in oklab, var(--hf-magenta-deep) 55%, transparent);
 }
 
 [data-has-hero] .hero::before {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
   z-index: 0;
   pointer-events: none;
   opacity: 0.6;
   background-image:
-    radial-gradient(circle, color-mix(in oklab, var(--hf-magenta) 26%, transparent) 1px, transparent 1.6px),
-    radial-gradient(circle, color-mix(in oklab, var(--hf-gold) 45%, transparent) 1px, transparent 1.5px);
-  background-position: 0 0, 48px 72px;
-  background-size: 110px 110px, 170px 170px;
+    radial-gradient(
+      circle,
+      color-mix(in oklab, var(--hf-magenta) 26%, transparent) 1px,
+      transparent 1.6px
+    ),
+    radial-gradient(
+      circle,
+      color-mix(in oklab, var(--hf-gold) 45%, transparent) 1px,
+      transparent 1.5px
+    );
+  background-position:
+    0 0,
+    48px 72px;
+  background-size:
+    110px 110px,
+    170px 170px;
 }
 
 [data-has-hero] .hero > * {
@@ -221,7 +252,10 @@ header.header {
 .sl-link-button {
   padding: 0.8rem 1.3rem;
   font-weight: 650;
-  transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    background 180ms ease;
 }
 
 .sl-link-button.primary {
@@ -290,7 +324,18 @@ header.header {
   width: 1.35rem;
   aspect-ratio: 1;
   background: var(--hf-gold);
-  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  clip-path: polygon(
+    50% 0%,
+    61% 35%,
+    98% 35%,
+    68% 57%,
+    79% 91%,
+    50% 70%,
+    21% 91%,
+    32% 57%,
+    2% 35%,
+    39% 35%
+  );
   filter: drop-shadow(0 0 8px oklch(85.294% 0.152 89.407 / 0.7));
   animation: mascot-twinkle 4.5s ease-in-out infinite;
 }
@@ -384,7 +429,10 @@ header.header {
   border-radius: 0;
   background: color-mix(in oklab, var(--hf-paper) 80%, var(--hf-lilac));
   box-shadow: 0 14px 30px -26px color-mix(in oklab, var(--hf-magenta-deep) 45%, transparent);
-  transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease;
 }
 
 .card:hover {
@@ -463,7 +511,7 @@ header.header {
   color: var(--sl-color-orange);
 }
 
-[data-theme='dark'] .licence {
+[data-theme="dark"] .licence {
   color: oklch(75.533% 0.052 316.487);
 }
 
@@ -482,78 +530,99 @@ main h1,
 
 /* 侧边栏当前页 */
 
-.sidebar-content a[aria-current='page'] {
+.sidebar-content a[aria-current="page"] {
   background: var(--hf-magenta);
   color: oklch(98.73% 0.01 72.664);
 }
 
 /* 深色覆盖 */
 
-[data-theme='dark'][data-has-hero] .hero {
+[data-theme="dark"][data-has-hero] .hero {
   border-color: oklch(31.094% 0.062 309.683);
   background:
-    radial-gradient(44% 54% at 80% 28%, color-mix(in oklab, var(--hf-gold) 14%, transparent), transparent 72%),
-    radial-gradient(42% 48% at 12% 16%, color-mix(in oklab, var(--hf-magenta) 22%, transparent), transparent 74%),
-    linear-gradient(135deg, oklch(18.985% 0.031 305.032) 0%, oklch(22.019% 0.051 310.488) 52%, oklch(24.697% 0.06 313.477) 100%);
+    radial-gradient(
+      44% 54% at 80% 28%,
+      color-mix(in oklab, var(--hf-gold) 14%, transparent),
+      transparent 72%
+    ),
+    radial-gradient(
+      42% 48% at 12% 16%,
+      color-mix(in oklab, var(--hf-magenta) 22%, transparent),
+      transparent 74%
+    ),
+    linear-gradient(
+      135deg,
+      oklch(18.985% 0.031 305.032) 0%,
+      oklch(22.019% 0.051 310.488) 52%,
+      oklch(24.697% 0.06 313.477) 100%
+    );
   box-shadow: 0 24px 60px -40px oklch(0% 0 0 / 0.6);
 }
 
-[data-theme='dark'][data-has-hero] .hero::before {
+[data-theme="dark"][data-has-hero] .hero::before {
   opacity: 0.42;
   background-image:
-    radial-gradient(circle, color-mix(in oklab, oklch(80.399% 0.119 318.829) 32%, transparent) 1px, transparent 1.6px),
-    radial-gradient(circle, color-mix(in oklab, var(--hf-gold) 52%, transparent) 1px, transparent 1.5px);
+    radial-gradient(
+      circle,
+      color-mix(in oklab, oklch(80.399% 0.119 318.829) 32%, transparent) 1px,
+      transparent 1.6px
+    ),
+    radial-gradient(
+      circle,
+      color-mix(in oklab, var(--hf-gold) 52%, transparent) 1px,
+      transparent 1.5px
+    );
 }
 
-[data-theme='dark'][data-has-hero] .hero h1 {
+[data-theme="dark"][data-has-hero] .hero h1 {
   color: var(--hf-paper);
 }
 
-[data-theme='dark'][data-has-hero] .hero .tagline {
+[data-theme="dark"][data-has-hero] .hero .tagline {
   color: oklch(83.09% 0.039 319.166);
 }
 
-[data-theme='dark'] .sl-link-button.primary {
+[data-theme="dark"] .sl-link-button.primary {
   border-color: oklch(57.753% 0.223 333.104);
   background: oklch(57.753% 0.223 333.104);
   color: oklch(98.73% 0.01 72.664);
 }
 
-[data-theme='dark'] .sl-link-button.primary:hover {
+[data-theme="dark"] .sl-link-button.primary:hover {
   border-color: oklch(51.263% 0.188 338.733);
   background: oklch(51.263% 0.188 338.733);
 }
 
-[data-theme='dark'] .sl-link-button.secondary {
+[data-theme="dark"] .sl-link-button.secondary {
   background: oklch(18.985% 0.031 305.032 / 0.72);
   color: var(--hf-paper);
 }
 
-[data-theme='dark'] .sl-link-button.secondary:hover {
+[data-theme="dark"] .sl-link-button.secondary:hover {
   border-color: oklch(80.399% 0.119 318.829);
   background: oklch(22.42% 0.041 308.684);
   color: var(--hf-paper);
 }
 
-[data-theme='dark'] .card {
+[data-theme="dark"] .card {
   border-color: oklch(31.094% 0.062 309.683);
   background: oklch(21.142% 0.041 308.541);
   box-shadow: 0 14px 30px -26px oklch(0% 0 0 / 0.7);
 }
 
-[data-theme='dark'] .card:hover {
+[data-theme="dark"] .card:hover {
   border-color: oklch(80.399% 0.119 318.829 / 0.45);
 }
 
-[data-theme='dark'] .mascot-credit {
+[data-theme="dark"] .mascot-credit {
   color: oklch(75.533% 0.052 316.487);
 }
 
-[data-theme='dark'] .mascot-code {
+[data-theme="dark"] .mascot-code {
   background: oklch(21.142% 0.041 308.541 / 0.82);
 }
 
-[data-theme='dark'] .mascot-code code {
+[data-theme="dark"] .mascot-code code {
   color: oklch(83.09% 0.039 319.166);
 }
 

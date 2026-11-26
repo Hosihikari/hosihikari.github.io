@@ -36,25 +36,25 @@ hosihikari-pack migrate ./HelloPlugin
 
 The file is flat camelCase. `schemaVersion` is its own axis; the contract version lives in `apiVersion`. `extraInfo` is gone: every key is top-level except the pack-time settings, which live under `pack`.
 
-| Field | Type | Meaning |
-| --- | --- | --- |
-| `schemaVersion` | number | Manifest schema version; `1`. Replaces `manifest_version`. |
-| `name` | string | Plugin name; must equal the package directory name. |
-| `version` | string | The plugin's own SemVer version. |
-| `type` | string | Optional parent routing key; must be `hosihikari` when present. The envelope always carries it. |
-| `entry` | string | Entry file path inside the package; relative, no `..`. |
-| `loader` | string | Loader id: `assembly` (default), `csharp`, `fsharp`, or `rpc`. |
-| `kind` | string | Package kind: `plugin` (default), `loader`, or `carrier`. |
-| `apiVersion` | number | Contract major version this package was built against; `3`. |
-| `dependencies` | array | `{ name, version? }` entries with NuGet SemVer ranges; `hosihikari` is required for `plugin` and `loader` packages. |
-| `description` | string | Display text; copied into the envelope. |
-| `author` | string | Display text; copied into the envelope. |
-| `pack.command` | string array | `rpc` only: the argument vector that starts the child process. A string holding the encoded array is still accepted. |
-| `pack.packages` | string array | `Id/Version` or `Id` NuGet packages restored at pack time. |
-| `pack.prepack` | string array | Commands run in the package directory at pack time; a single string is also accepted. Each run is limited to 5 minutes. |
-| `carrier.sharedAssemblies` | string array | `carrier` only: extra shared-layer file names the carrier brings. |
-| `carrier.components` | array | `carrier` only: carrier components as `{ assembly, type }`. |
-| `carrier.bootstrap` | object | `carrier` only: the carrier's service configurator as `{ assembly, type }`; it implements `ICarrierServicesConfigurator` and runs before the service provider is built. |
+| Field                      | Type         | Meaning                                                                                                                                                                 |
+| -------------------------- | ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `schemaVersion`            | number       | Manifest schema version; `1`. Replaces `manifest_version`.                                                                                                              |
+| `name`                     | string       | Plugin name; must equal the package directory name.                                                                                                                     |
+| `version`                  | string       | The plugin's own SemVer version.                                                                                                                                        |
+| `type`                     | string       | Optional parent routing key; must be `hosihikari` when present. The envelope always carries it.                                                                         |
+| `entry`                    | string       | Entry file path inside the package; relative, no `..`.                                                                                                                  |
+| `loader`                   | string       | Loader id: `assembly` (default), `csharp`, `fsharp`, or `rpc`.                                                                                                          |
+| `kind`                     | string       | Package kind: `plugin` (default), `loader`, or `carrier`.                                                                                                               |
+| `apiVersion`               | number       | Contract major version this package was built against; `3`.                                                                                                             |
+| `dependencies`             | array        | `{ name, version? }` entries with NuGet SemVer ranges; `hosihikari` is required for `plugin` and `loader` packages.                                                     |
+| `description`              | string       | Display text; copied into the envelope.                                                                                                                                 |
+| `author`                   | string       | Display text; copied into the envelope.                                                                                                                                 |
+| `pack.command`             | string array | `rpc` only: the argument vector that starts the child process. A string holding the encoded array is still accepted.                                                    |
+| `pack.packages`            | string array | `Id/Version` or `Id` NuGet packages restored at pack time.                                                                                                              |
+| `pack.prepack`             | string array | Commands run in the package directory at pack time; a single string is also accepted. Each run is limited to 5 minutes.                                                 |
+| `carrier.sharedAssemblies` | string array | `carrier` only: extra shared-layer file names the carrier brings.                                                                                                       |
+| `carrier.components`       | array        | `carrier` only: carrier components as `{ assembly, type }`.                                                                                                             |
+| `carrier.bootstrap`        | object       | `carrier` only: the carrier's service configurator as `{ assembly, type }`; it implements `ICarrierServicesConfigurator` and runs before the service provider is built. |
 
 A minimal plugin manifest:
 
@@ -94,21 +94,21 @@ The synchronization-context installation and the carrier event publisher are suc
 
 All four hooks return `ValueTask` and receive a `CancellationToken`. `OnEnable` and `OnDisable` return `ValueTask<PluginHookResult>`; `OnLoad` and `OnUnload` return plain `ValueTask`. A refusal still travels as `PluginHookResult`, now carrying a `PluginDiagnostic`.
 
-| 1.x | 2.0 |
-| --- | --- |
+| 1.x                                   | 2.0                                                                 |
+| ------------------------------------- | ------------------------------------------------------------------- |
 | `void OnLoad(IPluginContext context)` | `ValueTask OnLoad(IPluginContext context, CancellationToken token)` |
-| `PluginHookResult OnEnable()` | `ValueTask<PluginHookResult> OnEnable(CancellationToken token)` |
-| `PluginHookResult OnDisable()` | `ValueTask<PluginHookResult> OnDisable(CancellationToken token)` |
-| `void OnUnload()` | `ValueTask OnUnload(CancellationToken token)` |
+| `PluginHookResult OnEnable()`         | `ValueTask<PluginHookResult> OnEnable(CancellationToken token)`     |
+| `PluginHookResult OnDisable()`        | `ValueTask<PluginHookResult> OnDisable(CancellationToken token)`    |
+| `void OnUnload()`                     | `ValueTask OnUnload(CancellationToken token)`                       |
 
 The framework runs a hook on a dedicated thread, so there is no `SynchronizationContext` under it and blocking inside a hook cannot deadlock the server thread. Cancellation is cooperative: the framework signals the token, the hook chooses where to stop. What the framework does with the cancelled hook depends on the hook:
 
-| Hook | Cancellation means |
-| --- | --- |
-| `OnLoad` | The load is rolled back; nothing of the plugin stays loaded. |
-| `OnEnable` | The plugin stays loaded and disabled. |
+| Hook        | Cancellation means                                                                    |
+| ----------- | ------------------------------------------------------------------------------------- |
+| `OnLoad`    | The load is rolled back; nothing of the plugin stays loaded.                          |
+| `OnEnable`  | The plugin stays loaded and disabled.                                                 |
 | `OnDisable` | The hook timeout was reached; the framework stops waiting, records it, and continues. |
-| `OnUnload` | Same as `OnDisable`; unload verification still runs afterwards. |
+| `OnUnload`  | Same as `OnDisable`; unload verification still runs afterwards.                       |
 
 A cancelled `OnDisable` or `OnUnload` hook keeps running in the background. Release thread and native handles before awaiting, so a late completion has nothing left to break.
 
@@ -173,11 +173,11 @@ Self-hosted, the call runs `Disable` → `Unload` → `Load` → `Enable` in tha
 
 Three separate budgets hang off `PluginManagerOptions`; none of them covers another's stage:
 
-| Option | Covers | Default |
-| --- | --- | --- |
-| `HookTimeout` | Every lifecycle hook, `OnLoad` / `OnEnable` / `OnDisable` / `OnUnload`; at the limit the token is cancelled and the framework stops waiting — a load rolls back, an enable stays disabled, an unload continues | 30 seconds |
-| `UnloadVerificationTimeout` | Waiting for the loader to confirm the load context was reclaimed | 30 seconds |
-| `ComponentStopTimeout` | Each carrier component's `StopAsync` at process exit; at the limit the framework records it and keeps exiting | 30 seconds |
+| Option                      | Covers                                                                                                                                                                                                         | Default    |
+| --------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- |
+| `HookTimeout`               | Every lifecycle hook, `OnLoad` / `OnEnable` / `OnDisable` / `OnUnload`; at the limit the token is cancelled and the framework stops waiting — a load rolls back, an enable stays disabled, an unload continues | 30 seconds |
+| `UnloadVerificationTimeout` | Waiting for the loader to confirm the load context was reclaimed                                                                                                                                               | 30 seconds |
+| `ComponentStopTimeout`      | Each carrier component's `StopAsync` at process exit; at the limit the framework records it and keeps exiting                                                                                                  | 30 seconds |
 
 All three accept `Timeout.InfiniteTimeSpan`, which turns the timer off. A finite value must be positive and no more than about 49.7 days.
 

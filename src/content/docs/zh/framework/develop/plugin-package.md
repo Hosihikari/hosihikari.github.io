@@ -28,30 +28,27 @@ plugins/
   "loader": "csharp",
   "kind": "plugin",
   "apiVersion": 3,
-  "dependencies": [
-    { "name": "hosihikari" },
-    { "name": "hosihikari-csharp" }
-  ]
+  "dependencies": [{ "name": "hosihikari" }, { "name": "hosihikari-csharp" }]
 }
 ```
 
-| 字段 | 说明 |
-|---|---|
-| `schemaVersion` | 清单 schema 版本，`1`。 |
-| `name` | 插件名，必须等于目录名。 |
-| `version` | 插件自己的 SemVer 版本。 |
-| `entry` | 包内相对路径；绝对路径与 `..` 出界。 |
-| `loader` | 处理这个包的加载器，省略时为 `assembly`。`assembly` 是插件管理器内置入口；`csharp`、`fsharp` 是进程内加载器；`rpc` 是进程外加载器。 |
-| `kind` | `plugin`（缺省）、`loader` 或 `carrier`。自持态扫描会跳过载体包。 |
-| `apiVersion` | 契约主版本，当前 `3`。 |
-| `dependencies` | 必填 `hosihikari`，父级才会先装寄宿垫片。其余是被依赖的插件名，可带 SemVer 范围；依赖图决定装载顺序并检查版本。 |
-| `description` | 展示文本，有则抄进信封。 |
-| `author` | 展示文本，有则抄进信封。 |
-| `pack.command` | 仅 `rpc`：参数表，用 JSON 数组或用字符串装编码后的数组。 |
-| `pack.packages` | 打包期还原进包的 `Id/Version` 或 `Id` NuGet 包。 |
-| `pack.prepack` | 打包期在包目录执行的命令，例如 `npm ci`；单个字符串或数组。只在打包期跑，服务端不还原，每次执行限 5 分钟。 |
-| `carrier.sharedAssemblies` | 仅 `carrier`：载体加进共享层的文件名。 |
-| `carrier.components` | 仅 `carrier`：进程级组件，元素为 `{ assembly, type }`，类型是实现了 `ICarrierComponent` 的具体类。 |
+| 字段                       | 说明                                                                                                                                |
+| -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| `schemaVersion`            | 清单 schema 版本，`1`。                                                                                                             |
+| `name`                     | 插件名，必须等于目录名。                                                                                                            |
+| `version`                  | 插件自己的 SemVer 版本。                                                                                                            |
+| `entry`                    | 包内相对路径；绝对路径与 `..` 出界。                                                                                                |
+| `loader`                   | 处理这个包的加载器，省略时为 `assembly`。`assembly` 是插件管理器内置入口；`csharp`、`fsharp` 是进程内加载器；`rpc` 是进程外加载器。 |
+| `kind`                     | `plugin`（缺省）、`loader` 或 `carrier`。自持态扫描会跳过载体包。                                                                   |
+| `apiVersion`               | 契约主版本，当前 `3`。                                                                                                              |
+| `dependencies`             | 必填 `hosihikari`，父级才会先装寄宿垫片。其余是被依赖的插件名，可带 SemVer 范围；依赖图决定装载顺序并检查版本。                     |
+| `description`              | 展示文本，有则抄进信封。                                                                                                            |
+| `author`                   | 展示文本，有则抄进信封。                                                                                                            |
+| `pack.command`             | 仅 `rpc`：参数表，用 JSON 数组或用字符串装编码后的数组。                                                                            |
+| `pack.packages`            | 打包期还原进包的 `Id/Version` 或 `Id` NuGet 包。                                                                                    |
+| `pack.prepack`             | 打包期在包目录执行的命令，例如 `npm ci`；单个字符串或数组。只在打包期跑，服务端不还原，每次执行限 5 分钟。                          |
+| `carrier.sharedAssemblies` | 仅 `carrier`：载体加进共享层的文件名。                                                                                              |
+| `carrier.components`       | 仅 `carrier`：进程级组件，元素为 `{ assembly, type }`，类型是实现了 `ICarrierComponent` 的具体类。                                  |
 
 `type` 可省，写了就必须是 `hosihikari`；信封里恒有它。信封是生成出来的，改 `description` 或 `author` 要重新打包才会到父级手里。
 
@@ -72,12 +69,12 @@ plugins/
 
 官方加载器分两类：进程内加载器在装载时把源码编成 IL；RpcLoader 是进程外加载器，RPC 桥。预编译程序集走插件管理器内置入口。
 
-| `loader` | `entry` | 装载方式 |
-|---|---|---|
-| `assembly` | `.dll` | 插件管理器内置：直接装载预编译 IL 程序集；程序集上恰好一个 `[assembly: EntryPoint<T>]`。 |
-| `csharp` | `.cs` | 进程内加载器：Roslyn 在装载时把 `.cs` 编成 IL，产物进 collectible ALC。 |
-| `fsharp` | `.fsx` | 进程内加载器：FSharp.Compiler.Service 在装载时把 `.fsx` 编成 IL。 |
-| `rpc` | 入口文件 | 进程外加载器：由 `pack.command` 启动子进程，行分隔 JSON-RPC 2.0 over stdio。 |
+| `loader`   | `entry`  | 装载方式                                                                                 |
+| ---------- | -------- | ---------------------------------------------------------------------------------------- |
+| `assembly` | `.dll`   | 插件管理器内置：直接装载预编译 IL 程序集；程序集上恰好一个 `[assembly: EntryPoint<T>]`。 |
+| `csharp`   | `.cs`    | 进程内加载器：Roslyn 在装载时把 `.cs` 编成 IL，产物进 collectible ALC。                  |
+| `fsharp`   | `.fsx`   | 进程内加载器：FSharp.Compiler.Service 在装载时把 `.fsx` 编成 IL。                        |
+| `rpc`      | 入口文件 | 进程外加载器：由 `pack.command` 启动子进程，行分隔 JSON-RPC 2.0 over stdio。             |
 
 进程内加载器与预编译程序集插件的入口类型必须实现 `IPlugin` 且有无参构造；`EntryPoint<T>` 的泛型约束在编译期保证这两条。文件缺失、程序集里的入口声明数量不对等，由加载器报告。
 

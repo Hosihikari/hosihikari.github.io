@@ -43,10 +43,7 @@ Manifest, with the loader name and the dependency:
   "loader": "fsharp",
   "kind": "plugin",
   "apiVersion": 3,
-  "dependencies": [
-    { "name": "hosihikari" },
-    { "name": "hosihikari-fsharp" }
-  ]
+  "dependencies": [{ "name": "hosihikari" }, { "name": "hosihikari-fsharp" }]
 }
 ```
 

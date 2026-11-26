@@ -62,12 +62,12 @@ sha256sum -c SHA256SUMS --ignore-missing
 
 `SHA256SUMS` 覆盖全部发布资产。`gh attestation verify 'sk-<version>-<rid>.tar.gz' --repo Hosihikari/Seiko` 另行证明该资产由本仓的 workflow 构建；每个资产都带 attestation，安装器也在内。
 
-| 资产 | 内容 |
-| --- | --- |
-| `sk-<version>-<rid>.zip` / `.tar.gz` | `sk`、`seiko-mcp` 与 `LICENSE.md` |
-| `sk-<version>-<rid>-symbols.zip` / `.tar.gz` | 两个二进制的调试符号 |
-| `SHA256SUMS` | 所有 Release 资产的摘要 |
-| `install.sh`、`install.ps1` | 安装脚本 |
+| 资产                                         | 内容                              |
+| -------------------------------------------- | --------------------------------- |
+| `sk-<version>-<rid>.zip` / `.tar.gz`         | `sk`、`seiko-mcp` 与 `LICENSE.md` |
+| `sk-<version>-<rid>-symbols.zip` / `.tar.gz` | 两个二进制的调试符号              |
+| `SHA256SUMS`                                 | 所有 Release 资产的摘要           |
+| `install.sh`、`install.ps1`                  | 安装脚本                          |
 
 `<rid>` 是 `win-x64`、`win-arm64`、`win-x86`、`linux-x64`、`linux-arm64`、`linux-arm`、`linux-musl-x64`、`linux-musl-arm64`、`osx-x64` 或 `osx-arm64`。
 

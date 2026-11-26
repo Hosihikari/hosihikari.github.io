@@ -41,10 +41,7 @@ hosihikari-pack pack-plugin . ./hosihikari.json ./dist
   "loader": "csharp",
   "kind": "plugin",
   "apiVersion": 3,
-  "dependencies": [
-    { "name": "hosihikari" },
-    { "name": "hosihikari-csharp" }
-  ]
+  "dependencies": [{ "name": "hosihikari" }, { "name": "hosihikari-csharp" }]
 }
 ```
 

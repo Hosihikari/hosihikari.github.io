@@ -33,8 +33,8 @@ The target writes `dist/MyPlugin/`, containing `hosihikari.json` and the generat
 
 The C# and F# loaders compile the source at load; the package carries source and no build output.
 
-| Template | Loader | Loader archive |
-|---|---|---|
+| Template                                                                            | Loader              | Loader archive                                                                                    |
+| ----------------------------------------------------------------------------------- | ------------------- | ------------------------------------------------------------------------------------------------- |
 | [CSharpPluginTemplate](https://github.com/HosihikariFramework/CSharpPluginTemplate) | `hosihikari-csharp` | [`hosihikari-csharp-<version>.zip`](https://github.com/HosihikariFramework/CSharpLoader/releases) |
 | [FSharpPluginTemplate](https://github.com/HosihikariFramework/FSharpPluginTemplate) | `hosihikari-fsharp` | [`hosihikari-fsharp-<version>.zip`](https://github.com/HosihikariFramework/FSharpLoader/releases) |
 
@@ -44,11 +44,11 @@ The C# and F# loaders compile the source at load; the package carries source and
 
 RpcLoader starts the command from `pack.command` and speaks JSON-RPC over stdio. Each directory below is a complete package; the protocol definition is copied from the loader and refreshed when the loader is upgraded.
 
-| Template | Runtime | Build |
-|---|---|---|
-| [Node.js/TypeScript](https://github.com/HosihikariFramework/RpcPluginTemplate/tree/main/node-typescript) | Node.js 20+ | `npm install && npm run build` |
-| [Python](https://github.com/HosihikariFramework/RpcPluginTemplate/tree/main/python) | Python 3.8+ | none |
-| [Kotlin/JVM](https://github.com/HosihikariFramework/RpcPluginTemplate/tree/main/kotlin) | JDK 21+ | `./build.sh` (`build.ps1` on Windows) |
+| Template                                                                                                 | Runtime     | Build                                 |
+| -------------------------------------------------------------------------------------------------------- | ----------- | ------------------------------------- |
+| [Node.js/TypeScript](https://github.com/HosihikariFramework/RpcPluginTemplate/tree/main/node-typescript) | Node.js 20+ | `npm install && npm run build`        |
+| [Python](https://github.com/HosihikariFramework/RpcPluginTemplate/tree/main/python)                      | Python 3.8+ | none                                  |
+| [Kotlin/JVM](https://github.com/HosihikariFramework/RpcPluginTemplate/tree/main/kotlin)                  | JDK 21+     | `./build.sh` (`build.ps1` on Windows) |
 
 Install `RpcLoader` and put the runtime executable on `PATH`. Build the runtime, run its `pack.sh` (`pack.ps1` on Windows) so the package gets the generated `manifest.json` envelope, copy `dist/<Name>/` into `plugins/`, and restart. The pack scripts call the framework packer and need a sibling `PluginManager` checkout or `HOSIHIKARI_PLUGINMANAGER`. The Python manifest uses `python3`; change it to `python` on Windows. See [out-of-process plugins](/framework/develop/authoring-rpc/) for the protocol and context.
 

@@ -36,25 +36,25 @@ hosihikari-pack migrate ./HelloPlugin
 
 文件是扁平 camelCase。`schemaVersion` 是自己的轴，契约版本在 `apiVersion` 里。`extraInfo` 消失：除打包期设置住在 `pack` 下，每个键都在顶层。
 
-| 字段 | 类型 | 说明 |
-| --- | --- | --- |
-| `schemaVersion` | 数字 | 清单 schema 版本，`1`。取代 `manifest_version`。 |
-| `name` | 字符串 | 插件名，必须等于插件包目录名。 |
-| `version` | 字符串 | 插件自己的 SemVer 版本。 |
-| `type` | 字符串 | 可省。父级路由键；写了就必须是 `hosihikari`。信封里恒有它。 |
-| `entry` | 字符串 | 包内入口文件路径；相对路径，不越出 `..`。 |
-| `loader` | 字符串 | 加载器 id：`assembly`（缺省）、`csharp`、`fsharp` 或 `rpc`。 |
-| `kind` | 字符串 | 包类型：`plugin`（缺省）、`loader` 或 `carrier`。 |
-| `apiVersion` | 数字 | 这个包编译时依赖的契约主版本，`3`。 |
-| `dependencies` | 数组 | `{ name, version? }` 条目，带 NuGet SemVer 范围；`plugin` 与 `loader` 包必须声明 `hosihikari`。 |
-| `description` | 字符串 | 展示文本，会抄进信封。 |
-| `author` | 字符串 | 展示文本，会抄进信封。 |
-| `pack.command` | 字符串数组 | 仅 `rpc`：启动子进程的参数表。编码成字符串的数组也收。 |
-| `pack.packages` | 字符串数组 | 打包期还原的 `Id/Version` 或 `Id` NuGet 包。 |
-| `pack.prepack` | 字符串数组 | 打包期在包目录执行的命令；单个字符串也收。每次执行限 5 分钟。 |
-| `carrier.sharedAssemblies` | 字符串数组 | 仅 `carrier`：载体额外带进共享层的文件名。 |
-| `carrier.components` | 数组 | 仅 `carrier`：载体组件，元素为 `{ assembly, type }`。 |
-| `carrier.bootstrap` | 对象 | 仅 `carrier`：载体的服务配置器，元素为 `{ assembly, type }`；实现 `ICarrierServicesConfigurator`，在服务提供器建成之前运行。 |
+| 字段                       | 类型       | 说明                                                                                                                         |
+| -------------------------- | ---------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| `schemaVersion`            | 数字       | 清单 schema 版本，`1`。取代 `manifest_version`。                                                                             |
+| `name`                     | 字符串     | 插件名，必须等于插件包目录名。                                                                                               |
+| `version`                  | 字符串     | 插件自己的 SemVer 版本。                                                                                                     |
+| `type`                     | 字符串     | 可省。父级路由键；写了就必须是 `hosihikari`。信封里恒有它。                                                                  |
+| `entry`                    | 字符串     | 包内入口文件路径；相对路径，不越出 `..`。                                                                                    |
+| `loader`                   | 字符串     | 加载器 id：`assembly`（缺省）、`csharp`、`fsharp` 或 `rpc`。                                                                 |
+| `kind`                     | 字符串     | 包类型：`plugin`（缺省）、`loader` 或 `carrier`。                                                                            |
+| `apiVersion`               | 数字       | 这个包编译时依赖的契约主版本，`3`。                                                                                          |
+| `dependencies`             | 数组       | `{ name, version? }` 条目，带 NuGet SemVer 范围；`plugin` 与 `loader` 包必须声明 `hosihikari`。                              |
+| `description`              | 字符串     | 展示文本，会抄进信封。                                                                                                       |
+| `author`                   | 字符串     | 展示文本，会抄进信封。                                                                                                       |
+| `pack.command`             | 字符串数组 | 仅 `rpc`：启动子进程的参数表。编码成字符串的数组也收。                                                                       |
+| `pack.packages`            | 字符串数组 | 打包期还原的 `Id/Version` 或 `Id` NuGet 包。                                                                                 |
+| `pack.prepack`             | 字符串数组 | 打包期在包目录执行的命令；单个字符串也收。每次执行限 5 分钟。                                                                |
+| `carrier.sharedAssemblies` | 字符串数组 | 仅 `carrier`：载体额外带进共享层的文件名。                                                                                   |
+| `carrier.components`       | 数组       | 仅 `carrier`：载体组件，元素为 `{ assembly, type }`。                                                                        |
+| `carrier.bootstrap`        | 对象       | 仅 `carrier`：载体的服务配置器，元素为 `{ assembly, type }`；实现 `ICarrierServicesConfigurator`，在服务提供器建成之前运行。 |
 
 最小的插件清单：
 
@@ -94,21 +94,21 @@ hosihikari-pack migrate ./HelloPlugin
 
 四个钩子全部返回 `ValueTask` 并接收 `CancellationToken`。`OnEnable` 与 `OnDisable` 返回 `ValueTask<PluginHookResult>`；`OnLoad` 与 `OnUnload` 返回纯 `ValueTask`。拒绝仍经 `PluginHookResult` 回传，只是里面装的是 `PluginDiagnostic`。
 
-| 1.x | 2.0 |
-| --- | --- |
+| 1.x                                   | 2.0                                                                 |
+| ------------------------------------- | ------------------------------------------------------------------- |
 | `void OnLoad(IPluginContext context)` | `ValueTask OnLoad(IPluginContext context, CancellationToken token)` |
-| `PluginHookResult OnEnable()` | `ValueTask<PluginHookResult> OnEnable(CancellationToken token)` |
-| `PluginHookResult OnDisable()` | `ValueTask<PluginHookResult> OnDisable(CancellationToken token)` |
-| `void OnUnload()` | `ValueTask OnUnload(CancellationToken token)` |
+| `PluginHookResult OnEnable()`         | `ValueTask<PluginHookResult> OnEnable(CancellationToken token)`     |
+| `PluginHookResult OnDisable()`        | `ValueTask<PluginHookResult> OnDisable(CancellationToken token)`    |
+| `void OnUnload()`                     | `ValueTask OnUnload(CancellationToken token)`                       |
 
 框架在专起的一根线程上跑钩子，它底下没有 `SynchronizationContext`，钩子里同步阻塞不会把服务端线程等死。取消是协作式的：框架给令牌，钩子自己选停在哪里。框架对被取消的钩子怎么处理，按钩子分：
 
-| 钩子 | 取消的含义 |
-| --- | --- |
-| `OnLoad` | 装载回滚，插件什么都不留下。 |
-| `OnEnable` | 插件留在场、保持停用。 |
+| 钩子        | 取消的含义                               |
+| ----------- | ---------------------------------------- |
+| `OnLoad`    | 装载回滚，插件什么都不留下。             |
+| `OnEnable`  | 插件留在场、保持停用。                   |
 | `OnDisable` | 到了钩子超时；框架不再等待，记账后继续。 |
-| `OnUnload` | 同 `OnDisable`；此后照常进入回收验证。 |
+| `OnUnload`  | 同 `OnDisable`；此后照常进入回收验证。   |
 
 被取消的 `OnDisable` / `OnUnload` 钩子会在后台继续跑。把线程与原生句柄在 `await` 之前释放掉，迟到完成就没有东西可破坏。
 
@@ -173,11 +173,11 @@ context.Events.Subscribe<SomeEvent>(OnSomeEvent, EventPriority.High);
 
 `PluginManagerOptions` 上有三份独立的预算，谁也不管别人的阶段：
 
-| 选项 | 管什么 | 默认 |
-| --- | --- | --- |
-| `HookTimeout` | 每个生命周期钩子，`OnLoad` / `OnEnable` / `OnDisable` / `OnUnload`；到点取消令牌，框架不再等待——装载回滚、启用保持停用、卸载继续往下走 | 30 秒 |
-| `UnloadVerificationTimeout` | 等待加载器确认搬运单元已回收 | 30 秒 |
-| `ComponentStopTimeout` | 进程退出时每个载体组件的 `StopAsync`；到点框架记账，继续退出 | 30 秒 |
+| 选项                        | 管什么                                                                                                                                 | 默认  |
+| --------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- | ----- |
+| `HookTimeout`               | 每个生命周期钩子，`OnLoad` / `OnEnable` / `OnDisable` / `OnUnload`；到点取消令牌，框架不再等待——装载回滚、启用保持停用、卸载继续往下走 | 30 秒 |
+| `UnloadVerificationTimeout` | 等待加载器确认搬运单元已回收                                                                                                           | 30 秒 |
+| `ComponentStopTimeout`      | 进程退出时每个载体组件的 `StopAsync`；到点框架记账，继续退出                                                                           | 30 秒 |
 
 三项都接受 `Timeout.InfiniteTimeSpan`，关掉对应计时器。有限值必须为正，且不超过约 49.7 天。
 

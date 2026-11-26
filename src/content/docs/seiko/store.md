@@ -7,23 +7,23 @@ Seiko separates downloading from deploying. Artifacts are unpacked once into a s
 
 ## The store
 
-| Platform | Default store |
-| --- | --- |
-| Windows | `%LOCALAPPDATA%\seiko\store` |
-| Linux, macOS | `~/.cache/seiko` |
+| Platform     | Default store                |
+| ------------ | ---------------------------- |
+| Windows      | `%LOCALAPPDATA%\seiko\store` |
+| Linux, macOS | `~/.cache/seiko`             |
 
 Set `SEIKO_STORE` to change it globally, or pass `--store <path>` to a command. Several install roots can share one store.
 
 An artifact is stored under its SHA-256. The store also keeps:
 
-| Path | Purpose |
-| --- | --- |
-| `<sha>/` | The extracted artifact |
-| `.meta/<sha>.json` | Per-file digests recorded at extraction |
-| `.metadata/` | Cached HTTP index metadata for `--offline`; a recorded 404 sits beside the entry as `<file>.404` |
-| `.partial/` | Incomplete downloads, resumable across processes |
-| `.locks/` | Per-artifact download locks |
-| `origin/` | Immutable `.sei` snapshots for local-file entries |
+| Path               | Purpose                                                                                          |
+| ------------------ | ------------------------------------------------------------------------------------------------ |
+| `<sha>/`           | The extracted artifact                                                                           |
+| `.meta/<sha>.json` | Per-file digests recorded at extraction                                                          |
+| `.metadata/`       | Cached HTTP index metadata for `--offline`; a recorded 404 sits beside the entry as `<file>.404` |
+| `.partial/`        | Incomplete downloads, resumable across processes                                                 |
+| `.locks/`          | Per-artifact download locks                                                                      |
+| `origin/`          | Immutable `.sei` snapshots for local-file entries                                                |
 
 Local files added with `sk add <path>` are copied into `origin/<name>-<sha>.sei` at add time and are immutable there; deleting or rebuilding the original cannot take an installed generation away. `sk cache clean` and rollback treat snapshots like any other stored artifact.
 

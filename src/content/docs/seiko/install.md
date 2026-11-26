@@ -62,12 +62,12 @@ sha256sum -c SHA256SUMS --ignore-missing
 
 `SHA256SUMS` covers every release asset. `gh attestation verify 'sk-<version>-<rid>.tar.gz' --repo Hosihikari/Seiko` additionally proves the asset was built by this repository's workflow; every asset carries the attestation, the installers included.
 
-| Asset | Contents |
-| --- | --- |
-| `sk-<version>-<rid>.zip` / `.tar.gz` | `sk`, `seiko-mcp`, and `LICENSE.md` |
-| `sk-<version>-<rid>-symbols.zip` / `.tar.gz` | Debug symbols for both binaries |
-| `SHA256SUMS` | Checksums for every release asset |
-| `install.sh`, `install.ps1` | Installers |
+| Asset                                        | Contents                            |
+| -------------------------------------------- | ----------------------------------- |
+| `sk-<version>-<rid>.zip` / `.tar.gz`         | `sk`, `seiko-mcp`, and `LICENSE.md` |
+| `sk-<version>-<rid>-symbols.zip` / `.tar.gz` | Debug symbols for both binaries     |
+| `SHA256SUMS`                                 | Checksums for every release asset   |
+| `install.sh`, `install.ps1`                  | Installers                          |
 
 `<rid>` is one of `win-x64`, `win-arm64`, `win-x86`, `linux-x64`, `linux-arm64`, `linux-arm`, `linux-musl-x64`, `linux-musl-arm64`, `osx-x64`, or `osx-arm64`.
 

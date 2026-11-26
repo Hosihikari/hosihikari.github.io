@@ -28,8 +28,14 @@
     },
     "keys": {
       "patterns": [
-        { "name": "support.type.property-name.hocon", "match": "(?:^\\s*)[A-Za-z0-9_.\\-]+(?=\\s*[:=])" },
-        { "name": "support.type.property-name.hocon", "match": "(?<=\\{)\\s*[A-Za-z0-9_.\\-]+(?=\\s*[:=])" }
+        {
+          "name": "support.type.property-name.hocon",
+          "match": "(?:^\\s*)[A-Za-z0-9_.\\-]+(?=\\s*[:=])"
+        },
+        {
+          "name": "support.type.property-name.hocon",
+          "match": "(?<=\\{)\\s*[A-Za-z0-9_.\\-]+(?=\\s*[:=])"
+        }
       ]
     },
     "values": {
