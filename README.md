@@ -26,15 +26,15 @@ bun run preview
 
 ## Layout
 
-| Path | Contents |
-|---|---|
-| `src/content/docs/` | English documentation (root locale). |
-| `src/content/docs/framework/` | Framework pages: server, plugin authoring, and embedding. |
-| `src/content/docs/projection/` | Projection overview. |
-| `src/content/docs/seiko/` | Seiko overview. |
-| `src/content/docs/zh/` | Simplified Chinese documentation, mirroring the same sections. |
-| `examples/` | Example plugins referenced by the guides. |
-| `astro.config.mjs` | Site configuration, redirects, and the bilingual sidebar. |
+| Path                           | Contents                                                       |
+| ------------------------------ | -------------------------------------------------------------- |
+| `src/content/docs/`            | English documentation (root locale).                           |
+| `src/content/docs/framework/`  | Framework pages: server, plugin authoring, and embedding.      |
+| `src/content/docs/projection/` | Projection overview.                                           |
+| `src/content/docs/seiko/`      | Seiko overview.                                                |
+| `src/content/docs/zh/`         | Simplified Chinese documentation, mirroring the same sections. |
+| `examples/`                    | Example plugins referenced by the guides.                      |
+| `astro.config.mjs`             | Site configuration, redirects, and the bilingual sidebar.      |
 
 Pages are Markdown or MDX with Starlight frontmatter. Every page belongs to one project section and lives under its directory. Header links live in `src/components/Header.astro`; sidebar labels live in `astro.config.mjs`, and a sidebar item uses `slug` so the same entry resolves to the English and Chinese pages.
 

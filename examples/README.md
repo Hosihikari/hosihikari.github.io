@@ -2,10 +2,10 @@
 
 [English](README.md) | [简体中文](README.zh_hans.md)
 
-| Example | Loader | What it shows |
-|---|---|---|
-| [hello-csharp](hello-csharp/) | `hosihikari-csharp` | A C# source plugin compiled at load; writes to its data directory. |
-| [hello-node](hello-node/) | `hosihikari-rpc` | The out-of-process loader: an RPC bridge; a Node plugin over stdio JSON-RPC. |
+| Example                       | Loader              | What it shows                                                                |
+| ----------------------------- | ------------------- | ---------------------------------------------------------------------------- |
+| [hello-csharp](hello-csharp/) | `hosihikari-csharp` | A C# source plugin compiled at load; writes to its data directory.           |
+| [hello-node](hello-node/)     | `hosihikari-rpc`    | The out-of-process loader: an RPC bridge; a Node plugin over stdio JSON-RPC. |
 
 The [quick start](https://hoshi.srcz.one/framework/develop/first-plugin/) uses hello-csharp, an in-process loader example. hello-node demonstrates the out-of-process loader. Both are official. Each is a source tree, not a package: pack it first (see its own README), then put the produced `dist/<name>/` under the server's `plugins/`; the directory name must match `name` in `hosihikari.json`.
 

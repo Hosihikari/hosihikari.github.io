@@ -7,11 +7,11 @@ Start with the carrier's log, then remove plugins until the server comes up.
 
 ## Where the logs are
 
-| Carrier | Log | Crash data |
-| --- | --- | --- |
-| LeviLamina | `logs/latest.log` | `logs/crash/` — `trace_*.log` and `minidump_*.dmp` |
-| Endstone | `logs/latest.log`, plus rotated `logs/YYYY-MM-DD-N.log.gz` | `.sentry-native/` |
-| Self-hosted | The launcher's output, and the server's own log | — |
+| Carrier     | Log                                                        | Crash data                                         |
+| ----------- | ---------------------------------------------------------- | -------------------------------------------------- |
+| LeviLamina  | `logs/latest.log`                                          | `logs/crash/` — `trace_*.log` and `minidump_*.dmp` |
+| Endstone    | `logs/latest.log`, plus rotated `logs/YYYY-MM-DD-N.log.gz` | `.sentry-native/`                                  |
+| Self-hosted | The launcher's output, and the server's own log            | —                                                  |
 
 The framework's first log line reports the core version, the hosting-contract version, and the plugin API version. Include those three values when versions are in question.
 
@@ -21,10 +21,10 @@ Under LeviLamina the log is shared: server lines and framework lines land in the
 
 The startup sequence reports its result, and the carrier writes it to the log rather than exiting the process. Look for a hex code:
 
-| Code in the log | Meaning |
-| --- | --- |
-| `0xFFFFFFFE` | The plugin manager is missing the hosting-contract entry point. |
-| `0xFFFFFFFD` | The hosting-contract version of the carrier and the plugin manager do not match. |
+| Code in the log | Meaning                                                                          |
+| --------------- | -------------------------------------------------------------------------------- |
+| `0xFFFFFFFE`    | The plugin manager is missing the hosting-contract entry point.                  |
+| `0xFFFFFFFD`    | The hosting-contract version of the carrier and the plugin manager do not match. |
 
 These are the return values `-2` and `-3` printed as unsigned. Neither is a process exit code: the server keeps running, with the framework absent. Fix the mismatch — usually a half-finished update — and restart. See [Updating](/framework/server/updating/).
 

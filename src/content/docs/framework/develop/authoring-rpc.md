@@ -46,10 +46,7 @@ Copy `dist/hello-node/` into the server as `plugins/hello-node/`, then copy `hos
   "loader": "rpc",
   "kind": "plugin",
   "apiVersion": 3,
-  "dependencies": [
-    { "name": "hosihikari" },
-    { "name": "hosihikari-rpc" }
-  ],
+  "dependencies": [{ "name": "hosihikari" }, { "name": "hosihikari-rpc" }],
   "pack": {
     "command": ["node", "./hosihikari.mjs", "./main.mjs"]
   }
@@ -67,18 +64,18 @@ cp <server>/plugins/hosihikari-rpc/protocol/node/hosihikari.mjs .
 ## Plugin
 
 ```js
-import fs from 'node:fs';
-import path from 'node:path';
+import fs from "node:fs";
+import path from "node:path";
 
 export default {
   onLoad(ctx) {
-    fs.writeFileSync(path.join(ctx.dataDirectory, 'loaded.txt'), 'loaded');
+    fs.writeFileSync(path.join(ctx.dataDirectory, "loaded.txt"), "loaded");
     ctx.logInfo(`loaded, package ${ctx.packageDirectory}`);
   },
 
   onEnable(ctx) {
-    const greeting = ctx.config('greeting');
-    fs.writeFileSync(path.join(ctx.dataDirectory, 'enabled.txt'), greeting ?? '');
+    const greeting = ctx.config("greeting");
+    fs.writeFileSync(path.join(ctx.dataDirectory, "enabled.txt"), greeting ?? "");
     ctx.logInfo(`enabled, greeting=${greeting}`);
   },
 
@@ -96,15 +93,15 @@ Hooks may be async. Return values: `undefined` or `true` allows; `false` or `{ a
 
 `ctx` provides:
 
-| Member | Meaning |
-|---|---|
-| `name` / `packageDirectory` / `dataDirectory` | Plugin name, package directory, data directory. |
-| `config(key)` / `configObject` | The layered configuration. |
-| `logInfo` / `logWarn` / `logError` | Structured logs over the protocol. |
-| `writeData(file, text)` | Write a file under the data directory. |
-| `publish(topic, json)` | Publish an event. |
-| `subscribe(topic, fn, { sync })` | Subscribe; with `sync: true` the publisher waits for an ack. |
-| `scheduleOnce(seconds, fn)` / `schedulePeriodic(seconds, fn)` | Timers. |
+| Member                                                        | Meaning                                                      |
+| ------------------------------------------------------------- | ------------------------------------------------------------ |
+| `name` / `packageDirectory` / `dataDirectory`                 | Plugin name, package directory, data directory.              |
+| `config(key)` / `configObject`                                | The layered configuration.                                   |
+| `logInfo` / `logWarn` / `logError`                            | Structured logs over the protocol.                           |
+| `writeData(file, text)`                                       | Write a file under the data directory.                       |
+| `publish(topic, json)`                                        | Publish an event.                                            |
+| `subscribe(topic, fn, { sync })`                              | Subscribe; with `sync: true` the publisher waits for an ack. |
+| `scheduleOnce(seconds, fn)` / `schedulePeriodic(seconds, fn)` | Timers.                                                      |
 
 Events are asynchronous by default. Disabling closes the gate; subscription callbacks and timers stop, and a refused disable reopens it. Unload ends the child process.
 

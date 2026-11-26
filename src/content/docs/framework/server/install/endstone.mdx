@@ -3,7 +3,7 @@ title: Installing on Endstone
 description: Install the framework on an Endstone server.
 ---
 
-import { Tabs, TabItem } from '@astrojs/starlight/components';
+import { Tabs, TabItem } from "@astrojs/starlight/components";
 
 The Endstone carrier installs as an Endstone plugin. The framework is the plugin manager; Endstone is its parent.
 
@@ -55,14 +55,14 @@ The server log should show the CLR starting, the carrier registering as an Endst
 
 ## Where things live
 
-| Path | What |
-| --- | --- |
+| Path                                               | What                                                |
+| -------------------------------------------------- | --------------------------------------------------- |
 | `plugins/hosihikari.dll` / `plugins/hosihikari.so` | The carrier itself; Endstone loads plugins by file. |
-| `plugins/hosihikari/` | The plugin manager and its dependencies. |
-| `plugins/<name>/` | Plugin packages. |
-| `config/hosihikari/<name>.conf` | Server-side configuration overrides. |
-| `data/hosihikari/<name>/` | Data the framework hands to each plugin. |
-| `logs/latest.log` | Server and framework log. |
+| `plugins/hosihikari/`                              | The plugin manager and its dependencies.            |
+| `plugins/<name>/`                                  | Plugin packages.                                    |
+| `config/hosihikari/<name>.conf`                    | Server-side configuration overrides.                |
+| `data/hosihikari/<name>/`                          | Data the framework hands to each plugin.            |
+| `logs/latest.log`                                  | Server and framework log.                           |
 
 ## Uninstall
 

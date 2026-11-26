@@ -7,31 +7,31 @@ Every command runs against one install root and one store. `sk --help` lists the
 
 ## Global options
 
-| Option | Meaning |
-| --- | --- |
-| `--json` | Emit a single JSON document on stdout. |
-| `-v`, `--verbose` | Show debug logs and full stack traces. |
-| `-q`, `--quiet` | Suppress progress and non-error output. |
-| `--offline` | Use only the lock, store, and cached metadata; never touch the network. |
-| `--diagnostics` | Expand relation and constraint details. |
+| Option            | Meaning                                                                 |
+| ----------------- | ----------------------------------------------------------------------- |
+| `--json`          | Emit a single JSON document on stdout.                                  |
+| `-v`, `--verbose` | Show debug logs and full stack traces.                                  |
+| `-q`, `--quiet`   | Suppress progress and non-error output.                                 |
+| `--offline`       | Use only the lock, store, and cached metadata; never touch the network. |
+| `--diagnostics`   | Expand relation and constraint details.                                 |
 
 Progress bars appear only when stdout is an interactive terminal, and never with `--json`.
 
 ## Common options
 
-| Option | Commands | Meaning |
-| --- | --- | --- |
-| `--root <path>` | most | Install root. Defaults to the nearest `seiko.conf` above the current directory. |
-| `--store <path>` | deployment and cache | Store directory. Defaults to `SEIKO_STORE`, then the platform store path. |
-| `--proxy <url>` | network commands | HTTP proxy. Defaults to the system proxy. |
-| `--jobs <n>` | `sync`, `add`, `remove`, `update` | Maximum concurrent HTTP requests; default 4. |
-| `--pre` | resolution commands | Allow prerelease versions. |
-| `--latest-installable` | `sync`, `add`, `update` | Skip versions with no artifact for the resolved graph; the default is the highest version. |
-| `--allow-critical` | `sync`, `add`, `remove`, `update` | Allow resolving versions with a critical advisory; otherwise they are skipped with a warning. |
-| `--dry-run` | `sync`, `add`, `remove`, `update` | Print the plan without downloading payloads or writing anything. |
-| `--adopt` | `sync`, `add`, `remove`, `update` | Keep existing files and record them as adopted. |
-| `--force` | `sync`, `add`, `remove`, `update` | Overwrite or delete conflicting existing files. |
-| `--reset-preserved` | `sync`, `add`, `remove`, `update` | Replace files the package declares `preserve` with its own copy and manage them from then on. |
+| Option                 | Commands                          | Meaning                                                                                       |
+| ---------------------- | --------------------------------- | --------------------------------------------------------------------------------------------- |
+| `--root <path>`        | most                              | Install root. Defaults to the nearest `seiko.conf` above the current directory.               |
+| `--store <path>`       | deployment and cache              | Store directory. Defaults to `SEIKO_STORE`, then the platform store path.                     |
+| `--proxy <url>`        | network commands                  | HTTP proxy. Defaults to the system proxy.                                                     |
+| `--jobs <n>`           | `sync`, `add`, `remove`, `update` | Maximum concurrent HTTP requests; default 4.                                                  |
+| `--pre`                | resolution commands               | Allow prerelease versions.                                                                    |
+| `--latest-installable` | `sync`, `add`, `update`           | Skip versions with no artifact for the resolved graph; the default is the highest version.    |
+| `--allow-critical`     | `sync`, `add`, `remove`, `update` | Allow resolving versions with a critical advisory; otherwise they are skipped with a warning. |
+| `--dry-run`            | `sync`, `add`, `remove`, `update` | Print the plan without downloading payloads or writing anything.                              |
+| `--adopt`              | `sync`, `add`, `remove`, `update` | Keep existing files and record them as adopted.                                               |
+| `--force`              | `sync`, `add`, `remove`, `update` | Overwrite or delete conflicting existing files.                                               |
+| `--reset-preserved`    | `sync`, `add`, `remove`, `update` | Replace files the package declares `preserve` with its own copy and manage them from then on. |
 
 ## Lifecycle
 
@@ -43,13 +43,13 @@ Write a minimal `seiko.conf` (required `schemaVersion`, the official index, empt
 
 Resolve the declaration and deploy it. Alias: `sk install`.
 
-| Option | Meaning |
-| --- | --- |
-| `--frozen` | Replay `seiko.lock.json` without resolving; the declared direct set must match the lock. |
-| `--locked` | Resolve, but fail if the result differs from the existing lock. |
-| `--pre` | Allow prerelease versions. |
-| `--latest-installable` | Skip versions without a matching artifact; incompatible with `--frozen`. |
-| `--allow-critical` | Allow resolving versions with a critical advisory. |
+| Option                 | Meaning                                                                                  |
+| ---------------------- | ---------------------------------------------------------------------------------------- |
+| `--frozen`             | Replay `seiko.lock.json` without resolving; the declared direct set must match the lock. |
+| `--locked`             | Resolve, but fail if the result differs from the existing lock.                          |
+| `--pre`                | Allow prerelease versions.                                                               |
+| `--latest-installable` | Skip versions without a matching artifact; incompatible with `--frozen`.                 |
+| `--allow-critical`     | Allow resolving versions with a critical advisory.                                       |
 
 `--frozen` and `--locked` are mutually exclusive. Neither rewrites the lock. `--frozen` also rejects a lock whose target `rid` differs from the configured one.
 
@@ -81,38 +81,38 @@ Restore the previous generation's config, lock, and deployment, or the one named
 
 ## Inspect
 
-| Command | Meaning |
-| --- | --- |
-| `sk list` | Installed sei from the lock. |
-| `sk why <name>` | Chains to a sei; each link names the relation kind (direct declaration, dependency, or prerequisite). |
-| `sk outdated [--pre]` | Newer versions in range, overall, and latest installable. |
-| `sk search <term>` | Search sei names in the configured indexes. |
-| `sk info <name> [--versions]` | Versions (all of them with `--versions`), all four relation kinds, artifact conditions, and origin state. |
-| `sk audit [--security-only] [--fail-on <level>]` | Check the lock against advisories and retirement; `--fail-on` makes findings a non-zero exit for CI. |
-| `sk doctor [--clean]` | Check the lock, store, deployment, and partial downloads; `--clean` deletes all partial downloads. |
-| `sk check` | The read-only form of `doctor`; never deletes anything. |
-| `sk generation list` | Generations retained in the root. |
+| Command                                          | Meaning                                                                                                   |
+| ------------------------------------------------ | --------------------------------------------------------------------------------------------------------- |
+| `sk list`                                        | Installed sei from the lock.                                                                              |
+| `sk why <name>`                                  | Chains to a sei; each link names the relation kind (direct declaration, dependency, or prerequisite).     |
+| `sk outdated [--pre]`                            | Newer versions in range, overall, and latest installable.                                                 |
+| `sk search <term>`                               | Search sei names in the configured indexes.                                                               |
+| `sk info <name> [--versions]`                    | Versions (all of them with `--versions`), all four relation kinds, artifact conditions, and origin state. |
+| `sk audit [--security-only] [--fail-on <level>]` | Check the lock against advisories and retirement; `--fail-on` makes findings a non-zero exit for CI.      |
+| `sk doctor [--clean]`                            | Check the lock, store, deployment, and partial downloads; `--clean` deletes all partial downloads.        |
+| `sk check`                                       | The read-only form of `doctor`; never deletes anything.                                                   |
+| `sk generation list`                             | Generations retained in the root.                                                                         |
 
 ## Sources and configuration
 
-| Command | Meaning |
-| --- | --- |
-| `sk source list` | Sources in declaration order. |
+| Command                                               | Meaning                                                                                                                                                        |
+| ----------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `sk source list`                                      | Sources in declaration order.                                                                                                                                  |
 | `sk source add <id> <index> [--token-host <host>]...` | Append a source; the index may name the directory that holds `index.json`. `--token-host` is repeatable. Private-source tokens come from `SEIKO_TOKEN_<HOST>`. |
-| `sk source remove <id>` | Remove a source. |
-| `sk source status [id]` | Check each source's reachability, index, and catalog. |
-| `sk config get <key>` | Read `rid`. |
-| `sk config set <key> <value>` | Write a value; an empty value removes the key. |
+| `sk source remove <id>`                               | Remove a source.                                                                                                                                               |
+| `sk source status [id]`                               | Check each source's reachability, index, and catalog.                                                                                                          |
+| `sk config get <key>`                                 | Read `rid`.                                                                                                                                                    |
+| `sk config set <key> <value>`                         | Write a value; an empty value removes the key.                                                                                                                 |
 
 `config` currently exposes `rid`. Sources are stored in `seiko.conf` and edited in place.
 
 ## Store
 
-| Command | Meaning |
-| --- | --- |
-| `sk cache status` | Artifact and partial-download counts. |
-| `sk cache verify` | Verify stored payload files against their digests. |
-| `sk cache clean` | Remove artifacts not referenced by any registered install root's lock or its retained rollback generations. |
+| Command           | Meaning                                                                                                     |
+| ----------------- | ----------------------------------------------------------------------------------------------------------- |
+| `sk cache status` | Artifact and partial-download counts.                                                                       |
+| `sk cache verify` | Verify stored payload files against their digests.                                                          |
+| `sk cache clean`  | Remove artifacts not referenced by any registered install root's lock or its retained rollback generations. |
 
 `cache clean` needs a root only to resolve the store; it protects every registered root, not just the one passed. Sync and rollback re-download artifacts whose digest metadata or payload is missing or corrupt; `cache verify` only reports.
 
@@ -150,22 +150,22 @@ Prints a completion script that asks the binary through the hidden `[suggest]` d
 
 Declarations and dependencies use NuGet SemVer ranges.
 
-| Range | Meaning |
-| --- | --- |
-| omitted, `*`, or `""` | Any stable version. |
-| `1.2.3` | 1.2.3 or newer. |
-| `[1.2.3]` | Exactly 1.2.3. |
-| `[1.0.0,2.0.0)` | 1.0.0 inclusive through 2.0.0 exclusive. |
+| Range                 | Meaning                                  |
+| --------------------- | ---------------------------------------- |
+| omitted, `*`, or `""` | Any stable version.                      |
+| `1.2.3`               | 1.2.3 or newer.                          |
+| `[1.2.3]`             | Exactly 1.2.3.                           |
+| `[1.0.0,2.0.0)`       | 1.0.0 inclusive through 2.0.0 exclusive. |
 
 Prerelease versions are excluded unless `--pre` is passed or the range itself names a prerelease, such as `[1.2.0-beta,2.0.0)`.
 
 ## Exit codes and JSON
 
-| Exit | Meaning |
-| --- | --- |
-| `0` | Success. |
-| `1` | Runtime failure. |
-| `2` | Usage error. |
+| Exit | Meaning          |
+| ---- | ---------------- |
+| `0`  | Success.         |
+| `1`  | Runtime failure. |
+| `2`  | Usage error.     |
 
 `sync`'s `data.packages` lists every resolved sei with its source and an `indexVerified` flag (false for `origin`); previews carry `external`, `externalBytes`, and `externalUnknown`.
 

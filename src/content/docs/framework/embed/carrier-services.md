@@ -16,7 +16,6 @@ Two rules:
 
 The five framework services — logging, configuration, data directory, scheduler, event bus — are not carrier services. They come from the manager itself and work the same in every host.
 
-
 ## Carrier packages and the configurator
 
 A carrier package is the native shim plus a `hosihikari.json` with `kind: carrier`. The manager reads that manifest from the carrier directory the shim passes at startup, so the same build works wherever the carrier is installed. Two optional groups matter here:

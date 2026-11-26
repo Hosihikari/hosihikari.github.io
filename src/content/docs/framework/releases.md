@@ -5,17 +5,17 @@ description: Published versions of the framework, loaders, and templates.
 
 The current release line was published on 19 November 2026.
 
-| Component | Version | Distribution |
-| --- | --- | --- |
-| [PluginAbstractions](https://www.nuget.org/packages/Hosihikari.Plugin.Abstractions/2.0.1) | 2.0.1 | NuGet |
-| [PluginManager](https://github.com/HosihikariFramework/PluginManager/releases/tag/v2.0.1) | v2.0.1 | Release archive, NuGet, sei |
-| [HostingShim](https://github.com/HosihikariFramework/HostingShim/releases/tag/v2.0.1) | v2.0.1 | Release archive, five carrier targets, sei |
-| [C# Loader](https://github.com/HosihikariFramework/CSharpLoader/releases/tag/v2.0.1) | v2.0.1 | Release archive, sei |
-| [F# Loader](https://github.com/HosihikariFramework/FSharpLoader/releases/tag/v2.0.1) | v2.0.1 | Release archive, sei |
-| [RPC Loader](https://github.com/HosihikariFramework/RpcLoader/releases/tag/v2.0.1) | v2.0.1 | Release archive, sei |
-| [Plugin.Build](https://www.nuget.org/packages/Hosihikari.Plugin.Build/1.2.0) | 1.2.0 | NuGet |
-| [Testing](https://www.nuget.org/packages/Hosihikari.Testing/1.1.0) | 1.1.0 | NuGet |
-| [Plugin templates](https://www.nuget.org/packages/Hosihikari.Plugin.Templates/1.1.0) | 1.1.0 | `dotnet new` |
+| Component                                                                                 | Version | Distribution                               |
+| ----------------------------------------------------------------------------------------- | ------- | ------------------------------------------ |
+| [PluginAbstractions](https://www.nuget.org/packages/Hosihikari.Plugin.Abstractions/2.0.1) | 2.0.1   | NuGet                                      |
+| [PluginManager](https://github.com/HosihikariFramework/PluginManager/releases/tag/v2.0.1) | v2.0.1  | Release archive, NuGet, sei                |
+| [HostingShim](https://github.com/HosihikariFramework/HostingShim/releases/tag/v2.0.1)     | v2.0.1  | Release archive, five carrier targets, sei |
+| [C# Loader](https://github.com/HosihikariFramework/CSharpLoader/releases/tag/v2.0.1)      | v2.0.1  | Release archive, sei                       |
+| [F# Loader](https://github.com/HosihikariFramework/FSharpLoader/releases/tag/v2.0.1)      | v2.0.1  | Release archive, sei                       |
+| [RPC Loader](https://github.com/HosihikariFramework/RpcLoader/releases/tag/v2.0.1)        | v2.0.1  | Release archive, sei                       |
+| [Plugin.Build](https://www.nuget.org/packages/Hosihikari.Plugin.Build/1.2.0)              | 1.2.0   | NuGet                                      |
+| [Testing](https://www.nuget.org/packages/Hosihikari.Testing/1.1.0)                        | 1.1.0   | NuGet                                      |
+| [Plugin templates](https://www.nuget.org/packages/Hosihikari.Plugin.Templates/1.1.0)      | 1.1.0   | `dotnet new`                               |
 
 ## 1.3.0
 

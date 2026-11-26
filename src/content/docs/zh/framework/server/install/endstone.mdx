@@ -3,7 +3,7 @@ title: 在 Endstone 上安装
 description: 在 Endstone 服务端上安装框架。
 ---
 
-import { Tabs, TabItem } from '@astrojs/starlight/components';
+import { Tabs, TabItem } from "@astrojs/starlight/components";
 
 Endstone 载体以一个 Endstone 插件的形式装进去。框架是插件管理器，Endstone 是它的父级。
 
@@ -55,14 +55,14 @@ endstone -s <服务端根目录>
 
 ## 文件位置
 
-| 路径 | 内容 |
-| --- | --- |
+| 路径                                               | 内容                                |
+| -------------------------------------------------- | ----------------------------------- |
 | `plugins/hosihikari.dll` / `plugins/hosihikari.so` | 载体本身；Endstone 按文件加载插件。 |
-| `plugins/hosihikari/` | 插件管理器与它的依赖。 |
-| `plugins/<name>/` | 插件包。 |
-| `config/hosihikari/<name>.conf` | 服务端侧的配置覆盖。 |
-| `data/hosihikari/<name>/` | 框架交给每个插件的数据目录。 |
-| `logs/latest.log` | 服务端与框架日志。 |
+| `plugins/hosihikari/`                              | 插件管理器与它的依赖。              |
+| `plugins/<name>/`                                  | 插件包。                            |
+| `config/hosihikari/<name>.conf`                    | 服务端侧的配置覆盖。                |
+| `data/hosihikari/<name>/`                          | 框架交给每个插件的数据目录。        |
+| `logs/latest.log`                                  | 服务端与框架日志。                  |
 
 ## 卸载
 

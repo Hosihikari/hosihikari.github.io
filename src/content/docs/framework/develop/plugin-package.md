@@ -28,30 +28,27 @@ plugins/
   "loader": "csharp",
   "kind": "plugin",
   "apiVersion": 3,
-  "dependencies": [
-    { "name": "hosihikari" },
-    { "name": "hosihikari-csharp" }
-  ]
+  "dependencies": [{ "name": "hosihikari" }, { "name": "hosihikari-csharp" }]
 }
 ```
 
-| Field | Meaning |
-|---|---|
-| `schemaVersion` | Manifest schema version; `1`. |
-| `name` | Plugin name; must equal the directory name. |
-| `version` | The plugin's own SemVer version. |
-| `entry` | Path inside the package; absolute paths and `..` are rejected. |
-| `loader` | The loader that handles this package; `assembly` when omitted. `assembly` is the plugin manager's built-in path; `csharp` and `fsharp` are in-process loaders; `rpc` is the out-of-process loader. |
-| `kind` | `plugin` (default), `loader`, or `carrier`. The self-hosted scan skips carrier packages. |
-| `apiVersion` | Contract major version; currently `3`. |
-| `dependencies` | Required: must include `hosihikari`, so the parent loads the shim first. Other names carry optional SemVer ranges; the graph decides load order and checks versions. |
-| `description` | Display text; copied into the envelope when present. |
-| `author` | Display text; copied into the envelope when present. |
-| `pack.command` | `rpc` only: the argument vector, as a JSON array or a string holding the encoded array. |
-| `pack.packages` | `Id/Version` or `Id` NuGet packages restored into the package at pack time. |
-| `pack.prepack` | A command run in the package directory at pack time, e.g. `npm ci`; a single string or an array. Pack-time only, the server never restores, and each run is limited to 5 minutes. |
-| `carrier.sharedAssemblies` | `carrier` only: file names the carrier adds to the shared layer. |
-| `carrier.components` | `carrier` only: process-level components as `{ assembly, type }`, each a concrete class implementing `ICarrierComponent`. |
+| Field                      | Meaning                                                                                                                                                                                            |
+| -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `schemaVersion`            | Manifest schema version; `1`.                                                                                                                                                                      |
+| `name`                     | Plugin name; must equal the directory name.                                                                                                                                                        |
+| `version`                  | The plugin's own SemVer version.                                                                                                                                                                   |
+| `entry`                    | Path inside the package; absolute paths and `..` are rejected.                                                                                                                                     |
+| `loader`                   | The loader that handles this package; `assembly` when omitted. `assembly` is the plugin manager's built-in path; `csharp` and `fsharp` are in-process loaders; `rpc` is the out-of-process loader. |
+| `kind`                     | `plugin` (default), `loader`, or `carrier`. The self-hosted scan skips carrier packages.                                                                                                           |
+| `apiVersion`               | Contract major version; currently `3`.                                                                                                                                                             |
+| `dependencies`             | Required: must include `hosihikari`, so the parent loads the shim first. Other names carry optional SemVer ranges; the graph decides load order and checks versions.                               |
+| `description`              | Display text; copied into the envelope when present.                                                                                                                                               |
+| `author`                   | Display text; copied into the envelope when present.                                                                                                                                               |
+| `pack.command`             | `rpc` only: the argument vector, as a JSON array or a string holding the encoded array.                                                                                                            |
+| `pack.packages`            | `Id/Version` or `Id` NuGet packages restored into the package at pack time.                                                                                                                        |
+| `pack.prepack`             | A command run in the package directory at pack time, e.g. `npm ci`; a single string or an array. Pack-time only, the server never restores, and each run is limited to 5 minutes.                  |
+| `carrier.sharedAssemblies` | `carrier` only: file names the carrier adds to the shared layer.                                                                                                                                   |
+| `carrier.components`       | `carrier` only: process-level components as `{ assembly, type }`, each a concrete class implementing `ICarrierComponent`.                                                                          |
 
 `type` is optional and must be `hosihikari` when written; the envelope always carries it. The envelope is generated, so a `description` or `author` edit only reaches the parent after a repack.
 
@@ -72,12 +69,12 @@ A carrier package has `kind: carrier`, is named `hosihikari`, and needs no `hosi
 
 Official loaders come in two classes: in-process loaders compile source to IL at load; RpcLoader is the out-of-process loader, an RPC bridge. Precompiled assemblies use the plugin manager's built-in path.
 
-| `loader` | `entry` | How it loads |
-|---|---|---|
-| `assembly` | `.dll` | PluginManager built-in: loads a precompiled IL assembly directly; the assembly declares exactly one `[assembly: EntryPoint<T>]`. |
-| `csharp` | `.cs` | In-process loader: compiles `.cs` to IL at load with Roslyn, into a collectible ALC. |
-| `fsharp` | `.fsx` | In-process loader: compiles `.fsx` to IL at load with FSharp.Compiler.Service. |
-| `rpc` | Entry file | Out-of-process loader: `pack.command` starts a child process speaking line-delimited JSON-RPC 2.0 over stdio. |
+| `loader`   | `entry`    | How it loads                                                                                                                     |
+| ---------- | ---------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| `assembly` | `.dll`     | PluginManager built-in: loads a precompiled IL assembly directly; the assembly declares exactly one `[assembly: EntryPoint<T>]`. |
+| `csharp`   | `.cs`      | In-process loader: compiles `.cs` to IL at load with Roslyn, into a collectible ALC.                                             |
+| `fsharp`   | `.fsx`     | In-process loader: compiles `.fsx` to IL at load with FSharp.Compiler.Service.                                                   |
+| `rpc`      | Entry file | Out-of-process loader: `pack.command` starts a child process speaking line-delimited JSON-RPC 2.0 over stdio.                    |
 
 For in-process and precompiled assembly plugins, the entry type must implement `IPlugin` and have a parameterless constructor; `EntryPoint<T>` enforces both at compile time. A missing file or the wrong number of entry declarations is reported by the loader.
 

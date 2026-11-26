@@ -46,10 +46,7 @@ hosihikari-pack pack-plugin . ./hosihikari.json ./dist
   "loader": "rpc",
   "kind": "plugin",
   "apiVersion": 3,
-  "dependencies": [
-    { "name": "hosihikari" },
-    { "name": "hosihikari-rpc" }
-  ],
+  "dependencies": [{ "name": "hosihikari" }, { "name": "hosihikari-rpc" }],
   "pack": {
     "command": ["node", "./hosihikari.mjs", "./main.mjs"]
   }
@@ -67,18 +64,18 @@ cp <服务端>/plugins/hosihikari-rpc/protocol/node/hosihikari.mjs .
 ## 插件
 
 ```js
-import fs from 'node:fs';
-import path from 'node:path';
+import fs from "node:fs";
+import path from "node:path";
 
 export default {
   onLoad(ctx) {
-    fs.writeFileSync(path.join(ctx.dataDirectory, 'loaded.txt'), 'loaded');
+    fs.writeFileSync(path.join(ctx.dataDirectory, "loaded.txt"), "loaded");
     ctx.logInfo(`loaded, package ${ctx.packageDirectory}`);
   },
 
   onEnable(ctx) {
-    const greeting = ctx.config('greeting');
-    fs.writeFileSync(path.join(ctx.dataDirectory, 'enabled.txt'), greeting ?? '');
+    const greeting = ctx.config("greeting");
+    fs.writeFileSync(path.join(ctx.dataDirectory, "enabled.txt"), greeting ?? "");
     ctx.logInfo(`enabled, greeting=${greeting}`);
   },
 
@@ -96,15 +93,15 @@ export default {
 
 `ctx` 提供：
 
-| 成员 | 说明 |
-|---|---|
-| `name` / `packageDirectory` / `dataDirectory` | 插件名、包目录、数据目录 |
-| `config(key)` / `configObject` | 分层后的配置 |
-| `logInfo` / `logWarn` / `logError` | 结构化日志（走协议） |
-| `writeData(file, text)` | 在数据目录下写文件 |
-| `publish(topic, json)` | 发布事件 |
-| `subscribe(topic, fn, { sync })` | 订阅事件；`sync: true` 时发布方等 ack |
-| `scheduleOnce(seconds, fn)` / `schedulePeriodic(seconds, fn)` | 定时器 |
+| 成员                                                          | 说明                                  |
+| ------------------------------------------------------------- | ------------------------------------- |
+| `name` / `packageDirectory` / `dataDirectory`                 | 插件名、包目录、数据目录              |
+| `config(key)` / `configObject`                                | 分层后的配置                          |
+| `logInfo` / `logWarn` / `logError`                            | 结构化日志（走协议）                  |
+| `writeData(file, text)`                                       | 在数据目录下写文件                    |
+| `publish(topic, json)`                                        | 发布事件                              |
+| `subscribe(topic, fn, { sync })`                              | 订阅事件；`sync: true` 时发布方等 ack |
+| `scheduleOnce(seconds, fn)` / `schedulePeriodic(seconds, fn)` | 定时器                                |
 
 事件默认异步。停用会关闭闸门，订阅回调与定时器停止投递；拒绝停用则恢复。卸载会结束子进程。
 

@@ -1,14 +1,14 @@
-import type { APIRoute } from 'astro';
-import { getCollection } from 'astro:content';
+import type { APIRoute } from "astro";
+import { getCollection } from "astro:content";
 
-const sections = ['framework/server', 'framework/develop', 'framework/embed'];
+const sections = ["framework/server", "framework/develop", "framework/embed"];
 
 const clean = (body: string) => {
   const out: string[] = [];
   let inFence = false;
   let blank = false;
 
-  for (const line of body.replace(/\r\n?/g, '\n').split('\n')) {
+  for (const line of body.replace(/\r\n?/g, "\n").split("\n")) {
     if (/^\s*```/.test(line)) {
       inFence = !inFence;
       out.push(line);
@@ -24,8 +24,8 @@ const clean = (body: string) => {
     if (/^\s*import .*$/.test(line)) continue;
     if (/^\s*<\/?[A-Z][A-Za-z0-9]*[^>]*>\s*$/.test(line)) continue;
 
-    if (line.trim() === '') {
-      if (!blank) out.push('');
+    if (line.trim() === "") {
+      if (!blank) out.push("");
       blank = true;
       continue;
     }
@@ -34,13 +34,13 @@ const clean = (body: string) => {
     out.push(line);
   }
 
-  return out.join('\n').trim();
+  return out.join("\n").trim();
 };
 
 export const GET: APIRoute = async ({ site }) => {
-  const base = site ?? new URL('https://hoshi.srcz.one');
-  const entries = await getCollection('docs', ({ id, data }) => {
-    return !id.startsWith('zh/') && id !== 'index' && id !== '404' && !data.draft;
+  const base = site ?? new URL("https://hoshi.srcz.one");
+  const entries = await getCollection("docs", ({ id, data }) => {
+    return !id.startsWith("zh/") && id !== "index" && id !== "404" && !data.draft;
   });
 
   const bySection = (prefix: string) =>
@@ -50,24 +50,24 @@ export const GET: APIRoute = async ({ site }) => {
 
   const ordered = [
     ...sections.flatMap(bySection),
-    ...entries.filter(({ id }) => id === 'framework/migrate/v2'),
-    ...entries.filter(({ id }) => id === 'framework/releases'),
-    ...entries.filter(({ id }) => id === 'projection' || id === 'seiko'),
+    ...entries.filter(({ id }) => id === "framework/migrate/v2"),
+    ...entries.filter(({ id }) => id === "framework/releases"),
+    ...entries.filter(({ id }) => id === "projection" || id === "seiko"),
   ];
   const source = (id: string) => new URL(`/${id}/`, base).href;
   const page = (id: string, title: string, body?: string) =>
-    [`# ${title}`, '', `Source: ${source(id)}`, '', clean(body ?? '')].join('\n');
+    [`# ${title}`, "", `Source: ${source(id)}`, "", clean(body ?? "")].join("\n");
 
   const body = [
-    '# Hosihikari — full documentation',
-    '',
-    '> Generated from the English documentation pages. Each section starts with its source URL.',
-    '',
+    "# Hosihikari — full documentation",
+    "",
+    "> Generated from the English documentation pages. Each section starts with its source URL.",
+    "",
     ...ordered.map(({ id, data, body: content }) => `---\n\n${page(id, data.title, content)}`),
-    '',
+    "",
   ];
 
-  return new Response(body.join('\n'), {
-    headers: { 'Content-Type': 'text/markdown; charset=utf-8' },
+  return new Response(body.join("\n"), {
+    headers: { "Content-Type": "text/markdown; charset=utf-8" },
   });
 };

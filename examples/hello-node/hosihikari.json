@@ -6,10 +6,7 @@
   "loader": "rpc",
   "kind": "plugin",
   "apiVersion": 3,
-  "dependencies": [
-    { "name": "hosihikari" },
-    { "name": "hosihikari-rpc" }
-  ],
+  "dependencies": [{ "name": "hosihikari" }, { "name": "hosihikari-rpc" }],
   "description": "A minimal Node.js out-of-process plugin.",
   "author": "HosihikariFramework",
   "pack": {

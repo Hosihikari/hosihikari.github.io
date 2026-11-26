@@ -9,18 +9,18 @@ Start with `sk doctor` (or `sk check` for a read-only run). It checks the declar
 
 Every `sk` failure carries one of these codes; with `--json` it is in `error.code`.
 
-| Code | Typical cause | What to do |
-| --- | --- | --- |
-| `usage` | Bad arguments, an invalid version range, an absolute path, or `@range` on a file. | Check `sk <command> --help`. |
-| `config` | Missing or invalid `seiko.conf`, or a source without `id`/`index`. | Run `sk init` or fix the file. |
-| `source` | Index missing, invalid, or an HTTP failure while reading it. | Check the source path/URL and credentials. |
-| `resolve` | No version satisfies the graph, or a version conflict. | Inspect with `sk why` and `sk info`; loosen a range. |
-| `download` | Network or HTTP failure while fetching an artifact. | Retry, set `--proxy`, or lower `--jobs`. |
-| `checksum` | Artifact bytes do not match the recorded SHA-256 or store digest. | See “Corrupted store” below. |
-| `deploy` | Unsafe path, symlink, invalid mode, or a failed transaction. | Remove the offending path; inspect `.seiko/` state. |
-| `lock` | Lock missing, out of date, or inconsistent with the declaration. | Run a normal `sk sync`, or restore the expected source. |
-| `io` | Filesystem or process-lock failure. | Check permissions, free space, and other running `sk` processes. |
-| `internal` | Unexpected failure. | Re-run with `-v` and report the stack trace. |
+| Code       | Typical cause                                                                     | What to do                                                       |
+| ---------- | --------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
+| `usage`    | Bad arguments, an invalid version range, an absolute path, or `@range` on a file. | Check `sk <command> --help`.                                     |
+| `config`   | Missing or invalid `seiko.conf`, or a source without `id`/`index`.                | Run `sk init` or fix the file.                                   |
+| `source`   | Index missing, invalid, or an HTTP failure while reading it.                      | Check the source path/URL and credentials.                       |
+| `resolve`  | No version satisfies the graph, or a version conflict.                            | Inspect with `sk why` and `sk info`; loosen a range.             |
+| `download` | Network or HTTP failure while fetching an artifact.                               | Retry, set `--proxy`, or lower `--jobs`.                         |
+| `checksum` | Artifact bytes do not match the recorded SHA-256 or store digest.                 | See “Corrupted store” below.                                     |
+| `deploy`   | Unsafe path, symlink, invalid mode, or a failed transaction.                      | Remove the offending path; inspect `.seiko/` state.              |
+| `lock`     | Lock missing, out of date, or inconsistent with the declaration.                  | Run a normal `sk sync`, or restore the expected source.          |
+| `io`       | Filesystem or process-lock failure.                                               | Check permissions, free space, and other running `sk` processes. |
+| `internal` | Unexpected failure.                                                               | Re-run with `-v` and report the stack trace.                     |
 
 ## Common cases
 

@@ -3,7 +3,7 @@ title: Installing the self-hosted carrier (Linux)
 description: Install the self-hosted Linux carrier.
 ---
 
-import { Tabs, TabItem } from '@astrojs/starlight/components';
+import { Tabs, TabItem } from "@astrojs/starlight/components";
 
 The self-hosted carrier has no parent loader: it preloads the framework into a stock Bedrock Dedicated Server. The [Windows variant](/framework/server/install/selfhosted-windows/) works the same way.
 
@@ -63,13 +63,13 @@ The launcher's output and the server log should show the CLR starting, the carri
 
 ## Where things live
 
-| Path | What |
-| --- | --- |
-| `hosihikari-server` | The launcher; run this instead of `bedrock_server`. |
-| `plugins/hosihikari/` | The carrier and the plugin manager. |
-| `plugins/<name>/` | Plugin packages. |
-| `config/hosihikari/<name>.conf` | Server-side configuration overrides. |
-| `data/hosihikari/<name>/` | Data the framework hands to each plugin. |
+| Path                            | What                                                |
+| ------------------------------- | --------------------------------------------------- |
+| `hosihikari-server`             | The launcher; run this instead of `bedrock_server`. |
+| `plugins/hosihikari/`           | The carrier and the plugin manager.                 |
+| `plugins/<name>/`               | Plugin packages.                                    |
+| `config/hosihikari/<name>.conf` | Server-side configuration overrides.                |
+| `data/hosihikari/<name>/`       | Data the framework hands to each plugin.            |
 
 ## Uninstall
 

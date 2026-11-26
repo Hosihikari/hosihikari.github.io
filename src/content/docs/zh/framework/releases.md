@@ -5,17 +5,17 @@ description: 星光框架、加载器与模板的已发布版本。
 
 当前功能线发布于 2026 年 11 月 19 日。
 
-| 组件 | 版本 | 分发方式 |
-| --- | --- | --- |
-| [PluginAbstractions](https://www.nuget.org/packages/Hosihikari.Plugin.Abstractions/2.0.1) | 2.0.1 | NuGet |
-| [PluginManager](https://github.com/HosihikariFramework/PluginManager/releases/tag/v2.0.1) | v2.0.1 | Release 归档、NuGet、sei |
-| [HostingShim](https://github.com/HosihikariFramework/HostingShim/releases/tag/v2.0.1) | v2.0.1 | Release 归档，五个载体目标、sei |
-| [C# Loader](https://github.com/HosihikariFramework/CSharpLoader/releases/tag/v2.0.1) | v2.0.1 | Release 归档、sei |
-| [F# Loader](https://github.com/HosihikariFramework/FSharpLoader/releases/tag/v2.0.1) | v2.0.1 | Release 归档、sei |
-| [RPC Loader](https://github.com/HosihikariFramework/RpcLoader/releases/tag/v2.0.1) | v2.0.1 | Release 归档、sei |
-| [Plugin.Build](https://www.nuget.org/packages/Hosihikari.Plugin.Build/1.2.0) | 1.2.0 | NuGet |
-| [Testing](https://www.nuget.org/packages/Hosihikari.Testing/1.1.0) | 1.1.0 | NuGet |
-| [插件模板](https://www.nuget.org/packages/Hosihikari.Plugin.Templates/1.1.0) | 1.1.0 | `dotnet new` |
+| 组件                                                                                      | 版本   | 分发方式                        |
+| ----------------------------------------------------------------------------------------- | ------ | ------------------------------- |
+| [PluginAbstractions](https://www.nuget.org/packages/Hosihikari.Plugin.Abstractions/2.0.1) | 2.0.1  | NuGet                           |
+| [PluginManager](https://github.com/HosihikariFramework/PluginManager/releases/tag/v2.0.1) | v2.0.1 | Release 归档、NuGet、sei        |
+| [HostingShim](https://github.com/HosihikariFramework/HostingShim/releases/tag/v2.0.1)     | v2.0.1 | Release 归档，五个载体目标、sei |
+| [C# Loader](https://github.com/HosihikariFramework/CSharpLoader/releases/tag/v2.0.1)      | v2.0.1 | Release 归档、sei               |
+| [F# Loader](https://github.com/HosihikariFramework/FSharpLoader/releases/tag/v2.0.1)      | v2.0.1 | Release 归档、sei               |
+| [RPC Loader](https://github.com/HosihikariFramework/RpcLoader/releases/tag/v2.0.1)        | v2.0.1 | Release 归档、sei               |
+| [Plugin.Build](https://www.nuget.org/packages/Hosihikari.Plugin.Build/1.2.0)              | 1.2.0  | NuGet                           |
+| [Testing](https://www.nuget.org/packages/Hosihikari.Testing/1.1.0)                        | 1.1.0  | NuGet                           |
+| [插件模板](https://www.nuget.org/packages/Hosihikari.Plugin.Templates/1.1.0)              | 1.1.0  | `dotnet new`                    |
 
 ## 1.3.0
 

@@ -26,9 +26,7 @@ zip 根只能有一个 `sei.json`。其余都是载荷；路径相对安装根�
   "schemaVersion": 2,
   "name": "hello-seiko",
   "version": "1.0.0",
-  "dependencies": [
-    { "name": "hosihikari", "version": "[1.1.0,1.2.0)" }
-  ],
+  "dependencies": [{ "name": "hosihikari", "version": "[1.1.0,1.2.0)" }],
   "prerequisites": [],
   "optionalPeers": [],
   "conflicts": [],
@@ -44,16 +42,16 @@ zip 根只能有一个 `sei.json`。其余都是载荷；路径相对安装根�
 }
 ```
 
-| 字段 | 说明 |
-| --- | --- |
-| `schemaVersion` | 必填。通常为 `2`；构件带外链文件时为 `3`；用到 `preserve` 或 `dependencyGroups` 时为 `4`。 |
-| `name` | sei 名；必须与索引文件一致，且路径安全。 |
-| `version` | NuGet SemVer 版本；预发布使用 `1.3.0-beta.1` 这类后缀。 |
-| `dependencies` | 名字与可选的版本范围，按与声明相同的规则解析。 |
-| `prerequisites`、`optionalPeers`、`conflicts` | 其余版本级关系，见[关系](#关系)。 |
-| `artifact` | 只描述当前构件：`rid`、构件专属关系、`layout`、`modes`、可选外链与可选 `preserve`。 |
-| `artifact.preserve` | 构件会部署、但之后不拥有的路径：已存在的文件胜过构件那份，且该路径从不记为受管。仅 `schemaVersion: 4`。 |
-| `artifact.dependencyGroups` | 互斥的候选关系组；选中的构件至多展开一组。仅 `schemaVersion: 4`。 |
+| 字段                                          | 说明                                                                                                    |
+| --------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `schemaVersion`                               | 必填。通常为 `2`；构件带外链文件时为 `3`；用到 `preserve` 或 `dependencyGroups` 时为 `4`。              |
+| `name`                                        | sei 名；必须与索引文件一致，且路径安全。                                                                |
+| `version`                                     | NuGet SemVer 版本；预发布使用 `1.3.0-beta.1` 这类后缀。                                                 |
+| `dependencies`                                | 名字与可选的版本范围，按与声明相同的规则解析。                                                          |
+| `prerequisites`、`optionalPeers`、`conflicts` | 其余版本级关系，见[关系](#关系)。                                                                       |
+| `artifact`                                    | 只描述当前构件：`rid`、构件专属关系、`layout`、`modes`、可选外链与可选 `preserve`。                     |
+| `artifact.preserve`                           | 构件会部署、但之后不拥有的路径：已存在的文件胜过构件那份，且该路径从不记为受管。仅 `schemaVersion: 4`。 |
+| `artifact.dependencyGroups`                   | 互斥的候选关系组；选中的构件至多展开一组。仅 `schemaVersion: 4`。                                       |
 
 ## 外链文件
 
@@ -91,12 +89,12 @@ zip 根只能有一个 `sei.json`。其余都是载荷；路径相对安装根�
 
 版本级关系约束整个版本；`artifact` 内的同名字段只约束该构件。两个作用域同时生效。
 
-| 字段 | 说明 |
-| --- | --- |
-| `dependencies` | 必须安装，目标会进入依赖图。 |
+| 字段            | 说明                                           |
+| --------------- | ---------------------------------------------- |
+| `dependencies`  | 必须安装，目标会进入依赖图。                   |
 | `prerequisites` | 目标必须已在图中，不会自动加入；用于构件选择。 |
-| `optionalPeers` | 目标可以缺失；存在时版本必须匹配。 |
-| `conflicts` | 匹配的目标不能同时存在。 |
+| `optionalPeers` | 目标可以缺失；存在时版本必须匹配。             |
+| `conflicts`     | 匹配的目标不能同时存在。                       |
 
 构件按 `rid` 与其 `prerequisites` 选择：前提不满足的构件不能被选中。可选中构件中，满足前提最多的胜出；特异度相同会报歧义。因为 `prerequisites` 不加入任何东西，点名条件的 sei 必须由声明或普通依赖带入图中。
 
@@ -111,9 +109,7 @@ zip 根只能有一个 `sei.json`。其余都是载荷；路径相对安装根�
 ```json
 {
   "version": "1.0.0",
-  "dependencies": [
-    { "name": "hosihikari", "version": "[1.1.0,1.2.0)" }
-  ],
+  "dependencies": [{ "name": "hosihikari", "version": "[1.1.0,1.2.0)" }],
   "prerequisites": [],
   "optionalPeers": [],
   "conflicts": [],

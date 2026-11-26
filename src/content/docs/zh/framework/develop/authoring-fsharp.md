@@ -43,10 +43,7 @@ hosihikari-pack pack-plugin . ./hosihikari.json ./dist
   "loader": "fsharp",
   "kind": "plugin",
   "apiVersion": 3,
-  "dependencies": [
-    { "name": "hosihikari" },
-    { "name": "hosihikari-fsharp" }
-  ]
+  "dependencies": [{ "name": "hosihikari" }, { "name": "hosihikari-fsharp" }]
 }
 ```
 

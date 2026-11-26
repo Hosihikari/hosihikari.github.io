@@ -5,12 +5,12 @@ description: 框架支持的载体目标，以及各自要付什么代价。
 
 **载体**是一套具体的运行环境，由三个分量确定：平台、父级插件加载器（自持态没有），以及原生 API 提供方——LeviLamina 的 LLAPI、Endstone 的 API、自持态 BDS 1.21.3 的 MCAPI。框架只依赖平台与父级加载器；原生 API 一侧由投影提供。先选载体再动手装；各载体的安装步骤不一样，不能互换。
 
-| 载体 | 平台 | 父级 | BDS |
-| --- | --- | --- | --- |
-| [LeviLamina](/zh/framework/server/install/levilamina/) | Windows x64 | LeviLamina | 1.26.60+，配 LeviLamina 26.60.9+ |
-| [Endstone](/zh/framework/server/install/endstone/) | Windows x64、Linux x64 | Endstone | 1.26.60+，配 Endstone 0.11.16+ |
-| [自持态（Linux）](/zh/framework/server/install/selfhosted/) | Linux x64 | 无 | 1.21.3 |
-| [自持态（Windows）](/zh/framework/server/install/selfhosted-windows/) | Windows x64 | 无 | 1.21.3.01 |
+| 载体                                                                  | 平台                   | 父级       | BDS                              |
+| --------------------------------------------------------------------- | ---------------------- | ---------- | -------------------------------- |
+| [LeviLamina](/zh/framework/server/install/levilamina/)                | Windows x64            | LeviLamina | 1.26.60+，配 LeviLamina 26.60.9+ |
+| [Endstone](/zh/framework/server/install/endstone/)                    | Windows x64、Linux x64 | Endstone   | 1.26.60+，配 Endstone 0.11.16+   |
+| [自持态（Linux）](/zh/framework/server/install/selfhosted/)           | Linux x64              | 无         | 1.21.3                           |
+| [自持态（Windows）](/zh/framework/server/install/selfhosted-windows/) | Windows x64            | 无         | 1.21.3.01                        |
 
 ## 父级态与自持态
 

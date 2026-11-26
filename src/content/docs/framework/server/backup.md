@@ -7,15 +7,15 @@ A backup worth keeping has two halves: what the game owns, and what the plugins 
 
 ## What to back up
 
-| Path | What | Changes when |
-| --- | --- | --- |
-| `worlds/` | Every world, one directory per `level-name` | Continuously while players are online |
-| `keys/server_identity_key.pem` | The server's identity key | Once |
-| `allowlist.json` | The allow list | On allowlist edits |
-| `plugins/` | Plugin packages, including `plugins/hosihikari/` | On install and update |
-| `mods/hosihikari/` | The LeviLamina carrier | On install and update |
-| `config/hosihikari/` | Server-side configuration overrides | On configuration edits |
-| `data/hosihikari/` | Data the framework hands to plugins | While plugins run |
+| Path                           | What                                             | Changes when                          |
+| ------------------------------ | ------------------------------------------------ | ------------------------------------- |
+| `worlds/`                      | Every world, one directory per `level-name`      | Continuously while players are online |
+| `keys/server_identity_key.pem` | The server's identity key                        | Once                                  |
+| `allowlist.json`               | The allow list                                   | On allowlist edits                    |
+| `plugins/`                     | Plugin packages, including `plugins/hosihikari/` | On install and update                 |
+| `mods/hosihikari/`             | The LeviLamina carrier                           | On install and update                 |
+| `config/hosihikari/`           | Server-side configuration overrides              | On configuration edits                |
+| `data/hosihikari/`             | Data the framework hands to plugins              | While plugins run                     |
 
 The `plugins/`, `mods/hosihikari/`, `config/hosihikari/` and `data/hosihikari/` rows are the framework's. `plugins/` is worth backing up even though it can be reinstalled: the exact package versions on a working server are part of what you are preserving.
 
@@ -32,7 +32,7 @@ save hold
 save query
 ```
 
-`save hold` only *asks* the server to prepare; it returns immediately and the preparation runs in the background. Call `save query` repeatedly until it answers with a file list. Until then it reports that preparation is still in progress, and the files are not yet safe to copy.
+`save hold` only _asks_ the server to prepare; it returns immediately and the preparation runs in the background. Call `save query` repeatedly until it answers with a file list. Until then it reports that preparation is still in progress, and the files are not yet safe to copy.
 
 The successful `save query` answer lists every file to copy and the length of each one. Copy exactly those files — not the whole `worlds/` directory — and **truncate each copied file to the length the server gave**. The server keeps running during the copy, so a file can grow while you read it; the truncation is what makes the copy match the snapshot.
 

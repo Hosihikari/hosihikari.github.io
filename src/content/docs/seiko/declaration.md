@@ -33,18 +33,18 @@ origin = [
 ]
 ```
 
-| Field | Meaning |
-| --- | --- |
-| `schemaVersion` | Required; currently `2`. |
-| `sources[].id` | Name used by the lock and the resolver; must be unique. |
-| `sources[].index` | HTTPS URL of `index.json`, or a local path to the index file (relative paths resolve from the install root). |
-| `sources[].tokenHosts` | Extra HTTPS hosts allowed to receive their host-keyed token. |
-| `rid` | Target platform written into the lock; defaults to the running platform. |
-| `sei[].name` | Direct sei name. |
-| `sei[].version` | NuGet version range; omitted or `*` means any stable version. |
-| `origin[].name` | Sei supplied by a local file; must also appear in `sei`. |
-| `origin[].paths` | Stored paths relative to the install root; `./` and `../` allowed, absolute paths rejected. |
-| `origin[].selectors` | Optional conditions (`rid`, `prerequisites`) selecting a path, matching artifact selectors. |
+| Field                  | Meaning                                                                                                      |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------ |
+| `schemaVersion`        | Required; currently `2`.                                                                                     |
+| `sources[].id`         | Name used by the lock and the resolver; must be unique.                                                      |
+| `sources[].index`      | HTTPS URL of `index.json`, or a local path to the index file (relative paths resolve from the install root). |
+| `sources[].tokenHosts` | Extra HTTPS hosts allowed to receive their host-keyed token.                                                 |
+| `rid`                  | Target platform written into the lock; defaults to the running platform.                                     |
+| `sei[].name`           | Direct sei name.                                                                                             |
+| `sei[].version`        | NuGet version range; omitted or `*` means any stable version.                                                |
+| `origin[].name`        | Sei supplied by a local file; must also appear in `sei`.                                                     |
+| `origin[].paths`       | Stored paths relative to the install root; `./` and `../` allowed, absolute paths rejected.                  |
+| `origin[].selectors`   | Optional conditions (`rid`, `prerequisites`) selecting a path, matching artifact selectors.                  |
 
 Direct declarations live only in `sei`. The lock records the resolved graph, including the version- and artifact-level relations, the selected artifact, and its `rid`. `origin` is a reserved source id: it pairs with a `sei` entry and only pins where that entry's bytes come from, so a configured source may not use it.
 
@@ -52,12 +52,12 @@ Direct declarations live only in `sei`. The lock records the resolved graph, inc
 
 ## Version ranges
 
-| Value | Meaning |
-| --- | --- |
-| omitted, `*`, `""` | Any stable version. |
-| `1.2.3` | 1.2.3 or newer. |
-| `[1.2.3]` | Exactly 1.2.3. |
-| `[1.0.0,2.0.0)` | 1.0.0 inclusive through 2.0.0 exclusive. |
+| Value              | Meaning                                  |
+| ------------------ | ---------------------------------------- |
+| omitted, `*`, `""` | Any stable version.                      |
+| `1.2.3`            | 1.2.3 or newer.                          |
+| `[1.2.3]`          | Exactly 1.2.3.                           |
+| `[1.0.0,2.0.0)`    | 1.0.0 inclusive through 2.0.0 exclusive. |
 
 The resolver prefers the locked version when it still satisfies every constraint, then the highest stable version. Prerelease versions are excluded unless `--pre` is passed or a range names a prerelease explicitly.
 
@@ -91,18 +91,18 @@ The resolver prefers the locked version when it still satisfies every constraint
 }
 ```
 
-| Field | Meaning |
-| --- | --- |
-| `target.rid` | Platform used to select artifacts. |
-| `sources` | Source ids in declaration order. |
-| `sei[].source` | The source that provided this sei; replay uses the same source id. `origin` for a local file. |
-| `sei[].originPath` | Origin entries only (omitted otherwise): the stored path the bytes are read from, or matched against a snapshot. |
-| `sei[].direct` | Whether this sei is a direct declaration. |
-| `sei[].artifact.sha256` | Digest of the selected artifact. |
-| `sei[].artifact.rid` | Platform condition of the selected artifact, when any. |
-| `sei[].dependencies` | Version-level dependencies declared by the sei. |
-| `sei[].prerequisites`, `optionalPeers`, `conflicts` | The other version-level relations. |
-| `sei[].artifact.*` | The artifact-level relations, kept separately for replay and diagnostics. |
+| Field                                               | Meaning                                                                                                          |
+| --------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| `target.rid`                                        | Platform used to select artifacts.                                                                               |
+| `sources`                                           | Source ids in declaration order.                                                                                 |
+| `sei[].source`                                      | The source that provided this sei; replay uses the same source id. `origin` for a local file.                    |
+| `sei[].originPath`                                  | Origin entries only (omitted otherwise): the stored path the bytes are read from, or matched against a snapshot. |
+| `sei[].direct`                                      | Whether this sei is a direct declaration.                                                                        |
+| `sei[].artifact.sha256`                             | Digest of the selected artifact.                                                                                 |
+| `sei[].artifact.rid`                                | Platform condition of the selected artifact, when any.                                                           |
+| `sei[].dependencies`                                | Version-level dependencies declared by the sei.                                                                  |
+| `sei[].prerequisites`, `optionalPeers`, `conflicts` | The other version-level relations.                                                                               |
+| `sei[].artifact.*`                                  | The artifact-level relations, kept separately for replay and diagnostics.                                        |
 
 The lock is deterministic and machine-written. Do not edit it by hand; change `seiko.conf` or run an update instead.
 
