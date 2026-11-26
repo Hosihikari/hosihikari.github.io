@@ -102,7 +102,7 @@ F# 插件是真正引用契约的程序集，所以它能用到 C# 插件的一�
 
 - 生成出来的 F# 包带 `FSharp.Core.dll`；共享的契约 DLL 不进包。
 - 预编译 F# 插件与 C# 一样走 `loader: assembly`，模板是 `hosihikari-plugin-fsharp`。
-- 这个加载器是 LGPL-3.0-or-later，与框架自己的包不同。
+- 这个加载器是 LGPL-3.0-or-later，插件管理器与寄宿垫片同样如此。只有契约、构建、测试与模板包属 MIT 一族；具体看你那一份的 `LICENSE.md`。
 
 ## 部署与验证
 

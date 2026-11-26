@@ -127,10 +127,10 @@ If you already have a compiled DLL, put it in the package, set `loader` to `asse
 [assembly: EntryPoint<HelloPlugin>]
 ```
 
-Reference the contract and exclude its runtime assets so the package does not carry a second copy:
+Reference the contract and exclude its runtime assets so the package does not carry a second copy. The lower bound must be 2.0.1: NuGet resolves a range to the lowest version that satisfies it, and 2.0.0 carries a broken dependency.
 
 ```xml
-<PackageReference Include="Hosihikari.Plugin.Abstractions" Version="[2.0.0]" ExcludeAssets="runtime" />
+<PackageReference Include="Hosihikari.Plugin.Abstractions" Version="[2.0.1,3.0.0)" ExcludeAssets="runtime" />
 ```
 
 The assembly declares exactly one `EntryPoint<T>`; the entry type implements `IPlugin` and has a parameterless constructor.

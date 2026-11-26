@@ -19,8 +19,8 @@ sk add hosihikari
 `sk add hosihikari` adds a direct declaration and syncs immediately:
 
 ```
-resolved 1 sei, deployed 29 file(s)
-  hosihikari 1.2.0 (direct)
+resolved 1 sei, deployed 38 file(s)
+  hosihikari 2.0.1 (direct)
 ```
 
 Files land according to the artifact's layout. For `hosihikari` they go under `plugins/hosihikari/`; Seiko does not interpret what is there. The package manifest `hosihikari.json` is payload, not something Seiko reads.

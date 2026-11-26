@@ -16,11 +16,14 @@ dotnet new hosihikari-plugin -n MyPlugin          # C#
 dotnet new hosihikari-plugin-fsharp -n MyPlugin   # F#
 ```
 
-`dotnet new` 生成的项目源码树里没有清单文件：`Hosihikari.Plugin.Build` 在打包期按项目属性生成 `hosihikari.json`。用它构建打包：
+`dotnet new` 生成的项目源码树里没有清单文件。够到 2.0 的 `Hosihikari.Plugin.Build` 在打包期按项目属性生成 `hosihikari.json`。
+
+已发布的模板还是 1.1.0：钉着 1.x 契约、钩子是同步的，工程引用的是 `Plugin.Build` `[1.1.0]`，只产旧版纯 `manifest.json` 信封。先把它拉到现行线——升契约、按[从 1.x 迁到 2.0](/zh/framework/migrate/v2/#2-钩子改异步)改写钩子、换 2.0 的构建包：
 
 ```bash
 cd MyPlugin
-dotnet add package Hosihikari.Plugin.Build
+dotnet add package Hosihikari.Plugin.Abstractions --version 2.0.1
+dotnet add package Hosihikari.Plugin.Build --version 1.2.0
 dotnet build -t:PackPlugin
 ```
 

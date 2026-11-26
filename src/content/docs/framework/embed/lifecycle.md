@@ -13,6 +13,7 @@ manager.Load(packageDirectory); // load one package by path
 manager.Enable("Hello");        // enable by manifest name
 manager.Disable("Hello");
 manager.Unload("Hello");
+manager.Reload("Hello");        // self-hosted only; see below
 ```
 
 `Load` and `Enable` return a bool. `Unload` returns an `UnloadResult`:
@@ -29,6 +30,29 @@ public readonly record struct UnloadResult(
 - `Error` carries the reason when it was not.
 - `Failure` names the stage that failed: `HookTimedOut`, `HookRefused`, `HookThrew`, `ReclamationTimedOut`, `HookAndReclamationTimedOut`, or `ReclamationFailed`.
 - `HookTimedOut` is independent of `Released`: a hook timeout followed by a successful verification sets both.
+
+## Reload
+
+`Reload` runs `Disable` → `Unload` → `Load` → `Enable` in one call (FX-0062) and returns a `ReloadResult`:
+
+```csharp
+public readonly record struct ReloadResult(bool Reloaded, bool NotSupported, string? Error);
+```
+
+It exists only in the self-hosted topology, where the manager owns the plugin set. Under a parent the set belongs to the parent (FX-0003) and the call returns `NotSupported` with the reason in `Error`; reload by driving the parent instead. The first failing step stops the sequence and is recorded as it happened, and the plugin name leaves the roster for the duration, so state events follow the real transitions.
+
+A package pinned by native libraries still reports restart-needed at unload; `Reload` does not bypass that.
+
+## Components start before dispatch
+
+If the carrier declares `carrier.components`, the host starts them once per process, before event dispatch opens to plugins, and stops them in reverse start order before dispatch closes:
+
+```csharp
+manager.StartComponents(carrierPackageDirectory, components); // returns false when a component failed to start
+manager.StopComponents();
+```
+
+A component failing to start fails the whole startup.
 
 ## Unload has stages
 

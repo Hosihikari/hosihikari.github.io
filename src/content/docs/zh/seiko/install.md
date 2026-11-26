@@ -60,7 +60,7 @@ seiko-mcp --version
 sha256sum -c SHA256SUMS --ignore-missing
 ```
 
-`SHA256SUMS` 覆盖全部发布资产。`gh attestation verify 'sk-<version>-<rid>.tar.gz' --repo Hosihikari/Seiko` 另行证明包资产由本仓的 workflow 构建；安装器没有 attestation。
+`SHA256SUMS` 覆盖全部发布资产。`gh attestation verify 'sk-<version>-<rid>.tar.gz' --repo Hosihikari/Seiko` 另行证明该资产由本仓的 workflow 构建；每个资产都带 attestation，安装器也在内。
 
 | 资产 | 内容 |
 | --- | --- |

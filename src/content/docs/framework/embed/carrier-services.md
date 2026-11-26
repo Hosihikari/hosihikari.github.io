@@ -21,17 +21,17 @@ The five framework services — logging, configuration, data directory, schedule
 
 A carrier package is the native shim plus a `hosihikari.json` with `kind: carrier`. The manager reads that manifest from the carrier directory the shim passes at startup, so the same build works wherever the carrier is installed. Two optional groups matter here:
 
-- `carrier.components`: process-wide managed components (see [Carrier components](/framework/develop/plugin-package/)).
-- `carrier.bootstrap`: one `{ assembly, type }` implementing `ICarrierServicesConfigurator`. The manager constructs it and calls `Configure(IServiceCollection services, nint hostHandle)` before the service provider is built, then hands that provider to plugins and components as `CarrierServices`.
+- `carrier.components`: process-wide managed components (see [Carrier packages](/framework/develop/plugin-package/#carrier-packages)).
+- `carrier.bootstrap`: one `{ assembly, type }` implementing `ICarrierServicesConfigurator`. The manager constructs it and calls `Configure(ICarrierServiceContext context)` before the service provider is built, then hands that provider to plugins and components as `CarrierServices`.
 
-The native handle is the carrier's own pointer (Endstone passes its `Plugin*`; the parented LeviLamina carrier passes none). The core passes it through untouched; the configurator decides what type to expose under which key, and that key type lives with your carrier code — the framework never references it.
+The context carries the service collection (`context.Services`), the absolute carrier package directory (`context.CarrierDirectory`), and the native handle (`context.HostHandle`). The handle is the carrier's own pointer (Endstone passes its `Plugin*`; the parented LeviLamina carrier passes none). The core passes it through untouched; the configurator decides what type to expose under which key, and that key type lives with your carrier code — the framework never references it.
 
 ```csharp
 public sealed class CarrierServicesConfigurator : ICarrierServicesConfigurator
 {
-    public void Configure(IServiceCollection services, nint hostHandle)
+    public void Configure(ICarrierServiceContext context)
     {
-        services.AddSingleton(new HostHandle(hostHandle));
+        context.Services.AddSingleton(new HostHandle(context.HostHandle));
     }
 }
 ```

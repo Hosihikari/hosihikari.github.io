@@ -3,10 +3,10 @@ title: Testing plugins
 description: Drive plugin lifecycle and host services without starting a Bedrock Dedicated Server.
 ---
 
-`Hosihikari.Testing` is the author-facing test package. It targets the same contract line as the framework (`Hosihikari.Plugin.Abstractions` 2.0) and pins the `Hosihikari.PluginManager` line the harness was validated against; install it without a version so NuGet resolves the release that matches the contract.
+`Hosihikari.Testing` is the author-facing test package. The published 1.1.0 is still on the 1.x contract (`Hosihikari.Plugin.Abstractions` 1.2.0, `PluginManager` 1.3.0) and its hooks are the synchronous ones, so the code below is the 1.x shape. Pin it: a bare install resolves 1.1.0, which does not match the 2.0 contract the rest of these pages describe.
 
 ```bash
-dotnet add package Hosihikari.Testing
+dotnet add package Hosihikari.Testing --version 1.1.0
 ```
 
 ## Lifecycle host
@@ -14,19 +14,15 @@ dotnet add package Hosihikari.Testing
 `PluginTestHost` drives the four public hooks directly. It does not start BDS, read a manifest, or create an assembly load context.
 
 ```csharp
-using System.Threading;
-using System.Threading.Tasks;
 using Hosihikari;
 using Hosihikari.Testing;
 
 public sealed class MyPlugin : IPlugin
 {
-    public ValueTask OnLoad(IPluginContext context, CancellationToken token) => ValueTask.CompletedTask;
-    public ValueTask<PluginHookResult> OnEnable(CancellationToken token) =>
-        ValueTask.FromResult(PluginHookResult.Allow());
-    public ValueTask<PluginHookResult> OnDisable(CancellationToken token) =>
-        ValueTask.FromResult(PluginHookResult.Allow());
-    public ValueTask OnUnload(CancellationToken token) => ValueTask.CompletedTask;
+    public void OnLoad(IPluginContext context) { }
+    public PluginHookResult OnEnable() => PluginHookResult.Allow();
+    public PluginHookResult OnDisable() => PluginHookResult.Allow();
+    public void OnUnload() { }
 }
 
 using var host = new PluginTestHost(new MyPlugin());
@@ -35,14 +31,14 @@ host.RunLifecycle();
 // host.HookLog: load → enable → disable → unload
 ```
 
-The host passes `CancellationToken.None` to every hook and runs them off the calling thread, so blocking inside a hook behaves as in production.
+The host runs each hook off the calling thread, so blocking inside a hook behaves as in production.
 
 The test context exposes the same service shape as production:
 
 - `Events` — synchronous bus with the same six priorities; handler exceptions are collected in `TestEvents.HandlerErrors`.
 - `Scheduler` — manual scheduler; call `TestScheduler.RunOnce()` or `RunPeriodic()` yourself.
 - `PluginServices` — in-memory registry; the first registration for a type wins.
-- `Faults` — the messages reported through `IPluginContext.ReportFault`, which takes a `PluginDiagnostic`.
+- `Faults` — the strings reported through `IPluginContext.ReportFault`.
 - `Logger`, `Configuration`, and `CarrierServices` are replaceable.
 
 `TestPluginContext` implements `ILoaderContext`, so a loader test can call `RegisterLoader` on it.

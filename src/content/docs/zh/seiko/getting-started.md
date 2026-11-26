@@ -19,8 +19,8 @@ sk add hosihikari
 `sk add hosihikari` 添加直接声明并立即同步：
 
 ```
-resolved 1 sei, deployed 29 file(s)
-  hosihikari 1.2.0 (direct)
+resolved 1 sei, deployed 38 file(s)
+  hosihikari 2.0.1 (direct)
 ```
 
 文件按构件的布局落盘。`hosihikari` 的文件在 `plugins/hosihikari/` 下；Seiko 不解释那里的内容。插件清单 `hosihikari.json` 是载荷，Seiko 不读取。

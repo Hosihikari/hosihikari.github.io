@@ -60,7 +60,7 @@ A manual download is checked the way the installer does it, against `SHA256SUMS`
 sha256sum -c SHA256SUMS --ignore-missing
 ```
 
-`SHA256SUMS` covers every release asset. `gh attestation verify 'sk-<version>-<rid>.tar.gz' --repo Hosihikari/Seiko` additionally proves the package assets were built by this repository's workflow; the installers carry no attestation.
+`SHA256SUMS` covers every release asset. `gh attestation verify 'sk-<version>-<rid>.tar.gz' --repo Hosihikari/Seiko` additionally proves the asset was built by this repository's workflow; every asset carries the attestation, the installers included.
 
 | Asset | Contents |
 | --- | --- |

@@ -46,12 +46,14 @@ zip 根只能有一个 `sei.json`。其余都是载荷；路径相对安装根�
 
 | 字段 | 说明 |
 | --- | --- |
-| `schemaVersion` | 必填；通常为 `2`，构件带外链文件时为 `3`。 |
+| `schemaVersion` | 必填。通常为 `2`；构件带外链文件时为 `3`；用到 `preserve` 或 `dependencyGroups` 时为 `4`。 |
 | `name` | sei 名；必须与索引文件一致，且路径安全。 |
 | `version` | NuGet SemVer 版本；预发布使用 `1.3.0-beta.1` 这类后缀。 |
 | `dependencies` | 名字与可选的版本范围，按与声明相同的规则解析。 |
 | `prerequisites`、`optionalPeers`、`conflicts` | 其余版本级关系，见[关系](#关系)。 |
-| `artifact` | 只描述当前构件：`rid`、构件专属关系、`layout`、`modes` 与可选外链。 |
+| `artifact` | 只描述当前构件：`rid`、构件专属关系、`layout`、`modes`、可选外链与可选 `preserve`。 |
+| `artifact.preserve` | 构件会部署、但之后不拥有的路径：已存在的文件胜过构件那份，且该路径从不记为受管。仅 `schemaVersion: 4`。 |
+| `artifact.dependencyGroups` | 互斥的候选关系组；选中的构件至多展开一组。仅 `schemaVersion: 4`。 |
 
 ## 外链文件
 

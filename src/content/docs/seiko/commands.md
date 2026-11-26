@@ -31,6 +31,7 @@ Progress bars appear only when stdout is an interactive terminal, and never with
 | `--dry-run` | `sync`, `add`, `remove`, `update` | Print the plan without downloading payloads or writing anything. |
 | `--adopt` | `sync`, `add`, `remove`, `update` | Keep existing files and record them as adopted. |
 | `--force` | `sync`, `add`, `remove`, `update` | Overwrite or delete conflicting existing files. |
+| `--reset-preserved` | `sync`, `add`, `remove`, `update` | Replace files the package declares `preserve` with its own copy and manage them from then on. |
 
 ## Lifecycle
 
@@ -132,6 +133,10 @@ Validates an index directory: schema, names, versions, artifact URLs, and SHA-25
 ## Adopt and force
 
 A deployment stops with a `deploy` error when it would overwrite a managed file you edited, or an unmanaged file in the way. `--adopt` keeps the existing content and records the path as adopted; `--force` overwrites or deletes it. Both run inside the deployment transaction.
+
+## Preserved files
+
+An artifact can declare `preserve` paths: files it deploys but does not own afterwards (schema 4). An existing file wins over the artifact's copy, and the path is never recorded as managed. `--reset-preserved` on `sync`, `add`, `remove`, or `update` replaces the kept file with the package's copy and manages it from then on.
 
 ## Completion
 

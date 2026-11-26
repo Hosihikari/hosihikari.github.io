@@ -40,7 +40,7 @@ export const GET: APIRoute = async ({ site }) => {
     '',
     '## Full content',
     '',
-    `- [llms-full.txt](${new URL('/llms-full.txt', base).href}): all English documentation pages in one file.`,
+    `- [llms-full.txt](${new URL('/llms-full.txt', base).href}): the framework server, develop, and embed pages, the migration guide, and the releases page in one file. Projection and Seiko appear here as index pages only; fetch their subpages individually.`,
     '',
     '## Other languages',
     '',

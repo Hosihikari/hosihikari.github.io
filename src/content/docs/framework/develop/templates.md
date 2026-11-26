@@ -16,11 +16,14 @@ dotnet new hosihikari-plugin -n MyPlugin          # C#
 dotnet new hosihikari-plugin-fsharp -n MyPlugin   # F#
 ```
 
-The `dotnet new` project has no manifest file in the source tree: `Hosihikari.Plugin.Build` generates `hosihikari.json` at pack time from the project properties. Build and pack with that package:
+The generated project has no manifest file in the source tree. A 2.0-capable `Hosihikari.Plugin.Build` writes `hosihikari.json` at pack time from the project properties.
+
+The published template is still 1.1.0: it pins the 1.x contract, its hooks are the synchronous ones, and its project references `Plugin.Build` `[1.1.0]`, which writes only the old `manifest.json` envelope — a 2.0 loader refuses a package with no `hosihikari.json`. Bring it onto the current line first — upgrade the contract, rewrite the hooks as in [Migrate from 1.x to 2.0](/framework/migrate/v2/#2-make-the-hooks-async), and switch to the 2.0 build package:
 
 ```bash
 cd MyPlugin
-dotnet add package Hosihikari.Plugin.Build
+dotnet add package Hosihikari.Plugin.Abstractions --version 2.0.1
+dotnet add package Hosihikari.Plugin.Build --version 1.2.0
 dotnet build -t:PackPlugin
 ```
 

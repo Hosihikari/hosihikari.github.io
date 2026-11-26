@@ -15,7 +15,7 @@ Contract 2.0.0 is unlisted on nuget.org, but unlisting is not deletion: a projec
 
 Because 2.0.1 restored a working dependency, plugins built against 2.0.0 need a recompile against 2.0.1 and above. 2.0.1 is otherwise source-compatible with 2.0.0 except for the binding namespaces below.
 
-The projection singularised its binding namespaces (`Hosihikari.Bindings.*` → `Hosihikari.Binding.*`), and the carriers moved to Endstone 0.11.16 and LeviLamina 26.60.8. Carrier and binding code written against the old namespaces stops compiling until the `using` and type names follow the new spelling.
+The projection singularised its binding namespaces (`Hosihikari.Bindings.*` → `Hosihikari.Binding.*`), and the carriers moved to Endstone 0.11.16 and LeviLamina 26.60.9. Carrier and binding code written against the old namespaces stops compiling until the `using` and type names follow the new spelling.
 
 ## 1. Replace the manifest
 
@@ -110,10 +110,10 @@ A cancelled `OnDisable` or `OnUnload` hook keeps running in the background. Rele
 
 ## 3. Recompile
 
-Update the contract package to 2.0 and rebuild:
+Update the contract package and rebuild. The version goes straight to 2.0.1 — 2.0.0 does not restore, so `--version 2.0.0` would stop you here:
 
 ```bash
-dotnet add ./HelloPlugin/HelloPlugin.csproj package Hosihikari.Plugin.Abstractions --version 2.0.0
+dotnet add ./HelloPlugin/HelloPlugin.csproj package Hosihikari.Plugin.Abstractions --version 2.0.1
 dotnet build ./HelloPlugin/HelloPlugin.csproj
 ```
 

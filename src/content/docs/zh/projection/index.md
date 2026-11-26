@@ -7,7 +7,7 @@ description: 把载体与基岩版专用服务器的原生 API 投影成托管 .
 
 ## 提供什么
 
-- 面向载体与基岩版专用服务器的托管绑定程序集：`Hosihikari.Bindings.LeviLamina.Interop`、`Hosihikari.Bindings.Endstone.Interop` 与 `Hosihikari.Bindings.Bedrock.Interop`。
+- 面向载体与基岩版专用服务器的托管绑定程序集：`Hosihikari.Binding.LeviLamina.Interop`、`Hosihikari.Binding.Endstone.Interop` 与 `Hosihikari.Binding.Bedrock.Interop`。
 - 自持态服务端使用的 BDS MCAPI 投影。
 - 生成这些程序集的 `BindingGenerator`。
 
@@ -15,3 +15,5 @@ description: 把载体与基岩版专用服务器的原生 API 投影成托管 .
 
 - [Hosihikari Projection 组织](https://github.com/HosihikariProjection)
 - [BindingIr](https://github.com/HosihikariProjection/BindingIr)
+- [BindingAbi](https://github.com/HosihikariProjection/BindingAbi)
+- [Capabilities](https://github.com/HosihikariProjection/Capabilities)

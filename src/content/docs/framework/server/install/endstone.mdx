@@ -10,7 +10,7 @@ The Endstone carrier installs as an Endstone plugin. The framework is the plugin
 ## Requirements
 
 - Windows x64 or Linux x64.
-- Bedrock Dedicated Server 1.26.60 or newer, with Endstone 0.11.15 or newer installed and working.
+- Bedrock Dedicated Server 1.26.60 or newer, with Endstone 0.11.16 or newer installed and working.
 - The .NET 10 runtime. The framework hosts the CLR inside the server process; without the runtime the startup sequence stops and says so in the log.
 
 ## Install
@@ -33,7 +33,7 @@ Download two archives from GitHub releases and extract both into the server root
 - `hosihikari-endstone-windows-x64.zip` or `hosihikari-endstone-linux-x64.zip` from the [HostingShim releases](https://github.com/HosihikariFramework/HostingShim/releases).
 - `hosihikari-core-<version>.zip` from the [Core releases](https://github.com/HosihikariFramework/PluginManager/releases).
 
-On Windows the carrier archive writes `plugins/hosihikari.dll`, `plugins/hosihikari/hosihikari.json`, and `nethost.dll`; on Linux it writes `plugins/hosihikari.so`, `plugins/hosihikari/hosihikari.json`, and `plugins/libnethost.so`. The manifest tells the core where the carrier package is and which components it declares. The core archive writes the plugin manager into `plugins/hosihikari/`. The HostingShim release notes name the compatible core line.
+On Windows the carrier archive writes `plugins/hosihikari.dll`, `plugins/hosihikari/hosihikari.json`, and `nethost.dll`; on Linux it writes `plugins/hosihikari.so`, `plugins/hosihikari/hosihikari.json`, and `plugins/libnethost.so`. The manifest declares which components and shared assemblies the carrier brings; the carrier directory and the native host handle reach the core through the shim's startup call, not through the manifest. The core archive writes the plugin manager into `plugins/hosihikari/`. The HostingShim release notes name the compatible core line.
 
   </TabItem>
 </Tabs>

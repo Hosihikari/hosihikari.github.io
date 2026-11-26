@@ -127,10 +127,10 @@ greeting = "Hello, Hosihikari"
 [assembly: EntryPoint<HelloPlugin>]
 ```
 
-引用契约并排除它的运行期资产，包里就不会多出一份副本：
+引用契约并排除它的运行期资产，包里就不会多出一份副本。下界必须从 2.0.1 起：NuGet 对版本范围取最低满足版本，而 2.0.0 带着一个坏的依赖。
 
 ```xml
-<PackageReference Include="Hosihikari.Plugin.Abstractions" Version="[2.0.0]" ExcludeAssets="runtime" />
+<PackageReference Include="Hosihikari.Plugin.Abstractions" Version="[2.0.1,3.0.0)" ExcludeAssets="runtime" />
 ```
 
 程序集里恰好一个 `EntryPoint<T>`；入口类型实现 `IPlugin` 且有无参构造。

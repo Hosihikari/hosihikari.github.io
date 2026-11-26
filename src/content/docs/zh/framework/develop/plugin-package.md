@@ -55,7 +55,7 @@ plugins/
 
 `type` 可省，写了就必须是 `hosihikari`；信封里恒有它。信封是生成出来的，改 `description` 或 `author` 要重新打包才会到父级手里。
 
-依赖按名字排序；每条依赖可以带一个 NuGet SemVer 范围：
+依赖按你写的顺序保留；它们之间的装载顺序走拓扑序。每条依赖可以带一个 NuGet SemVer 范围：
 
 - 省略、空字符串或 `*`：任意版本。
 - `1.2.3`：1.2.3 或更高。
@@ -70,13 +70,13 @@ plugins/
 
 ## 加载器与入口
 
-官方加载器分两类：进程内加载器把源码 AOT 为 IL；RpcLoader 是进程外加载器，RPC 桥。预编译程序集走插件管理器内置入口。
+官方加载器分两类：进程内加载器在装载时把源码编成 IL；RpcLoader 是进程外加载器，RPC 桥。预编译程序集走插件管理器内置入口。
 
 | `loader` | `entry` | 装载方式 |
 |---|---|---|
 | `assembly` | `.dll` | 插件管理器内置：直接装载预编译 IL 程序集；程序集上恰好一个 `[assembly: EntryPoint<T>]`。 |
-| `csharp` | `.cs` | 进程内加载器：Roslyn 装载时把 `.cs` AOT 为 IL，产物进 collectible ALC。 |
-| `fsharp` | `.fsx` | 进程内加载器：FSharp.Compiler.Service 装载时把 `.fsx` AOT 为 IL。 |
+| `csharp` | `.cs` | 进程内加载器：Roslyn 在装载时把 `.cs` 编成 IL，产物进 collectible ALC。 |
+| `fsharp` | `.fsx` | 进程内加载器：FSharp.Compiler.Service 在装载时把 `.fsx` 编成 IL。 |
 | `rpc` | 入口文件 | 进程外加载器：由 `pack.command` 启动子进程，行分隔 JSON-RPC 2.0 over stdio。 |
 
 进程内加载器与预编译程序集插件的入口类型必须实现 `IPlugin` 且有无参构造；`EntryPoint<T>` 的泛型约束在编译期保证这两条。文件缺失、程序集里的入口声明数量不对等，由加载器报告。

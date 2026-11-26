@@ -45,7 +45,7 @@ The three roots are directories you own. The manager creates `data/` and `config
 
 - `reportFault` receives problems that happen outside a plugin hook — a process that died, a protocol error, a package refused before load.
 - `carrierServices` is the `IServiceProvider` plugins reach through `IPluginContext.CarrierServices`. Put an `ILoggerFactory` in it: without one, plugins get a null logger and every line they write disappears silently.
-- `onRemoved` fires after a failed plugin has been unloaded, so you can remove it from your own registry.
+- `onRemoved` fires after a plugin that faulted has been unloaded successfully, so you can remove it from your own registry. A plain `Unload` you call yourself does not fire it.
 
 ## Register the loaders you support
 
